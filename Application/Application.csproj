@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Tickets\Dtos\" />
+    <Folder Include="Tickets\Mappings\" />
+    <Folder Include="Tickets\Service\" />
+    <Folder Include="Tickets\Validators\" />
+    <Folder Include="Shifts\Dtos\" />
+    <Folder Include="Shifts\Mappings\" />
+    <Folder Include="Shifts\Service\" />
+    <Folder Include="Shifts\Validators\" />
+    <Folder Include="Reports\Dtos\" />
+    <Folder Include="Reports\Mappings\" />
+    <Folder Include="Reports\Service\" />
+    <Folder Include="Reports\Validators\" />
+    <Folder Include="Policies\Dtos\" />
+    <Folder Include="Policies\Mappings\" />
+    <Folder Include="Policies\Service\" />
+    <Folder Include="Policies\Validators\" />
+    <Folder Include="PerformanceReviews\Dtos\" />
+    <Folder Include="PerformanceReviews\Mappings\" />
+    <Folder Include="PerformanceReviews\Service\" />
+    <Folder Include="PerformanceReviews\Validators\" />
+    <Folder Include="Payrolls\Dtos\" />
+    <Folder Include="Payrolls\Mappings\" />
+    <Folder Include="Payrolls\Service\" />
+    <Folder Include="Payrolls\Validators\" />
+    <Folder Include="Guards\Dtos\" />
+    <Folder Include="Guards\Mappings\" />
+    <Folder Include="Guards\Service\" />
+    <Folder Include="Guards\Validators\" />
+    <Folder Include="Customers\Dtos\" />
+    <Folder Include="Customers\Mappings\" />
+    <Folder Include="Customers\Service\" />
+    <Folder Include="Customers\Validators\" />
+    <Folder Include="Attendances\Dtos\" />
+    <Folder Include="Attendances\Mappings\" />
+    <Folder Include="Attendances\Service\" />
+    <Folder Include="Attendances\Validators\" />
+  </ItemGroup>
+
+</Project>
