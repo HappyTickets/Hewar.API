@@ -21,5 +21,9 @@ namespace Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Create(int id)
             => Result(await _tenantService.GetByIdAsync(id));
+
+        [HttpGet("test")]
+        public async Task<IActionResult> Test()
+            => Ok("test");
     }
 }
