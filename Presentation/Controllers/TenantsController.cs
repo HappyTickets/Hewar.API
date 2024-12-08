@@ -19,7 +19,7 @@ namespace Presentation.Controllers
             => Result(await _tenantService.CreateAsync(dto));
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(long id)
             => Result(await _tenantService.GetByIdAsync(id));
 
         [HttpGet("test")]

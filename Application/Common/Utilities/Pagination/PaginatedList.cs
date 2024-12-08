@@ -1,4 +1,6 @@
-﻿namespace Application.Common.Utilities
+﻿using System.Collections.Immutable;
+
+namespace Application.Common.Utilities.Pagination
 {
     public class PaginatedList<TData>
     {
@@ -8,15 +10,15 @@
         public int PageNumber { get; }
         public int PageSize { get; }
 
-        public PaginatedList(IReadOnlyList<TData> items, int totalCount, int pageNumber, int pageSize)
+        public PaginatedList(IEnumerable<TData> items, int totalCount, int pageNumber, int pageSize)
         {
-            Items = items;
+            Items = items.ToImmutableList();
             TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             PageNumber = pageNumber;
             PageSize = pageSize;
         }
 
-        public bool HasNextPage => PageNumber < TotalPages;
-        public bool HasPreviousPage => PageNumber > 1;
+        public bool HasPrevious => PageNumber > 0;
+        public bool HasNext => PageNumber < TotalPages - 1;
     }
 }

@@ -2,20 +2,20 @@ using Application;
 using Application.Common.Exceptions;
 using Application.Common.Utilities;
 using Infrastructure;
-using Microsoft.AspNetCore.Authorization;
+using Localization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // default
 builder.Services
-    .AddControllers();
+    .AddControllers()
+    .AddDataAnnotationsLocalization();
 
-// services
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen()
+    .AddLocalizationService(builder.Configuration)
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration);
 
@@ -29,7 +29,7 @@ builder.Services
             .Select(v => v.Errors.Select(e => e.ErrorMessage))
             .SelectMany(e => e);
 
-            return new BadRequestObjectResult((Result<Empty>) new ValidationException(errors));
+            return new BadRequestObjectResult((Result<Empty>)new ValidationException(errors));
         };
     });
 

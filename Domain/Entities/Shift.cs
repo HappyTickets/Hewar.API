@@ -8,8 +8,8 @@ namespace Domain.Entities
         public string ShiftType { get; set; }
         public string Location { get; set; }
         public bool IsTemplate { get; set; }
-        public int? ParentShiftId { get; set; }
-        public int GuardId { get; set; }
+        public long? ParentShiftId { get; set; }
+        public long GuardId { get; set; }
         public Guard Guard { get; set; }
 
         // nav props

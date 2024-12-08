@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.Common.Utilities.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Extensions
 {

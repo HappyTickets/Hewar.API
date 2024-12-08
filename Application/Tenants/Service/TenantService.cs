@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Application.Tenants.Service
 {
-    internal class TenantService: ITenantService
+    internal class TenantService : ITenantService
     {
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
@@ -14,10 +14,10 @@ namespace Application.Tenants.Service
             _mapper = mapper;
         }
 
-        public async Task<Result<int>> CreateAsync(TenantBriefDto dto)
+        public async Task<Result<long>> CreateAsync(TenantBriefDto dto)
         {
-            var tenant = new Tenant 
-            { 
+            var tenant = new Tenant
+            {
                 Name = dto.Name,
                 Address = "xxxx",
                 ContactInfo = "xxxx",
@@ -31,7 +31,7 @@ namespace Application.Tenants.Service
             return tenant.Id;
         }
 
-        public async Task<Result<TenantBriefDto>> GetByIdAsync(int id)
+        public async Task<Result<TenantBriefDto>> GetByIdAsync(long id)
         {
             var tenant = await _ufw.Tenants.GetByIdAsync(id);
 

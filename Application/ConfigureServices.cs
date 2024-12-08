@@ -1,4 +1,7 @@
-﻿using Application.Tenants.Service;
+﻿using Application.AccountManagement.Service.Concrete;
+using Application.AccountManagement.Service.Interfaces;
+using Application.Authorization.Service;
+using Application.Tenants.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +22,12 @@ namespace Application
 
             // DI
             services
-                .AddScoped<ITenantService, TenantService>();
+              .AddScoped<ITenantService, TenantService>()
+              .AddScoped<IPasswordResetService, PasswordResetService>()
+              .AddScoped<IEmailConfirmationService, EmailConfirmationService>()
+              .AddScoped<IAuthenticationService, AuthenticationService>()
+              .AddScoped<IAuthorizationService, AuthorizationService>();
+
 
             return services;
         }

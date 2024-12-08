@@ -6,7 +6,7 @@
         public string ReviewerName { get; set; }
         public string Feedback { get; set; }
         public int Rating { get; set; }
-        public int GuardId { get; set; }
+        public long GuardId { get; set; }
         public Guard Guard { get; set; }
     }
 }
