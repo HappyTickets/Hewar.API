@@ -1,9 +1,9 @@
-﻿using Application.Common.Utilities;
+﻿using Application.Common.Utilities.Pagination;
 using AutoMapper;
 
 namespace Application.Common.Mappings
 {
-    internal class GloablMappings: Profile
+    internal class GloablMappings : Profile
     {
         public GloablMappings()
         {

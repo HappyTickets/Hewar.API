@@ -1,21 +1,43 @@
-﻿using Infrastructure.Persistence.Extensions;
+﻿using Domain.Entities.Identity;
+using Domain.Entities.UserEntities;
+using Infrastructure.Persistence.Extensions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Persistence
 {
-    internal class AppDbContext : DbContext
+    internal class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
+
     {
-        private readonly ICurrentUserService _currentUserService;
-        public AppDbContext(DbContextOptions options, ICurrentUserService currentUserService) : base(options)
-        {
-            _currentUserService = currentUserService;
-        }
+        private readonly ICurrentUserService _currentUserService = currentUserService;
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.AppendGlobalQueryFilter<SoftDeletableEntity>(e => !e.IsDeleted);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+            #region UserRolesRelationship
+            modelBuilder.Entity<ApplicationUser>(b =>
+           {
+               b.HasMany(e => e.ApplicationUserRoles)
+                   .WithOne(e => e.User)
+                   .HasForeignKey(ur => ur.UserId)
+                   .IsRequired();
+           });
+
+            modelBuilder.Entity<ApplicationRole>(b =>
+            {
+                b.HasMany(e => e.ApplicationUserRoles)
+                    .WithOne(e => e.Role)
+                    .HasForeignKey(ur => ur.RoleId)
+                    .IsRequired();
+            });
+            #endregion
+
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -27,6 +49,10 @@ namespace Infrastructure.Persistence
         }
 
         #region DbSets
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+
         public DbSet<Attendance> Attendances { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Guard> Guards { get; set; }

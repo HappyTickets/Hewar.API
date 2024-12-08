@@ -1,0 +1,2035 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AboutUs" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="AboutUsHeadline" xml:space="preserve">
+    <value>Get To Know More About Happy Tickets!</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="AcceptGift" xml:space="preserve">
+    <value>Accept Gift</value>
+  </data>
+  <data name="Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="ActivateAcc" xml:space="preserve">
+    <value>Activate your account</value>
+  </data>
+  <data name="ActivateAccountFirst" xml:space="preserve">
+    <value>Activate your account first !📝</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Add_New_Item" xml:space="preserve">
+    <value>Add new item</value>
+  </data>
+  <data name="AddGiftRecipient" xml:space="preserve">
+    <value>Add Gift Recipient</value>
+  </data>
+  <data name="AddRecipient" xml:space="preserve">
+    <value>Add Recipient</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Admin_Panel" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
+  <data name="AdminEmail" xml:space="preserve">
+    <value>Admin Email</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion" xml:space="preserve">
+    <value>Assign Sponsors To Championship</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion_Failure" xml:space="preserve">
+    <value>Please assign a sponsor to the championship before creating</value>
+  </data>
+  <data name="Assign_Sponsors_To_Champion_Success" xml:space="preserve">
+    <value>Sponsors have been successfully assigned to championship</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team" xml:space="preserve">
+    <value>Assign Sponsors To Team</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team_Failure" xml:space="preserve">
+    <value>Failed to assign sponsors to your team. Please try again.</value>
+  </data>
+  <data name="Assign_Sponsors_To_Team_Success" xml:space="preserve">
+    <value>Sponsors have been successfully assigned to your team!</value>
+  </data>
+  <data name="AssignedUsers" xml:space="preserve">
+    <value>Assigned Users</value>
+  </data>
+  <data name="AssignRoleFailed" xml:space="preserve">
+    <value>Failed to assign role</value>
+  </data>
+  <data name="AssignRoles" xml:space="preserve">
+    <value>Assign Roles</value>
+  </data>
+  <data name="AssignRoleToSelectedUsers" xml:space="preserve">
+    <value> Assign Many</value>
+  </data>
+  <data name="AssignSponsorsToChampion" xml:space="preserve">
+    <value>Assign Sponsors to Championship</value>
+  </data>
+  <data name="AssignSponsorsToTeam" xml:space="preserve">
+    <value>Assign Sponsors to Team</value>
+  </data>
+  <data name="AssignUsersToRoles" xml:space="preserve">
+    <value>Assign Users To Roles</value>
+  </data>
+  <data name="Authorized" xml:space="preserve">
+    <value>Authorized</value>
+  </data>
+  <data name="AwayTeam" xml:space="preserve">
+    <value>Away Team</value>
+  </data>
+  <data name="BackgroundJobs" xml:space="preserve">
+    <value>Background Jobs</value>
+  </data>
+  <data name="BackToRegistration" xml:space="preserve">
+    <value>Back To Registration</value>
+  </data>
+  <data name="BuyNow" xml:space="preserve">
+    <value>Buy Now</value>
+  </data>
+  <data name="BuyTheTickets" xml:space="preserve">
+    <value>Buy The Tickets</value>
+  </data>
+  <data name="BuyTicket" xml:space="preserve">
+    <value>Buy The Ticket</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Cannotdeleteachampionshipwithassignedmatches" xml:space="preserve">
+    <value>Cannot delete a championship with assigned matches</value>
+  </data>
+  <data name="CannotDeleteChampionshipWithAssignedMatches" xml:space="preserve">
+    <value>Cannot Delete Championship With Assigned Matches</value>
+  </data>
+  <data name="Cart" xml:space="preserve">
+    <value>Cart</value>
+  </data>
+  <data name="Cart_Add" xml:space="preserve">
+    <value>Add To Cart</value>
+  </data>
+  <data name="Cart_Empty" xml:space="preserve">
+    <value>Your cart is empty</value>
+  </data>
+  <data name="Cart_Loading_Fail" xml:space="preserve">
+    <value>Failed to load cart</value>
+  </data>
+  <data name="Champion" xml:space="preserve">
+    <value>Championship</value>
+  </data>
+  <data name="Champion_Create" xml:space="preserve">
+    <value>Create Championship</value>
+  </data>
+  <data name="Champion_Created" xml:space="preserve">
+    <value>Championship is created successfully</value>
+  </data>
+  <data name="Champion_Delete" xml:space="preserve">
+    <value>Delete Championship</value>
+  </data>
+  <data name="Champion_Deleted_Successfully" xml:space="preserve">
+    <value>Championship has been deleted successfully</value>
+  </data>
+  <data name="Champion_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete championship</value>
+  </data>
+  <data name="Champion_Update" xml:space="preserve">
+    <value>Update Championship</value>
+  </data>
+  <data name="Champion_Updated" xml:space="preserve">
+    <value>Championship updated successfully</value>
+  </data>
+  <data name="Champion_View" xml:space="preserve">
+    <value>View Championship</value>
+  </data>
+  <data name="Champion_Views" xml:space="preserve">
+    <value>View Championships</value>
+  </data>
+  <data name="Champion_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>Can not delete a championship with an assigned match</value>
+  </data>
+  <data name="Champions" xml:space="preserve">
+    <value>Championships</value>
+  </data>
+  <data name="Champions_All" xml:space="preserve">
+    <value>All Championships</value>
+  </data>
+  <data name="Championship_Name" xml:space="preserve">
+    <value>Championship Name</value>
+  </data>
+  <data name="ChampionshipDeleted" xml:space="preserve">
+    <value>Championship Deleted</value>
+  </data>
+  <data name="ChampionshipNotFound" xml:space="preserve">
+    <value>Championship Not Found</value>
+  </data>
+  <data name="ChangeLanguage" xml:space="preserve">
+    <value>Change Language</value>
+  </data>
+  <data name="ChangeTheme" xml:space="preserve">
+    <value>Change Theme</value>
+  </data>
+  <data name="Checkout" xml:space="preserve">
+    <value>Checkout</value>
+  </data>
+  <data name="Checkout_Cart_Empty" xml:space="preserve">
+    <value>Your cart is empty. Please add items to your cart before proceeding to checkout.</value>
+  </data>
+  <data name="Checkout_Error" xml:space="preserve">
+    <value>An error occured during checkout!</value>
+  </data>
+  <data name="Checkout_Incomplete" xml:space="preserve">
+    <value>Failed to complete checkout!</value>
+  </data>
+  <data name="Checkout_Successfully" xml:space="preserve">
+    <value>Checkout completed successfully!</value>
+  </data>
+  <data name="Class" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="ClickBtnToSendEmail" xml:space="preserve">
+    <value>Click Button to Send Email</value>
+  </data>
+  <data name="ClientTrustUs" xml:space="preserve">
+    <value>Client Trust Us.</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="ClosedOrders" xml:space="preserve">
+    <value>Closed Orders</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Happy</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Confirm_Deletion_Text" xml:space="preserve">
+    <value>Do you really want to delete this record? This process cannot be undone.</value>
+  </data>
+  <data name="Confirming_Password_Validation" xml:space="preserve">
+    <value>Confirming Password is required!</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="ConfirmRoleDeletion" xml:space="preserve">
+    <value>Do you really want to delete this role ? This process cannot be undone.</value>
+  </data>
+  <data name="ConnectionString" xml:space="preserve">
+    <value>Connection String</value>
+  </data>
+  <data name="ContactUs" xml:space="preserve">
+    <value>Contact Us</value>
+  </data>
+  <data name="ContactUsHeadline" xml:space="preserve">
+    <value>Got a problem, don't hesitate to contact us!</value>
+  </data>
+  <data name="ContactUsText" xml:space="preserve">
+    <value>   We'd love to hear from you! 
+   Whether you have a question, need assistance, 
+   or just want to share your experience, our team is here to help. 
+   Your feedback is important to us, and we're committed to providing you with exceptional service. </value>
+  </data>
+  <data name="Copyright" xml:space="preserve">
+    <value>2024 Happy Limited - All rights reserved.</value>
+  </data>
+  <data name="CountryCode" xml:space="preserve">
+    <value>Country Code</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="CreatedDate" xml:space="preserve">
+    <value>Created Date</value>
+  </data>
+  <data name="CreateRoleFailed" xml:space="preserve">
+    <value>Create Role operation failed</value>
+  </data>
+  <data name="CreateTenant" xml:space="preserve">
+    <value>Add Tenant</value>
+  </data>
+  <data name="Credentials_Invalid" xml:space="preserve">
+    <value>Invalid Credentials</value>
+  </data>
+  <data name="CurrentEmail" xml:space="preserve">
+    <value>Current Email</value>
+  </data>
+  <data name="CurrentExpiryDate" xml:space="preserve">
+    <value>Current Expiry Date</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="CurrentPhone" xml:space="preserve">
+    <value>Current Phone Number</value>
+  </data>
+  <data name="CustomerService" xml:space="preserve">
+    <value>Reach Us</value>
+  </data>
+  <data name="D" xml:space="preserve">
+    <value>d</value>
+  </data>
+  <data name="DarkMode" xml:space="preserve">
+    <value>Dark Mode</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="DateTime" xml:space="preserve">
+    <value>Date and Time</value>
+  </data>
+  <data name="Deactivate" xml:space="preserve">
+    <value>Deactivate</value>
+  </data>
+  <data name="Declined" xml:space="preserve">
+    <value>Declined</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descritpion</value>
+  </data>
+  <data name="Description_Not_Exists" xml:space="preserve">
+    <value>Currently, there’s no description for this team. Please add relevant details to enhance user experience.</value>
+  </data>
+  <data name="Details_View" xml:space="preserve">
+    <value>View Details</value>
+  </data>
+  <data name="DoDisplay" xml:space="preserve">
+    <value>Display</value>
+  </data>
+  <data name="DoneBy" xml:space="preserve">
+    <value>Done By</value>
+  </data>
+  <data name="DragDrop" xml:space="preserve">
+    <value>Drag and drop, or click here to upload</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditRoleFailed" xml:space="preserve">
+    <value>Edit Role operation failed</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Email_Confirm" xml:space="preserve">
+    <value>Confirm Email</value>
+  </data>
+  <data name="Email_Confirmation" xml:space="preserve">
+    <value>Email Confirmation</value>
+  </data>
+  <data name="Email_Confirmation_Fail" xml:space="preserve">
+    <value>Could not confirm your email! Please try again.</value>
+  </data>
+  <data name="Email_Confirmation_Message" xml:space="preserve">
+    <value>Thank you for verifying your account! 
+Your code is: {0}
+ sincerely , Happy Tickets</value>
+  </data>
+  <data name="Email_Confirmed" xml:space="preserve">
+    <value>Email has been confirmed</value>
+  </data>
+  <data name="Email_Format_Validation" xml:space="preserve">
+    <value>Email is not in a valid format!</value>
+  </data>
+  <data name="Email_Invalid" xml:space="preserve">
+    <value>Invalid Email</value>
+  </data>
+  <data name="Email_NotConfirmed" xml:space="preserve">
+    <value>Email Not Confirmed</value>
+  </data>
+  <data name="Email_NotConfirmed_Message" xml:space="preserve">
+    <value>You haven't confirmed your email yet.</value>
+  </data>
+  <data name="Email_NotFound" xml:space="preserve">
+    <value>Could not found your email</value>
+  </data>
+  <data name="Email_Required_Validation" xml:space="preserve">
+    <value>Email field is required!</value>
+  </data>
+  <data name="EmailActivationSent" xml:space="preserve">
+    <value>Activation email has been sent.</value>
+  </data>
+  <data name="EmailActivationSentFailed" xml:space="preserve">
+    <value>An error occurred while sending the activation email.</value>
+  </data>
+  <data name="EmailHelperText" xml:space="preserve">
+    <value>Enter your email here</value>
+  </data>
+  <data name="EmailVerificationMessage" xml:space="preserve">
+    <value>An email has been sent to you with a link to verify your account.</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="EnterValidDigits" xml:space="preserve">
+    <value>Please enter a valid 6-digit code</value>
+  </data>
+  <data name="EnterVerificationCode" xml:space="preserve">
+    <value>Enter the verification code sent to your email.</value>
+  </data>
+  <data name="Error_Occurred" xml:space="preserve">
+    <value>An error occurred</value>
+  </data>
+  <data name="Eventsthatwereorganized" xml:space="preserve">
+    <value>Events That Were Organized.</value>
+  </data>
+  <data name="exceed100,000" xml:space="preserve">
+    <value>The total number of tickets must not exceed 100,000</value>
+  </data>
+  <data name="External_Gate" xml:space="preserve">
+    <value>External Gate</value>
+  </data>
+  <data name="Facebook" xml:space="preserve">
+    <value>Facebook</value>
+  </data>
+  <data name="fail_gift_yourself" xml:space="preserve">
+    <value>you can't give yourself a gift 😎</value>
+  </data>
+  <data name="FailedToCheck" xml:space="preserve">
+    <value>The total number of tickets must not exceed 100,000</value>
+  </data>
+  <data name="FavoriteTeam_NotFound_Message" xml:space="preserve">
+    <value>No favorite team found for user {userId} for match {matchId}.</value>
+  </data>
+  <data name="FavoriteTeam_Update" xml:space="preserve">
+    <value>Favorite team has been updated</value>
+  </data>
+  <data name="FavouriteTeam" xml:space="preserve">
+    <value>Favourite Team</value>
+  </data>
+  <data name="FavouriteTeam_Select" xml:space="preserve">
+    <value>Select your favourite team</value>
+  </data>
+  <data name="File_Required" xml:space="preserve">
+    <value>File field is required</value>
+  </data>
+  <data name="File_Upoad_Error" xml:space="preserve">
+    <value>Failed to upload file</value>
+  </data>
+  <data name="FollowUs" xml:space="preserve">
+    <value>Find Us On</value>
+  </data>
+  <data name="footer_beyond" xml:space="preserve">
+    <value>Your gateway to unforgettable experiences in sports and entertainment—more than just tickets, we curate excitement, enable adventures, and create lasting memories
+</value>
+  </data>
+  <data name="footeraboutus" xml:space="preserve">
+    <value>Beyond Us</value>
+  </data>
+  <data name="footerContent" xml:space="preserve">
+    <value>Selling tickets for matches, concerts, and organizing events. We offer our clients unforgettable experiences through exclusive tickets to the best sports, music, and art events</value>
+  </data>
+  <data name="ForAdmin" xml:space="preserve">
+    <value>For Admins</value>
+  </data>
+  <data name="FormValidationFailed" xml:space="preserve">
+    <value>Form validation failed. Please check the inputs</value>
+  </data>
+  <data name="GATE" xml:space="preserve">
+    <value>GATE</value>
+  </data>
+  <data name="Gate1" xml:space="preserve">
+    <value>Gate 1</value>
+  </data>
+  <data name="Gate2" xml:space="preserve">
+    <value>Gate 2</value>
+  </data>
+  <data name="GetRoleFailed" xml:space="preserve">
+    <value>Get Role operation failed</value>
+  </data>
+  <data name="GetToKnowUs" xml:space="preserve">
+    <value>GET TO KNOW ABOUT</value>
+  </data>
+  <data name="GiftActionTakenBefore" xml:space="preserve">
+    <value>It is not possible to take action on the gift ticket again</value>
+  </data>
+  <data name="GiftRecipients" xml:space="preserve">
+    <value>Gift Recipients</value>
+  </data>
+  <data name="GiftsSendingFailed" xml:space="preserve">
+    <value>Gifts Sending Failed</value>
+  </data>
+  <data name="GiftsSentSuccessfully" xml:space="preserve">
+    <value>Gifts Sent Successfully</value>
+  </data>
+  <data name="GiftTicket" xml:space="preserve">
+    <value>Gift Ticket </value>
+  </data>
+  <data name="GiftTicketAcceptedFailed" xml:space="preserve">
+    <value>Sorry, there was an error accepting the gift ticket</value>
+  </data>
+  <data name="GiftTicketAcceptedMesg" xml:space="preserve">
+    <value>Congratulations!! You have received a gift ticket. It is now in your tickets.</value>
+  </data>
+  <data name="GiftTicketDialogTitle" xml:space="preserve">
+    <value>Gift a Ticket</value>
+  </data>
+  <data name="GiftTicketReceived" xml:space="preserve">
+    <value>🎉 You've received a special gift ticket!
+🎁 Please visit the 'My Gift Tickets' page to view your gift</value>
+  </data>
+  <data name="GiftTicketReceivedBody" xml:space="preserve">
+    <value>
+      &lt;!DOCTYPE html&gt;
+      &lt;html lang="en"&gt;
+      &lt;head&gt;
+          &lt;meta charset="UTF-8"&gt;
+          &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+          &lt;title&gt;Gift Ticket Notification&lt;/title&gt;
+          &lt;style&gt;
+              /* General styles */
+              body {
+                  font-family: 'IBM Plex Sans', sans-serif;
+                  color: #333;
+                  background-color: #f9f9f9;
+                  margin: 0;
+                  padding: 0;
+              }
+              .email-container {
+                  width: 100%;
+                  max-width: 600px;
+                  margin: 0 auto;
+                  background-color: #ffffff;
+                  border-radius: 8px;
+                  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                  overflow: hidden;
+              }
+              .header {
+                  background-color: #ffbd5a;
+                  padding: 20px;
+                  text-align: center;
+              }
+              .header img {
+                  max-width: 150px;
+                  height: auto;
+              }
+              .content {
+                  padding: 20px;
+              }
+              .content h1 {
+                  color: #4CAF50;
+                  font-size: 24px;
+                  margin-top: 0;
+              }
+              .content p {
+                  line-height: 1.6;
+                  font-size: 16px;
+                  color: #555;
+              }
+              .buttons {
+                  text-align: center;
+                  margin: 30px 0;
+              }
+              .button {
+                  display: inline-block;
+                  padding: 10px 20px;
+                  margin: 5px;
+                  font-size: 16px;
+                  color: #ffffff;
+                  background-color: #ffbd5a;
+                  border-radius: 5px;
+                  text-decoration: none;
+              }
+              .footer {
+                  text-align: center;
+                  padding: 20px;
+                  font-size: 12px;
+                  color: #999;
+              }
+          &lt;/style&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+          &lt;div class="email-container"&gt;
+              &lt;div class="header"&gt;
+                  &lt;img src="https://ticketshappy.com/logos/logo.svg" alt="Happy Tickets Logo"&gt;
+              &lt;/div&gt;
+              &lt;div class="content"&gt;
+                  &lt;h1&gt;You've Received a Gift Ticket!&lt;/h1&gt;
+                  &lt;p&gt;Dear User,&lt;/p&gt;
+                  &lt;p&gt;You have received a gift ticket &lt;/strong&gt;.&lt;/p&gt;
+                  &lt;p&gt;Please accept or reject the gift within the app to proceed.&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div class="buttons"&gt;
+                  &lt;a href="https://ticketshappy.com/my-tickets#ReceivedGifts" class="button"&gt;Visit our Website&lt;/a&gt;
+              &lt;/div&gt;
+              &lt;div class="footer"&gt;
+                  &lt;p&gt;Best regards,&lt;br&gt;Happy Tickets&lt;/p&gt;
+                  &lt;p&gt;© 2024 Happy Tickets. All rights reserved.&lt;/p&gt;
+              &lt;/div&gt;
+          &lt;/div&gt;
+      &lt;/body&gt;
+      &lt;/html&gt;
+      </value>
+  </data>
+  <data name="GiftTicketReceivedMessage" xml:space="preserve">
+    <value>Dear {0},</value>
+  </data>
+  <data name="GiftTicketReceivedSubject" xml:space="preserve">
+    <value>You have received a new gift ticket!</value>
+  </data>
+  <data name="GiftTicketRejectedFailed" xml:space="preserve">
+    <value>Sorry, there was an error rejecting the gift ticket</value>
+  </data>
+  <data name="GiftTicketRejectedMesg" xml:space="preserve">
+    <value>As you Like , Gift has been rejected</value>
+  </data>
+  <data name="GiftTickets" xml:space="preserve">
+    <value>Gift Tickets</value>
+  </data>
+  <data name="Grade1" xml:space="preserve">
+    <value>Grade 1</value>
+  </data>
+  <data name="Grade2" xml:space="preserve">
+    <value>Grade 2</value>
+  </data>
+  <data name="Grade3" xml:space="preserve">
+    <value>Grade 3</value>
+  </data>
+  <data name="GreaterThanZero" xml:space="preserve">
+    <value>{PropertyName} must be greater than zero</value>
+  </data>
+  <data name="Guest" xml:space="preserve">
+    <value>Guest</value>
+  </data>
+  <data name="H" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hi, </value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="HomeAboutUs1" xml:space="preserve">
+    <value>In the heart of the bustling world of sports and entertainment, our company stands as a beacon for fans seeking unforgettable experiences. We are not merely ticket sellers; we are custodians of excitement, catalysts of adventure, and architects of memory-making moments.
+
+Our mission is to bring fans closer to the action, creating opportunities for them to feel the adrenaline of a live game, the thrill of a concert, or the magic of a theatrical performance. We understand that every ticket represents a cherished memory waiting to be made, and we strive to deliver more than just access—we deliver the experience of a lifetime.</value>
+  </data>
+  <data name="HomeAboutUs2" xml:space="preserve">
+    <value> With a passion for excellence and a commitment to customer satisfaction, we go beyond the ordinary, offering exclusive access, personalized service, and tailored packages. We believe in the power of shared moments, where every cheer, every beat, and every scene is part of a story that resonates long after the final curtain falls.
+ Join us as we continue to redefine the way fans experience their favorite events. Together, let’s create memories that will be talked about for years to come.</value>
+  </data>
+  <data name="HomeTeam" xml:space="preserve">
+    <value>Home Team</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="ImportFromExcel" xml:space="preserve">
+    <value>Import from Excel</value>
+  </data>
+  <data name="ImportFromUsers" xml:space="preserve">
+    <value>Import From Users</value>
+  </data>
+  <data name="Instagram" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="InsufficientTicketsQuantity" xml:space="preserve">
+    <value>The quantity of tickets you want to send exceeds the total available tickets.</value>
+  </data>
+  <data name="Internal_Gate" xml:space="preserve">
+    <value>Internal Gate</value>
+  </data>
+  <data name="Invalid_UserName_Password" xml:space="preserve">
+    <value>Username or password is incorrect.</value>
+  </data>
+  <data name="InvalidConnString" xml:space="preserve">
+    <value>Connection string is invalid.</value>
+  </data>
+  <data name="InvalidDescription" xml:space="preserve">
+    <value>Invalid Description (no special characters)</value>
+  </data>
+  <data name="InvalidEnumValue" xml:space="preserve">
+    <value>{PropertyName} not exist in Enum List</value>
+  </data>
+  <data name="InvalidLocation" xml:space="preserve">
+    <value>Invalid Location(no special characters)</value>
+  </data>
+  <data name="InvalidLocationUrl" xml:space="preserve">
+    <value>Invalid Location Url(no special characters)</value>
+  </data>
+  <data name="InvalidName" xml:space="preserve">
+    <value>Invalid Name (No special characters)</value>
+  </data>
+  <data name="InvalidPaymentStatus" xml:space="preserve">
+    <value>Invalid Payment Status</value>
+  </data>
+  <data name="InvalidQRCode" xml:space="preserve">
+    <value>Invalid QR Code</value>
+  </data>
+  <data name="Invitation" xml:space="preserve">
+    <value>Invitation</value>
+  </data>
+  <data name="Invoice_Email_Style" xml:space="preserve">
+    <value>@media screen and (max-width: 750px) {
+	table {
+		border: 0;
+	}
+
+	table caption {
+		font-size: 1.3em;
+	}
+
+	table thead {
+		border: none;
+		clip: rect(0 0 0 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+
+	table tr {
+		border-bottom: 3px solid #ddd;
+		display: block;
+		margin-bottom: .625em;
+	}
+
+	table td {
+		border-bottom: 1px solid #ddd;
+		display: block;
+		font-size: .8em;
+		text-align: right;
+	}
+
+	table td::before {
+		content: attr(data-label);
+		float: left;
+		font-weight: bold;
+		text-transform: uppercase;
+	}
+
+	table td:last-child {
+		border-bottom: 0;
+	}
+}</value>
+  </data>
+  <data name="Invoice_Email_Table_Body_Template" xml:space="preserve">
+    <value>&lt;tr&gt;
+  &lt;td data-label="Home Team"&gt;{HomeTeam}&lt;/td&gt;
+  &lt;td data-label="Away Team"&gt;{AwayTeam}&lt;/td&gt;
+  &lt;td data-label="Your Team"&gt;{YourTeam}&lt;/td&gt;
+  &lt;td data-label="Stadium"&gt;{Stadium}&lt;/td&gt;
+  &lt;td data-label="Date"&gt;{Date}&lt;/td&gt;
+  &lt;td data-label="Class"&gt;{Class}&lt;/td&gt;
+  &lt;td data-label="Ticket Number"&gt;{TicketNumber}&lt;/td&gt;
+  &lt;td data-label="Ticket QR-Code"&gt;{QR}&lt;/td&gt;
+&lt;/tr&gt;</value>
+  </data>
+  <data name="Invoice_Email_Template" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+    &lt;head&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+        &lt;style&gt;
+            table {
+                border: 1px solid #ccc;
+                border-collapse: collapse;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            table caption {
+                font-size: 1.5em;
+                margin: .5em 0 .75em;
+            }
+
+            table tr {
+                background-color: #f8f8f8;
+                border: 1px solid #ddd;
+                padding: .35em;
+            }
+
+            table th,
+            table td {
+                padding: .625em;
+                text-align: center;
+            }
+
+            table th {
+                font-size: .85em;
+                letter-spacing: .1em;
+                text-transform: uppercase;
+            }
+			
+			{style}
+
+            body {
+                font-family: 'IBM Plex Sans', sans-serif;
+                line-height: 1.25;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;table&gt;
+            &lt;caption&gt;Happy Invoice&lt;/caption&gt;
+            &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th scope="col"&gt;Home Team&lt;/th&gt;
+                    &lt;th scope="col"&gt;Away Team&lt;/th&gt;
+                    &lt;th scope="col"&gt;Your Team&lt;/th&gt;
+                    &lt;th scope="col"&gt;Stadium&lt;/th&gt;
+                    &lt;th scope="col"&gt;Date&lt;/th&gt;
+                    &lt;th scope="col"&gt;Class&lt;/th&gt;
+                    &lt;th scope="col"&gt;Ticket Number&lt;/th&gt;
+                    &lt;th scope="col"&gt;Ticket QR-Code&lt;/th&gt;
+                &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+                {body}
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</value>
+  </data>
+  <data name="Invoice_Title" xml:space="preserve">
+    <value>Happy Invoice</value>
+  </data>
+  <data name="Is_Happy_Sponsor" xml:space="preserve">
+    <value>Is Sponsor For Happy?</value>
+  </data>
+  <data name="IsOver" xml:space="preserve">
+    <value>Is Over?</value>
+  </data>
+  <data name="Issuer" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="Item_Removed" xml:space="preserve">
+    <value>Item has been removed successfully</value>
+  </data>
+  <data name="Item_Removed_Fail" xml:space="preserve">
+    <value>Failed to remove the item</value>
+  </data>
+  <data name="KSA_Riyadh" xml:space="preserve">
+    <value>KSA - Riyadh</value>
+  </data>
+  <data name="LargestNetwork" xml:space="preserve">
+    <value>The largest ticket booking network in Saudi Arabia.</value>
+  </data>
+  <data name="LetTheNumberTalk" xml:space="preserve">
+    <value>Let The Number Talk About Us </value>
+  </data>
+  <data name="LicenseText" xml:space="preserve">
+    <value>Ticket Purchase License Agreement
+
+Last Updated: [Date]
+
+1. Introduction
+By purchasing a ticket through [Website Name] (the ""Website""), you agree to be bound by the terms and conditions outlined in this License Agreement (""Agreement""). This Agreement applies to all ticket purchases made through the Website.
+
+2. License to Use Ticket
+Upon purchasing a ticket, you are granted a limited, non-transferable, revocable license to attend the event for which the ticket was purchased (the ""Event""). This license does not grant any ownership rights in the ticket or the Event.
+
+3. Restrictions
+You agree not to:
+- Sell, resell, or transfer the ticket to any third party without express permission from [Website Name] or the event organizer.
+- Use the ticket for any unauthorized commercial purpose, including but not limited to promotional giveaways or sweepstakes.
+- Alter or reproduce the ticket in any form.
+
+4. Refunds and Cancellations
+All ticket sales are final. No refunds, exchanges, or cancellations are permitted, except as required by law or as otherwise stated in the Event's terms and conditions.
+
+5. Event Changes
+[Website Name] and the event organizers reserve the right to make changes to the Event, including but not limited to date, time, and venue, without notice. In the event of a cancellation or significant change, [Website Name] may, at its discretion, offer a refund or exchange.
+
+6. Limitation of Liability
+To the fullest extent permitted by law, [Website Name] shall not be liable for any direct, indirect, incidental, or consequential damages arising out of or in connection with your purchase or use of a ticket, including but not limited to personal injury, property damage, or lost profits.
+
+7. Governing Law
+This Agreement shall be governed by and construed in accordance with the laws of [State/Country], without regard to its conflict of law principles.
+
+8. Amendments
+[Website Name] reserves the right to modify or amend this Agreement at any time. Any changes will be effective immediately upon posting on the Website. Your continued use of the Website following the posting of changes constitutes your acceptance of such changes.
+
+9. Contact Information
+For any questions or concerns regarding this Agreement, please contact [Customer Service Email] or [Customer Service Phone Number].</value>
+  </data>
+  <data name="LightMode" xml:space="preserve">
+    <value>Light Mode</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Please wait loading...</value>
+  </data>
+  <data name="LoadRoleFailed" xml:space="preserve">
+    <value>Load Role Failed!</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="LocationUrl" xml:space="preserve">
+    <value>LocationUrl</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Login_Fail" xml:space="preserve">
+    <value>Login attempt failed</value>
+  </data>
+  <data name="Login_Redirect" xml:space="preserve">
+    <value>Redirecting to the login page...</value>
+  </data>
+  <data name="Login_Success" xml:space="preserve">
+    <value>You've logged in successfully!</value>
+  </data>
+  <data name="Logo" xml:space="preserve">
+    <value>Logo</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="M" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="ManageTenants" xml:space="preserve">
+    <value>Tenants Managment</value>
+  </data>
+  <data name="Match" xml:space="preserve">
+    <value>Match</value>
+  </data>
+  <data name="Match_Create" xml:space="preserve">
+    <value>Create Match</value>
+  </data>
+  <data name="Match_Create_Fail" xml:space="preserve">
+    <value>Failed to create the match</value>
+  </data>
+  <data name="Match_Create_Success" xml:space="preserve">
+    <value>Match has been created successfully</value>
+  </data>
+  <data name="Match_date_exeeded" xml:space="preserve">
+    <value>The match date cannot be set to a past date.</value>
+  </data>
+  <data name="Match_DateTime" xml:space="preserve">
+    <value>Match's Date and Time</value>
+  </data>
+  <data name="Match_Delete" xml:space="preserve">
+    <value>Delete Match</value>
+  </data>
+  <data name="Match_Deleted_failed" xml:space="preserve">
+    <value>failed to delete match</value>
+  </data>
+  <data name="Match_deleted_failed_has_tickets" xml:space="preserve">
+    <value>Match cannot be deleted because it has available tickets.</value>
+  </data>
+  <data name="Match_Deleted_successfully" xml:space="preserve">
+    <value>Match deleted successfully</value>
+  </data>
+  <data name="Match_Load_Fail" xml:space="preserve">
+    <value>Failed to load available matches</value>
+  </data>
+  <data name="Match_Ticket" xml:space="preserve">
+    <value>Match Ticket</value>
+  </data>
+  <data name="Match_Ticket_Prices" xml:space="preserve">
+    <value>Match Ticket Prices</value>
+  </data>
+  <data name="Match_Tickets" xml:space="preserve">
+    <value>Match Tickets</value>
+  </data>
+  <data name="Match_Update" xml:space="preserve">
+    <value>Update Match</value>
+  </data>
+  <data name="Match_Update_Fail" xml:space="preserve">
+    <value>Failed to update the match</value>
+  </data>
+  <data name="Match_Update_Success" xml:space="preserve">
+    <value>Match has been updated successfully</value>
+  </data>
+  <data name="Match_View" xml:space="preserve">
+    <value>View Match</value>
+  </data>
+  <data name="MatchDate" xml:space="preserve">
+    <value>Match Date</value>
+  </data>
+  <data name="MatchDetails" xml:space="preserve">
+    <value>Match Details</value>
+  </data>
+  <data name="MatchDetails_Load_Fail" xml:space="preserve">
+    <value>Failed to load match details</value>
+  </data>
+  <data name="Matches" xml:space="preserve">
+    <value>Matches</value>
+  </data>
+  <data name="Matches_Available" xml:space="preserve">
+    <value>Available Matches</value>
+  </data>
+  <data name="Matches_Load_Fail" xml:space="preserve">
+    <value>Failed to load the matchs</value>
+  </data>
+  <data name="Matches_NotAvailable" xml:space="preserve">
+    <value>No Available Matches</value>
+  </data>
+  <data name="Matches_Settings" xml:space="preserve">
+    <value>Matches Settings</value>
+  </data>
+  <data name="Matches_View" xml:space="preserve">
+    <value>View Matches</value>
+  </data>
+  <data name="Max_size_10MB" xml:space="preserve">
+    <value>Max size 10MB</value>
+  </data>
+  <data name="Message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="Message_Validation" xml:space="preserve">
+    <value>Message content is empty!</value>
+  </data>
+  <data name="Minutes" xml:space="preserve">
+    <value>Minutes</value>
+  </data>
+  <data name="Mission" xml:space="preserve">
+    <value> OUR MISSION</value>
+  </data>
+  <data name="ModifiedBy" xml:space="preserve">
+    <value>Modified By</value>
+  </data>
+  <data name="MotivationalBody" xml:space="preserve">
+    <value>You have received a gift ticket from {0} for Ticket ID: {1}.\nIt seems you don't have an account with us yet. Register today to accept your gift ticket and enjoy our services!\n\nBest regards,\nTicketing System</value>
+  </data>
+  <data name="MotivationalMessage" xml:space="preserve">
+    <value>Dear Friend,</value>
+    <comment>You have received a gift ticket from {0} for Ticket ID: {1}.\nIt seems you don't have an account with us yet. Register today to accept your gift ticket and enjoy our services!\n\nBest regards,\nTicketing System</comment>
+  </data>
+  <data name="MotivationalSubject" xml:space="preserve">
+    <value>Join us and receive a gift ticket!</value>
+  </data>
+  <data name="MyOrders" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="MyTickets" xml:space="preserve">
+    <value>My Tickets</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Name_Validation" xml:space="preserve">
+    <value>Name required!</value>
+  </data>
+  <data name="NewChampion" xml:space="preserve">
+    <value>New Championship</value>
+  </data>
+  <data name="NewExpiryDate" xml:space="preserve">
+    <value>New Expiry Date</value>
+  </data>
+  <data name="NewMatch" xml:space="preserve">
+    <value>New Match</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="NewSponsor" xml:space="preserve">
+    <value>New Sponsor</value>
+  </data>
+  <data name="NewStadium" xml:space="preserve">
+    <value>New Stadium</value>
+  </data>
+  <data name="NewTeam" xml:space="preserve">
+    <value>New Team</value>
+  </data>
+  <data name="NewTicket" xml:space="preserve">
+    <value>New Ticket</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="No_Tickets_To_Display" xml:space="preserve">
+    <value>No Tickets To Display</value>
+  </data>
+  <data name="NoChampionshipFound" xml:space="preserve">
+    <value>No Championship Found</value>
+  </data>
+  <data name="NoRecordsFound" xml:space="preserve">
+    <value>No Records Found!</value>
+  </data>
+  <data name="Not_Found" xml:space="preserve">
+    <value>Oops! We couldn’t find any data for this page. It may not be available or may have been removed. Please check back later or try a different section of the site!</value>
+  </data>
+  <data name="NotAuthorized" xml:space="preserve">
+    <value>Not Authorized</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="NotFound" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="NotFound_Message" xml:space="preserve">
+    <value>Could not find the requested {type}.</value>
+  </data>
+  <data name="NotFoundInDB_Message" xml:space="preserve">
+    <value>Could not find any {type} stored in the database.</value>
+  </data>
+  <data name="Nothing_Selected" xml:space="preserve">
+    <value>Nothing selected</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="NotifySenderGiftAccepted" xml:space="preserve">
+    <value>Your gift ticket to {0} has been accepted. Thank you for sharing!</value>
+  </data>
+  <data name="NotifySenderGiftRejected" xml:space="preserve">
+    <value>Your gift ticket to {0} has been rejected. You can try sending another gift!</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>User not logged in</value>
+  </data>
+  <data name="NumberOfTickets" xml:space="preserve">
+    <value>Number Of Soled Tickets.</value>
+  </data>
+  <data name="Ongoing" xml:space="preserve">
+    <value>Ongoing</value>
+  </data>
+  <data name="OnHold" xml:space="preserve">
+    <value>OnHold</value>
+  </data>
+  <data name="Order_Create" xml:space="preserve">
+    <value>Create Order</value>
+  </data>
+  <data name="Order_Delete" xml:space="preserve">
+    <value>Delete Order</value>
+  </data>
+  <data name="Order_Update" xml:space="preserve">
+    <value>Update Order</value>
+  </data>
+  <data name="Order_View" xml:space="preserve">
+    <value>View Order</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Orders_View" xml:space="preserve">
+    <value>View Orders</value>
+  </data>
+  <data name="OurMission" xml:space="preserve">
+    <value>Our Mission</value>
+  </data>
+  <data name="OurMissionText" xml:space="preserve">
+    <value>We believe that life's greatest pleasures are found in the roar of a crowd, the suspense of a final score, and the shared joy of a live performance. Our mission is to make these moments accessible to all, providing the &lt;strong&gt;best prices&lt;/strong&gt; and the &lt;strong&gt;most straightforward way&lt;/strong&gt; to purchase tickets.</value>
+  </data>
+  <data name="Over" xml:space="preserve">
+    <value>Over</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Password_Format_Validation" xml:space="preserve">
+    <value>Invalid password! ensure that it contains at least 8 characters, at least one digit, at least one capital and one small letters, and at least one special character</value>
+  </data>
+  <data name="Password_Reset" xml:space="preserve">
+    <value>Reset Password</value>
+  </data>
+  <data name="Password_Reset_Fail" xml:space="preserve">
+    <value>Ops, could not reset your password.</value>
+  </data>
+  <data name="Password_Reset_Message" xml:space="preserve">
+    <value>Please reset your password by clicking here: </value>
+  </data>
+  <data name="Password_Reset_Request_Fail" xml:space="preserve">
+    <value>Password reset request failed</value>
+  </data>
+  <data name="Password_Reset_Succeed" xml:space="preserve">
+    <value>Password Reset Successfully</value>
+  </data>
+  <data name="Password_Reset_Success" xml:space="preserve">
+    <value>Password Reset Successfully</value>
+  </data>
+  <data name="Password_Validation" xml:space="preserve">
+    <value>Password field is required!</value>
+  </data>
+  <data name="Passwords_NotMatching" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="PaymentStatus" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="PaymentStatusString" xml:space="preserve">
+    <value>Payment Status</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissions</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="PhoneNumber_Unique_Validation" xml:space="preserve">
+    <value>The phone number you provided is already in use. Please enter a different phone number</value>
+  </data>
+  <data name="PhoneNumber_Validation" xml:space="preserve">
+    <value>Phone Number field is required!</value>
+  </data>
+  <data name="PhoneNumberRegexError" xml:space="preserve">
+    <value>Invalid phone number! choose the right country code then enter the REST of the number</value>
+  </data>
+  <data name="Photo" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="Pleaseassignasponsortothechampionshipbeforecreating" xml:space="preserve">
+    <value>Please assign a sponsor to the championship before creating</value>
+  </data>
+  <data name="PositiveTotalAmount" xml:space="preserve">
+    <value>TotalAmount must be a positive value</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="PricePrecision" xml:space="preserve">
+    <value>Price Cannot Be Negative</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="ProfileSettings" xml:space="preserve">
+    <value>Profile Settings</value>
+  </data>
+  <data name="PurchaseOrder_Invalid" xml:space="preserve">
+    <value>Invalid Purchase Order</value>
+  </data>
+  <data name="PurchaseOrder_Invalid_Message" xml:space="preserve">
+    <value>You have reached the maximum ticket limit allowed per customer for this match.</value>
+  </data>
+  <data name="QR_Code_Alt" xml:space="preserve">
+    <value>QR Code </value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="QuickLinks" xml:space="preserve">
+    <value>Quick Links</value>
+  </data>
+  <data name="Rates" xml:space="preserve">
+    <value>Our Success Rates</value>
+  </data>
+  <data name="ReceivedGifts" xml:space="preserve">
+    <value>Received Gifts</value>
+  </data>
+  <data name="RecipientEmail" xml:space="preserve">
+    <value>Recipient's Email</value>
+  </data>
+  <data name="Reciver" xml:space="preserve">
+    <value>Reciver</value>
+  </data>
+  <data name="Refunded" xml:space="preserve">
+    <value>Refunded</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="Registration_Fail" xml:space="preserve">
+    <value>Failed to register</value>
+  </data>
+  <data name="Registration_Success" xml:space="preserve">
+    <value>Registration has been successful</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="RejectGift" xml:space="preserve">
+    <value>Reject Gift</value>
+  </data>
+  <data name="RemoveRoleFailed" xml:space="preserve">
+    <value>Failed to remove role</value>
+  </data>
+  <data name="RemoveUsersFromRoles" xml:space="preserve">
+    <value>Remove users from roles</value>
+  </data>
+  <data name="RepeatedPassword" xml:space="preserve">
+    <value>New password cannot be equal to old one</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="RequiredFields" xml:space="preserve">
+    <value>Please fill in all required fields</value>
+  </data>
+  <data name="ReSendEmail_Button" xml:space="preserve">
+    <value>Resend an activation email</value>
+  </data>
+  <data name="ResendEmailAgain" xml:space="preserve">
+    <value>Resend Email Again?</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="ResetPasswordEmailSentMessage" xml:space="preserve">
+    <value>An email has been sent to you with a link to reset your password.</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="Role_Create" xml:space="preserve">
+    <value>Create Role</value>
+  </data>
+  <data name="Role_Delete" xml:space="preserve">
+    <value>Delete Role</value>
+  </data>
+  <data name="Role_Update" xml:space="preserve">
+    <value>Update Role</value>
+  </data>
+  <data name="Role_View" xml:space="preserve">
+    <value>View Role</value>
+  </data>
+  <data name="RoleAlreadyExists" xml:space="preserve">
+    <value>Role {0} already exists</value>
+  </data>
+  <data name="RoleAssignedSuccessfully" xml:space="preserve">
+    <value>Role assigned successfully</value>
+  </data>
+  <data name="RoleAssignedToUsers" xml:space="preserve">
+    <value>Role is currently assigned to users</value>
+  </data>
+  <data name="RoleCreatedSuccessfully" xml:space="preserve">
+    <value>Role '{0}' created successfully!</value>
+  </data>
+  <data name="RoleDeletedSuccessfully" xml:space="preserve">
+    <value>Role Deleted Successfully!</value>
+  </data>
+  <data name="RoleDeletionFailed" xml:space="preserve">
+    <value>Role deletion failed</value>
+  </data>
+  <data name="RoleDesc" xml:space="preserve">
+    <value>Role Description</value>
+  </data>
+  <data name="RoleEditedSuccessfully" xml:space="preserve">
+    <value>Role Edited Successfully!</value>
+  </data>
+  <data name="RoleName" xml:space="preserve">
+    <value>Role Name</value>
+  </data>
+  <data name="RoleRemovedSuccessfully" xml:space="preserve">
+    <value>Role removed successfully</value>
+  </data>
+  <data name="Roles_Load_Fail" xml:space="preserve">
+    <value>Failed to load roles</value>
+  </data>
+  <data name="Roles_NotAvailable" xml:space="preserve">
+    <value>There are no available roles</value>
+  </data>
+  <data name="Roles_View" xml:space="preserve">
+    <value>View Roles</value>
+  </data>
+  <data name="RolesAssignedSuccessfully" xml:space="preserve">
+    <value>Roles Assigned Successfully</value>
+  </data>
+  <data name="S" xml:space="preserve">
+    <value>s</value>
+  </data>
+  <data name="Sar" xml:space="preserve">
+    <value>SAR</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveChanges" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="Scanfromsharescreen" xml:space="preserve">
+    <value>Scan from share screen</value>
+  </data>
+  <data name="ScanQr" xml:space="preserve">
+    <value>Scan QR</value>
+  </data>
+  <data name="Searchby" xml:space="preserve">
+    <value>Search </value>
+  </data>
+  <data name="SearchByEmail" xml:space="preserve">
+    <value>Search by email</value>
+  </data>
+  <data name="SearchUsers" xml:space="preserve">
+    <value>Search for Users ...</value>
+  </data>
+  <data name="SeatNumber" xml:space="preserve">
+    <value>Seat Number</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>Seconds</value>
+  </data>
+  <data name="Selected" xml:space="preserve">
+    <value>Selected</value>
+  </data>
+  <data name="SelectMultiRoles" xml:space="preserve">
+    <value>Select Multi Roles</value>
+  </data>
+  <data name="SelectRole" xml:space="preserve">
+    <value>Select Role</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="SendEmail_Button" xml:space="preserve">
+    <value>Send an activation email</value>
+  </data>
+  <data name="Sender" xml:space="preserve">
+    <value>Sender</value>
+  </data>
+  <data name="SenderEmail" xml:space="preserve">
+    <value>Sender Email</value>
+  </data>
+  <data name="SendGift" xml:space="preserve">
+    <value>Send as a gift</value>
+  </data>
+  <data name="SendTickets" xml:space="preserve">
+    <value>Send Tickets</value>
+  </data>
+  <data name="SentGifts" xml:space="preserve">
+    <value>Sent Gifts</value>
+  </data>
+  <data name="Shared" xml:space="preserve">
+    <value>Shared</value>
+  </data>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Show All</value>
+  </data>
+  <data name="slide1" xml:space="preserve">
+    <value>Get Closer to the Action</value>
+  </data>
+  <data name="slide1Text1" xml:space="preserve">
+    <value>Experience the thrill of live football like never before.</value>
+  </data>
+  <data name="slide2" xml:space="preserve">
+    <value>Secure Your Spot, Join the Roar!</value>
+  </data>
+  <data name="slide2Text1" xml:space="preserve">
+    <value>Don’t miss a moment of the match. </value>
+  </data>
+  <data name="slide2Text2" xml:space="preserve">
+    <value>Reserve your seat today and be part of the ultimate fan experience.</value>
+  </data>
+  <data name="slide3" xml:space="preserve">
+    <value>Score Big with Exclusive Offers!</value>
+  </data>
+  <data name="slide3Text1" xml:space="preserve">
+    <value>Enjoy unbeatable prices and exclusive packages for football's biggest games. </value>
+  </data>
+  <data name="slide3Text2" xml:space="preserve">
+    <value>Your perfect matchday awaits.</value>
+  </data>
+  <data name="sliderText2" xml:space="preserve">
+    <value> Book your tickets now and feel the excitement firsthand.</value>
+  </data>
+  <data name="Sponsor_Create" xml:space="preserve">
+    <value>Create Sponsor</value>
+  </data>
+  <data name="Sponsor_Created" xml:space="preserve">
+    <value>Sponsor has been created successfully</value>
+  </data>
+  <data name="Sponsor_Delete" xml:space="preserve">
+    <value>Delete Sponsor</value>
+  </data>
+  <data name="Sponsor_Deleted_Successfully" xml:space="preserve">
+    <value>Sponsor has been deleted successfully</value>
+  </data>
+  <data name="Sponsor_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete sponsor</value>
+  </data>
+  <data name="Sponsor_Update" xml:space="preserve">
+    <value>Update Sponsor</value>
+  </data>
+  <data name="Sponsor_Updated" xml:space="preserve">
+    <value>Sponsor has been updated successfully</value>
+  </data>
+  <data name="Sponsor_View" xml:space="preserve">
+    <value>View Sponsor</value>
+  </data>
+  <data name="SponsorLogo" xml:space="preserve">
+    <value>Sponsor Logo</value>
+  </data>
+  <data name="SponsorName" xml:space="preserve">
+    <value>Sponsor Name</value>
+  </data>
+  <data name="Sponsors" xml:space="preserve">
+    <value>Sponsors</value>
+  </data>
+  <data name="Sponsors_All" xml:space="preserve">
+    <value>All Sponsors</value>
+  </data>
+  <data name="Sponsors_View" xml:space="preserve">
+    <value>View Sponsors</value>
+  </data>
+  <data name="Stadia" xml:space="preserve">
+    <value>Stadia</value>
+  </data>
+  <data name="Stadia_Load_Fail" xml:space="preserve">
+    <value>Failed to load the stadia</value>
+  </data>
+  <data name="Stadium" xml:space="preserve">
+    <value>Stadium</value>
+  </data>
+  <data name="Stadium_Add" xml:space="preserve">
+    <value>Add Stadium</value>
+  </data>
+  <data name="Stadium_Create" xml:space="preserve">
+    <value>Create Stadium</value>
+  </data>
+  <data name="Stadium_Created" xml:space="preserve">
+    <value>Stadium has been created successfully</value>
+  </data>
+  <data name="Stadium_Delete" xml:space="preserve">
+    <value>Delete Stadium</value>
+    <comment>حذف استاد</comment>
+  </data>
+  <data name="Stadium_Deleted_Successfully" xml:space="preserve">
+    <value>Stadium has been deleted successfully</value>
+  </data>
+  <data name="Stadium_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete stadium</value>
+  </data>
+  <data name="Stadium_Details" xml:space="preserve">
+    <value>Stadium Details</value>
+  </data>
+  <data name="Stadium_Update" xml:space="preserve">
+    <value>Update Stadium</value>
+  </data>
+  <data name="Stadium_Updated" xml:space="preserve">
+    <value>Stadium has been updated successfully</value>
+  </data>
+  <data name="Stadium_View" xml:space="preserve">
+    <value>View Stadium</value>
+  </data>
+  <data name="Stadium_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete stadium with assigned match</value>
+  </data>
+  <data name="StadiumLogo" xml:space="preserve">
+    <value>Stadium Logo</value>
+  </data>
+  <data name="StadiumName" xml:space="preserve">
+    <value>Stadium Name</value>
+  </data>
+  <data name="Stadiums" xml:space="preserve">
+    <value>Stadiums</value>
+  </data>
+  <data name="Stadiums_All" xml:space="preserve">
+    <value>All Stadiums</value>
+  </data>
+  <data name="Stadiums_View" xml:space="preserve">
+    <value>View Stadiums</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="SubscriptionExpDate" xml:space="preserve">
+    <value>Subscription Expiry Date</value>
+  </data>
+  <data name="SystemPreference" xml:space="preserve">
+    <value>System Preference</value>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Team</value>
+  </data>
+  <data name="Team_Add_Success" xml:space="preserve">
+    <value>Team was added successfully</value>
+  </data>
+  <data name="Team_Create" xml:space="preserve">
+    <value>Create Team</value>
+  </data>
+  <data name="Team_Created" xml:space="preserve">
+    <value>Team has been created successfully</value>
+  </data>
+  <data name="Team_Delete" xml:space="preserve">
+    <value>Delete Team</value>
+  </data>
+  <data name="Team_Deleted_Successfully" xml:space="preserve">
+    <value>Team has been deleted successfully</value>
+  </data>
+  <data name="Team_Deletion_Failure" xml:space="preserve">
+    <value>Failed to delete the team</value>
+  </data>
+  <data name="Team_Details" xml:space="preserve">
+    <value>Team Details</value>
+  </data>
+  <data name="Team_Load_Failure" xml:space="preserve">
+    <value>Failed to load team data</value>
+  </data>
+  <data name="Team_Select" xml:space="preserve">
+    <value>Select Team</value>
+  </data>
+  <data name="Team_Update" xml:space="preserve">
+    <value>Team Update</value>
+  </data>
+  <data name="Team_Updated" xml:space="preserve">
+    <value>Team has been updated successfully</value>
+  </data>
+  <data name="Team_View" xml:space="preserve">
+    <value>View Team</value>
+  </data>
+  <data name="Team_With_Match_Deletion_Failure" xml:space="preserve">
+    <value>Unable to delete the team because there is an existing match.</value>
+  </data>
+  <data name="TeamDescription" xml:space="preserve">
+    <value>Team Description</value>
+  </data>
+  <data name="TeamLogo" xml:space="preserve">
+    <value>Team Logo</value>
+  </data>
+  <data name="TeamName" xml:space="preserve">
+    <value>Team Name</value>
+  </data>
+  <data name="Teams" xml:space="preserve">
+    <value>Teams</value>
+  </data>
+  <data name="Teams_All" xml:space="preserve">
+    <value>All Teams</value>
+  </data>
+  <data name="Teams_Load_Fail" xml:space="preserve">
+    <value>Failed to load the teams</value>
+  </data>
+  <data name="Teams_View" xml:space="preserve">
+    <value>View Teams</value>
+  </data>
+  <data name="TenantActivated" xml:space="preserve">
+    <value>Tenant Activated</value>
+  </data>
+  <data name="TenantAlreadyActivated" xml:space="preserve">
+    <value>Tenant Already Activated</value>
+  </data>
+  <data name="TenantAlreadyDeactivated" xml:space="preserve">
+    <value>Tenant Already Deactivated</value>
+  </data>
+  <data name="TenantAlreadyExisted" xml:space="preserve">
+    <value>Tenant Already Existed</value>
+  </data>
+  <data name="TenantCreatedSuccessfully" xml:space="preserve">
+    <value>Tenant Created Successfully</value>
+  </data>
+  <data name="TenantCreationFailed" xml:space="preserve">
+    <value>Tenant Creation Failed</value>
+  </data>
+  <data name="TenantDeactivated" xml:space="preserve">
+    <value>Tenant Dectivated</value>
+  </data>
+  <data name="TenantId" xml:space="preserve">
+    <value>Tenant Id</value>
+  </data>
+  <data name="Tenants" xml:space="preserve">
+    <value>Tenants</value>
+  </data>
+  <data name="TenantSubscriptionUpdated" xml:space="preserve">
+    <value>Tenant {0}'s Subscription Upgraded. Now Valid till {1}.</value>
+  </data>
+  <data name="TenantSubscriptionUpdateFailed" xml:space="preserve">
+    <value>Failed to Update Tenant Subscription</value>
+  </data>
+  <data name="TermsAndConditions" xml:space="preserve">
+    <value>Terms and Conditions</value>
+  </data>
+  <data name="TermsAndConditionsCheckBoxValidation" xml:space="preserve">
+    <value>You must agree with the terms and conditions to register successfully!</value>
+  </data>
+  <data name="TermsAndConditionsPartialLabel" xml:space="preserve">
+    <value>By clicking register, you agree to our</value>
+  </data>
+  <data name="TheAction" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="TheActions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="TheAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="TheDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="TheMatch" xml:space="preserve">
+    <value>Match</value>
+  </data>
+  <data name="TheMatches" xml:space="preserve">
+    <value>Matches</value>
+  </data>
+  <data name="TheRole" xml:space="preserve">
+    <value>The Role</value>
+  </data>
+  <data name="TheRoles" xml:space="preserve">
+    <value>The Roles</value>
+  </data>
+  <data name="TheTicket" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="TheTickets" xml:space="preserve">
+    <value>Tickets</value>
+  </data>
+  <data name="TheTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Ticket" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="Ticket_AddedToCart_Fail" xml:space="preserve">
+    <value>Failed to add the ticket to your cart</value>
+  </data>
+  <data name="Ticket_AddedToCart_Success" xml:space="preserve">
+    <value>Ticket was added to your cart successfully</value>
+  </data>
+  <data name="Ticket_Buy" xml:space="preserve">
+    <value>Buy a Ticket</value>
+  </data>
+  <data name="Ticket_Create" xml:space="preserve">
+    <value>Create Ticket</value>
+  </data>
+  <data name="Ticket_Delete" xml:space="preserve">
+    <value>Delete Ticket</value>
+  </data>
+  <data name="Ticket_NotFound" xml:space="preserve">
+    <value>Couldn't find the ticket</value>
+  </data>
+  <data name="Ticket_Scanned_Error" xml:space="preserve">
+    <value>Ticket is already scanned</value>
+  </data>
+  <data name="Ticket_Scanned_Failed" xml:space="preserve">
+    <value>Failed to scan the ticket</value>
+  </data>
+  <data name="Ticket_Scanned_Success" xml:space="preserve">
+    <value>Ticket has been scanned successfully</value>
+  </data>
+  <data name="Ticket_Scanned_Success1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ticket_Status_Invalid" xml:space="preserve">
+    <value>Invalid Operation</value>
+  </data>
+  <data name="Ticket_Status_Invalid1" xml:space="preserve">
+    <value>Invalid Operation</value>
+  </data>
+  <data name="Ticket_Update" xml:space="preserve">
+    <value>Update Ticket</value>
+  </data>
+  <data name="Ticket_View" xml:space="preserve">
+    <value>View Ticket</value>
+  </data>
+  <data name="TicketDetails" xml:space="preserve">
+    <value>Ticket Details</value>
+  </data>
+  <data name="TicketGiftFailure" xml:space="preserve">
+    <value>Ticket Gift Failure</value>
+  </data>
+  <data name="TicketGiftSuccess" xml:space="preserve">
+    <value>Ticket Gift Success</value>
+  </data>
+  <data name="TicketPerCustomer" xml:space="preserve">
+    <value>Max Ticket per Customer</value>
+  </data>
+  <data name="TicketPrices" xml:space="preserve">
+    <value>Ticket Prices</value>
+  </data>
+  <data name="Tickets" xml:space="preserve">
+    <value>Tickets</value>
+  </data>
+  <data name="Tickets_Available" xml:space="preserve">
+    <value>Available Tickets</value>
+  </data>
+  <data name="Tickets_Buy" xml:space="preserve">
+    <value>Buy Tickets</value>
+  </data>
+  <data name="Tickets_Create_Fail" xml:space="preserve">
+    <value>Failed to create the tickets</value>
+  </data>
+  <data name="Tickets_Create_Success" xml:space="preserve">
+    <value>Tickets has been created successfully</value>
+  </data>
+  <data name="Tickets_Load_Fail" xml:space="preserve">
+    <value>Failed to load the tickets</value>
+  </data>
+  <data name="Tickets_NotAvailable" xml:space="preserve">
+    <value>No tickets available.</value>
+  </data>
+  <data name="Tickets_NotFound" xml:space="preserve">
+    <value>Couldn't find the tickets</value>
+  </data>
+  <data name="Tickets_Update_Fail" xml:space="preserve">
+    <value>Failed to edit the tickets</value>
+  </data>
+  <data name="Tickets_Update_Success" xml:space="preserve">
+    <value>Tickets has been edited successfully</value>
+  </data>
+  <data name="Tickets_View" xml:space="preserve">
+    <value>View Tickets</value>
+  </data>
+  <data name="TicketsCount" xml:space="preserve">
+    <value>Tickets Count</value>
+  </data>
+  <data name="TicketsDetails" xml:space="preserve">
+    <value>Tickets Details</value>
+  </data>
+  <data name="TikTok" xml:space="preserve">
+    <value>TikTok</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Token_NotFound" xml:space="preserve">
+    <value>Could not found your token</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalPaid" xml:space="preserve">
+    <value>Total Paid</value>
+  </data>
+  <data name="TryAgainLater" xml:space="preserve">
+    <value>Something went wrong. Please try again later.</value>
+  </data>
+  <data name="Unassign" xml:space="preserve">
+    <value>Unassign</value>
+  </data>
+  <data name="UnassignUsers" xml:space="preserve">
+    <value>Unassign Users</value>
+  </data>
+  <data name="UnassignUsersFailed" xml:space="preserve">
+    <value>Failed To Unassign Users</value>
+  </data>
+  <data name="UnassignUsersSuccessfully" xml:space="preserve">
+    <value>Users have been unassigned successfully</value>
+  </data>
+  <data name="UpcomingMatches" xml:space="preserve">
+    <value>Upcoming Matches</value>
+  </data>
+  <data name="UpdateAccountInformation" xml:space="preserve">
+    <value>Update Account Information</value>
+  </data>
+  <data name="UpdateEmail" xml:space="preserve">
+    <value>Update Email</value>
+  </data>
+  <data name="UpdateFail" xml:space="preserve">
+    <value>Update Failed</value>
+  </data>
+  <data name="UpdatePassword" xml:space="preserve">
+    <value>Update Password</value>
+  </data>
+  <data name="UpdatePhone" xml:space="preserve">
+    <value>Update Phone Number</value>
+  </data>
+  <data name="UpdateSucceed" xml:space="preserve">
+    <value>Info updated successfully</value>
+  </data>
+  <data name="UpgradeSubscription" xml:space="preserve">
+    <value>UpgradeSubscription</value>
+  </data>
+  <data name="UpgradeSubscriptionOutDated" xml:space="preserve">
+    <value>New subscription date cannot be out of date.</value>
+  </data>
+  <data name="UserAssignedToRole" xml:space="preserve">
+    <value>User successfully assigned to role</value>
+  </data>
+  <data name="UserEmail" xml:space="preserve">
+    <value>User Email</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>User Name</value>
+  </data>
+  <data name="UserName_Length" xml:space="preserve">
+    <value>Username should be between 3 and 20 characters</value>
+  </data>
+  <data name="UserName_NoSpaces" xml:space="preserve">
+    <value>Spaces not allowed</value>
+  </data>
+  <data name="UserName_Validation" xml:space="preserve">
+    <value>User Name field is required!</value>
+  </data>
+  <data name="UserPhoneNumber" xml:space="preserve">
+    <value>User Phone Number</value>
+  </data>
+  <data name="UserRemovedFromRole" xml:space="preserve">
+    <value>User successfully removed from role</value>
+  </data>
+  <data name="UserRemovedFromRoleFailed" xml:space="preserve">
+    <value>Failed to remove user form role</value>
+  </data>
+  <data name="Users_Load_Fail" xml:space="preserve">
+    <value>Failed to Load Users</value>
+  </data>
+  <data name="ValidName" xml:space="preserve">
+    <value>ValidName</value>
+  </data>
+  <data name="ViewBackgroundJobs" xml:space="preserve">
+    <value>View Background Jobs</value>
+  </data>
+  <data name="VIP" xml:space="preserve">
+    <value>VIP</value>
+  </data>
+  <data name="Vision" xml:space="preserve">
+    <value>OUR VISION</value>
+  </data>
+  <data name="VS" xml:space="preserve">
+    <value>VS</value>
+  </data>
+  <data name="WelcomeMesg" xml:space="preserve">
+    <value>Welcome to our website! 🤗🤗</value>
+  </data>
+  <data name="WhoWeAre" xml:space="preserve">
+    <value>Who We Are</value>
+  </data>
+  <data name="WhoWeAreText" xml:space="preserve">
+    <value>At the heart of the bustling sports and entertainment world, our company stands as a beacon for fans seeking unforgettable experiences. We're not just a ticket vendor; we're curators of excitement, enablers of adventure, and architects of memory-making moments.</value>
+  </data>
+  <data name="WhyChooseUs" xml:space="preserve">
+    <value>Why Choose Us?</value>
+  </data>
+  <data name="WhyChooseUsText" xml:space="preserve">
+    <value>With a user-friendly platform, a commitment to affordability, and a passion for customer satisfaction, we ensure that your journey from the first click to the final encore is as seamless as the performances you attend.</value>
+  </data>
+  <data name="X" xml:space="preserve">
+    <value>X</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="YourCart" xml:space="preserve">
+    <value>Your Cart</value>
+  </data>
+</root>

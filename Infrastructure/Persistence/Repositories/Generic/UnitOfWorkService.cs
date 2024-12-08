@@ -1,9 +1,9 @@
 ﻿
 using Domain.Entities;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories.Generic
 {
-    internal class UnitOfWorkService: IUnitOfWorkService
+    internal class UnitOfWorkService : IUnitOfWorkService
     {
         private readonly AppDbContext _context;
         private readonly ICurrentUserService _currentUserService;

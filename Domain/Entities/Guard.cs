@@ -12,7 +12,7 @@
         public string Status { get; set; }
         public decimal HourlyRate { get; set; }
         public string Skills { get; set; }
-        public int TenantId { get; set; }
+        public long TenantId { get; set; }
 
         // nav props
         public Tenant Tenant { get; set; }

@@ -1,11 +1,11 @@
-﻿using Infrastructure.Persistence.Extensions;
-using Infrastructure.Services;
+﻿using Application.Common.Utilities.Pagination;
+using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Repositories.Generic
 {
-    internal class GenericRepositoryService<TEntity>: IGenericRepositoryService<TEntity> where TEntity : BaseEntity
+    internal class GenericRepositoryService<TEntity> : IGenericRepositoryService<TEntity> where TEntity : BaseEntity
     {
         protected readonly AppDbContext _dbContext;
         protected readonly ICurrentUserService _currentUserService;

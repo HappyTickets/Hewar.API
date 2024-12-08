@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Persistence.Repositories
+﻿namespace Infrastructure.Persistence.Repositories.Generic
 {
     internal class SoftDeletableGenericRepositoryService<TEntity> : GenericRepositoryService<TEntity>, ISoftDeletableGenericRepositoryService<TEntity> where TEntity : SoftDeletableEntity
     {

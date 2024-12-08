@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Application.Common.Utilities.Pagination;
+using System.Linq.Expressions;
 
 namespace Application.Common.Interfaces.Repositories
 {

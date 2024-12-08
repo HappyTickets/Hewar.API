@@ -4,7 +4,7 @@ namespace Application.Tenants.Service
 {
     public interface ITenantService
     {
-        Task<Result<int>> CreateAsync(TenantBriefDto dto);
-        Task<Result<TenantBriefDto>> GetByIdAsync(int id);
+        Task<Result<long>> CreateAsync(TenantBriefDto dto);
+        Task<Result<TenantBriefDto>> GetByIdAsync(long id);
     }
 }
