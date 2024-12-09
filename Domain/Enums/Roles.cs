@@ -3,7 +3,8 @@
     public enum Roles
     {
         Admin = 1,
-        Guard = 2,
-        Customer = 3
+        Company = 2,
+        Facility = 3,
+        Guard = 4
     }
 }

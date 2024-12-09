@@ -1,7 +1,4 @@
-﻿
-using Domain.Entities;
-
-namespace Infrastructure.Persistence.Repositories.Generic
+﻿namespace Infrastructure.Persistence.Repositories.Generic
 {
     internal class UnitOfWorkService : IUnitOfWorkService
     {
@@ -14,28 +11,30 @@ namespace Infrastructure.Persistence.Repositories.Generic
             _currentUserService = currentUserService;
 
             Attendances = new SoftDeletableGenericRepositoryService<Attendance>(_context, _currentUserService);
-            Customers = new SoftDeletableGenericRepositoryService<Customer>(_context, _currentUserService);
-            Guards = new SoftDeletableGenericRepositoryService<Guard>(_context, _currentUserService);
             Payrolls = new SoftDeletableGenericRepositoryService<Payroll>(_context, _currentUserService);
             PerformanceReviews = new SoftDeletableGenericRepositoryService<PerformanceReview>(_context, _currentUserService);
             Policies = new SoftDeletableGenericRepositoryService<Policy>(_context, _currentUserService);
             Reports = new SoftDeletableGenericRepositoryService<Report>(_context, _currentUserService);
             Shifts = new SoftDeletableGenericRepositoryService<Shift>(_context, _currentUserService);
-            Tenants = new SoftDeletableGenericRepositoryService<Tenant>(_context, _currentUserService);
+            Tenants = new SoftDeletableGenericRepositoryService<TenantBase>(_context, _currentUserService);
             Tickets = new SoftDeletableGenericRepositoryService<Ticket>(_context, _currentUserService);
+            Facilities = new SoftDeletableGenericRepositoryService<Facility>(_context, _currentUserService);
+            Companies = new SoftDeletableGenericRepositoryService<Company>(_context, _currentUserService);
+            Guards = new SoftDeletableGenericRepositoryService<Guard>(_context, _currentUserService);
         }
 
         #region repos
         public ISoftDeletableGenericRepositoryService<Attendance> Attendances { get; }
-        public ISoftDeletableGenericRepositoryService<Customer> Customers { get; }
-        public ISoftDeletableGenericRepositoryService<Guard> Guards { get; }
         public ISoftDeletableGenericRepositoryService<Payroll> Payrolls { get; }
         public ISoftDeletableGenericRepositoryService<PerformanceReview> PerformanceReviews { get; }
         public ISoftDeletableGenericRepositoryService<Policy> Policies { get; }
         public ISoftDeletableGenericRepositoryService<Report> Reports { get; }
         public ISoftDeletableGenericRepositoryService<Shift> Shifts { get; }
-        public ISoftDeletableGenericRepositoryService<Tenant> Tenants { get; }
+        public ISoftDeletableGenericRepositoryService<TenantBase> Tenants { get; }
         public ISoftDeletableGenericRepositoryService<Ticket> Tickets { get; }
+        public ISoftDeletableGenericRepositoryService<Company> Companies { get; }
+        public ISoftDeletableGenericRepositoryService<Facility> Facilities { get; }
+        public ISoftDeletableGenericRepositoryService<Guard> Guards { get; }
         #endregion
 
         #region transaction methods

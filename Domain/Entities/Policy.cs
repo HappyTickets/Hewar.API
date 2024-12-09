@@ -6,7 +6,5 @@
         public string Description { get; set; }
         public string Type { get; set; }
         public string Details { get; set; }
-        public long TenantId { get; set; }
-        public Tenant Tenant { get; set; }
     }
 }

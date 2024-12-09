@@ -6,15 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.AccountManagement;
 
+[Route("api/auth")]
 public class AuthenticationController(IAuthenticationService authenticationService) : ApiControllerBase
 {
     private readonly IAuthenticationService _authenticationService = authenticationService;
 
-    [HttpPost("register")]
+    [HttpPost("register-guard")]
     [AllowAnonymous]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> RegisterGuard([FromBody] RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        return Result(await _authenticationService.RegisterAsync(registerRequest, cancellationToken));
+        return Result(await _authenticationService.RegisterGuardAsync(registerRequest, cancellationToken));
+    }
+    
+    [HttpPost("register-facility")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterFacility([FromBody] RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _authenticationService.RegisterFacilityAsync(registerRequest, cancellationToken));
+    }
+    
+    [HttpPost("register-company")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterCompany([FromBody] RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _authenticationService.RegisterCompanyAsync(registerRequest, cancellationToken));
     }
 
     [HttpPost("login")]
