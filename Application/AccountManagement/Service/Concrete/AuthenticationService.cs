@@ -186,9 +186,9 @@ public class AuthenticationService(
         => new UserSessionDto
         {
             Id = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            Roles = user.ApplicationUserRoles.Select(ur => ur.Role.Name),
+            UserName = user.UserName!,
+            Email = user.Email!,
+            Role = user.ApplicationUserRoles?.Select(ur => ur.Role!.Name).Single()!,
             AccessToken = tokens.JWT.Token,
             RefreshToken = tokens.Refresh.Token,
             AccessTokenExpDate = tokens.JWT.ExpiryDate.UtcDateTime,

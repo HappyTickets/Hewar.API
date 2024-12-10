@@ -1390,7 +1390,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
     <value>New password cannot be equal to old one</value>
   </data>
   <data name="RequiredField" xml:space="preserve">
-    <value>This field is required</value>
+    <value>'{PropertyName}' is required</value>
   </data>
   <data name="RequiredFields" xml:space="preserve">
     <value>Please fill in all required fields</value>

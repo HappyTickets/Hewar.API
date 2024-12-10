@@ -1297,7 +1297,7 @@ Happy Tickets</value>
     <value>كلمة المرور الجديدة لا يمكن أن تساوي القديمة</value>
   </data>
   <data name="RequiredField" xml:space="preserve">
-    <value>هذا الحقل مطلوب</value>
+    <value>'{PropertyName}' مطلوب</value>
   </data>
   <data name="RequiredFields" xml:space="preserve">
     <value>الرجاء ملء جميع الحقول المطلوبة</value>
