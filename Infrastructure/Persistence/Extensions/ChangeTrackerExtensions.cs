@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Extensions
 
             foreach (var entry in entries)
             {
-                entry.Entity.CreatedBy = user.Id;
+                entry.Entity.CreatedBy = user.Id.ToString();
                 entry.Entity.CreatedOn = DateTimeOffset.UtcNow;
             }
         }
@@ -26,7 +26,7 @@ namespace Infrastructure.Persistence.Extensions
 
             foreach (var entry in entries)
             {
-                entry.Entity.ModifiedBy = user.Id;
+                entry.Entity.ModifiedBy = user.Id.ToString();
                 entry.Entity.ModifiedOn = DateTimeOffset.UtcNow;
             }
         }

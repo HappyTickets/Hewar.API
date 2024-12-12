@@ -6,15 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.AccountManagement;
 
+[Route("api/auth")]
 public class AuthenticationController(IAuthenticationService authenticationService) : ApiControllerBase
 {
     private readonly IAuthenticationService _authenticationService = authenticationService;
 
-    [HttpPost("register")]
+    [HttpPost("registerGuard")]
     [AllowAnonymous]
-    public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> RegisterGuard([FromBody] RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        return Result(await _authenticationService.RegisterAsync(registerRequest, cancellationToken));
+        return Result(await _authenticationService.RegisterGuardAsync(registerRequest, cancellationToken));
+    }
+    
+    [HttpPost("registerFacility")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterFacility([FromBody] RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _authenticationService.RegisterFacilityAsync(registerRequest, cancellationToken));
+    }
+    
+    [HttpPost("registerCompany")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterCompany([FromBody] RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        return Result(await _authenticationService.RegisterCompanyAsync(registerRequest, cancellationToken));
     }
 
     [HttpPost("login")]
@@ -31,7 +46,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
         return Result(await _authenticationService.LogoutAsync(refreshToken, cancellationToken));
     }
 
-    [HttpPost("refresh-token")]
+    [HttpPost("refreshToken")]
     [AllowAnonymous]
     public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest tokens, CancellationToken cancellationToken = default)
     {

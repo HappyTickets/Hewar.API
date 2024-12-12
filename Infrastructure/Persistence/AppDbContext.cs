@@ -52,17 +52,22 @@ namespace Infrastructure.Persistence
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
-
         public DbSet<Attendance> Attendances { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Guard> Guards { get; set; }
         public DbSet<Payroll> Payrolls { get; set; }
         public DbSet<PerformanceReview> PerformanceReviews { get; set; }
         public DbSet<Policy> Policies { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Shift> Shifts { get; set; }
-        public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Facility> Facilities { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Guard> Guards { get; set; }
+        public DbSet<PriceRequest> PriceRequests { get; set; }
+        public DbSet<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; set; }
+        public DbSet<PriceRequestResponse> PriceRequestResponses { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketMessage> TicketMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
         #endregion
 
     }

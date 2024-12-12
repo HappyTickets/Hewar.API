@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Localization.ResourceFiles;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Common.Exceptions
 {
@@ -6,7 +7,7 @@ namespace Application.Common.Exceptions
     {
         public override int Status => StatusCodes.Status403Forbidden;
 
-        public ForbiddenException(string? message = null):base(message ?? "You can not perform this operation.")
+        public ForbiddenException(string? message = null):base(message ?? Resource.Forbbiden)
         {
             
         }

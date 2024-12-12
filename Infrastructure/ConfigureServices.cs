@@ -6,7 +6,6 @@ using Domain.Entities.UserEntities;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Repositories;
-using Infrastructure.Persistence.Repositories.Generic;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -26,8 +25,8 @@ namespace Infrastructure
                 .AddDbContext<AppDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("Sql")));
 
             services.AddIdentityServices()
-            .AddJWTConfiguration(config)
-            .AddEmailConfiguration(config);
+                .AddJWTConfiguration(config)
+                .AddEmailConfiguration(config);
 
             // DI
             services
@@ -70,7 +69,7 @@ namespace Infrastructure
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer("Bearer", options =>
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
             {
                 options.SaveToken = true;
                 options.TokenValidationParameters = tokenValidationParameters;
@@ -86,6 +85,8 @@ namespace Infrastructure
             TokenValidationParameters tokenValidationParameters = TokensService.GetTokenValidationParameters(jwtSettings, true);
 
             services.AddSingleton(tokenValidationParameters);
+            services.AddAuthenticationServices(tokenValidationParameters);
+
             return services;
         }
         private static IServiceCollection AddEmailConfiguration(this IServiceCollection services, IConfiguration configuration)

@@ -2,13 +2,13 @@
 using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Dtos.User;
 using Application.AccountManagement.Service.Interfaces;
-using Application.Authorization.DTOs.Response;
 using AutoMapper;
 using Domain.Entities.UserEntities;
 using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace Application.AccountManagement.Service.Concrete;
 public class AuthenticationService(
@@ -22,17 +22,23 @@ public class AuthenticationService(
     private readonly IMapper _mapper = mapper;
     private readonly ICurrentUserService _currenUser = currenUser;
 
-    public async Task<Result<Empty>> RegisterAsync(RegisterRequest registerRequest, CancellationToken cancellationToken = default)
+    public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        if (await IsPhoneNumberTaken(registerRequest.PhoneNumber))
+        if (await IsPhoneNumberTaken(registerRequest.Phone))
             return new ValidationException(Resource.PhoneNumber_Unique_Validation);
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.UserName,
+            UserName = registerRequest.Email,
             Email = registerRequest.Email,
-            PhoneNumber = registerRequest.PhoneNumber,
-            CreatedDate = DateTime.UtcNow,
+            PhoneNumber = registerRequest.Phone,
+            Role = Roles.Guard,
+            Guard = new()
+            {
+                Name = registerRequest.Name,
+                DateOfBirth = registerRequest.DateOfBirth,
+                Skills = registerRequest.Skills
+            }
         };
 
         var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
@@ -40,8 +46,79 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
-        return new();
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+
+        return Empty.Default;
     }
+
+    public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        if (await IsPhoneNumberTaken(registerRequest.Phone))
+            return new ValidationException(Resource.PhoneNumber_Unique_Validation);
+
+        var user = new ApplicationUser
+        {
+            UserName = registerRequest.Email,
+            Email = registerRequest.Email,
+            PhoneNumber = registerRequest.Phone,
+            Role = Roles.Facility,
+            Facility = new()
+            {
+                Name = registerRequest.Name,
+                Type = registerRequest.Type,
+                CommercialRegistration = registerRequest.CommercialRegistration,
+                ActivityType = registerRequest.ActivityType,
+                Address = registerRequest.Address,
+                City = registerRequest.City,
+                ResponsibleName = registerRequest.ResponsibleName,
+                ResponsiblePhone = registerRequest.ResponsiblePhone,
+            }
+        };
+
+        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
+
+        if (!registrationResults.Succeeded)
+              return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+
+        return Empty.Default;
+    }
+
+    public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
+    {
+        if (await IsPhoneNumberTaken(registerRequest.Phone))
+            return new ValidationException(Resource.PhoneNumber_Unique_Validation);
+
+        var user = new ApplicationUser
+        {
+            UserName = registerRequest.Email,
+            Email = registerRequest.Email,
+            PhoneNumber = registerRequest.Phone,
+            Role = Roles.Company,
+            Company = new()
+            {
+                Name = registerRequest.Name,
+                Address = registerRequest.Address
+            }
+        };
+
+        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
+
+        if (!registrationResults.Succeeded)
+            return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+
+        return Empty.Default;
+    }
+
 
     public async Task<Result<UserSessionDto>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
@@ -51,14 +128,14 @@ public class AuthenticationService(
             return new NotFoundException(Resource.Invalid_UserName_Password);
 
         if (!await _userManager.IsEmailConfirmedAsync(user))
-            return new() { Data = new UserSessionDto { IsEmailConfirmed = false }, IsSuccess = false };
+            return new UnauthorizedException(Resource.Email_NotConfirmed);
 
         if (!await _userManager.CheckPasswordAsync(user, loginRequest.Password))
             return new ValidationException(Resource.Credentials_Invalid);
 
         var tokens = await _tokensService.GenerateTokensAsync(user);
 
-        return BuildUserSessionDto(user, tokens);
+        return await BuildUserSessionDto(user, tokens);
     }
 
     public async Task<Result<Empty>> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default)
@@ -77,7 +154,7 @@ public class AuthenticationService(
         var user = await FindUserWithRolesAsync(u => u.Id == tokensInfo.UserId);
         if (user == null) return new NotFoundException(Resource.NotFoundInDB_Message);
 
-        return BuildUserSessionDto(user, tokensInfo);
+        return await BuildUserSessionDto(user, tokensInfo);
     }
 
     #region Private Helper Methods
@@ -90,21 +167,21 @@ public class AuthenticationService(
           .Include(u => u.ApplicationUserRoles)
           .ThenInclude(ur => ur.Role)
           .FirstOrDefaultAsync(predicate);
-    private IEnumerable<RoleDto> MapRoles(ApplicationUser user)
-        => _mapper.Map<IEnumerable<RoleDto>>(user.ApplicationUserRoles.Select(ur => ur.Role));
-    private UserSessionDto BuildUserSessionDto(ApplicationUser user, TokensInfo tokens)
-        => new UserSessionDto
+
+    private async Task<UserSessionDto> BuildUserSessionDto(ApplicationUser user, TokensInfo tokens)
+    {
+        var claims = await _userManager.GetClaimsAsync(user);
+        return new UserSessionDto
         {
-            Id = user.Id,
-            UserName = user.UserName,
-            Email = user.Email,
-            Roles = MapRoles(user),
-            IsEmailConfirmed = user.EmailConfirmed,
+            Id = long.Parse(claims.First(c=>c.Type == ClaimTypes.NameIdentifier)!.Value),
+            Email = claims.First(c => c.Type == ClaimTypes.Email)!.Value,
+            Role = claims.First(c => c.Type == ClaimTypes.Role)!.Value,
             AccessToken = tokens.JWT.Token,
             RefreshToken = tokens.Refresh.Token,
             AccessTokenExpDate = tokens.JWT.ExpiryDate.UtcDateTime,
             RefreshTokenExpDate = tokens.Refresh.ExpiryDate.UtcDateTime
         };
+    }
 
     #endregion
 }

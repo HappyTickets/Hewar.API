@@ -5,14 +5,11 @@ namespace Domain.Entities.UserEntities;
 
 public class ApplicationUser : IdentityUser<long>
 {
+    public Roles Role { get; set; }
     public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
     public virtual ICollection<ApplicationUserRole>? ApplicationUserRoles { get; set; } = new List<ApplicationUserRole>();
 
-
-    public int SoftDeleteCount { get; set; } = 0;
-
-    public long CreatedBy { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public long? ModifiedBy { get; set; }
-    public DateTime? ModifiedDate { get; set; }
+    public Guard? Guard { get; set; }
+    public Company? Company { get; set; }
+    public Facility? Facility { get; set; }
 }

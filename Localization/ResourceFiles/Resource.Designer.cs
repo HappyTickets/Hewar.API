@@ -1399,6 +1399,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You are not allowed to perform this operation..
+        /// </summary>
+        public static string Forbbiden {
+            get {
+                return ResourceManager.GetString("Forbbiden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Form validation failed. Please check the inputs.
         /// </summary>
         public static string FormValidationFailed {
@@ -1837,6 +1846,15 @@ namespace Localization.ResourceFiles {
         public static string InvalidQRCode {
             get {
                 return ResourceManager.GetString("InvalidQRCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {PropertyName} has an invalid value..
+        /// </summary>
+        public static string InvalidValue {
+            get {
+                return ResourceManager.GetString("InvalidValue", resourceCulture);
             }
         }
         
@@ -2744,6 +2762,33 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only pending status is allowed to be accepted.
+        /// </summary>
+        public static string OnlyPendingAccepted {
+            get {
+                return ResourceManager.GetString("OnlyPendingAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only pending status is allowed to be rejected..
+        /// </summary>
+        public static string OnlyPendingRejected {
+            get {
+                return ResourceManager.GetString("OnlyPendingRejected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Request status must be pending to complete this operation.
+        /// </summary>
+        public static string OnlyPendingRequests {
+            get {
+                return ResourceManager.GetString("OnlyPendingRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Create Order.
         /// </summary>
         public static string Order_Create {
@@ -3212,7 +3257,7 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This field is required.
+        ///   Looks up a localized string similar to &apos;{PropertyName}&apos; is required.
         /// </summary>
         public static string RequiredField {
             get {
