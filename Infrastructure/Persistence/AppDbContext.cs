@@ -58,10 +58,16 @@ namespace Infrastructure.Persistence
         public DbSet<Policy> Policies { get; set; }
         public DbSet<Report> Reports { get; set; }
         public DbSet<Shift> Shifts { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Guard> Guards { get; set; }
+        public DbSet<PriceRequest> PriceRequests { get; set; }
+        public DbSet<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; set; }
+        public DbSet<PriceRequestResponse> PriceRequestResponses { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<TicketMessage> TicketMessages { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+
         #endregion
 
     }

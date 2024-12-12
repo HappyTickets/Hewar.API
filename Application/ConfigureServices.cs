@@ -1,6 +1,9 @@
 ﻿using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
+using Application.Files.Service;
+using Application.Notifications.Service;
+using Application.PriceRequests.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +27,10 @@ namespace Application
               .AddScoped<IPasswordResetService, PasswordResetService>()
               .AddScoped<IEmailConfirmationService, EmailConfirmationService>()
               .AddScoped<IAuthenticationService, AuthenticationService>()
-              .AddScoped<IAuthorizationService, AuthorizationService>();
+              .AddScoped<IAuthorizationService, AuthorizationService>()
+              .AddScoped<INotificationsService, NotificationsService>()
+              .AddScoped<IFileService, FileService>()
+              .AddScoped<IPriceRequestsService, PriceRequestsService>();
 
 
             return services;

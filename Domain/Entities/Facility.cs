@@ -16,5 +16,6 @@ namespace Domain.Entities
 
         // nav props
         public ApplicationUser LoginDetails { get; set; }
+        public ICollection<PriceRequest> PriceRequests { get; set; }
     }
 }

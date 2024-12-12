@@ -1,4 +1,7 @@
-﻿namespace Infrastructure.Persistence.Repositories.Generic
+﻿using Domain.Entities;
+using Infrastructure.Persistence.Repositories.Generic;
+
+namespace Infrastructure.Persistence.Repositories
 {
     internal class UnitOfWorkService : IUnitOfWorkService
     {
@@ -17,10 +20,15 @@
             Reports = new SoftDeletableGenericRepositoryService<Report>(_context, _currentUserService);
             Shifts = new SoftDeletableGenericRepositoryService<Shift>(_context, _currentUserService);
             Tenants = new SoftDeletableGenericRepositoryService<TenantBase>(_context, _currentUserService);
-            Tickets = new SoftDeletableGenericRepositoryService<Ticket>(_context, _currentUserService);
             Facilities = new SoftDeletableGenericRepositoryService<Facility>(_context, _currentUserService);
             Companies = new SoftDeletableGenericRepositoryService<Company>(_context, _currentUserService);
             Guards = new SoftDeletableGenericRepositoryService<Guard>(_context, _currentUserService);
+            Tickets = new SoftDeletableGenericRepositoryService<Ticket>(_context, _currentUserService);
+            TicketMessages = new SoftDeletableGenericRepositoryService<TicketMessage>(_context, _currentUserService);
+            PriceRequests = new SoftDeletableGenericRepositoryService<PriceRequest>(_context, _currentUserService);
+            PriceRequestFacilityDetails = new SoftDeletableGenericRepositoryService<PriceRequestFacilityDetails>(_context, _currentUserService);
+            PriceRequestResponses = new SoftDeletableGenericRepositoryService<PriceRequestResponse>(_context, _currentUserService);
+            Notifications = new SoftDeletableGenericRepositoryService<Notification>(_context, _currentUserService);
         }
 
         #region repos
@@ -31,10 +39,15 @@
         public ISoftDeletableGenericRepositoryService<Report> Reports { get; }
         public ISoftDeletableGenericRepositoryService<Shift> Shifts { get; }
         public ISoftDeletableGenericRepositoryService<TenantBase> Tenants { get; }
-        public ISoftDeletableGenericRepositoryService<Ticket> Tickets { get; }
         public ISoftDeletableGenericRepositoryService<Company> Companies { get; }
         public ISoftDeletableGenericRepositoryService<Facility> Facilities { get; }
         public ISoftDeletableGenericRepositoryService<Guard> Guards { get; }
+        public ISoftDeletableGenericRepositoryService<Ticket> Tickets { get; }
+        public ISoftDeletableGenericRepositoryService<TicketMessage> TicketMessages { get; }
+        public ISoftDeletableGenericRepositoryService<PriceRequest> PriceRequests { get; }
+        public ISoftDeletableGenericRepositoryService<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; }
+        public ISoftDeletableGenericRepositoryService<PriceRequestResponse> PriceRequestResponses { get; }
+        public ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
         #endregion
 
         #region transaction methods

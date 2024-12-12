@@ -11,21 +11,21 @@ public class AuthenticationController(IAuthenticationService authenticationServi
 {
     private readonly IAuthenticationService _authenticationService = authenticationService;
 
-    [HttpPost("register-guard")]
+    [HttpPost("registerGuard")]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterGuard([FromBody] RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
         return Result(await _authenticationService.RegisterGuardAsync(registerRequest, cancellationToken));
     }
     
-    [HttpPost("register-facility")]
+    [HttpPost("registerFacility")]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterFacility([FromBody] RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
         return Result(await _authenticationService.RegisterFacilityAsync(registerRequest, cancellationToken));
     }
     
-    [HttpPost("register-company")]
+    [HttpPost("registerCompany")]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterCompany([FromBody] RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
@@ -46,7 +46,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
         return Result(await _authenticationService.LogoutAsync(refreshToken, cancellationToken));
     }
 
-    [HttpPost("refresh-token")]
+    [HttpPost("refreshToken")]
     [AllowAnonymous]
     public async Task<IActionResult> RefreshAuthToken([FromBody] RefreshAuthTokenRequest tokens, CancellationToken cancellationToken = default)
     {

@@ -8,10 +8,15 @@
         ISoftDeletableGenericRepositoryService<Policy> Policies { get; }
         ISoftDeletableGenericRepositoryService<Report> Reports { get; }
         ISoftDeletableGenericRepositoryService<Shift> Shifts { get; }
-        ISoftDeletableGenericRepositoryService<Ticket> Tickets { get; }
         ISoftDeletableGenericRepositoryService<Company> Companies { get; }
         ISoftDeletableGenericRepositoryService<Facility> Facilities { get; }
         ISoftDeletableGenericRepositoryService<Guard> Guards { get; }
+        ISoftDeletableGenericRepositoryService<Ticket> Tickets { get; }
+        ISoftDeletableGenericRepositoryService<TicketMessage> TicketMessages { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequest> PriceRequests { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequestResponse> PriceRequestResponses { get; }
+        ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
 
         Task BeginTransactionAsync();
         Task CommitTransactionAsync();

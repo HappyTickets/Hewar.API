@@ -1926,4 +1926,19 @@ Happy Tickets</value>
   <data name="YourCart" xml:space="preserve">
     <value>عربتك</value>
   </data>
+  <data name="InvalidValue" xml:space="preserve">
+    <value>{PropertyName} يحتوي على قيمة غير صالحة</value>
+  </data>
+  <data name="OnlyPendingAccepted" xml:space="preserve">
+    <value>يُسمح بقبول حالة قيد الانتظار فقط</value>
+  </data>
+  <data name="OnlyPendingRejected" xml:space="preserve">
+    <value>يُسمح فقط برفض حالة قيد الانتظار</value>
+  </data>
+  <data name="Forbbiden" xml:space="preserve">
+    <value>أنت غير مسموح لك بتنفيذ هذه العملية</value>
+  </data>
+  <data name="OnlyPendingRequests" xml:space="preserve">
+    <value>يجب أن تكون حالة الطلب قيد الانتظار لإكمال هذه العملية.</value>
+  </data>
 </root>

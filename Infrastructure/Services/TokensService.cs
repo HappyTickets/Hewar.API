@@ -136,12 +136,7 @@ internal class TokensService
     }
     private async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
     {
-        List<Claim> claims = [
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.UserName!),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            ];
+        var claims = await _userManager.GetClaimsAsync(user);
 
         //foreach (var permission in user.ApplicationUserRoles!.SelectMany(ur => ur.Role!.RolePermissions!.Select(rp => rp.Permission)).Distinct())
         //{
