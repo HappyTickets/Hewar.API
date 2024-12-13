@@ -8,6 +8,7 @@ namespace Application.Common.Mappings
         public GloablMappings()
         {
             CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>));
+            CreateMap<Media, MediaDto>().ReverseMap();
         }
     }
 }

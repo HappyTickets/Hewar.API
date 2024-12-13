@@ -1,5 +1,4 @@
-﻿using Application.Files.Dtos;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Files.Service
 {

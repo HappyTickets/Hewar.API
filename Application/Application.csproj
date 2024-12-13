@@ -28,10 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Tickets\Dtos\" />
-		<Folder Include="Tickets\Mappings\" />
-		<Folder Include="Tickets\Service\" />
-		<Folder Include="Tickets\Validators\" />
 		<Folder Include="Shifts\Dtos\" />
 		<Folder Include="Shifts\Mappings\" />
 		<Folder Include="Shifts\Service\" />

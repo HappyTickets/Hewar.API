@@ -1941,4 +1941,10 @@ Happy Tickets</value>
   <data name="OnlyPendingRequests" xml:space="preserve">
     <value>يجب أن تكون حالة الطلب قيد الانتظار لإكمال هذه العملية.</value>
   </data>
+  <data name="OnlyOpenedTickets" xml:space="preserve">
+    <value>يجب أن تكون حالة التذكرة مفتوحة لإتمام هذه العملية</value>
+  </data>
+  <data name="ClosedTicketError" xml:space="preserve">
+    <value>التذكرة مغلقة بالفعل</value>
+  </data>
 </root>

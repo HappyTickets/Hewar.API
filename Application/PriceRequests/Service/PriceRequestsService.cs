@@ -90,17 +90,19 @@ namespace Application.PriceRequests.Service
             if (request == null)
                 return new NotFoundException();
 
-            if (request.CompanyId != _currentUser.Id)
-                return new ForbiddenException();
-
             if (request.Status != RequestStatus.Pending)
                 return new ConflictException(Resource.OnlyPendingRequests);
 
             var response = _mapper.Map<PriceRequestResponse>(dto);
             response.RespondedDate = DateTimeOffset.UtcNow;
 
+            // mark request accepted and create response
             request.Status = RequestStatus.Accepted;
             _ufw.PriceRequestResponses.Create(response);
+           
+            // mark request tickets as closed
+            await MarkAllRequestTicketsAsClosedAsync(request.Id);
+            
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
@@ -113,16 +115,30 @@ namespace Application.PriceRequests.Service
             if (request == null)
                 return new NotFoundException();
 
-            if (request.CompanyId != _currentUser.Id)
-                return new ForbiddenException();
-
             if (request.Status != RequestStatus.Pending)
                 return new ConflictException(Resource.OnlyPendingRequests);
 
+            // mark request rejected
             request.Status = RequestStatus.Rejected;
+
+            // mark request tickets as closed
+            await MarkAllRequestTicketsAsClosedAsync(request.Id);
+
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
+        }
+
+        private async Task MarkAllRequestTicketsAsClosedAsync(long priceRequestId)
+        {
+            var tickets = await _ufw.Tickets
+                .FilterAsync(t => t.PriceRequestId == priceRequestId && t.Status == TicketStatus.Opened);
+
+            foreach(var ticket in tickets)
+            {
+                ticket.Status = TicketStatus.Closed;
+                ticket.ClosedDate = DateTimeOffset.UtcNow;
+            }
         }
     }
 }

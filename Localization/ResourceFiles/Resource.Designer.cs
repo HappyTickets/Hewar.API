@@ -727,6 +727,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The ticket is already closed..
+        /// </summary>
+        public static string ClosedTicketError {
+            get {
+                return ResourceManager.GetString("ClosedTicketError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Happy.
         /// </summary>
         public static string CompanyName {
@@ -2758,6 +2767,15 @@ namespace Localization.ResourceFiles {
         public static string OnHold {
             get {
                 return ResourceManager.GetString("OnHold", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ticket status must be opened to complete this operation..
+        /// </summary>
+        public static string OnlyOpenedTickets {
+            get {
+                return ResourceManager.GetString("OnlyOpenedTickets", resourceCulture);
             }
         }
         

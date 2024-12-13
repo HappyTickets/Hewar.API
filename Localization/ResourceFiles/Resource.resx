@@ -2047,4 +2047,10 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="OnlyPendingRequests" xml:space="preserve">
     <value>Request status must be pending to complete this operation</value>
   </data>
+  <data name="OnlyOpenedTickets" xml:space="preserve">
+    <value>Ticket status must be opened to complete this operation.</value>
+  </data>
+  <data name="ClosedTicketError" xml:space="preserve">
+    <value>The ticket is already closed.</value>
+  </data>
 </root>

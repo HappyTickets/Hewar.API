@@ -1,4 +1,4 @@
-﻿namespace Application.Files.Dtos
+﻿namespace Application.Common.Utilities
 {
     public class MediaDto
     {
