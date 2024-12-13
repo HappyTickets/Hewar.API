@@ -1,6 +1,6 @@
 ﻿namespace Domain.Events.PriceRequests
 {
-    internal class PriceRequestAccepted: DomainEvent
+    public class PriceRequestAccepted: DomainEvent
     {
         public PriceRequest PriceRequest { get; }
 

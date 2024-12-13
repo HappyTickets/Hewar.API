@@ -1,5 +1,6 @@
 ﻿using Application.Tickets.Dtos;
 using AutoMapper;
+using Domain.Events.Tickets;
 
 namespace Application.Tickets.Service
 {
@@ -33,6 +34,7 @@ namespace Application.Tickets.Service
                 ClosedDate = null,
                 Status = TicketStatus.Opened,
                 PriceRequestId = dto.PriceRequestId,
+                PriceRequest = priceRequest,
                 Messages = 
                 [
                     new TicketMessage
@@ -46,6 +48,7 @@ namespace Application.Tickets.Service
                 ]
             };
 
+            ticket.AddDomainEvent(new TicketCreated(ticket));
             _ufw.Tickets.Create(ticket);
             await _ufw.SaveChangesAsync();
 
@@ -54,7 +57,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CreateMessageAsync(CreateTicketMessageDto dto)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId);
+            var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId, ["PriceRequest"]);
 
             if (ticket == null)
                 return new NotFoundException();
@@ -67,7 +70,9 @@ namespace Application.Tickets.Service
             message.SentDate = DateTimeOffset.UtcNow;
             message.SenderId = _currentUser.Id!.Value;
             message.SenderType = Enum.Parse<SenderTypes>(_currentUser.Role!);
+            message.Ticket = ticket;
 
+            message.AddDomainEvent(new TicketMessageCreated(message));
             _ufw.TicketMessages.Create(message);
             await _ufw.SaveChangesAsync();
 
@@ -76,7 +81,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CloseTicketAsync(long ticketId)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(ticketId);
+            var ticket = await _ufw.Tickets.GetByIdAsync(ticketId, ["PriceRequest"]);
 
             if(ticket == null)
                 return new NotFoundException();
@@ -87,6 +92,7 @@ namespace Application.Tickets.Service
             ticket.Status = TicketStatus.Closed;
             ticket.ClosedDate = DateTimeOffset.UtcNow;
 
+            ticket.AddDomainEvent(new TicketClosed(ticket));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;

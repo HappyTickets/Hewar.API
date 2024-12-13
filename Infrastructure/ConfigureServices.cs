@@ -3,6 +3,7 @@ using Application.AccountManagement.Service.Interfaces;
 using Application.AccountManagement.Validators;
 using Application.Authorization.Service;
 using Domain.Entities.UserEntities;
+using Infrastructure.Notifications;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Repositories;
@@ -24,9 +25,11 @@ namespace Infrastructure
             services
                 .AddDbContext<AppDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("Sql")));
 
-            services.AddIdentityServices()
+            services
+                .AddIdentityServices()
                 .AddJWTConfiguration(config)
-                .AddEmailConfiguration(config);
+                .AddEmailConfiguration(config)
+                .AddSignalR();
 
             // DI
             services
@@ -34,7 +37,8 @@ namespace Infrastructure
                 .AddScoped<IEmailSender, EmailSender>()
                 .AddScoped<IAuthorizationRepository, AuthorizationRepository>()
                 .AddScoped<ICurrentUserService, CurrentUserService>()
-                .AddScoped<IUnitOfWorkService, UnitOfWorkService>();
+                .AddScoped<IUnitOfWorkService, UnitOfWorkService>()
+                .AddScoped<INotificationService, NotificationService>();
 
             return services;
         }
@@ -73,6 +77,21 @@ namespace Infrastructure
             {
                 options.SaveToken = true;
                 options.TokenValidationParameters = tokenValidationParameters;
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            (path.StartsWithSegments("/hubs")))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
         }
 

@@ -19,7 +19,7 @@ namespace Application
         {
             // services
             services
-                .AddMediatR(Assembly.GetExecutingAssembly())
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()))
                 .AddAutoMapper(Assembly.GetExecutingAssembly())
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();

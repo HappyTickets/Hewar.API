@@ -1,9 +1,7 @@
 using Application;
-using Application.Common.Exceptions;
-using Application.Common.Utilities;
 using Infrastructure;
+using Infrastructure.Notifications;
 using Localization;
-using Microsoft.AspNetCore.Mvc;
 using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,27 +11,19 @@ builder.Services
     .AddControllers()
     .AddDataAnnotationsLocalization();
 
+// services
 builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerService()
     .AddHttpContextAccessor()
+    .AddCorsService()
     .AddLocalizationService(builder.Configuration)
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration);
 
 // configs
 builder.Services
-    .Configure<ApiBehaviorOptions>(opt =>
-    {
-        opt.InvalidModelStateResponseFactory = (context) =>
-        {
-            var errors = context.ModelState.Values
-            .Select(v => v.Errors.Select(e => e.ErrorMessage))
-            .SelectMany(e => e);
-
-            return new BadRequestObjectResult((Result<Empty>)new ValidationException(errors));
-        };
-    });
+    .ConfigureApiBehaviour();
 
 var app = builder.Build();
 
@@ -48,9 +38,12 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHub<NotificationsHub>("/hubs/notifications");
 app.MapControllers();
 
 app.Run();

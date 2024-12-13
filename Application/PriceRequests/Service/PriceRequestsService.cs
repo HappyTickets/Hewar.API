@@ -1,5 +1,6 @@
 ﻿using Application.PriceRequests.Dtos;
 using AutoMapper;
+using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Service
 {
@@ -23,6 +24,7 @@ namespace Application.PriceRequests.Service
             priceRequest.Status = RequestStatus.Pending;
             priceRequest.FacilityId = _currentUser.Id!.Value;
 
+            priceRequest.AddDomainEvent(new PriceRequestCreated(priceRequest));
             _ufw.PriceRequests.Create(priceRequest);
             await _ufw.SaveChangesAsync();
 
@@ -102,7 +104,8 @@ namespace Application.PriceRequests.Service
            
             // mark request tickets as closed
             await MarkAllRequestTicketsAsClosedAsync(request.Id);
-            
+
+            request.AddDomainEvent(new PriceRequestAccepted(request));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
@@ -124,6 +127,7 @@ namespace Application.PriceRequests.Service
             // mark request tickets as closed
             await MarkAllRequestTicketsAsClosedAsync(request.Id);
 
+            request.AddDomainEvent(new PriceRequestRejected(request));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;

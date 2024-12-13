@@ -5,7 +5,6 @@ namespace Domain.Entities.UserEntities;
 
 public class ApplicationUser : IdentityUser<long>
 {
-    public Roles Role { get; set; }
     public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
     public virtual ICollection<ApplicationUserRole>? ApplicationUserRoles { get; set; } = new List<ApplicationUserRole>();
 

@@ -1,5 +1,6 @@
 ﻿using Application.Notifications.Dtos;
 using AutoMapper;
+using Domain.Events.Notifications;
 
 namespace Application.Notifications.Service
 {
@@ -24,6 +25,8 @@ namespace Application.Notifications.Service
                 return new NotFoundException();
 
             notification.IsRead = true;
+
+            notification.AddDomainEvent(new NotificationCreated(notification));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
