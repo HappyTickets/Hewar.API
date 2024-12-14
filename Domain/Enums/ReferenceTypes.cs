@@ -2,6 +2,7 @@
 {
     public enum ReferenceTypes
     {
-
+        PriceRequest,
+        Ticket
     }
 }

@@ -32,7 +32,6 @@ public class AuthenticationService(
             UserName = registerRequest.Email,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
-            Role = Roles.Guard,
             Guard = new()
             {
                 Name = registerRequest.Name,
@@ -46,9 +45,19 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
+        try
+        {
+            await _userManager.AddToRoleAsync(user, Roles.Guard.ToString());
+        }
+        catch
+        {
+            await _userManager.DeleteAsync(user);
+            throw;
+        }
+
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Guard.ToString()));
 
         return Empty.Default;
     }
@@ -63,7 +72,6 @@ public class AuthenticationService(
             UserName = registerRequest.Email,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
-            Role = Roles.Facility,
             Facility = new()
             {
                 Name = registerRequest.Name,
@@ -82,9 +90,19 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
               return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
+        try
+        {
+            await _userManager.AddToRoleAsync(user, Roles.Facility.ToString());
+        }
+        catch
+        {
+            await _userManager.DeleteAsync(user);
+            throw;
+        }
+
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Facility.ToString()));
 
         return Empty.Default;
     }
@@ -99,7 +117,6 @@ public class AuthenticationService(
             UserName = registerRequest.Email,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
-            Role = Roles.Company,
             Company = new()
             {
                 Name = registerRequest.Name,
@@ -112,9 +129,19 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
+        try
+        {
+            await _userManager.AddToRoleAsync(user, Roles.Company.ToString());
+        }
+        catch
+        {
+            await _userManager.DeleteAsync(user);
+            throw;
+        }
+
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.Role.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Company.ToString()));
 
         return Empty.Default;
     }

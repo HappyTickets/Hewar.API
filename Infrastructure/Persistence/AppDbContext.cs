@@ -1,17 +1,18 @@
 ﻿using Domain.Entities.Identity;
 using Domain.Entities.UserEntities;
 using Infrastructure.Persistence.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace Infrastructure.Persistence
 {
-    internal class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
+    internal class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, IPublisher publisher) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
 
     {
         private readonly ICurrentUserService _currentUserService = currentUserService;
-
+        private readonly IPublisher _publisher = publisher;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,7 +46,11 @@ namespace Infrastructure.Persistence
             ChangeTracker.PrepareAddedEntities(_currentUserService);
             ChangeTracker.PrepareModifiedEntities(_currentUserService);
 
-            return await base.SaveChangesAsync(cancellationToken);
+            var affectedRows = await base.SaveChangesAsync(cancellationToken);
+
+            await _publisher.PublishDomainEvents(this);
+
+            return affectedRows;
         }
 
         #region DbSets

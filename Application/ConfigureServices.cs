@@ -4,6 +4,7 @@ using Application.Authorization.Service;
 using Application.Files.Service;
 using Application.Notifications.Service;
 using Application.PriceRequests.Service;
+using Application.Tickets.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace Application
         {
             // services
             services
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()))
                 .AddAutoMapper(Assembly.GetExecutingAssembly())
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly())
                 .AddFluentValidationAutoValidation();
@@ -30,7 +32,8 @@ namespace Application
               .AddScoped<IAuthorizationService, AuthorizationService>()
               .AddScoped<INotificationsService, NotificationsService>()
               .AddScoped<IFileService, FileService>()
-              .AddScoped<IPriceRequestsService, PriceRequestsService>();
+              .AddScoped<IPriceRequestsService, PriceRequestsService>()
+              .AddScoped<ITicketsService, TicketsService>();
 
 
             return services;

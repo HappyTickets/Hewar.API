@@ -1,5 +1,4 @@
-﻿using Application.Files.Dtos;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Files.Service

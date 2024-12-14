@@ -1,6 +1,6 @@
 ﻿namespace Domain.Common
 {
-    public class TenantBase: SoftDeletableEntity
+    public abstract class TenantBase: SoftDeletableEntity
     {
         public string? SubscriptionPlan { get; set; }
         public string? CustomAttributes { get; set; }

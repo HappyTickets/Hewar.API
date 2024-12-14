@@ -1,5 +1,6 @@
 ﻿using Application.Notifications.Dtos;
 using AutoMapper;
+using Domain.Events.Notifications;
 
 namespace Application.Notifications.Service
 {
@@ -24,6 +25,8 @@ namespace Application.Notifications.Service
                 return new NotFoundException();
 
             notification.IsRead = true;
+
+            notification.AddDomainEvent(new NotificationCreated(notification));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
@@ -32,14 +35,15 @@ namespace Application.Notifications.Service
         public async Task<Result<IEnumerable<NotificationDto>>> GetAllAsync()
         {
             var notifications = await _ufw.Notifications
-                .FilterAsync(n => n.RecipientId == _currentUser.Id);
+                .FilterAsync(n => n.RecipientId == _currentUser.Id && n.RecipientType == Enum.Parse<RecipientTypes>(_currentUser.Role!));
 
             return _mapper.Map<NotificationDto[]>(notifications);
         }
 
         public async Task<Result<long>> CountUnReadAsync()
         {
-            return await _ufw.Notifications.CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.Id);
+            return await _ufw.Notifications
+                .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.Id && n.RecipientType == Enum.Parse<RecipientTypes>(_currentUser.Role!));
         }
     }
 }
