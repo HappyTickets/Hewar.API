@@ -42,9 +42,6 @@ jobs:
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
 
-    - name: Clean up old files in target directory
-      run: sshpass -p "$FTP_PASSWORD" ssh -o StrictHostKeyChecking=no devUser@188.138.101.4 "sudo rm -rf /var/www/HewarAPI/*"
-
     - name: Debug SSH connection
       run: sshpass -p "$FTP_PASSWORD" ssh -o StrictHostKeyChecking=no devUser@188.138.101.4 "whoami && ls -ld /var/www/HewarAPI/"
     
