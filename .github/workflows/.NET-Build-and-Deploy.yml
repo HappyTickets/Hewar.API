@@ -48,6 +48,6 @@ jobs:
         server: 188.138.101.4
         username: devUser
         password: DevUser@2024
-        server-dir: /var/www/HewarAPI
+        server-dir: /var/www/HewarAPI/
         local-dir: ./bin/Release/net8.0/publish/
         dangerous-clean-slate: true
