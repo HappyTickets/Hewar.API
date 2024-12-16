@@ -49,4 +49,4 @@ jobs:
         username: devUser
         password: DevUser@2024
         target: /var/www/HewarAPI/
-        source: ./bin/Release/net8.0/publish/*
+        source: ./bin/Release/net8.0/publish/**/*
