@@ -2053,4 +2053,10 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="ClosedTicketError" xml:space="preserve">
     <value>The ticket is already closed.</value>
   </data>
+  <data name="EmailExistsError" xml:space="preserve">
+    <value>Email address already exists.</value>
+  </data>
+  <data name="UserNameExistsError" xml:space="preserve">
+    <value>Username already exists.</value>
+  </data>
 </root>

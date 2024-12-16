@@ -35,7 +35,7 @@ namespace Application.Notifications.Service
         public async Task<Result<IEnumerable<NotificationDto>>> GetAllAsync()
         {
             var notifications = await _ufw.Notifications
-                .FilterAsync(n => n.RecipientId == _currentUser.Id && n.RecipientType == Enum.Parse<RecipientTypes>(_currentUser.Role!));
+                .FilterAsync(n => n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
 
             return _mapper.Map<NotificationDto[]>(notifications);
         }
@@ -43,7 +43,7 @@ namespace Application.Notifications.Service
         public async Task<Result<long>> CountUnReadAsync()
         {
             return await _ufw.Notifications
-                .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.Id && n.RecipientType == Enum.Parse<RecipientTypes>(_currentUser.Role!));
+                .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
         }
     }
 }

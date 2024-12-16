@@ -26,13 +26,13 @@ namespace Application.Tickets.Events
                 Event = NotificationEvents.TicketCreated,
                 CreatedAt = DateTimeOffset.UtcNow,
                 RecipientId = notification.Ticket.PriceRequest.CompanyId,
-                RecipientType = RecipientTypes.Company
+                RecipientType = AccountTypes.Company
             };
 
-            if(_currentUser.Role == Roles.Company.ToString())
+            if(_currentUser.Type == AccountTypes.Company)
             {
                 userNotification.RecipientId = notification.Ticket.PriceRequest.FacilityId;
-                userNotification.RecipientType = RecipientTypes.Facility;
+                userNotification.RecipientType = AccountTypes.Facility;
             }
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

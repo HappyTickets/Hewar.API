@@ -9,8 +9,14 @@ namespace Application.Authorization.Validators
 
         public RegisterFacilityRequestValidator()
         {
-            RuleFor(r => r.Name)
-            .NotEmpty().WithMessage(Resource.RequiredField);
+            RuleFor(x => x.UserName)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+
+            RuleFor(x => x.FirstName)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+
+            RuleFor(x => x.LastName)
+                .NotEmpty().WithMessage(Resource.RequiredField);
 
 
             RuleFor(r => r.Email)

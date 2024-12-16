@@ -2,9 +2,9 @@
 
 namespace Presentation.Attributes
 {
-    public class HasRoleAttribute: AuthorizeAttribute
+    public class HasAccountTypeAttribute: AuthorizeAttribute
     {
-        public HasRoleAttribute(Roles role)
+        public HasAccountTypeAttribute(AccountTypes role)
         {
             Roles = role.ToString();
         }

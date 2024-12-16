@@ -15,12 +15,12 @@ namespace Infrastructure.Notifications
 
         public override Task OnConnectedAsync()
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Role}");
+            return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Type}");
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Role}");
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Type}");
         }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Presentation.Attributes
 {
-    public class HaveRolesAttribute: AuthorizeAttribute
+    public class HaveAccountTypesAttribute: AuthorizeAttribute
     {
-        public HaveRolesAttribute(params Roles[] roles)
+        public HaveAccountTypesAttribute(params AccountTypes[] roles)
         {
             Roles = string.Join(",", roles);
         }

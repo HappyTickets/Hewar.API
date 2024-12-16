@@ -4,7 +4,8 @@ namespace Domain.Entities
 {
     public class Company: TenantBase
     {
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Address { get; set; }
         public long LoginDetailsId { get; set; }
 

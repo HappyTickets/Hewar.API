@@ -15,27 +15,27 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("createTicket")]
-        [HaveRoles(Roles.Facility, Roles.Company)]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> CreateTicketAsync(CreateTicketDto dto)
             => Result(await _ticketsService.CreateTicketAsync(dto));
 
         [HttpPost("createMessage")]
-        [HaveRoles(Roles.Facility, Roles.Company)]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> CreateMessageAsync(CreateTicketMessageDto dto)
             => Result(await _ticketsService.CreateMessageAsync(dto));
 
         [HttpPatch("closeTicket")]
-        [HaveRoles(Roles.Company)]
+        [HaveAccountTypes(AccountTypes.Company)]
         public async Task<IActionResult> CloseTicketAsync(long ticketId)
            => Result(await _ticketsService.CloseTicketAsync(ticketId));
 
         [HttpGet("getTickets")]
-        [HaveRoles(Roles.Facility, Roles.Company)]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetTicketsAsync(long priceRequestId)
             => Result(await _ticketsService.GetTicketsAsync(priceRequestId));
 
         [HttpGet("getMessages")]
-        [HaveRoles(Roles.Facility, Roles.Company)]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetMessagesAsync(long ticketId)
             => Result(await _ticketsService.GetMessagesAsync(ticketId));
     }

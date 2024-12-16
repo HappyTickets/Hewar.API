@@ -1947,4 +1947,10 @@ Happy Tickets</value>
   <data name="ClosedTicketError" xml:space="preserve">
     <value>التذكرة مغلقة بالفعل</value>
   </data>
+  <data name="EmailExistsError" xml:space="preserve">
+    <value>عنوان البريد الإلكتروني موجود بالفعل.</value>
+  </data>
+  <data name="UserNameExistsError" xml:space="preserve">
+    <value>اسم المستخدم موجود بالفعل.</value>
+  </data>
 </root>

@@ -43,7 +43,7 @@ namespace Application.Tickets.Service
                         Medias = _mapper.Map<Media[]>(dto.Medias),
                         SentDate = DateTimeOffset.UtcNow,
                         SenderId = _currentUser.Id!.Value,
-                        SenderType = Enum.Parse<SenderTypes>(_currentUser.Role!)
+                        SenderType =_currentUser.Type!.Value
                     }
                 ]
             };
@@ -69,7 +69,7 @@ namespace Application.Tickets.Service
 
             message.SentDate = DateTimeOffset.UtcNow;
             message.SenderId = _currentUser.Id!.Value;
-            message.SenderType = Enum.Parse<SenderTypes>(_currentUser.Role!);
+            message.SenderType = _currentUser.Type!.Value;
             message.Ticket = ticket;
 
             message.AddDomainEvent(new TicketMessageCreated(message));

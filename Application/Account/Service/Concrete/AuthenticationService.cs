@@ -25,16 +25,25 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ValidationException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+
+        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
+            return new ConflictException(Resource.EmailExistsError);
+
+        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
+            return new ConflictException(Resource.UserNameExistsError);
+
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.Email,
+            UserName = registerRequest.UserName,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
+            AccountType = AccountTypes.Guard,
             Guard = new()
             {
-                Name = registerRequest.Name,
+                FirstName = registerRequest.FirstName,
+                LastName = registerRequest.LastName,
                 DateOfBirth = registerRequest.DateOfBirth,
                 Skills = registerRequest.Skills
             }
@@ -45,19 +54,9 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
-        try
-        {
-            await _userManager.AddToRoleAsync(user, Roles.Guard.ToString());
-        }
-        catch
-        {
-            await _userManager.DeleteAsync(user);
-            throw;
-        }
-
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Guard.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -65,16 +64,25 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ValidationException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+
+        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
+            return new ConflictException(Resource.EmailExistsError);
+
+        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
+            return new ConflictException(Resource.UserNameExistsError);
+
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.Email,
+            UserName = registerRequest.UserName,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
+            AccountType = AccountTypes.Facility,
             Facility = new()
             {
-                Name = registerRequest.Name,
+                FirstName = registerRequest.FirstName,
+                LastName = registerRequest.LastName,
                 Type = registerRequest.Type,
                 CommercialRegistration = registerRequest.CommercialRegistration,
                 ActivityType = registerRequest.ActivityType,
@@ -90,19 +98,10 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
               return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
-        try
-        {
-            await _userManager.AddToRoleAsync(user, Roles.Facility.ToString());
-        }
-        catch
-        {
-            await _userManager.DeleteAsync(user);
-            throw;
-        }
 
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Facility.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -110,16 +109,24 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ValidationException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+
+        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
+            return new ConflictException(Resource.EmailExistsError);
+
+        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
+            return new ConflictException(Resource.UserNameExistsError);
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.Email,
+            UserName = registerRequest.UserName,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
+            AccountType = AccountTypes.Company,
             Company = new()
             {
-                Name = registerRequest.Name,
+                FirstName = registerRequest.FirstName,
+                LastName = registerRequest.LastName,
                 Address = registerRequest.Address
             }
         };
@@ -129,19 +136,9 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
-        try
-        {
-            await _userManager.AddToRoleAsync(user, Roles.Company.ToString());
-        }
-        catch
-        {
-            await _userManager.DeleteAsync(user);
-            throw;
-        }
-
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Company.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
 
         return Empty.Default;
     }
