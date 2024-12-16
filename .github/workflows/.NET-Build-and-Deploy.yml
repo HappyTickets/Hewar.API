@@ -42,11 +42,15 @@ jobs:
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
 
-    - name: Deploy via SFTP
-      uses: appleboy/scp-action@v0.1.7
+    - name: Clean up old files in target directory
+      run: sshpass -p "$FTP_PASSWORD" ssh -o StrictHostKeyChecking=no devUser@188.138.101.4 "rm -rf /var/www/HewarAPI/*"
+
+    - name: Deploy via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        host: 188.138.101.4
+        server: 188.138.101.4
         username: devUser
         password: DevUser@2024
-        target: /var/www/HewarAPI/
-        source: ./bin/Release/net8.0/publish/*
+        server-dir: /var/www/HewarAPI
+        local-dir: ./bin/Release/net8.0/publish/
+        dangerous-clean-slate: true
