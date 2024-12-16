@@ -15,27 +15,27 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("createTicket")]
-        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        [HasPermission(Permissions.CreateTicket)]
         public async Task<IActionResult> CreateTicketAsync(CreateTicketDto dto)
             => Result(await _ticketsService.CreateTicketAsync(dto));
 
         [HttpPost("createMessage")]
-        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        [HasPermission(Permissions.CreateTicketMessage)]
         public async Task<IActionResult> CreateMessageAsync(CreateTicketMessageDto dto)
             => Result(await _ticketsService.CreateMessageAsync(dto));
 
         [HttpPatch("closeTicket")]
-        [HaveAccountTypes(AccountTypes.Company)]
+        [HasPermission(Permissions.CloseTicket)]
         public async Task<IActionResult> CloseTicketAsync(long ticketId)
            => Result(await _ticketsService.CloseTicketAsync(ticketId));
 
         [HttpGet("getTickets")]
-        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        [HasPermission(Permissions.ViewTickets)]
         public async Task<IActionResult> GetTicketsAsync(long priceRequestId)
             => Result(await _ticketsService.GetTicketsAsync(priceRequestId));
 
         [HttpGet("getMessages")]
-        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        [HasPermission(Permissions.ViewTicketMessages)]
         public async Task<IActionResult> GetMessagesAsync(long ticketId)
             => Result(await _ticketsService.GetMessagesAsync(ticketId));
     }

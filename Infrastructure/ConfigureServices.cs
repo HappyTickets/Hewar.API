@@ -2,6 +2,7 @@
 using Application.AccountManagement.Service.Interfaces;
 using Application.AccountManagement.Validators;
 using Application.Authorization.Service;
+using Domain.Consts;
 using Domain.Entities.UserEntities;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;

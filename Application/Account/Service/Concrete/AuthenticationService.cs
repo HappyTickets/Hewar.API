@@ -3,6 +3,7 @@ using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Dtos.User;
 using Application.AccountManagement.Service.Interfaces;
 using AutoMapper;
+using Domain.Consts;
 using Domain.Entities.UserEntities;
 using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
@@ -56,7 +57,7 @@ public class AuthenticationService(
 
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -101,7 +102,7 @@ public class AuthenticationService(
 
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -138,7 +139,7 @@ public class AuthenticationService(
 
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, user.AccountType.ToString()));
+        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }

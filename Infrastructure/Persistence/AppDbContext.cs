@@ -1,6 +1,7 @@
 ﻿using Domain.Entities.Identity;
 using Domain.Entities.UserEntities;
 using Infrastructure.Persistence.Extensions;
+using Infrastructure.Persistence.Seeds;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,9 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
             modelBuilder.AppendGlobalQueryFilter<SoftDeletableEntity>(e => !e.IsDeleted);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+            modelBuilder.SeedRoles();
 
             #region UserRolesRelationship
             modelBuilder.Entity<ApplicationUser>(b =>
@@ -36,10 +36,16 @@ namespace Infrastructure.Persistence
                     .WithOne(e => e.Role)
                     .HasForeignKey(ur => ur.RoleId)
                     .IsRequired();
+
+                b.HasMany(r => r.Permissions)
+                    .WithOne(rp => rp.Role)
+                    .HasForeignKey(rp => rp.RoleId)
+                    .IsRequired();
             });
             #endregion
 
         }
+
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -72,7 +78,7 @@ namespace Infrastructure.Persistence
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-
+        public DbSet<RolePermission> RolePermissions { get; set; }
         #endregion
 
     }
