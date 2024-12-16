@@ -42,12 +42,12 @@ jobs:
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
 
-    - name: Deploy via FTP
+   name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+        server: 188.138.101.4
+        username: devUser
+        password: DevUser@2024
+        server-dir: /var/www/HewarAPI
         local-dir: ./bin/Release/net8.0/publish/
         dangerous-clean-slate: true
