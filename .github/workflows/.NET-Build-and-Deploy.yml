@@ -43,12 +43,10 @@ jobs:
       run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
 
     - name: Deploy via SFTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      uses: appleboy/scp-action@v0.1.7
       with:
-        server: 188.138.101.4
+        host: 188.138.101.4
         username: devUser
         password: DevUser@2024
-        server-dir: /var/www/HewarAPI/
-        local-dir: ./bin/Release/net8.0/publish/
-        protocol: sftp
-        dangerous-clean-slate: true
+        target: /var/www/HewarAPI/
+        source: ./bin/Release/net8.0/publish/*
