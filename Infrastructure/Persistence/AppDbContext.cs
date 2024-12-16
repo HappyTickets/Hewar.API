@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace Infrastructure.Persistence
 {
-    internal class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, IPublisher publisher) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
+    public class AppDbContext(DbContextOptions<AppDbContext> options, ICurrentUserService currentUserService, IPublisher publisher) : IdentityDbContext<ApplicationUser, ApplicationRole, long, ApplicationUserClaim, ApplicationUserRole, ApplicationUserLogin, ApplicationRoleClaim, ApplicationUserToken>(options)
 
     {
         private readonly ICurrentUserService _currentUserService = currentUserService;
@@ -17,6 +17,8 @@ namespace Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.AppendGlobalQueryFilter<SoftDeletableEntity>(e => !e.IsDeleted);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.SeedRoles();

@@ -4,6 +4,7 @@
     {
         Company = 1,
         Facility = 2,
-        Guard = 3
+        Guard = 3,
+        Admin = 4
     }
 }

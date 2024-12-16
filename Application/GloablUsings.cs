@@ -8,4 +8,5 @@ global using Application.Common.Utilities;
 global using Application.Common.Interfaces.Services;
 global using Application.Common.Interfaces.Repositories;
 global using Localization.ResourceFiles;
+global using Domain.Consts;
 

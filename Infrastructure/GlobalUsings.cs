@@ -5,3 +5,4 @@ global using Application.Common.Exceptions;
 global using Application.Common.Utilities;
 global using Application.Common.Interfaces.Services;
 global using Application.Common.Interfaces.Repositories;
+global using Domain.Consts;

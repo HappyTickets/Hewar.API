@@ -1873,7 +1873,7 @@ Happy Tickets</value>
     <value>اسم المستخدم لا بد ان يترواح من  ثلاثة الي عشرين حرفا</value>
   </data>
   <data name="UserName_NoSpaces" xml:space="preserve">
-    <value>غير مسموح بالمسافات</value>
+    <value>غير مسموح بالمسافات فى اسم المستخدم</value>
   </data>
   <data name="UserName_Validation" xml:space="preserve">
     <value>اسم المستخدم مطلوب!</value>
@@ -1952,5 +1952,8 @@ Happy Tickets</value>
   </data>
   <data name="UserNameExistsError" xml:space="preserve">
     <value>اسم المستخدم موجود بالفعل.</value>
+  </data>
+  <data name="RoleNotExistError" xml:space="preserve">
+    <value>الدور غير موجود.</value>
   </data>
 </root>

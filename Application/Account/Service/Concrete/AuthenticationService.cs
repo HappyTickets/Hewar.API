@@ -16,12 +16,14 @@ public class AuthenticationService(
     UserManager<ApplicationUser> userManager,
     ITokensService tokensService,
     ICurrentUserService currenUser,
-    IMapper mapper) : IAuthenticationService
+    IMapper mapper,
+    RoleManager<ApplicationRole> roleManager) : IAuthenticationService
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly ITokensService _tokensService = tokensService;
     private readonly IMapper _mapper = mapper;
     private readonly ICurrentUserService _currenUser = currenUser;
+    private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
 
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
@@ -34,6 +36,8 @@ public class AuthenticationService(
         if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
             return new ConflictException(Resource.UserNameExistsError);
 
+        if (!await _roleManager.RoleExistsAsync(Roles.Guard))
+            return new NotFoundException(Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
@@ -55,9 +59,8 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
+        await _userManager.AddToRoleAsync(user, Roles.Guard);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -70,20 +73,19 @@ public class AuthenticationService(
         if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
             return new ConflictException(Resource.EmailExistsError);
 
-        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
-            return new ConflictException(Resource.UserNameExistsError);
 
+        if (!await _roleManager.RoleExistsAsync(Roles.Facility))
+            return new NotFoundException(Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.UserName,
+            UserName = null,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Facility,
             Facility = new()
             {
-                FirstName = registerRequest.FirstName,
-                LastName = registerRequest.LastName,
+                Name = registerRequest.Name,
                 Type = registerRequest.Type,
                 CommercialRegistration = registerRequest.CommercialRegistration,
                 ActivityType = registerRequest.ActivityType,
@@ -99,10 +101,8 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
               return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
-
+        await _userManager.AddToRoleAsync(user, Roles.Facility);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -115,19 +115,18 @@ public class AuthenticationService(
         if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
             return new ConflictException(Resource.EmailExistsError);
 
-        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
-            return new ConflictException(Resource.UserNameExistsError);
+        if (!await _roleManager.RoleExistsAsync(Roles.Company))
+            return new NotFoundException(Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
-            UserName = registerRequest.UserName,
+            UserName = null,
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Company,
             Company = new()
             {
-                FirstName = registerRequest.FirstName,
-                LastName = registerRequest.LastName,
+                Name = registerRequest.Name,
                 Address = registerRequest.Address
             }
         };
@@ -137,9 +136,8 @@ public class AuthenticationService(
         if (!registrationResults.Succeeded)
             return new ValidationException(registrationResults.Errors.Select(er => er.Description));
 
+        await _userManager.AddToRoleAsync(user, Roles.Company);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.Email, user.Email));
-        await _userManager.AddClaimAsync(user, new Claim(CustomeClaims.AccountType, user.AccountType.ToString()));
 
         return Empty.Default;
     }
@@ -165,7 +163,6 @@ public class AuthenticationService(
 
     public async Task<Result<Empty>> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
-
         await _tokensService.RemoveRefreshTokenAsync(refreshToken);
         return new();
     }
@@ -191,6 +188,7 @@ public class AuthenticationService(
       => await _userManager.Users
           .Include(u => u.ApplicationUserRoles)
           .ThenInclude(ur => ur.Role)
+          .ThenInclude(r=>r.Permissions)
           .FirstOrDefaultAsync(predicate);
 
     private async Task<UserSessionDto> BuildUserSessionDto(ApplicationUser user, TokensInfo tokens)
@@ -199,13 +197,24 @@ public class AuthenticationService(
         return new UserSessionDto
         {
             Id = long.Parse(claims.First(c=>c.Type == ClaimTypes.NameIdentifier)!.Value),
-            Email = claims.First(c => c.Type == ClaimTypes.Email)!.Value,
-            Role = claims.First(c => c.Type == ClaimTypes.Role)!.Value,
+            UserName = user.UserName!,
+            Email = user.Email!,
+            AccountType = user.AccountType.ToString(),
+            Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,
             RefreshToken = tokens.Refresh.Token,
             AccessTokenExpDate = tokens.JWT.ExpiryDate.UtcDateTime,
             RefreshTokenExpDate = tokens.Refresh.ExpiryDate.UtcDateTime
         };
+    }
+
+    private string[] ExtractPermissions(ApplicationUser user)
+    {
+        return user.ApplicationUserRoles!
+            .SelectMany(ur => ur.Role!.Permissions!)
+            .Select(rp=>rp.Permission.ToString())
+            .Distinct()
+            .ToArray();
     }
 
     #endregion

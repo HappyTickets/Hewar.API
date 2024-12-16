@@ -1,6 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Authentication;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 namespace Application.Authorization.Validators
 {
@@ -10,15 +9,8 @@ namespace Application.Authorization.Validators
         public RegisterCompanyRequestValidator()
         {
 
-            RuleFor(x => x.UserName)
+            RuleFor(x => x.Name)
                 .NotEmpty().WithMessage(Resource.RequiredField);
-            
-            RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-            
-            RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)

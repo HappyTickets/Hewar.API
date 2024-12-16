@@ -11,6 +11,12 @@ namespace Application.Authorization.Validators
             RuleFor(x => x.RoleName)
                 .NotEmpty().WithMessage(Resource.InvalidName)
                 .Matches(@"^[a-zA-Z\u0600-\u06FF]+$").WithMessage(Resource.InvalidName);
+
+            RuleFor(r => r.Permissions)
+                .ForEach(b =>
+                {
+                    b.IsEnumName(typeof(Permissions));
+                });
         }
     }
 

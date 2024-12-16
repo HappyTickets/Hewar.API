@@ -24,9 +24,9 @@ public class PasswordResetService : IPasswordResetService
         if (user is null) return new NotFoundException();
 
         var token = HttpUtility.UrlEncode(await _userManager.GeneratePasswordResetTokenAsync(user));
-        return await _emailSender.SendEmailAsync(user.Email!, Resource.Password_Reset,
-            $"{Resource.Password_Reset_Message} \"فين العنوان يا نجم\"   {Resource.Password_Reset}</a>",
-            cancellationToken: cancellationToken);
+        await _emailSender.SendAsync(user.Email!, Resource.Password_Reset,
+            $"{Resource.Password_Reset_Message} \"فين العنوان يا نجم\"   {Resource.Password_Reset}</a>");
+        return Empty.Default;
     }
 
     public async Task<Result<Empty>> ResetPasswordAsync(ResetPasswordTokenDto dto, CancellationToken cancellationToken = default)

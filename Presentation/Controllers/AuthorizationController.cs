@@ -17,7 +17,7 @@ namespace API.Controllers
             return Result(await _authorizationService.AddRoleAsync(addRoleDto));
         }
 
-        [HttpPost("roles/edit")]
+        [HttpPut("roles/edit")]
         [HasPermission(Permissions.UpdateRole)]
         public async Task<IActionResult> Edit([FromBody] EditRoleDto editRoleDto)
         {

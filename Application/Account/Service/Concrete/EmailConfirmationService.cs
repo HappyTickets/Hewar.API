@@ -23,8 +23,10 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     private async Task<Result<Empty>> SendConfirmationEmailAsync(ApplicationUser user, CancellationToken cancellationToken = default)
     {
         var tokenOtp = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        return await _emailSender.SendEmailAsync(user.Email!, Resource.Email_Confirmation,
-            string.Format(Resource.Email_Confirmation_Message, tokenOtp), cancellationToken: cancellationToken);
+        await _emailSender.SendAsync(user.Email!, Resource.Email_Confirmation,
+            string.Format(Resource.Email_Confirmation_Message, tokenOtp));
+
+        return Empty.Default;
     }
     public async Task<Result<Empty>> ConfirmEmailAsync(ConfirmEmailRequest request, CancellationToken cancellationToken = default)
     {
@@ -57,7 +59,7 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     private Result<Empty> ProcessIdentityResult(IdentityResult result)
     {
         return result.Succeeded
-            ? new Result<Empty>()
+            ? Empty.Default
             : new ValidationException(result.Errors.Select(e => e.Description));
     }
 }

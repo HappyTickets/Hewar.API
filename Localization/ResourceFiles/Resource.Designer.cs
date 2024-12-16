@@ -3464,6 +3464,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role does not exist..
+        /// </summary>
+        public static string RoleNotExistError {
+            get {
+                return ResourceManager.GetString("RoleNotExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role removed successfully.
         /// </summary>
         public static string RoleRemovedSuccessfully {

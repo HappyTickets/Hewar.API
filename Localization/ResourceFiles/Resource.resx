@@ -1976,7 +1976,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
     <value>Username should be between 3 and 20 characters</value>
   </data>
   <data name="UserName_NoSpaces" xml:space="preserve">
-    <value>Spaces not allowed</value>
+    <value>Spaces not allowed in User Name</value>
   </data>
   <data name="UserName_Validation" xml:space="preserve">
     <value>User Name field is required!</value>
@@ -2058,5 +2058,8 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   </data>
   <data name="UserNameExistsError" xml:space="preserve">
     <value>Username already exists.</value>
+  </data>
+  <data name="RoleNotExistError" xml:space="preserve">
+    <value>Role does not exist.</value>
   </data>
 </root>

@@ -22,11 +22,13 @@ namespace Presentation.Controllers
             => Result(await _priceRequestsService.CreateRequestAsync(dto));
 
         [HttpGet("getRequestForFacility")]
+        [HasAccountType(AccountTypes.Facility)]
         [HasPermission(Permissions.ViewPriceRequests)]
         public async Task<IActionResult> GetRequestForFacilityAsync()
             => Result(await _priceRequestsService.GetRequestForFacilityAsync());
 
         [HttpGet("getRequestForCompany")]
+        [HasAccountType(AccountTypes.Company)]
         [HasPermission(Permissions.ViewPriceRequests)]
         public async Task<IActionResult> GetRequestForCompanyAsync()
             => Result(await _priceRequestsService.GetRequestForCompanyAsync());
@@ -35,7 +37,6 @@ namespace Presentation.Controllers
         [HasPermission(Permissions.CreatePriceRequest)]
         public async Task<IActionResult> CreateFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
             => Result(await _priceRequestsService.CreateFacilityDetailsAsync(dto));
-
         [HttpPut("updateFacilityDetails")]
         [HasPermission(Permissions.UpdatePriceRequest)]
         public async Task<IActionResult> UpdateFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
