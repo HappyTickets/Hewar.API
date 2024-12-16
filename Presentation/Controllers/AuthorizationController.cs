@@ -28,7 +28,7 @@ namespace API.Controllers
             return Result(await _authorizationService.DeleteRoleAsync(id));
         }
 
-        [HttpGet("Getroleslst")]
+        [HttpGet("Getroles")]
         public async Task<IActionResult> GetRolesList()
         {
             return Result(await _authorizationService.GetRolesList());

@@ -42,7 +42,7 @@ jobs:
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
 
-   name: Deploy via FTP
+    - name: Deploy via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: 188.138.101.4
