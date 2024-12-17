@@ -4,6 +4,6 @@
     {
         long? Id { get; }
         string? Email { get; }
-        string? Role { get; }
+        AccountTypes? Type { get; }
     }
 }

@@ -11,10 +11,7 @@ namespace Application.Authorization.Mapping
         public RoleProfile()
         {
             CreateMap<ApplicationRole, RoleDto>()
-            .ForMember(r => r.RoleId, opt => opt.MapFrom(r => r.Id))
-            .ForMember(r => r.RoleName, opt => opt.MapFrom(r => r.Name))
-            .ForMember(r => r.RoleDescription, opt => opt.MapFrom(r => r.Description))
-            .ReverseMap();
+                .ForMember(r => r.Permissions, opt => opt.MapFrom(r => r.Permissions!.Select(p=>p.Permission)));
 
         }
     }

@@ -234,8 +234,16 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("FacilityId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("LoginDetailsId")
                         .HasColumnType("bigint");
@@ -245,10 +253,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Skills")
                         .IsRequired()
@@ -343,6 +347,173 @@ namespace Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Identity.RolePermission", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("int");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RolePermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Permission = 50,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Permission = 51,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Permission = 52,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Permission = 53,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            Permission = 1,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            Permission = 2,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            Permission = 3,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Permission = 4,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            Permission = 5,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            Permission = 6,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            Permission = 104,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            Permission = 102,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            Permission = 103,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            Permission = 151,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            Permission = 152,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            Permission = 153,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 17L,
+                            Permission = 154,
+                            RoleId = 2L
+                        },
+                        new
+                        {
+                            Id = 18L,
+                            Permission = 100,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 19L,
+                            Permission = 101,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 20L,
+                            Permission = 104,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 21L,
+                            Permission = 150,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 22L,
+                            Permission = 151,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 23L,
+                            Permission = 153,
+                            RoleId = 3L
+                        },
+                        new
+                        {
+                            Id = 24L,
+                            Permission = 154,
+                            RoleId = 3L
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -1088,6 +1259,32 @@ namespace Infrastructure.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Company",
+                            NormalizedName = "COMPANY"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "Facility",
+                            NormalizedName = "FACILITY"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "Guard",
+                            NormalizedName = "GUARD"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRoleClaim", b =>
@@ -1123,6 +1320,9 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -1309,6 +1509,17 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Identity.RolePermission", b =>
+                {
+                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", "Role")
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payroll", b =>
@@ -1554,6 +1765,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRole", b =>
                 {
                     b.Navigation("ApplicationUserRoles");
+
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>

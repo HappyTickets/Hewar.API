@@ -1,12 +1,15 @@
-﻿using Application.AccountManagement.Service.Concrete;
+﻿using Application.Account.Validators;
+using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
 using Application.Files.Service;
 using Application.Notifications.Service;
 using Application.PriceRequests.Service;
 using Application.Tickets.Service;
+using Domain.Entities.UserEntities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -33,7 +36,8 @@ namespace Application
               .AddScoped<INotificationsService, NotificationsService>()
               .AddScoped<IFileService, FileService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
-              .AddScoped<ITicketsService, TicketsService>();
+              .AddScoped<ITicketsService, TicketsService>()
+              .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
 
 
             return services;
