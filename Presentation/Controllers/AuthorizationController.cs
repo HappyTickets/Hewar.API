@@ -31,8 +31,8 @@ namespace API.Controllers
             return Result(await _authorizationService.DeleteRoleAsync(id));
         }
 
-        [HttpGet("roles")]
-        [HasPermission(Permissions.ViewRoles)]
+        [HttpGet("GetAllroles")]
+        //[HasPermission(Permissions.ViewRoles)]
         public async Task<IActionResult> GetRolesList()
         {
             return Result(await _authorizationService.GetRolesList());
