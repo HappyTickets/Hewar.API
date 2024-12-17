@@ -32,7 +32,7 @@ namespace API.Controllers
         }
 
         [HttpGet("roles")]
-        //[HasPermission(Permissions.ViewRoles)]
+        [HasPermission(Permissions.ViewRoles)]
         public async Task<IActionResult> GetRolesList()
         {
             return Result(await _authorizationService.GetRolesList());
