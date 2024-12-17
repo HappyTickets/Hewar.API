@@ -47,8 +47,8 @@ jobs:
       uses: appleboy/scp-action@v0.1.7
       with:
         host: 188.138.101.4
-        username: devUser
-        password: DevUser@2024
+        username: sysAdmin
+        password: wnrQ&F2tfPQA)w)G
         target: /var/www/HewarAPI/
-        source: ./publish/
+        source: ./publish/**/*
         dangerous-clean-slate: true
