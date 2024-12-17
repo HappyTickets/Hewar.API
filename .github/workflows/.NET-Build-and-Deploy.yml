@@ -50,5 +50,5 @@ jobs:
         username: sysAdmin
         password: wnrQ&F2tfPQA)w)G
         target: /var/www/HewarAPI/
-        source: ./publish/
+        source: ./publish/hewarAPI
         dangerous-clean-slate: true
