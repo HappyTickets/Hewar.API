@@ -60,4 +60,4 @@ jobs:
         username: root
         password: tasqrRj#YR7n%pz
         script: |
-          sudo systemctl restart hewarapi.service
+          sudo systemctl restart HewarAPI.service
