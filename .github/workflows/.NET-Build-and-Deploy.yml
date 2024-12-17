@@ -40,7 +40,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Publish the application
-      run: dotnet publish --configuration Release --output ./bin/Release/net8.0/publish /p:EnvironmentName=Development
+      run: dotnet publish --configuration Release --output ./bin/Release/publish /p:EnvironmentName=Development
 
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
