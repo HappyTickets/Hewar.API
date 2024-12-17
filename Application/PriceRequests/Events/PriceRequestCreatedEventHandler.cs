@@ -25,7 +25,7 @@ namespace Application.PriceRequests.Events
                 Event = NotificationEvents.PriceRequestCreated,
                 CreatedAt = DateTimeOffset.UtcNow,
                 RecipientId = notification.PriceRequest.CompanyId,
-                RecipientType = RecipientTypes.Company
+                RecipientType = AccountTypes.Company
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

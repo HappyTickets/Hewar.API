@@ -1200,6 +1200,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Email address already exists..
+        /// </summary>
+        public static string EmailExistsError {
+            get {
+                return ResourceManager.GetString("EmailExistsError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter your email here.
         /// </summary>
         public static string EmailHelperText {
@@ -3455,6 +3464,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Role does not exist..
+        /// </summary>
+        public static string RoleNotExistError {
+            get {
+                return ResourceManager.GetString("RoleNotExistError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role removed successfully.
         /// </summary>
         public static string RoleRemovedSuccessfully {
@@ -5044,6 +5062,15 @@ namespace Localization.ResourceFiles {
         public static string UserName_Validation {
             get {
                 return ResourceManager.GetString("UserName_Validation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username already exists..
+        /// </summary>
+        public static string UserNameExistsError {
+            get {
+                return ResourceManager.GetString("UserNameExistsError", resourceCulture);
             }
         }
         

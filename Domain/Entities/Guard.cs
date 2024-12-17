@@ -4,7 +4,8 @@ namespace Domain.Entities
 {
     public class Guard : SoftDeletableEntity
     {
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public DateTimeOffset DateOfBirth { get; set; }
         public string Skills { get; set; }
         public long LoginDetailsId { get; set; }

@@ -10,6 +10,6 @@
         public NotificationEvents Event { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public long RecipientId { get; set; }
-        public RecipientTypes RecipientType { get; set; }
+        public AccountTypes RecipientType { get; set; }
     }
 }

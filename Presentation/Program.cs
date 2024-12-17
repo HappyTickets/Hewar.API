@@ -1,6 +1,7 @@
 using Application;
 using Infrastructure;
 using Infrastructure.Notifications;
+using Infrastructure.Persistence;
 using Localization;
 using Presentation.Extensions;
 
@@ -48,4 +49,12 @@ app.UseAuthorization();
 app.MapHub<NotificationsHub>("/hubs/notifications");
 app.MapControllers();
 
+using (var scope = app.Services.CreateScope())
+{
+    await scope.ServiceProvider
+        .GetRequiredService<AppDbContextIntializer>()
+        .InitialiseAsync();
+}
+
 app.Run();
+

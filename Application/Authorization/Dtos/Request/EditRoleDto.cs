@@ -5,7 +5,7 @@
         public long RoleId { get; set; }
         public string? RoleName { get; set; }
         public string? RoleDescription { get; set; }
+        public string[] Permissions { get; set; }
 
-        //public IEnumerable<PermissionsDTO> Permissions { get; set; }
     }
 }

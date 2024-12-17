@@ -1,8 +1,8 @@
 ﻿using Application.AccountManagement.OTP;
 using Application.AccountManagement.Service.Interfaces;
-using Application.AccountManagement.Validators;
 using Application.Authorization.Service;
 using Domain.Entities.UserEntities;
+using Infrastructure.Mail;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
@@ -38,7 +38,12 @@ namespace Infrastructure
                 .AddScoped<IAuthorizationRepository, AuthorizationRepository>()
                 .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddScoped<IUnitOfWorkService, UnitOfWorkService>()
-                .AddScoped<INotificationService, NotificationService>();
+                .AddScoped<INotificationService, NotificationService>()
+                .AddScoped<AppDbContextIntializer>();
+
+            // configs
+            services
+                .Configure<MailSettings>(config.GetSection(MailSettings.SectionName));
 
             return services;
         }
@@ -57,7 +62,6 @@ namespace Infrastructure
                 options.Password.RequireLowercase = true;
                 options.Password.RequireDigit = true;
             })
-                .AddUserValidator<UsernameValidator<ApplicationUser>>()
                 .AddTokenProvider<EmailOtpTokenProvider>(nameof(EmailOtpTokenProvider))
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
             return services;
@@ -92,6 +96,19 @@ namespace Infrastructure
                         return Task.CompletedTask;
                     }
                 };
+            });
+
+            services.AddAuthorization(opt =>
+            {
+                foreach (var type in Enum.GetNames(typeof(AccountTypes)))
+                {
+                    opt.AddPolicy(type, builder =>
+                    {
+                        builder
+                        .RequireAuthenticatedUser()
+                        .RequireClaim(CustomeClaims.AccountType, type);
+                    });
+                }
             });
         }
 

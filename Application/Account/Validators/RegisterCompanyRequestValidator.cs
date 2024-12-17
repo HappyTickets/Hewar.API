@@ -1,6 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Authentication;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 namespace Application.Authorization.Validators
 {
@@ -11,8 +10,7 @@ namespace Application.Authorization.Validators
         {
 
             RuleFor(x => x.Name)
-            .NotEmpty().WithMessage(Resource.RequiredField);
-
+                .NotEmpty().WithMessage(Resource.RequiredField);
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)

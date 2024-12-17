@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain.Consts;
+using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace Infrastructure.Services
@@ -21,7 +22,20 @@ namespace Infrastructure.Services
             }
         }
 
+        public AccountTypes? Type
+        {
+            get
+            {
+                var type = _httpcontext?.User.FindFirstValue(CustomeClaims.AccountType);
+
+                if (string.IsNullOrEmpty(type))
+                    return null;
+
+                return Enum.Parse<AccountTypes>(type);
+            }
+        }
+
         public string? Email => _httpcontext?.User.FindFirstValue(ClaimTypes.Email);
-        public string? Role => _httpcontext?.User.FindFirstValue(ClaimTypes.Role);
+
     }
 }

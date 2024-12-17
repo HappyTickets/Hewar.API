@@ -3,6 +3,7 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
+using Domain.Entities.Identity;
 using Domain.Entities.UserEntities;
 using LanguageExt;
 using Localization.ResourceFiles;
@@ -31,6 +32,7 @@ namespace Application.Authorization.Service
             {
                 Name = addRoleDto.RoleName,
                 Description = addRoleDto.RoleDescription,
+                Permissions = addRoleDto.Permissions.Select(p=> new RolePermission { Permission = Enum.Parse<Permissions>(p)}).ToList()
             };
 
             var result = await _roleManager.CreateAsync(identityRole);
@@ -41,7 +43,7 @@ namespace Application.Authorization.Service
 
                 return addRoleFailedExp;
             }
-            return new();
+            return Empty.Default;
         }
 
 
@@ -69,7 +71,9 @@ namespace Application.Authorization.Service
 
         public async Task<Result<Empty>> EditRoleAsync(EditRoleDto editRoleDto)
         {
-            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == editRoleDto.RoleId);
+            var role = await _roleManager.Roles
+                .Include(r=>r.Permissions)
+                .FirstOrDefaultAsync(r => r.Id == editRoleDto.RoleId);
 
             if (role == null)
                 return new NotFoundException(Resource.NotFound);
@@ -78,8 +82,9 @@ namespace Application.Authorization.Service
             {
                 role.Name = editRoleDto.RoleName;
             }
-            role.Description = editRoleDto.RoleDescription;
 
+            role.Description = editRoleDto.RoleDescription;
+            role.Permissions = editRoleDto.Permissions.Select(p => new RolePermission { Permission = Enum.Parse<Permissions>(p) }).ToList();
 
             var result = await _roleManager.UpdateAsync(role);
 
@@ -87,12 +92,14 @@ namespace Application.Authorization.Service
                 return new ValidationException(result.Errors.Select(e => e.Description));
 
 
-            return new();
+            return Empty.Default;
         }
 
         public async Task<Result<RoleDto>> GetRoleById(long id)
         {
-            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == id);
+            var role = await _roleManager.Roles
+                .Include(r=>r.Permissions)
+                .FirstOrDefaultAsync(r => r.Id == id);
             if (role == null)
             {
                 return new NotFoundException(Resource.GetRoleFailed);
@@ -104,7 +111,9 @@ namespace Application.Authorization.Service
 
         public async Task<Result<List<RoleDto>>> GetRolesList(CancellationToken cancellationToken)
         {
-            var roles = await _roleManager.Roles.ToListAsync(cancellationToken);
+            var roles = await _roleManager.Roles
+                .Include(r => r.Permissions)
+                .ToListAsync(cancellationToken);
             var rolesDto = _mapper.Map<List<RoleDto>>(roles);
             return rolesDto;
         }

@@ -134,14 +134,20 @@ internal class TokensService
             };
         }
     }
-    private async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
+    private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
     {
-        var claims = await _userManager.GetClaimsAsync(user);
+        var permissions = user.ApplicationUserRoles!
+            .SelectMany(ur => ur.Role!.Permissions!)
+            .Select(rp => rp.Permission.ToString())
+            .Distinct();
 
-        //foreach (var permission in user.ApplicationUserRoles!.SelectMany(ur => ur.Role!.RolePermissions!.Select(rp => rp.Permission)).Distinct())
-        //{
-        //    claims.Add(new Claim(CustomClaims.Permission, permission.ToString()));
-        //}
+        var claims = (await _userManager.GetClaimsAsync(user)).AsEnumerable();
+        claims = claims
+            .Union([
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(CustomeClaims.AccountType, user.AccountType.ToString()),
+            ])
+            .Union(permissions.Select(p => new Claim(ClaimTypes.Role, p)));
 
         return claims;
     }

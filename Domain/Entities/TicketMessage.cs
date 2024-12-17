@@ -9,7 +9,7 @@ namespace Domain.Entities
         public ICollection<Media> Medias { get; set; }
         public DateTimeOffset SentDate { get; set; }
         public long SenderId { get; set; }
-        public SenderTypes SenderType { get; set; }
+        public AccountTypes SenderType { get; set; }
 
         // nav props
         public Ticket Ticket { get; set; }
