@@ -50,5 +50,5 @@ jobs:
         username: devUser
         password: DevUser@2024
         target: /var/www/HewarAPI/
-        source: ./*
+        source: ./publish/
         dangerous-clean-slate: true
