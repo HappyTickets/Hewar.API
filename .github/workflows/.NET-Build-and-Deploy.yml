@@ -52,3 +52,12 @@ jobs:
         target: /var/www/HewarAPI/
         source: ./publish
         dangerous-clean-slate: true
+
+    - name: Restart API Service
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: 188.138.101.4
+        username: root
+        password: tasqrRj#YR7n%pz
+        script: |
+          sudo systemctl restart hewarapi.service
