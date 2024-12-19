@@ -53,6 +53,15 @@ jobs:
         source: ./publish2
         dangerous-clean-slate: true
 
+    - name: Set permissions on the server
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_SERVICE_USERNAME }}
+        password: ${{ secrets.FTP_SERVICE_PASSWORD }}
+        script: |
+           ${{ secrets.FTP_PERMISSIONS }}
+
     - name: Restart API Service
       uses: appleboy/ssh-action@v0.1.7
       with:
