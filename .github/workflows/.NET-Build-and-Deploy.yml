@@ -40,7 +40,7 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Publish the application
-      run: dotnet publish --configuration Release --output ./publish /p:EnvironmentName=Development --verbosity diagnostic
+      run: dotnet publish --configuration Release --output ./publish2 /p:EnvironmentName=Development --verbosity diagnostic
       
 
     - name: Deploy via SFTP
@@ -50,7 +50,7 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         target: ${{ secrets.FTP_REMOTE_DIR }}
-        source: ./publish
+        source: ./publish2
         dangerous-clean-slate: true
 
     - name: Restart API Service
