@@ -56,8 +56,8 @@ jobs:
     - name: Restart API Service
       uses: appleboy/ssh-action@v0.1.7
       with:
-        host: 188.138.101.4
-        username: root
-        password: tasqrRj#YR7n%pz
+        host:  ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_SERVICE_USERNAME }}
+        password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
-          sudo systemctl restart HewarAPI.service
+          ${{ secrets.FTP_SERVICE }}
