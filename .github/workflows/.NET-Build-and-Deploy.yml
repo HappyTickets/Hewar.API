@@ -46,10 +46,10 @@ jobs:
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
       with:
-        host: 188.138.101.4
-        username: sysAdmin
-        password: wnrQ&F2tfPQA)w)G
-        target: /var/www/HewarAPI/
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        target: ${{ secrets.FTP_REMOTE_DIR }}
         source: ./publish
         dangerous-clean-slate: true
 
