@@ -36,12 +36,13 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
     });
-} 
+}
+
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
-app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
