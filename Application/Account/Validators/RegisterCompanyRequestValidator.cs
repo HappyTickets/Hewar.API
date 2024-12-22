@@ -24,7 +24,7 @@ namespace Application.Authorization.Validators
                 .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation);
 
             RuleFor(x => x.Address)
-           .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithMessage(Resource.RequiredField);
         }
 
     }

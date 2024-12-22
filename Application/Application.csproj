@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Customers\**" />
+	  <EmbeddedResource Remove="Customers\**" />
+	  <None Remove="Customers\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Domain\Domain.csproj" />
 		<ProjectReference Include="..\Localization\Localization.csproj" />
 	</ItemGroup>
@@ -48,14 +54,6 @@
 		<Folder Include="Payrolls\Mappings\" />
 		<Folder Include="Payrolls\Service\" />
 		<Folder Include="Payrolls\Validators\" />
-		<Folder Include="Guards\Dtos\" />
-		<Folder Include="Guards\Mappings\" />
-		<Folder Include="Guards\Service\" />
-		<Folder Include="Guards\Validators\" />
-		<Folder Include="Customers\Dtos\" />
-		<Folder Include="Customers\Mappings\" />
-		<Folder Include="Customers\Service\" />
-		<Folder Include="Customers\Validators\" />
 		<Folder Include="Attendances\Dtos\" />
 		<Folder Include="Attendances\Mappings\" />
 		<Folder Include="Attendances\Service\" />
