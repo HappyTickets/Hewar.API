@@ -9,7 +9,7 @@
                 options.AddDefaultPolicy(builder =>
                 {
                     builder
-                        .WithOrigins("http://127.0.0.1:4200", "https://127.0.0.1:4200")
+                        .WithOrigins("http://localhost:4200", "https://localhost:4200")
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();         
