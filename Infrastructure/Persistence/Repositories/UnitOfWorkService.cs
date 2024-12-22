@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Infrastructure.Persistence.Repositories.Generic;
+﻿using Infrastructure.Persistence.Repositories.Generic;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -20,15 +20,15 @@ namespace Infrastructure.Persistence.Repositories
             Reports = new SoftDeletableGenericRepositoryService<Report>(_context, _currentUserService);
             Shifts = new SoftDeletableGenericRepositoryService<Shift>(_context, _currentUserService);
             Tenants = new SoftDeletableGenericRepositoryService<TenantBase>(_context, _currentUserService);
-            Facilities = new SoftDeletableGenericRepositoryService<Facility>(_context, _currentUserService);
-            Companies = new SoftDeletableGenericRepositoryService<Company>(_context, _currentUserService);
-            Guards = new SoftDeletableGenericRepositoryService<Guard>(_context, _currentUserService);
             Tickets = new SoftDeletableGenericRepositoryService<Ticket>(_context, _currentUserService);
             TicketMessages = new SoftDeletableGenericRepositoryService<TicketMessage>(_context, _currentUserService);
             PriceRequests = new SoftDeletableGenericRepositoryService<PriceRequest>(_context, _currentUserService);
             PriceRequestFacilityDetails = new SoftDeletableGenericRepositoryService<PriceRequestFacilityDetails>(_context, _currentUserService);
             PriceRequestResponses = new SoftDeletableGenericRepositoryService<PriceRequestResponse>(_context, _currentUserService);
             Notifications = new SoftDeletableGenericRepositoryService<Notification>(_context, _currentUserService);
+            Companies = new CompanyRepositoryService(_context, _currentUserService);
+            Guards = new GuardRepositoryService(_context, _currentUserService);
+            Facilities = new FacilityRepositoryService(_context, _currentUserService);
         }
 
         #region repos
@@ -51,7 +51,7 @@ namespace Infrastructure.Persistence.Repositories
         #endregion
 
         #region transaction methods
-        public Task BeginTransactionAsync()
+        public Task<IDbContextTransaction> BeginTransactionAsync()
             => _context.Database.BeginTransactionAsync();
 
         public Task CommitTransactionAsync()

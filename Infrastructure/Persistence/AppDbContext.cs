@@ -30,6 +30,8 @@ namespace Infrastructure.Persistence
                    .WithOne(e => e.User)
                    .HasForeignKey(ur => ur.UserId)
                    .IsRequired();
+
+               b.HasQueryFilter(e => !e.IsDeleted);
            });
 
             modelBuilder.Entity<ApplicationRole>(b =>

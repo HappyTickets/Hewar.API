@@ -6,7 +6,7 @@
         {
         }
 
-        public void SoftDelete(SoftDeletableEntity entity)
+        public virtual void SoftDelete(TEntity entity)
         {
             entity.IsDeleted = true;
 
@@ -16,7 +16,7 @@
             _dbContext.Update(entity);
         }
 
-        public void SoftDeleteRange(IEnumerable<SoftDeletableEntity> entities)
+        public virtual void SoftDeleteRange(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {
@@ -29,13 +29,13 @@
             _dbContext.Update(entities);
         }
 
-        public void Recover(SoftDeletableEntity entity)
+        public virtual void Recover(TEntity entity)
         {
             entity.IsDeleted = false;
             _dbContext.Update(entity);
         }
 
-        public void RecoverRange(IEnumerable<SoftDeletableEntity> entities)
+        public virtual void RecoverRange(IEnumerable<TEntity> entities)
         {
             foreach (var entity in entities)
             {

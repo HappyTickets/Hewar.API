@@ -21,27 +21,27 @@ namespace Infrastructure.Persistence.Repositories.Generic
 
         #region Command
 
-        public void Create(TEntity entity)
+        public virtual void Create(TEntity entity)
             => _dbSet.Add(entity);
 
-        public void CreateRange(IEnumerable<TEntity> entities)
+        public virtual void CreateRange(IEnumerable<TEntity> entities)
             => _dbSet.AddRange(entities);
 
-        public void Update(TEntity entity)
+        public virtual void Update(TEntity entity)
             => _dbSet.Update(entity);
 
-        public void UpdateRange(IEnumerable<TEntity> entities)
+        public virtual void UpdateRange(IEnumerable<TEntity> entities)
             => _dbSet.UpdateRange(entities);
 
-        public void HardDelete(TEntity entity)
+        public virtual void HardDelete(TEntity entity)
             => _dbSet.Remove(entity);
 
-        public void HardDeleteRange(IEnumerable<TEntity> entities)
+        public virtual void HardDeleteRange(IEnumerable<TEntity> entities)
             => _dbSet.RemoveRange(entities);
         #endregion
 
         #region Query
-        public Task<TEntity?> GetByIdAsync(long id, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual Task<TEntity?> GetByIdAsync(long id, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -54,7 +54,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return query.FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -67,7 +67,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -80,7 +80,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual async Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.Where(predicate).AsQueryable();
 
@@ -93,7 +93,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return await query.ToListAsync();
         }
 
-        public async Task<PaginatedList<TEntity>> PaginateAsync(int pageNumber, int pageSize, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual async Task<PaginatedList<TEntity>> PaginateAsync(int pageNumber, int pageSize, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -106,7 +106,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return await query.PaginateAsync(pageNumber, pageSize);
         }
 
-        public Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
+        public virtual Task<PaginatedList<TEntity>> PaginateAsync(Expression<Func<TEntity, bool>> predicate, int pageNumber, int pageSize, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.Where(predicate).AsQueryable();
 
@@ -119,7 +119,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return query.PaginateAsync(pageNumber, pageSize);
         }
 
-        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool ignoreQueryFilters = false)
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -129,7 +129,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return query.AnyAsync(predicate);
         }
 
-        public Task<bool> AnyAsync(bool ignoreQueryFilters = false)
+        public virtual Task<bool> AnyAsync(bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -139,7 +139,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return query.AnyAsync();
         }
 
-        public Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, bool ignoreQueryFilters = false)
+        public virtual Task<int> CountAsync(Expression<Func<TEntity, bool>> predicate, bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 
@@ -149,7 +149,7 @@ namespace Infrastructure.Persistence.Repositories.Generic
             return query.CountAsync(predicate);
         }
 
-        public Task<int> CountAsync(bool ignoreQueryFilters = false)
+        public virtual Task<int> CountAsync(bool ignoreQueryFilters = false)
         {
             var query = _dbSet.AsQueryable();
 

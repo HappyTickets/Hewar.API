@@ -1,4 +1,6 @@
-﻿namespace Application.Common.Interfaces.Repositories
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Application.Common.Interfaces.Repositories
 {
     public interface IUnitOfWorkService
     {
@@ -18,7 +20,7 @@
         ISoftDeletableGenericRepositoryService<PriceRequestResponse> PriceRequestResponses { get; }
         ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
 
-        Task BeginTransactionAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
         Task CommitTransactionAsync();
         Task RollbackTransactionAsync();
         Task SaveChangesAsync();
