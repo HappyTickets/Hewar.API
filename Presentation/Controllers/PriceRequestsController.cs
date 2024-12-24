@@ -1,5 +1,6 @@
 ﻿using Application.PriceRequests.Dtos;
 using Application.PriceRequests.Service;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

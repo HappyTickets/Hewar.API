@@ -2,6 +2,8 @@
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
 using Domain.Entities.UserEntities;
+using Infrastructure.Authentication.Handlers;
+using Infrastructure.Authentication.Requirements;
 using Infrastructure.Mail;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;
@@ -9,6 +11,7 @@ using Infrastructure.Persistence.Configurations;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +32,7 @@ namespace Infrastructure
                 .AddIdentityServices()
                 .AddJWTConfiguration(config)
                 .AddEmailConfiguration(config)
+                .AddMemoryCache()
                 .AddSignalR();
 
             // DI
@@ -100,6 +104,16 @@ namespace Infrastructure
 
             services.AddAuthorization(opt =>
             {
+                foreach (var permission in Enum.GetValues<Permissions>())
+                {
+                    opt.AddPolicy(permission.ToString(), builder =>
+                    {
+                        builder
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(new PermissionRequirement(permission));
+                    });
+                } 
+                
                 foreach (var type in Enum.GetNames(typeof(AccountTypes)))
                 {
                     opt.AddPolicy(type, builder =>
@@ -110,6 +124,8 @@ namespace Infrastructure
                     });
                 }
             });
+
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
         }
 
         private static IServiceCollection AddJWTConfiguration(this IServiceCollection services, IConfiguration configuration)
