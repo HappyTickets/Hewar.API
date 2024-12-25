@@ -136,18 +136,12 @@ internal class TokensService
     }
     private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
     {
-        var permissions = user.ApplicationUserRoles!
-            .SelectMany(ur => ur.Role!.Permissions!)
-            .Select(rp => rp.Permission.ToString())
-            .Distinct();
-
         var claims = (await _userManager.GetClaimsAsync(user)).AsEnumerable();
         claims = claims
             .Union([
                 new Claim(ClaimTypes.Email, user.Email!),
                 new Claim(CustomeClaims.AccountType, user.AccountType.ToString()),
-            ])
-            .Union(permissions.Select(p => new Claim(ClaimTypes.Role, p)));
+            ]);
 
         return claims;
     }

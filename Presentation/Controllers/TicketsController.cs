@@ -1,5 +1,6 @@
 ﻿using Application.Tickets.Dtos;
 using Application.Tickets.Service;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers

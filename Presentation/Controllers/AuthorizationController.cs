@@ -1,6 +1,7 @@
 ﻿using Application.Authorization.DTOs.Request;
 using Application.Authorization.Service;
 using Application.Common.Utilities.Pagination;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Controllers;
 

@@ -208,11 +208,11 @@ public class AuthenticationService(
         };
     }
 
-    private string[] ExtractPermissions(ApplicationUser user)
+    private Permissions[] ExtractPermissions(ApplicationUser user)
     {
         return user.ApplicationUserRoles!
             .SelectMany(ur => ur.Role!.Permissions!)
-            .Select(rp=>rp.Permission.ToString())
+            .Select(rp=>rp.Permission)
             .Distinct()
             .ToArray();
     }
