@@ -45,11 +45,11 @@ namespace Application.Guards.Service
                 PhoneNumber = dto.Phone,
                 PhoneNumberConfirmed = true,
                 AccountType = AccountTypes.Guard,
+                ImageUrl = dto.ImageUrl,
                 Guard = new()
                 {
                     FirstName = dto.FirstName,
                     LastName = dto.LastName,
-                    ImageUrl = dto.ImageUrl,
                     DateOfBirth = dto.DateOfBirth,
                     NationalId = dto.NationalId,
                     Qualification = dto.Qualification,
@@ -94,7 +94,6 @@ namespace Application.Guards.Service
 
             guard.FirstName = dto.FirstName;
             guard.LastName = dto.LastName;
-            guard.ImageUrl = dto.ImageUrl;
             guard.DateOfBirth = dto.DateOfBirth;
             guard.NationalId = dto.NationalId;
             guard.Qualification = dto.Qualification;
@@ -107,6 +106,8 @@ namespace Application.Guards.Service
             guard.LoginDetails.UserName = dto.UserName;
             guard.LoginDetails.Email = dto.Email;
             guard.LoginDetails.PhoneNumber = dto.Phone;
+            guard.LoginDetails.ImageUrl = dto.ImageUrl;
+
 
             await _ufw.SaveChangesAsync();
 

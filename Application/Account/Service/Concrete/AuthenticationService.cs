@@ -45,11 +45,11 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Guard,
+            ImageUrl = registerRequest.ImageUrl,
             Guard = new()
             {
                 FirstName = registerRequest.FirstName,
                 LastName = registerRequest.LastName,
-                ImageUrl = registerRequest.ImageUrl,
                 DateOfBirth = registerRequest.DateOfBirth,
                 NationalId = registerRequest.NationalId,
                 Qualification = registerRequest.Qualification,
@@ -91,10 +91,10 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Facility,
+            ImageUrl = registerRequest.ImageUrl,
             Facility = new()
             {
                 Name = registerRequest.Name,
-                ImageUrl = registerRequest.ImageUrl,
                 Type = registerRequest.Type,
                 CommercialRegistration = registerRequest.CommercialRegistration,
                 ActivityType = registerRequest.ActivityType,
@@ -133,10 +133,10 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Company,
+            ImageUrl = registerRequest.ImageUrl,
             Company = new()
             {
                 Name = registerRequest.Name,
-                ImageUrl = registerRequest.ImageUrl,
                 Address = registerRequest.Address
             }
         };
@@ -210,6 +210,7 @@ public class AuthenticationService(
             UserName = user.UserName!,
             Email = user.Email!,
             AccountType = user.AccountType.ToString(),
+            ImageUrl = user.ImageUrl,
             Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,
             RefreshToken = tokens.Refresh.Token,

@@ -5,6 +5,7 @@ namespace Domain.Entities.UserEntities;
 
 public class ApplicationUser : IdentityUser<long>
 {
+    public string ImageUrl { get; set; }
     public AccountTypes AccountType { get; set; }
     public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
     public virtual ICollection<ApplicationUserRole>? ApplicationUserRoles { get; set; } = new List<ApplicationUserRole>();

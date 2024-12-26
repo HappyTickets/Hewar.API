@@ -43,10 +43,10 @@ namespace Application.Facilities.Service
                 PhoneNumber = dto.Phone,
                 PhoneNumberConfirmed = true,
                 AccountType = AccountTypes.Facility,
+                ImageUrl = dto.ImageUrl,
                 Facility = new()
                 {
                     Name = dto.Name,
-                    ImageUrl = dto.ImageUrl,
                     Type = dto.Type,
                     CommercialRegistration = dto.CommercialRegistration,
                     ActivityType = dto.ActivityType,
@@ -84,9 +84,9 @@ namespace Application.Facilities.Service
 
             facility.LoginDetails.Email = dto.Email;
             facility.LoginDetails.PhoneNumber = dto.Phone;
+            facility.LoginDetails.ImageUrl = dto.ImageUrl;
             facility.Type = dto.Type;
             facility.Name = dto.Name;
-            facility.ImageUrl = dto.ImageUrl;
             facility.CommercialRegistration = dto.CommercialRegistration;
             facility.ActivityType = dto.ActivityType;
             facility.Address = dto.Address;

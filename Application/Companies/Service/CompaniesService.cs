@@ -42,10 +42,10 @@ namespace Application.Companies.Service
                 PhoneNumber = dto.Phone,
                 PhoneNumberConfirmed = true,
                 AccountType = AccountTypes.Company,
+                ImageUrl = dto.ImageUrl,
                 Company = new()
                 {
                     Name = dto.Name,
-                    ImageUrl = dto.ImageUrl,
                     Address = dto.Address
                 }
             };
@@ -75,10 +75,10 @@ namespace Application.Companies.Service
                 return new ConflictException(Resource.EmailExistsError);
 
             company.Name = dto.Name;
-            company.ImageUrl = dto.ImageUrl;
             company.Address = dto.Address;
             company.LoginDetails.Email = dto.Email;
             company.LoginDetails.PhoneNumber = dto.Phone;
+            company.LoginDetails.ImageUrl = dto.ImageUrl;
 
             await _ufw.SaveChangesAsync();
 
