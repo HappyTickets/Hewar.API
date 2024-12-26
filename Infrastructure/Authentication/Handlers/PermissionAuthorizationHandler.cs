@@ -25,7 +25,8 @@ namespace Infrastructure.Authentication.Handlers
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            var permissions = _cache.Get<List<Permissions>>(_currentUser.Id!);
+            var cacheKey = $"{_currentUser.Type}-{_currentUser.Id}";
+            var permissions = _cache.Get<List<Permissions>>(cacheKey);
 
             if(permissions == null)
             {
@@ -36,7 +37,7 @@ namespace Infrastructure.Authentication.Handlers
                     .Distinct()
                     .ToListAsync();
 
-                _cache.Set(_currentUser.Id!, permissions, TimeSpan.FromMinutes(15));
+                _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(15));
             }
 
             if (permissions.Any(p => p == requirement.Permission))
