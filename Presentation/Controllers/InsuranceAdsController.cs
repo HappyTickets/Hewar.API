@@ -73,14 +73,14 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetMyOffersAsCompanyAsync()
             => Result(await _insuranceAdsService.GetMyOffersAsCompanyAsync());
 
-        [HttpPost("CreateMessage")]
+        [HttpPost("CreateOfferMessage")]
         [HaveAccountTypes(AccountTypes.Company, AccountTypes.Facility)]
-        public async Task<IActionResult> CreateMessageAsync(CreateInsuranceAdOfferMessageDto dto)
-            => Result(await _insuranceAdsService.CreateMessageAsync(dto));
+        public async Task<IActionResult> CreateOfferMessageAsync(CreateInsuranceAdOfferMessageDto dto)
+            => Result(await _insuranceAdsService.CreateOfferMessageAsync(dto));
         
-        [HttpGet("getMessages")]
+        [HttpGet("getOfferMessages")]
         [HaveAccountTypes(AccountTypes.Company, AccountTypes.Facility)]
-        public async Task<IActionResult> GetMessagesAsync(long offerId)
-            => Result(await _insuranceAdsService.GetMessagesAsync(offerId));
+        public async Task<IActionResult> GetOfferMessagesAsync(long offerId)
+            => Result(await _insuranceAdsService.GetOfferMessagesAsync(offerId));
     }
 }

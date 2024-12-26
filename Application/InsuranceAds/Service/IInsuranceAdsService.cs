@@ -6,10 +6,10 @@ namespace Application.InsuranceAds.Service
     {
         Task<Result<Empty>> AcceptOfferAsync(long offerId);
         Task<Result<Empty>> CreateAdAsync(CreateInsuranceAdDto dto);
-        Task<Result<Empty>> CreateMessageAsync(CreateInsuranceAdOfferMessageDto dto);
+        Task<Result<Empty>> CreateOfferMessageAsync(CreateInsuranceAdOfferMessageDto dto);
         Task<Result<Empty>> CreateOfferAsync(CreateInsuranceAdOfferDto dto);
         Task<Result<InsuranceAdDto>> GetAdByIdAsync(long id);
-        Task<Result<InsuranceAdOfferMessageDto[]>> GetMessagesAsync(long offerId);
+        Task<Result<InsuranceAdOfferMessageDto[]>> GetOfferMessagesAsync(long offerId);
         Task<Result<InsuranceAdDto[]>> GetMyAdsAsync();
         Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersAsCompanyAsync();
         Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsCompanyAsync(long adId);

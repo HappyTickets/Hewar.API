@@ -158,7 +158,7 @@ namespace Application.InsuranceAds.Service
             return _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
         }
 
-        public async Task<Result<Empty>> CreateMessageAsync(CreateInsuranceAdOfferMessageDto dto)
+        public async Task<Result<Empty>> CreateOfferMessageAsync(CreateInsuranceAdOfferMessageDto dto)
         {
             var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(dto.InsuranceAdOfferId, ["InsuranceAd"]);
 
@@ -181,7 +181,7 @@ namespace Application.InsuranceAds.Service
             return Empty.Default;
         }
 
-        public async Task<Result<InsuranceAdOfferMessageDto[]>> GetMessagesAsync(long offerId)
+        public async Task<Result<InsuranceAdOfferMessageDto[]>> GetOfferMessagesAsync(long offerId)
         {
             var messages = await _ufw.InsuranceAdOfferMessages
                 .FilterAsync(m=>m.InsuranceAdOfferId == offerId);
