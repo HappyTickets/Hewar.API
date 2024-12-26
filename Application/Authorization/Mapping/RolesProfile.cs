@@ -1,6 +1,5 @@
 ﻿using Application.Authorization.DTOs.Response;
 using AutoMapper;
-using Domain.Entities.UserEntities;
 
 namespace Application.Authorization.Mapping
 {

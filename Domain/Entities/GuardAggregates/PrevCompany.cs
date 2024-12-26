@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Owned
+﻿namespace Domain.Entities.GuardAggregates
 {
     public class PrevCompany
     {

@@ -1,4 +1,6 @@
-﻿namespace Application.PriceRequests.Dtos
+﻿using Application.Facilities.Dtos;
+
+namespace Application.PriceRequests.Dtos
 {
     public class CompanyPriceRequestDto
     {

@@ -1,7 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Password;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Entities.UserEntities;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
 namespace Application.AccountManagement.Service.Concrete;

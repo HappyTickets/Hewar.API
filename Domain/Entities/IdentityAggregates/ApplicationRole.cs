@@ -1,7 +1,8 @@
-﻿using Domain.Entities.Identity;
+﻿
+
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities.UserEntities
+namespace Domain.Entities.IdentityAggregates
 {
     public class ApplicationRole : IdentityRole<long>
     {

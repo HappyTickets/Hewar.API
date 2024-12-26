@@ -1,6 +1,4 @@
-﻿using Domain.Entities.UserEntities;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Facility: TenantBase
     {

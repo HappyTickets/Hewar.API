@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
-namespace Domain.Entities.UserEntities
+namespace Domain.Entities.IdentityAggregates
 {
     public class ApplicationRoleClaim : IdentityRoleClaim<long>
     {

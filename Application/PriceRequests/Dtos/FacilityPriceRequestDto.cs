@@ -1,4 +1,5 @@
-﻿using Domain.Enums;
+﻿using Application.Companies.Dtos;
+using Domain.Enums;
 
 namespace Application.PriceRequests.Dtos
 {

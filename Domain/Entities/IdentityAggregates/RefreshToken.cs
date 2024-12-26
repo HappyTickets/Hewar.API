@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.UserEntities;
+namespace Domain.Entities.IdentityAggregates;
 
 public class RefreshToken : BaseEntity
 {

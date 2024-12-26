@@ -1,8 +1,6 @@
 ﻿using Application.AccountManagement.Dtos.Email;
 using Application.AccountManagement.OTP.Extensions;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Entities.UserEntities;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 namespace Application.AccountManagement.Service.Concrete;
 public class EmailConfirmationService(UserManager<ApplicationUser> userManager, IEmailSender emailSender, ICurrentUserService currentUser) : IEmailConfirmationService

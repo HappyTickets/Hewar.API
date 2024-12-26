@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.Owned
+﻿namespace Domain.Common
 {
     public class Media
     {

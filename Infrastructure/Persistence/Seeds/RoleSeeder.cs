@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Seeds
 {

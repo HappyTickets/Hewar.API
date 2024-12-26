@@ -1,8 +1,6 @@
 ﻿using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Authorization.Service;
-using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

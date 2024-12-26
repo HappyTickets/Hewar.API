@@ -1,7 +1,4 @@
-﻿using Domain.Entities.Owned;
-using Domain.Entities.UserEntities;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities.GuardAggregates
 {
     public class Guard : SoftDeletableEntity
     {

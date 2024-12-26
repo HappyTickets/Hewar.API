@@ -3,10 +3,7 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
-using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
 using LanguageExt;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

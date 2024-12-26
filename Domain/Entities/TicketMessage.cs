@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Owned;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class TicketMessage : SoftDeletableEntity
     {

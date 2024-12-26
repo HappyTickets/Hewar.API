@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
-using Infrastructure.Persistence.Extensions;
+﻿using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -83,6 +81,9 @@ namespace Infrastructure.Persistence
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<InsuranceAd> InsuranceAds { get; set; }
+        public DbSet<InsuranceAdOffer> InsuranceAdOffers { get; set; }
+        public DbSet<InsuranceAdOfferMessage> InsuranceAdOfferMessages { get; set; }
         #endregion
 
     }

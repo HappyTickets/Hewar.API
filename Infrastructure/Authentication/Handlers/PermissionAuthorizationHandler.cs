@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
-using Infrastructure.Authentication.Requirements;
+﻿using Infrastructure.Authentication.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

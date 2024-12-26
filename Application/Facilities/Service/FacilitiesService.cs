@@ -1,9 +1,6 @@
-﻿using Application.Companies.Dtos;
-using Application.Facilities.Dtos;
+﻿using Application.Facilities.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 

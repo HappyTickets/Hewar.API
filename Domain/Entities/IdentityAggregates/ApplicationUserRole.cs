@@ -1,7 +1,6 @@
-﻿using Domain.Entities.UserEntities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entities.Identity;
+namespace Domain.Entities.IdentityAggregates;
 
 public class ApplicationUserRole : IdentityUserRole<long>
 {

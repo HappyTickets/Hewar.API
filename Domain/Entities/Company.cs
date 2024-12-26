@@ -1,6 +1,4 @@
-﻿using Domain.Entities.UserEntities;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Company: TenantBase
     {
@@ -11,6 +9,7 @@ namespace Domain.Entities
         // nav props
         public ApplicationUser LoginDetails { get; set; }
         public ICollection<PriceRequest> PriceRequests { get; set; }
+        public ICollection<InsuranceAdOffer> InsuranceAdOffers { get; set; }
 
     }
 }

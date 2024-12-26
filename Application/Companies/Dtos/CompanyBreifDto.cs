@@ -1,6 +1,6 @@
-﻿namespace Application.PriceRequests.Dtos
+﻿namespace Application.Companies.Dtos
 {
-    public class FacilityBreifDto
+    public class CompanyBreifDto
     {
         public long Id { get; set; }
         public string Name { get; set; }

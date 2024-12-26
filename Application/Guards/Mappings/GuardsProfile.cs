@@ -1,8 +1,5 @@
-﻿using Application.Companies.Dtos;
-using Application.Guards.Dtos;
+﻿using Application.Guards.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
-using LanguageExt;
 
 namespace Application.Guards.Mappings
 {

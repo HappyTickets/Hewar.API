@@ -1,7 +1,6 @@
 ﻿using Application.AccountManagement.OTP;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
-using Domain.Entities.UserEntities;
 using Infrastructure.Authentication.Handlers;
 using Infrastructure.Authentication.Requirements;
 using Infrastructure.Mail;
