@@ -8,8 +8,8 @@ namespace Application.PriceRequests.Service
         Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto);
         Task<Result<Empty>> CreateFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto);
         Task<Result<PriceRequestFacilityDetailsDto>> GetFacilityDetailsAsync(long priceRequestId);
-        Task<Result<CompanyPriceRequestDto[]>> GetRequestForCompanyAsync();
-        Task<Result<FacilityPriceRequestDto[]>> GetRequestForFacilityAsync();
+        Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync();
+        Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync();
         Task<Result<Empty>> RejectRequestAsync(long priceRequestId);
         Task<Result<Empty>> UpdateFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto);
     }

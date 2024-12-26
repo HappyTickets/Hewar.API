@@ -68,14 +68,12 @@ namespace API.Controllers
         }
 
         [HttpGet("users/{userId:long}/roles")]
-        [HasPermission(Permissions.ViewUsers)]
         public async Task<IActionResult> GetUserWithRoles([FromRoute] long userId)
         {
             return Result(await _authorizationService.GetUserWithRolesAsync(userId));
         }
 
         [HttpGet("users-with-roles")]
-        [HasPermission(Permissions.ViewUsers)]
         public async Task<IActionResult> GetUsersWithRoles([FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
         {
             return Result(await _authorizationService.GetUsersWithRolesAsync(paginationSearchModel, cancellationToken));

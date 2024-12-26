@@ -69,7 +69,7 @@ namespace Application.PriceRequests.Service
             return _mapper.Map<PriceRequestFacilityDetailsDto>(facilityDetails);
         }
 
-        public async Task<Result<FacilityPriceRequestDto[]>> GetRequestForFacilityAsync()
+        public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
         {
             var priceRequests = await _ufw.PriceRequests
                 .FilterAsync(pr => pr.FacilityId == _currentUser.Id, ["Company.LoginDetails", "Response"]);
@@ -77,7 +77,7 @@ namespace Application.PriceRequests.Service
             return _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
         } 
         
-        public async Task<Result<CompanyPriceRequestDto[]>> GetRequestForCompanyAsync()
+        public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
         {
             var priceRequests = await _ufw.PriceRequests
                 .FilterAsync(pr => pr.CompanyId == _currentUser.Id, ["Facility.LoginDetails", "Response"]);
