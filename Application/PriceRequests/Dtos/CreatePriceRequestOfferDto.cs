@@ -1,8 +1,8 @@
 ﻿namespace Application.PriceRequests.Dtos
 {
-    public class CreatePriceRequestResponseDto
+    public class CreatePriceRequestOfferDto
     {
         public long PriceRequestId { get; set; }
-        public string Content { get; set; }
+        public string Offer { get; set; }
     }
 }

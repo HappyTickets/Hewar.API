@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.Repositories.Generic;
+﻿using Domain.Entities.PriceRequestAggregates;
+using Infrastructure.Persistence.Repositories.Generic;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.Repositories
@@ -24,7 +25,7 @@ namespace Infrastructure.Persistence.Repositories
             TicketMessages = new SoftDeletableGenericRepositoryService<TicketMessage>(_context, _currentUserService);
             PriceRequests = new SoftDeletableGenericRepositoryService<PriceRequest>(_context, _currentUserService);
             PriceRequestFacilityDetails = new SoftDeletableGenericRepositoryService<PriceRequestFacilityDetails>(_context, _currentUserService);
-            PriceRequestResponses = new SoftDeletableGenericRepositoryService<PriceRequestResponse>(_context, _currentUserService);
+            PriceRequestOffers = new SoftDeletableGenericRepositoryService<PriceRequestOffer>(_context, _currentUserService);
             Notifications = new SoftDeletableGenericRepositoryService<Notification>(_context, _currentUserService);
             InsuranceAds = new SoftDeletableGenericRepositoryService<InsuranceAd>(_context, _currentUserService);
             InsuranceAdOffers = new SoftDeletableGenericRepositoryService<InsuranceAdOffer>(_context, _currentUserService);
@@ -49,7 +50,7 @@ namespace Infrastructure.Persistence.Repositories
         public ISoftDeletableGenericRepositoryService<TicketMessage> TicketMessages { get; }
         public ISoftDeletableGenericRepositoryService<PriceRequest> PriceRequests { get; }
         public ISoftDeletableGenericRepositoryService<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; }
-        public ISoftDeletableGenericRepositoryService<PriceRequestResponse> PriceRequestResponses { get; }
+        public ISoftDeletableGenericRepositoryService<PriceRequestOffer> PriceRequestOffers { get; }
         public ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
         public ISoftDeletableGenericRepositoryService<InsuranceAd> InsuranceAds { get; }
         public ISoftDeletableGenericRepositoryService<InsuranceAdOffer> InsuranceAdOffers { get; }

@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities.PriceRequestAggregates;
+
+namespace Domain.Entities
 {
     public class Company: TenantBase
     {

@@ -2,6 +2,7 @@
 using Application.Facilities.Dtos;
 using Application.PriceRequests.Dtos;
 using AutoMapper;
+using Domain.Entities.PriceRequestAggregates;
 
 namespace Application.PriceRequests.Mappings
 {
@@ -13,8 +14,8 @@ namespace Application.PriceRequests.Mappings
             CreateMap<PriceRequest, FacilityPriceRequestDto>();
             CreateMap<PriceRequest, CompanyPriceRequestDto>();
 
-            CreateMap<CreatePriceRequestResponseDto, PriceRequestResponse>();
-            CreateMap<PriceRequestResponse, PriceRequestResponseDto>();
+            CreateMap<CreatePriceRequestOfferDto, PriceRequestOffer>();
+            CreateMap<PriceRequestOffer, PriceRequestOfferDto>();
            
             CreateMap<CreatePriceRequestFacilityDetailsDto, PriceRequestFacilityDetails>();
             CreateMap<UpdatePriceRequestFacilityDetailsDto, PriceRequestFacilityDetails>();

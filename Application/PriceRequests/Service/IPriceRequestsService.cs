@@ -4,7 +4,7 @@ namespace Application.PriceRequests.Service
 {
     public interface IPriceRequestsService
     {
-        Task<Result<Empty>> AcceptRequestAsync(CreatePriceRequestResponseDto dto);
+        Task<Result<Empty>> AcceptRequestAsync(CreatePriceRequestOfferDto dto);
         Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto);
         Task<Result<Empty>> CreateFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto);
         Task<Result<PriceRequestFacilityDetailsDto>> GetFacilityDetailsAsync(long priceRequestId);

@@ -1,6 +1,6 @@
 ﻿namespace Application.PriceRequests.Dtos
 {
-    public class PriceRequestResponseDto
+    public class PriceRequestOfferDto
     {
         public long Id { get; set; }
         public string Content { get; set; }

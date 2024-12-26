@@ -24,7 +24,7 @@ namespace Presentation.Controllers
 
         [HttpPatch("acceptRequest")]
         [HasAccountType(AccountTypes.Company)]
-        public async Task<IActionResult> AcceptRequestAsync(CreatePriceRequestResponseDto dto)
+        public async Task<IActionResult> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
             => Result(await _priceRequestsService.AcceptRequestAsync(dto));
 
         [HttpPatch("rejectRequest")]

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entities.PriceRequestAggregates;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
@@ -19,7 +20,7 @@ namespace Infrastructure.Persistence.Configurations
 
             builder.HasOne(pr => pr.Response)
                 .WithOne(r => r.PriceRequest)
-                .HasForeignKey<PriceRequestResponse>(r => r.PriceRequestId);
+                .HasForeignKey<PriceRequestOffer>(r => r.PriceRequestId);
             
             builder.HasOne(pr => pr.FacilityDetails)
                 .WithOne(fd => fd.PriceRequest)

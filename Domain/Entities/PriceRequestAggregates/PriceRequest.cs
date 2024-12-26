@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities
+﻿namespace Domain.Entities.PriceRequestAggregates
 {
     public class PriceRequest : SoftDeletableEntity
     {
@@ -8,7 +8,7 @@
         public ContractTypes ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public string Description { get; set; }       
+        public string Description { get; set; }
         public RequestStatus Status { get; set; }
         public long FacilityId { get; set; }
         public long CompanyId { get; set; }
@@ -17,7 +17,7 @@
         public Facility Facility { get; set; }
         public Company Company { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        public PriceRequestResponse Response { get; set; }
+        public PriceRequestOffer Response { get; set; }
         public PriceRequestFacilityDetails FacilityDetails { get; set; }
     }
 }

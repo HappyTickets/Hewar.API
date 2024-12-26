@@ -1,6 +1,6 @@
-﻿namespace Domain.Entities
+﻿namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceRequestFacilityDetails: SoftDeletableEntity
+    public class PriceRequestFacilityDetails : SoftDeletableEntity
     {
         // facility details
         public string FacilityName { get; set; }

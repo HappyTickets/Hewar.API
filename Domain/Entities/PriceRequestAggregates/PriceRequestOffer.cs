@@ -1,8 +1,8 @@
-﻿namespace Domain.Entities
+﻿namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceRequestResponse: SoftDeletableEntity
+    public class PriceRequestOffer : SoftDeletableEntity
     {
-        public string Content { get; set; }
+        public string Offer { get; set; }
         public DateTimeOffset RespondedDate { get; set; }
         public long PriceRequestId { get; set; }
 

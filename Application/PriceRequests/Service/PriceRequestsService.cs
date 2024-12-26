@@ -1,5 +1,6 @@
 ﻿using Application.PriceRequests.Dtos;
 using AutoMapper;
+using Domain.Entities.PriceRequestAggregates;
 using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Service
@@ -85,7 +86,7 @@ namespace Application.PriceRequests.Service
             return _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
         }
 
-        public async Task<Result<Empty>> AcceptRequestAsync(CreatePriceRequestResponseDto dto)
+        public async Task<Result<Empty>> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
         {
             var request = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);
 
@@ -95,12 +96,12 @@ namespace Application.PriceRequests.Service
             if (request.Status != RequestStatus.Pending)
                 return new ConflictException(Resource.OnlyPendingRequests);
 
-            var response = _mapper.Map<PriceRequestResponse>(dto);
-            response.RespondedDate = DateTimeOffset.UtcNow;
+            var offer = _mapper.Map<PriceRequestOffer>(dto);
+            offer.RespondedDate = DateTimeOffset.UtcNow;
 
             // mark request accepted and create response
             request.Status = RequestStatus.Accepted;
-            _ufw.PriceRequestResponses.Create(response);
+            _ufw.PriceRequestOffers.Create(offer);
            
             // mark request tickets as closed
             await MarkAllRequestTicketsAsClosedAsync(request.Id);
