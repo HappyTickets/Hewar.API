@@ -32,7 +32,7 @@ namespace Application.Authorization.Service
             {
                 Name = addRoleDto.RoleName,
                 Description = addRoleDto.RoleDescription,
-                Permissions = addRoleDto.Permissions.Select(p=> new RolePermission { Permission = Enum.Parse<Permissions>(p)}).ToList()
+                Permissions = addRoleDto.Permissions.Select(p => new RolePermission { Permission = p }).ToList()
             };
 
             var result = await _roleManager.CreateAsync(identityRole);
@@ -84,7 +84,7 @@ namespace Application.Authorization.Service
             }
 
             role.Description = editRoleDto.RoleDescription;
-            role.Permissions = editRoleDto.Permissions.Select(p => new RolePermission { Permission = Enum.Parse<Permissions>(p) }).ToList();
+            role.Permissions = editRoleDto.Permissions.Select(p => new RolePermission { Permission = p }).ToList();
 
             var result = await _roleManager.UpdateAsync(role);
 

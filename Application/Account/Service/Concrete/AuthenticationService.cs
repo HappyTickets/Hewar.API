@@ -49,8 +49,16 @@ public class AuthenticationService(
             {
                 FirstName = registerRequest.FirstName,
                 LastName = registerRequest.LastName,
+                ImageUrl = registerRequest.ImageUrl,
                 DateOfBirth = registerRequest.DateOfBirth,
-                Skills = registerRequest.Skills
+                NationalId = registerRequest.NationalId,
+                Qualification = registerRequest.Qualification,
+                City = registerRequest.City,
+                BloodType = registerRequest.BloodType,
+                Height = registerRequest.Height,
+                Weight = registerRequest.Weight,
+                Skills = _mapper.Map<ICollection<Skill>>(registerRequest.Skills),
+                PrevCompanies = _mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
             }
         };
 
@@ -86,6 +94,7 @@ public class AuthenticationService(
             Facility = new()
             {
                 Name = registerRequest.Name,
+                ImageUrl = registerRequest.ImageUrl,
                 Type = registerRequest.Type,
                 CommercialRegistration = registerRequest.CommercialRegistration,
                 ActivityType = registerRequest.ActivityType,
@@ -127,6 +136,7 @@ public class AuthenticationService(
             Company = new()
             {
                 Name = registerRequest.Name,
+                ImageUrl = registerRequest.ImageUrl,
                 Address = registerRequest.Address
             }
         };

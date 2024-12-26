@@ -1,13 +1,11 @@
-﻿using Application.AccountManagement.Dtos.Authentication;
+﻿using Application.Facilities.Dtos;
 using FluentValidation;
-using Localization.ResourceFiles;
 
-namespace Application.Authorization.Validators
+namespace Application.Facilities.Validators
 {
-    public class RegisterFacilityRequestValidator : AbstractValidator<RegisterFacilityRequest>
+    public class CreateFacilityDtoValidator: AbstractValidator<CreateFacilityDto>
     {
-
-        public RegisterFacilityRequestValidator()
+        public CreateFacilityDtoValidator()
         {
             RuleFor(f => f.Name)
                 .NotEmpty().WithMessage(Resource.RequiredField);
@@ -31,22 +29,21 @@ namespace Application.Authorization.Validators
 
             RuleFor(f => f.CommercialRegistration)
             .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(f => f.ActivityType)
             .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(f => f.Address)
             .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(f => f.City)
             .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(f => f.ResponsibleName)
             .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(f => f.ResponsiblePhone)
             .NotEmpty().WithMessage(Resource.RequiredField);
         }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿using Application.Companies.Dtos;
-using Application.Companies.Service;
-using Application.Facilities.Dtos;
+﻿using Application.Facilities.Dtos;
 using Application.Facilities.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +15,10 @@ namespace Presentation.Controllers
         }
 
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAsync(CreateFacilityDto dto)
+            => Result(await _facilitiesService.CreateAsync(dto));
+        
         [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(UpdateFacilityDto dto)
             => Result(await _facilitiesService.UpdateAsync(dto));

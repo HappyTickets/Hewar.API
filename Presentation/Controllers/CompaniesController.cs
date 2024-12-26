@@ -15,6 +15,10 @@ namespace Presentation.Controllers
             _companiesService = companiesService;
         }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAsync(CreateCompanyDto dto)
+            => Result(await _companiesService.CreateAsync(dto));
+        
         [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(UpdateCompanyDto dto)
             => Result(await _companiesService.UpdateAsync(dto));

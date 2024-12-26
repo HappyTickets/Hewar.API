@@ -1,13 +1,11 @@
-﻿using Application.AccountManagement.Dtos.Authentication;
-using Application.Guards.Validators;
+﻿using Application.Guards.Dtos;
 using FluentValidation;
-using Localization.ResourceFiles;
 
-namespace Application.Authorization.Validators
+namespace Application.Guards.Validators
 {
-    public class RegisterGuardRequestValidator : AbstractValidator<RegisterGuardRequest>
+    public class CreateGuardDtoValidator: AbstractValidator<CreateGuardDto>
     {
-        public RegisterGuardRequestValidator()
+        public CreateGuardDtoValidator()
         {
             RuleFor(g => g.UserName)
                 .NotEmpty().WithMessage(Resource.RequiredField)
@@ -18,7 +16,7 @@ namespace Application.Authorization.Validators
 
             RuleFor(g => g.LastName)
                 .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(g => g.ImageUrl)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
@@ -38,27 +36,26 @@ namespace Application.Authorization.Validators
 
             RuleFor(g => g.NationalId)
                 .NotEmpty().WithMessage(Resource.RequiredField);
-            
+
             RuleFor(g => g.Qualification)
                 .NotNull().WithMessage(Resource.RequiredField)
                 .IsInEnum().WithMessage(Resource.InvalidValue);
-            
+
             RuleFor(g => g.City)
                 .NotNull().WithMessage(Resource.RequiredField)
                 .IsInEnum().WithMessage(Resource.InvalidValue);
 
-            RuleFor(g=> g.Skills)
+            RuleFor(g => g.Skills)
                 .ForEach(b =>
                 {
                     b.SetValidator(new SkillDtoValidator());
                 });
-            
+
             RuleFor(g => g.PrevCompanies)
                 .ForEach(b =>
                 {
                     b.SetValidator(new PrevCompanyDtoValidator());
                 });
         }
-
     }
 }

@@ -15,7 +15,7 @@ namespace Application.Authorization.Validators
             RuleFor(r => r.Permissions)
                 .ForEach(b =>
                 {
-                    b.IsEnumName(typeof(Permissions));
+                    b.IsInEnum().WithMessage(Resource.InvalidValue);
                 });
         }
     }

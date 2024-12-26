@@ -10,18 +10,18 @@ namespace Application.PriceRequests.Validators
         {
             RuleFor(r => r.SecurityRole)
                 .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsEnumName(typeof(SecurityRoles)).WithMessage(Resource.InvalidValue);
+                .IsInEnum().WithMessage(Resource.InvalidValue);
 
             RuleFor(r => r.GuardsCount)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
             RuleFor(r => r.WorkShift)
                .NotEmpty().WithMessage(Resource.RequiredField)
-               .IsEnumName(typeof(WorkShifts)).WithMessage(Resource.InvalidValue);
+               .IsInEnum().WithMessage(Resource.InvalidValue);
 
             RuleFor(r => r.ContractType)
                .NotEmpty().WithMessage(Resource.RequiredField)
-               .IsEnumName(typeof(ContractTypes)).WithMessage(Resource.InvalidValue);
+               .IsInEnum().WithMessage(Resource.InvalidValue);
 
             RuleFor(r => r.StartDate)
                .NotEmpty().WithMessage(Resource.RequiredField);

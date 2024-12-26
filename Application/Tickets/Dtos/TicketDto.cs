@@ -6,6 +6,6 @@
         public string Title { get; set; }
         public DateTimeOffset OpenedDate { get; set; }
         public DateTimeOffset? ClosedDate { get; set; }
-        public string Status { get; set; }
+        public TicketStatus Status { get; set; }
     }
 }

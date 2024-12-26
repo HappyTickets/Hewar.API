@@ -14,6 +14,10 @@ namespace Presentation.Controllers
             _guardsService = guardsService;
         }
 
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateAsync(CreateGuardDto dto)
+            => Result(await _guardsService.CreateAsync(dto));
+
         [HttpPut("update")]
         public async Task<IActionResult> UpdateAsync(UpdateGuardDto dto)
             => Result(await _guardsService.UpdateAsync(dto));
