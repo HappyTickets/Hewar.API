@@ -1,5 +1,6 @@
 ﻿using Application.InsuranceAds.Dtos;
 using AutoMapper;
+using Domain.Events.InsuranceAds;
 
 namespace Application.InsuranceAds.Service
 {
@@ -64,6 +65,128 @@ namespace Application.InsuranceAds.Service
                 .FilterAsync(ad => ad.Status == InsuranceAdStatus.Opened, ["Facility.LoginDetails"]);
 
             return _mapper.Map<InsuranceAdDto[]>(ads);
+        }
+
+        public async Task<Result<Empty>> CreateOfferAsync(CreateInsuranceAdOfferDto dto)
+        {
+            var ad = await _ufw.InsuranceAds.GetByIdAsync(dto.InsuranceAdId);
+
+            if (ad == null)
+                return new NotFoundException();
+
+            if (ad.Status != InsuranceAdStatus.Opened)
+                return new ConflictException(Resource.OnlyOpenedAds);
+
+            var offer = _mapper.Map<InsuranceAdOffer>(dto);
+            offer.Status = RequestStatus.Pending;
+            offer.SentDate = DateTimeOffset.UtcNow;
+            offer.CompanyId = _currentUser.Id!.Value;
+            offer.InsuranceAd = ad;
+
+            offer.AddDomainEvent(new InsuranceAdOfferCreated(offer));
+            _ufw.InsuranceAdOffers.Create(offer);
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
+        public async Task<Result<Empty>> AcceptOfferAsync(long offerId)
+        {
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId);
+
+            if (offer == null)
+                return new NotFoundException();
+
+            if(offer.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
+
+            offer.Status = RequestStatus.Accepted;
+
+            offer.AddDomainEvent(new InsuranceAdOfferAccepted(offer));
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
+        public async Task<Result<Empty>> RejectOfferAsync(long offerId)
+        {
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId);
+
+            if (offer == null)
+                return new NotFoundException();
+
+            if (offer.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
+
+            offer.Status = RequestStatus.Rejected;
+
+            offer.AddDomainEvent(new InsuranceAdOfferRejected(offer));
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
+        public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsFacilityAsync(long adId)
+        {
+            var offers = await _ufw.InsuranceAdOffers
+                .FilterAsync(o => o.InsuranceAdId == adId && o.InsuranceAd.FacilityId == _currentUser.Id!, ["Company.LoginDetails"]);
+
+            return _mapper.Map<FacilityInsuranceAdOfferDto[]>(offers);
+        }
+
+        public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersAsFacilityAsync()
+        {
+            var offers = await _ufw.InsuranceAdOffers
+                .FilterAsync(o => o.InsuranceAd.FacilityId == _currentUser.Id!, ["Company.LoginDetails"]);
+
+            return _mapper.Map<FacilityInsuranceAdOfferDto[]>(offers);
+        }
+
+        public async Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsCompanyAsync(long adId)
+        {
+            var offers = await _ufw.InsuranceAdOffers
+                .FilterAsync(o => o.InsuranceAdId == adId && o.CompanyId == _currentUser.Id!, ["InsuranceAd.Facility.LoginDetails"]);
+
+            return _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
+        }
+        
+        public async Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersAsCompanyAsync()
+        {
+            var offers = await _ufw.InsuranceAdOffers
+                .FilterAsync(o => o.CompanyId == _currentUser.Id!, ["InsuranceAd.Facility.LoginDetails"]);
+
+            return _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
+        }
+
+        public async Task<Result<Empty>> CreateMessageAsync(CreateInsuranceAdOfferMessageDto dto)
+        {
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(dto.InsuranceAdOfferId, ["InsuranceAd"]);
+
+            if (offer == null)
+                return new NotFoundException();
+
+            if (offer.InsuranceAd.Status != InsuranceAdStatus.Opened)
+                return new ConflictException(Resource.OnlyOpenedAds);
+
+            var message = _mapper.Map<InsuranceAdOfferMessage>(dto);
+            message.SentDate = DateTimeOffset.UtcNow;
+            message.SenderId = _currentUser.Id!.Value;
+            message.SenderType = _currentUser.Type!.Value;
+            message.InsuranceAdOffer = offer;
+
+            message.AddDomainEvent(new InsuranceAdOfferMessageCreated(message));
+            _ufw.InsuranceAdOfferMessages.Create(message);
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
+        public async Task<Result<InsuranceAdOfferMessageDto[]>> GetMessagesAsync(long offerId)
+        {
+            var messages = await _ufw.InsuranceAdOfferMessages
+                .FilterAsync(m=>m.InsuranceAdOfferId == offerId);
+
+            return _mapper.Map<InsuranceAdOfferMessageDto[]>(messages);
         }
     }
 }

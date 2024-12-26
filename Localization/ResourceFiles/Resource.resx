@@ -2062,4 +2062,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="RoleNotExistError" xml:space="preserve">
     <value>Role does not exist.</value>
   </data>
+  <data name="OnlyOpenedAds" xml:space="preserve">
+    <value>Ad status must be opened to complete this operation.</value>
+  </data>
 </root>

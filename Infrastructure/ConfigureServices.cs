@@ -113,15 +113,15 @@ namespace Infrastructure
                     });
                 } 
                 
-                foreach (var type in Enum.GetNames(typeof(AccountTypes)))
-                {
-                    opt.AddPolicy(type, builder =>
-                    {
-                        builder
-                        .RequireAuthenticatedUser()
-                        .RequireClaim(CustomeClaims.AccountType, type);
-                    });
-                }
+                //foreach (var type in Enum.GetNames(typeof(AccountTypes)))
+                //{
+                //    opt.AddPolicy(type, builder =>
+                //    {
+                //        builder
+                //        .RequireAuthenticatedUser()
+                //        .RequireClaim(CustomeClaims.AccountType, type);
+                //    });
+                //}
             });
 
             services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();

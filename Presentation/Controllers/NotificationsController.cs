@@ -16,7 +16,7 @@ namespace API.Controllers
             _notificationsService = notificationsService;
         }
 
-        [HttpGet("getAllNotifications")]
+        [HttpGet("getAll")]
         public async Task<IActionResult> GetAllAsync()
             => Result(await _notificationsService.GetAllAsync());
 

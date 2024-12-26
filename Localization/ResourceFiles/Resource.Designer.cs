@@ -2780,6 +2780,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ad status must be opened to complete this operation..
+        /// </summary>
+        public static string OnlyOpenedAds {
+            get {
+                return ResourceManager.GetString("OnlyOpenedAds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket status must be opened to complete this operation..
         /// </summary>
         public static string OnlyOpenedTickets {
@@ -5048,7 +5057,7 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Spaces not allowed.
+        ///   Looks up a localized string similar to Spaces not allowed in User Name.
         /// </summary>
         public static string UserName_NoSpaces {
             get {

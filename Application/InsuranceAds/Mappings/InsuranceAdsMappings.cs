@@ -12,11 +12,12 @@ namespace Application.InsuranceAds.Mappings
             CreateMap<UpdateInsuranceAdDto, InsuranceAd>();
             CreateMap<InsuranceAd, InsuranceAdDto>();
 
-
+            CreateMap<CreateInsuranceAdOfferDto, InsuranceAdOffer>();   
             CreateMap<InsuranceAdOffer, FacilityInsuranceAdOfferDto>();
-            CreateMap<InsuranceAdOffer, CompanyInsuranceAdOfferDto>();
+            CreateMap<InsuranceAdOffer, CompanyInsuranceAdOfferDto>()
+                .ForMember(dest => dest.Facility, opt => opt.MapFrom(src => src.InsuranceAd.Facility));
 
-
+            CreateMap<CreateInsuranceAdOfferMessageDto, InsuranceAdOfferMessage>();
             CreateMap<InsuranceAdOfferMessage, InsuranceAdOfferMessageDto>();
         }
     }

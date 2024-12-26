@@ -6,19 +6,17 @@ namespace Application.Tickets.Events
     internal class TicketMessageCreatedEventHandler : INotificationHandler<TicketMessageCreated>
     {
         private readonly IUnitOfWorkService _ufw;
-        private readonly ICurrentUserService _currentUser;
 
-        public TicketMessageCreatedEventHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser)
+        public TicketMessageCreatedEventHandler(IUnitOfWorkService ufw)
         {
             _ufw = ufw;
-            _currentUser = currentUser;
         }
 
         public async Task Handle(TicketMessageCreated notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
             {
-                ContentEn = $"You have received a new message on your ticket.",
+                ContentEn = "You have received a new message on your ticket.",
                 ContentAr = "لقد استلمت رسالة جديدة على تذكرتك.",
                 IsRead = false,
                 ReferenceId = notification.TicketMessage.Ticket.Id,
@@ -29,7 +27,7 @@ namespace Application.Tickets.Events
                 RecipientType = AccountTypes.Facility
             };
 
-            if(_currentUser.Type == AccountTypes.Facility)
+            if(notification.TicketMessage.SenderType == AccountTypes.Facility)
             {
                 userNotification.RecipientId = notification.TicketMessage.Ticket.PriceRequest.CompanyId;
                 userNotification.RecipientType = AccountTypes.Company;

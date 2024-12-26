@@ -10,6 +10,12 @@
         // tickets
         TicketCreated = 4,
         TicketClosed = 5,
-        TicketMessageCreated = 6
+        TicketMessageCreated = 6,
+
+        // insurance ads
+        InsuranceAdOfferCreated = 7,
+        InsuranceAdOfferAccepted = 8,
+        InsuranceAdOfferRejected = 9,
+        InsuranceAdOfferMessageCreated = 10,
     }
 }

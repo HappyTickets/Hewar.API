@@ -7,7 +7,8 @@ namespace Application.InsuranceAds.Dtos
         public long Id { get; set; }
         public string Offer { get; set; }
         public RequestStatus Status { get; set; }
-        public long InsuranceAdOfferId { get; set; }
+        public DateTimeOffset SentDate { get; set; }
+        public long InsuranceAdId { get; set; }
 
         public CompanyBreifDto Company { get; set; }
     }
