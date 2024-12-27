@@ -1,4 +1,5 @@
-﻿using Application.AccountManagement.OTP;
+﻿using Application.Account.OTP;
+using Application.AccountManagement.OTP;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
 using Infrastructure.Authentication.Handlers;
@@ -55,6 +56,7 @@ namespace Infrastructure
         {
             services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
+                options.Tokens.PasswordResetTokenProvider = nameof(PasswordResetTokenProvider);
                 options.Tokens.EmailConfirmationTokenProvider = nameof(EmailOtpTokenProvider);
                 options.User.AllowedUserNameCharacters = string.Empty;
                 options.User.RequireUniqueEmail = true;
@@ -66,6 +68,7 @@ namespace Infrastructure
                 options.Password.RequireDigit = true;
             })
                 .AddTokenProvider<EmailOtpTokenProvider>(nameof(EmailOtpTokenProvider))
+                .AddTokenProvider<PasswordResetTokenProvider>(nameof(PasswordResetTokenProvider))
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
             return services;
         }

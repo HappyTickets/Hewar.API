@@ -1189,7 +1189,7 @@ Happy Tickets</value>
     <value>نأسف لذلك، لم نتمكن من تغيير كلمة المرور الخاصة بك.</value>
   </data>
   <data name="Password_Reset_Message" xml:space="preserve">
-    <value>من فضلك قم بتغيير كلمة المرور الخاصة بك بالضغط هنا: </value>
+    <value>رمز التحقق لإعادة تعيين كلمة المرور هو {0}. يرجى استخدامه لتحديث كلمة المرور الخاصة بك بأمان.</value>
   </data>
   <data name="Password_Reset_Request_Fail" xml:space="preserve">
     <value>فشل طلب تغيير كلمة المرور</value>

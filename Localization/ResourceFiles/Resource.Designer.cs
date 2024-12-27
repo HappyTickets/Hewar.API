@@ -2942,7 +2942,7 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please reset your password by clicking here: .
+        ///   Looks up a localized string similar to Your OTP for password reset is {0}. Please use it to securely update your password..
         /// </summary>
         public static string Password_Reset_Message {
             get {

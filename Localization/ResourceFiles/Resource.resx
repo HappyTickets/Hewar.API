@@ -1273,7 +1273,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
     <value>Ops, could not reset your password.</value>
   </data>
   <data name="Password_Reset_Message" xml:space="preserve">
-    <value>Please reset your password by clicking here: </value>
+    <value>Your OTP for password reset is {0}. Please use it to securely update your password.</value>
   </data>
   <data name="Password_Reset_Request_Fail" xml:space="preserve">
     <value>Password reset request failed</value>
