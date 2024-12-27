@@ -1956,4 +1956,7 @@ Happy Tickets</value>
   <data name="RoleNotExistError" xml:space="preserve">
     <value>الدور غير موجود.</value>
   </data>
+  <data name="TicketAudienceError" xml:space="preserve">
+    <value>يمكن فقط لجمهور التذكرة إغلاق هذه التذكرة.</value>
+  </data>
 </root>

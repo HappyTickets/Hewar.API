@@ -23,8 +23,8 @@ namespace Application.Tickets.Events
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketClosed,
                 CreatedAt = DateTimeOffset.UtcNow,
-                RecipientId = notification.Ticket.PriceRequest.FacilityId,
-                RecipientType = AccountTypes.Facility
+                RecipientId = notification.Ticket.IssuerId,
+                RecipientType = notification.Ticket.IssuerType
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

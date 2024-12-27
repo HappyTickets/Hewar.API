@@ -23,14 +23,14 @@ namespace Application.Tickets.Events
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketMessageCreated,
                 CreatedAt = DateTimeOffset.UtcNow,
-                RecipientId = notification.TicketMessage.Ticket.PriceRequest.FacilityId,
-                RecipientType = AccountTypes.Facility
+                RecipientId = notification.TicketMessage.Ticket.AudienceId,
+                RecipientType = notification.TicketMessage.Ticket.AudienceType
             };
 
-            if(notification.TicketMessage.SenderType == AccountTypes.Facility)
+            if(notification.TicketMessage.SenderType == notification.TicketMessage.Ticket.AudienceType)
             {
-                userNotification.RecipientId = notification.TicketMessage.Ticket.PriceRequest.CompanyId;
-                userNotification.RecipientType = AccountTypes.Company;
+                userNotification.RecipientId = notification.TicketMessage.Ticket.IssuerId;
+                userNotification.RecipientType = notification.TicketMessage.Ticket.IssuerType;
             }
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

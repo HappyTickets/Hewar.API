@@ -8,10 +8,12 @@ namespace Domain.Entities.TicketAggregates
         public DateTimeOffset OpenedDate { get; set; }
         public DateTimeOffset? ClosedDate { get; set; } // Closed date, nullable
         public TicketStatus Status { get; set; }
-        public long PriceRequestId { get; set; }
+        public long AudienceId { get; set; }
+        public AccountTypes AudienceType { get; set; }
+        public long IssuerId { get; set; }
+        public AccountTypes IssuerType { get; set; }
 
         // nav props
-        public PriceRequest PriceRequest { get; set; }
         public ICollection<TicketMessage> Messages { get; set; }
     }
 }

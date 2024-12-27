@@ -42,19 +42,19 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetMyRequestsAsCompanyAsync()
             => Result(await _priceRequestsService.GetMyRequestsAsCompanyAsync());
 
-        [HttpPost("createFacilityDetails")]
+        [HttpPost("createRequestFacilityDetails")]
         [HasAccountType(AccountTypes.Facility)]
-        public async Task<IActionResult> CreateFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
-            => Result(await _priceRequestsService.CreateFacilityDetailsAsync(dto));
+        public async Task<IActionResult> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
+            => Result(await _priceRequestsService.CreateRequestFacilityDetailsAsync(dto));
 
-        [HttpPut("updateFacilityDetails")]
+        [HttpPut("updateRequestFacilityDetails")]
         [HasAccountType(AccountTypes.Facility)]
-        public async Task<IActionResult> UpdateFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
-            => Result(await _priceRequestsService.UpdateFacilityDetailsAsync(facilityDetailsId, dto));
+        public async Task<IActionResult> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
+            => Result(await _priceRequestsService.UpdateRequestFacilityDetailsAsync(facilityDetailsId, dto));
 
-        [HttpGet("getFacilityDetails")]
+        [HttpGet("getRequestFacilityDetails")]
         [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        public async Task<IActionResult> GetFacilityDetailsAsync(long priceRequestId)
-            => Result(await _priceRequestsService.GetFacilityDetailsAsync(priceRequestId));
+        public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
+            => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId));
     }
 }

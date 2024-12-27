@@ -25,10 +25,6 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasOne(pr => pr.FacilityDetails)
                 .WithOne(fd => fd.PriceRequest)
                 .HasForeignKey<PriceRequestFacilityDetails>(fd => fd.PriceRequestId);
-
-            builder.HasMany(pr => pr.Tickets)
-                .WithOne(t => t.PriceRequest)
-                .HasForeignKey(t => t.PriceRequestId);
         }
     }
 }

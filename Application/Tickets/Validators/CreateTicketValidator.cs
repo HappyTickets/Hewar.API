@@ -13,7 +13,10 @@ namespace Application.Tickets.Validators
             RuleFor(t => t.Content)
                 .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(t => t.PriceRequestId)
+            RuleFor(t => t.AudienceId)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+            
+            RuleFor(t => t.AudienceType)
                 .NotEmpty().WithMessage(Resource.RequiredField);
         }
     }

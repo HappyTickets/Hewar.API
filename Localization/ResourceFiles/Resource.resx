@@ -2065,4 +2065,7 @@ For any questions or concerns regarding this Agreement, please contact [Customer
   <data name="OnlyOpenedAds" xml:space="preserve">
     <value>Ad status must be opened to complete this operation.</value>
   </data>
+  <data name="TicketAudienceError" xml:space="preserve">
+    <value>Only ticket audience can close this ticket.</value>
+  </data>
 </root>

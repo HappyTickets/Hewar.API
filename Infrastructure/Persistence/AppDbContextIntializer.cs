@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence
 
         public async Task InitialiseAsync()
         {
-            await _context.Database.MigrateAsync();
+            //await _context.Database.MigrateAsync();
 
             if(!await _userManager.Users.AnyAsync())
             {

@@ -18,22 +18,16 @@ namespace Application.Tickets.Events
         {
             var userNotification = new Notification
             {
-                ContentEn = "A new ticket has been created for your price request.",
-                ContentAr = "تم إنشاء تذكرة جديدة لطلب عرض السعر الخاص بك.",
+                ContentEn = "A new ticket has been created for you.",
+                ContentAr = "تم إنشاء تذكرة جديدة لك.",
                 IsRead = false,
                 ReferenceId = notification.Ticket.Id,
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketCreated,
                 CreatedAt = DateTimeOffset.UtcNow,
-                RecipientId = notification.Ticket.PriceRequest.CompanyId,
-                RecipientType = AccountTypes.Company
+                RecipientId = notification.Ticket.AudienceId,
+                RecipientType = notification.Ticket.AudienceType
             };
-
-            if(_currentUser.Type == AccountTypes.Company)
-            {
-                userNotification.RecipientId = notification.Ticket.PriceRequest.FacilityId;
-                userNotification.RecipientType = AccountTypes.Facility;
-            }
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
             _ufw.Notifications.Create(userNotification);

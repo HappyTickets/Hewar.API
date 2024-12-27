@@ -32,7 +32,7 @@ namespace Application.PriceRequests.Service
             return priceRequest.Id;
         }
 
-        public async Task<Result<Empty>> CreateFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
+        public async Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
         {
             if (!await _ufw.PriceRequests.AnyAsync(pr => pr.Id == dto.PriceRequestId && pr.Status == RequestStatus.Pending))
                 return new ConflictException(Resource.OnlyPendingRequests);
@@ -45,7 +45,7 @@ namespace Application.PriceRequests.Service
             return Empty.Default;
         }
 
-        public async Task<Result<Empty>> UpdateFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
+        public async Task<Result<Empty>> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
         {
             var details = await _ufw.PriceRequestFacilityDetails
                 .GetByIdAsync(facilityDetailsId);
@@ -62,7 +62,7 @@ namespace Application.PriceRequests.Service
             return Empty.Default;
         }
 
-        public async Task<Result<PriceRequestFacilityDetailsDto>> GetFacilityDetailsAsync(long priceRequestId)
+        public async Task<Result<PriceRequestFacilityDetailsDto>> GetRequestFacilityDetailsAsync(long priceRequestId)
         {
             var facilityDetails = await _ufw.PriceRequestFacilityDetails
                 .FirstOrDefaultAsync(d => d.PriceRequestId == priceRequestId);
@@ -99,12 +99,9 @@ namespace Application.PriceRequests.Service
             var offer = _mapper.Map<PriceRequestOffer>(dto);
             offer.RespondedDate = DateTimeOffset.UtcNow;
 
-            // mark request accepted and create response
+            // mark request accepted and create offer
             request.Status = RequestStatus.Accepted;
             _ufw.PriceRequestOffers.Create(offer);
-           
-            // mark request tickets as closed
-            await MarkAllRequestTicketsAsClosedAsync(request.Id);
 
             request.AddDomainEvent(new PriceRequestAccepted(request));
             await _ufw.SaveChangesAsync();
@@ -125,25 +122,10 @@ namespace Application.PriceRequests.Service
             // mark request rejected
             request.Status = RequestStatus.Rejected;
 
-            // mark request tickets as closed
-            await MarkAllRequestTicketsAsClosedAsync(request.Id);
-
             request.AddDomainEvent(new PriceRequestRejected(request));
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
-        }
-
-        private async Task MarkAllRequestTicketsAsClosedAsync(long priceRequestId)
-        {
-            var tickets = await _ufw.Tickets
-                .FilterAsync(t => t.PriceRequestId == priceRequestId && t.Status == TicketStatus.Opened);
-
-            foreach(var ticket in tickets)
-            {
-                ticket.Status = TicketStatus.Closed;
-                ticket.ClosedDate = DateTimeOffset.UtcNow;
-            }
         }
     }
 }

@@ -4688,6 +4688,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only ticket audience can close this ticket..
+        /// </summary>
+        public static string TicketAudienceError {
+            get {
+                return ResourceManager.GetString("TicketAudienceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket Details.
         /// </summary>
         public static string TicketDetails {
