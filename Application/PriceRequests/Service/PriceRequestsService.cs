@@ -73,7 +73,7 @@ namespace Application.PriceRequests.Service
         public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
         {
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.FacilityId == _currentUser.Id, ["Company.LoginDetails", "Response"]);
+                .FilterAsync(pr => pr.FacilityId == _currentUser.Id, ["Company.LoginDetails", "Offer"]);
 
             return _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
         } 
@@ -81,7 +81,7 @@ namespace Application.PriceRequests.Service
         public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
         {
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.CompanyId == _currentUser.Id, ["Facility.LoginDetails", "Response"]);
+                .FilterAsync(pr => pr.CompanyId == _currentUser.Id, ["Facility.LoginDetails", "Offer"]);
 
             return _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
         }
@@ -126,6 +126,37 @@ namespace Application.PriceRequests.Service
             await _ufw.SaveChangesAsync();
 
             return Empty.Default;
+        }
+
+        public async Task<Result<Empty>> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
+        {
+            var request = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);
+
+            if (request == null)
+                return new NotFoundException();
+
+            if(request.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
+
+            var message = _mapper.Map<PriceRequestMessage>(dto);
+            message.SentDate = DateTimeOffset.UtcNow;
+            message.SenderId = _currentUser.Id!.Value;
+            message.SenderType = _currentUser.Type!.Value;
+            message.PriceRequest = request;
+
+            message.AddDomainEvent(new PriceRequestMessageCreated(message));
+            _ufw.PriceRequestMessages.Create(message);
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
+        public async Task<Result<PriceRequestMessageDto[]>> GetRequestMessagesAsync(long requestId)
+        {
+            var messages = await _ufw.PriceRequestMessages
+                .FilterAsync(m=>m.PriceRequestId == requestId);
+
+            return _mapper.Map<PriceRequestMessageDto[]>(messages);
         }
     }
 }

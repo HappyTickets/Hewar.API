@@ -27,6 +27,7 @@ namespace Infrastructure.Persistence.Repositories
             PriceRequests = new SoftDeletableGenericRepositoryService<PriceRequest>(_context, _currentUserService);
             PriceRequestFacilityDetails = new SoftDeletableGenericRepositoryService<PriceRequestFacilityDetails>(_context, _currentUserService);
             PriceRequestOffers = new SoftDeletableGenericRepositoryService<PriceRequestOffer>(_context, _currentUserService);
+            PriceRequestMessages = new SoftDeletableGenericRepositoryService<PriceRequestMessage>(_context, _currentUserService);
             Notifications = new SoftDeletableGenericRepositoryService<Notification>(_context, _currentUserService);
             InsuranceAds = new SoftDeletableGenericRepositoryService<InsuranceAd>(_context, _currentUserService);
             InsuranceAdOffers = new SoftDeletableGenericRepositoryService<InsuranceAdOffer>(_context, _currentUserService);
@@ -52,6 +53,7 @@ namespace Infrastructure.Persistence.Repositories
         public ISoftDeletableGenericRepositoryService<PriceRequest> PriceRequests { get; }
         public ISoftDeletableGenericRepositoryService<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; }
         public ISoftDeletableGenericRepositoryService<PriceRequestOffer> PriceRequestOffers { get; }
+        public ISoftDeletableGenericRepositoryService<PriceRequestMessage> PriceRequestMessages { get; }
         public ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
         public ISoftDeletableGenericRepositoryService<InsuranceAd> InsuranceAds { get; }
         public ISoftDeletableGenericRepositoryService<InsuranceAdOffer> InsuranceAdOffers { get; }

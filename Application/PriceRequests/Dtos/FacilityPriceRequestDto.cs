@@ -14,7 +14,7 @@ namespace Application.PriceRequests.Dtos
         public DateTimeOffset EndDate { get; set; }
         public string Description { get; set; }
         public RequestStatus Status { get; set; }
-        public PriceRequestOfferDto Response { get; set; }
+        public PriceRequestOfferDto Offer { get; set; }
         public CompanyBreifDto Company { get; set; }
     }
 }

@@ -73,7 +73,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetMyOffersAsCompanyAsync()
             => Result(await _insuranceAdsService.GetMyOffersAsCompanyAsync());
 
-        [HttpPost("CreateOfferMessage")]
+        [HttpPost("createOfferMessage")]
         [HaveAccountTypes(AccountTypes.Company, AccountTypes.Facility)]
         public async Task<IActionResult> CreateOfferMessageAsync(CreateInsuranceAdOfferMessageDto dto)
             => Result(await _insuranceAdsService.CreateOfferMessageAsync(dto));

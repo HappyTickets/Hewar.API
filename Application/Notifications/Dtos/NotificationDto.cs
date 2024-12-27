@@ -11,6 +11,6 @@ namespace Application.Notifications.Dtos
         public long ReferenceId { get; set; }
         public ReferenceTypes ReferenceType { get; set; }
         public NotificationEvents Event { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset NotifiedOn { get; set; }
     }
 }

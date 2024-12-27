@@ -17,7 +17,7 @@
         public Facility Facility { get; set; }
         public Company Company { get; set; }
         public ICollection<Ticket> Tickets { get; set; }
-        public PriceRequestOffer Response { get; set; }
+        public PriceRequestOffer Offer { get; set; }
         public PriceRequestFacilityDetails FacilityDetails { get; set; }
     }
 }

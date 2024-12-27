@@ -79,6 +79,7 @@ namespace Infrastructure.Persistence
         public DbSet<PriceRequest> PriceRequests { get; set; }
         public DbSet<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; set; }
         public DbSet<PriceRequestOffer> PriceRequestOffers { get; set; }
+        public DbSet<PriceRequestMessage> PriceRequestMessages { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }

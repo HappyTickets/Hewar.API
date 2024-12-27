@@ -24,6 +24,7 @@ namespace Application.Common.Interfaces.Repositories
         ISoftDeletableGenericRepositoryService<InsuranceAd> InsuranceAds { get; }
         ISoftDeletableGenericRepositoryService<InsuranceAdOffer> InsuranceAdOffers { get; }
         ISoftDeletableGenericRepositoryService<InsuranceAdOfferMessage> InsuranceAdOfferMessages { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequestMessage> PriceRequestMessages { get; }
 
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task CommitTransactionAsync();

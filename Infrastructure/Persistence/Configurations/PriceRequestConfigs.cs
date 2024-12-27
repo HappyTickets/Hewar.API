@@ -18,7 +18,7 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(pr => pr.FacilityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(pr => pr.Response)
+            builder.HasOne(pr => pr.Offer)
                 .WithOne(r => r.PriceRequest)
                 .HasForeignKey<PriceRequestOffer>(r => r.PriceRequestId);
             

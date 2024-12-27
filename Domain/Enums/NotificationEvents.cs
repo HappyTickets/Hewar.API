@@ -6,16 +6,17 @@
         PriceRequestCreated = 1,
         PriceRequestAccepted = 2,
         PriceRequestRejected = 3,
+        PriceRequestMessageCreated = 4,
 
         // tickets
-        TicketCreated = 4,
-        TicketClosed = 5,
-        TicketMessageCreated = 6,
+        TicketCreated = 50,
+        TicketClosed = 51,
+        TicketMessageCreated = 52,
 
         // insurance ads
-        InsuranceAdOfferCreated = 7,
-        InsuranceAdOfferAccepted = 8,
-        InsuranceAdOfferRejected = 9,
-        InsuranceAdOfferMessageCreated = 10,
+        InsuranceAdOfferCreated = 100,
+        InsuranceAdOfferAccepted = 101,
+        InsuranceAdOfferRejected = 102,
+        InsuranceAdOfferMessageCreated = 103,
     }
 }

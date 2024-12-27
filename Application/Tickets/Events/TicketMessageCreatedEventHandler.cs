@@ -22,7 +22,7 @@ namespace Application.Tickets.Events
                 ReferenceId = notification.TicketMessage.Ticket.Id,
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketMessageCreated,
-                CreatedAt = DateTimeOffset.UtcNow,
+                NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.TicketMessage.Ticket.AudienceId,
                 RecipientType = notification.TicketMessage.Ticket.AudienceType
             };

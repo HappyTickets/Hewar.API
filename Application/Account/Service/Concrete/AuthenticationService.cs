@@ -206,7 +206,7 @@ public class AuthenticationService(
             Id = long.Parse(claims.First(c=>c.Type == ClaimTypes.NameIdentifier)!.Value),
             UserName = user.UserName!,
             Email = user.Email!,
-            AccountType = user.AccountType.ToString(),
+            AccountType = user.AccountType,
             ImageUrl = user.ImageUrl,
             Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,

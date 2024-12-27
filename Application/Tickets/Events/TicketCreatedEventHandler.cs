@@ -24,7 +24,7 @@ namespace Application.Tickets.Events
                 ReferenceId = notification.Ticket.Id,
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketCreated,
-                CreatedAt = DateTimeOffset.UtcNow,
+                NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.Ticket.AudienceId,
                 RecipientType = notification.Ticket.AudienceType
             };

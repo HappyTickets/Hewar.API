@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241227085140_PriceRequestMessagesFix")]
+    partial class PriceRequestMessagesFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -873,6 +876,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -898,9 +904,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("NotifiedOn")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<long>("RecipientId")
@@ -1997,7 +2000,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithOne("Offer")
+                        .WithOne("Response")
                         .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", "PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2168,7 +2171,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("FacilityDetails")
                         .IsRequired();
 
-                    b.Navigation("Offer")
+                    b.Navigation("Response")
                         .IsRequired();
 
                     b.Navigation("Tickets");

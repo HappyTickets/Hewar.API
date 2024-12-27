@@ -22,7 +22,7 @@ namespace Application.InsuranceAds.Events
                 ReferenceId = notification.InsuranceAdOfferMessage.InsuranceAdOfferId,
                 ReferenceType = ReferenceTypes.InsuranceAdOffer,
                 Event = NotificationEvents.InsuranceAdOfferMessageCreated,
-                CreatedAt = DateTimeOffset.UtcNow,
+                NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.InsuranceAdOfferMessage.InsuranceAdOffer.CompanyId,
                 RecipientType = AccountTypes.Company
             };

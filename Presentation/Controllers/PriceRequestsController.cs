@@ -56,5 +56,15 @@ namespace Presentation.Controllers
         [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
             => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId));
+        
+        [HttpPost("createRequestMessage")]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        public async Task<IActionResult> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
+            => Result(await _priceRequestsService.CreateRequestMessageAsync(dto));
+        
+        [HttpPost("getRequestMessages")]
+        [HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        public async Task<IActionResult> GetRequestMessagesAsync(long requestId)
+            => Result(await _priceRequestsService.GetRequestMessagesAsync(requestId));
     }
 }

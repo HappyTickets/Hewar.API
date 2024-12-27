@@ -5,7 +5,7 @@
         public long Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public string AccountType { get; set; }
+        public AccountTypes AccountType { get; set; }
         public string ImageUrl { get; set; }
         public Permissions[] Permissions { get; set; }
         public string AccessToken { get; set; }
