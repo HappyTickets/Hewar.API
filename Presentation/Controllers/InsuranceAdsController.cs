@@ -52,6 +52,11 @@ namespace Presentation.Controllers
         [HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> RejectOfferAsync(long offerId)
             => Result(await _insuranceAdsService.RejectOfferAsync(offerId));
+        
+        [HttpPatch("cancelOffer")]
+        [HasAccountType(AccountTypes.Company)]
+        public async Task<IActionResult> CancelOfferAsync(long offerId)
+            => Result(await _insuranceAdsService.CancelOfferAsync(offerId));
 
         [HttpGet("getMyOffersByAdIdAsFacility")]
         [HasAccountType(AccountTypes.Facility)]

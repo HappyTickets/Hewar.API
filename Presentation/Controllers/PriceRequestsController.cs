@@ -26,11 +26,16 @@ namespace Presentation.Controllers
         [HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
             => Result(await _priceRequestsService.AcceptRequestAsync(dto));
-
+        
         [HttpPatch("rejectRequest")]
         [HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> RejectRequestAsync(long priceRequestId)
             => Result(await _priceRequestsService.RejectRequestAsync(priceRequestId));
+
+        [HttpPatch("cancelRequest")]
+        [HasAccountType(AccountTypes.Facility)]
+        public async Task<IActionResult> CancelRequestAsync(long priceRequestId)
+            => Result(await _priceRequestsService.CancelRequestAsync(priceRequestId));
 
         [HttpGet("getMyRequestsAsFacility")]
         [HasAccountType(AccountTypes.Facility)]

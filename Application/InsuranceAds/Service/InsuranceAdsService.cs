@@ -125,6 +125,24 @@ namespace Application.InsuranceAds.Service
 
             return Empty.Default;
         }
+         
+        public async Task<Result<Empty>> CancelOfferAsync(long offerId)
+        {
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId, ["InsuranceAd"]);
+
+            if (offer == null)
+                return new NotFoundException();
+
+            if (offer.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
+
+            offer.Status = RequestStatus.Cancelled;
+
+            offer.AddDomainEvent(new InsuranceAdOfferCancelled(offer));
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
 
         public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsFacilityAsync(long adId)
         {
@@ -167,6 +185,9 @@ namespace Application.InsuranceAds.Service
 
             if (offer.InsuranceAd.Status != InsuranceAdStatus.Opened)
                 return new ConflictException(Resource.OnlyOpenedAds);
+
+            if(offer.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
 
             var message = _mapper.Map<InsuranceAdOfferMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;

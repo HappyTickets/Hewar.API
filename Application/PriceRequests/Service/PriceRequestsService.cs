@@ -128,6 +128,25 @@ namespace Application.PriceRequests.Service
             return Empty.Default;
         }
 
+        public async Task<Result<Empty>> CancelRequestAsync(long priceRequestId)
+        {
+            var request = await _ufw.PriceRequests.GetByIdAsync(priceRequestId);
+
+            if (request == null)
+                return new NotFoundException();
+
+            if (request.Status != RequestStatus.Pending)
+                return new ConflictException(Resource.OnlyPendingRequests);
+
+            // mark request rejected
+            request.Status = RequestStatus.Cancelled;
+
+            request.AddDomainEvent(new PriceRequestCancelled(request));
+            await _ufw.SaveChangesAsync();
+
+            return Empty.Default;
+        }
+
         public async Task<Result<Empty>> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
         {
             var request = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);

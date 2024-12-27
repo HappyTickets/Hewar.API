@@ -18,5 +18,6 @@ namespace Application.InsuranceAds.Service
         Task<Result<InsuranceAdDto[]>> GetOpenedAdsAsync();
         Task<Result<Empty>> RejectOfferAsync(long offerId);
         Task<Result<Empty>> UpdateAdAsync(UpdateInsuranceAdDto dto);
+        Task<Result<Empty>> CancelOfferAsync(long offerId);
     }
 }

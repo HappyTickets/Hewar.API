@@ -6,7 +6,8 @@
         PriceRequestCreated = 1,
         PriceRequestAccepted = 2,
         PriceRequestRejected = 3,
-        PriceRequestMessageCreated = 4,
+        PriceRequestCancelled = 4,
+        PriceRequestMessageCreated = 5,
 
         // tickets
         TicketCreated = 50,
@@ -17,6 +18,7 @@
         InsuranceAdOfferCreated = 100,
         InsuranceAdOfferAccepted = 101,
         InsuranceAdOfferRejected = 102,
-        InsuranceAdOfferMessageCreated = 103,
+        InsuranceAdOfferCancelled = 103,
+        InsuranceAdOfferMessageCreated = 104,
     }
 }

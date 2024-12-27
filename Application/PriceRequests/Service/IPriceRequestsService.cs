@@ -14,5 +14,6 @@ namespace Application.PriceRequests.Service
         Task<Result<Empty>> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto);
         Task<Result<Empty>> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto);
         Task<Result<PriceRequestMessageDto[]>> GetRequestMessagesAsync(long requestId);
+        Task<Result<Empty>> CancelRequestAsync(long priceRequestId);
     }
 }
