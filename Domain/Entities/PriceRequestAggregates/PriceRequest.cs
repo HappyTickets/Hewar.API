@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities.PriceRequestAggregates
+﻿using Domain.Entities.TicketAggregates;
+
+namespace Domain.Entities.PriceRequestAggregates
 {
     public class PriceRequest : SoftDeletableEntity
     {

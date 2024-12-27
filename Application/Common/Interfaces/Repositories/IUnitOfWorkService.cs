@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.PriceRequestAggregates;
+using Domain.Entities.TicketAggregates;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.Common.Interfaces.Repositories
