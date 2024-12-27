@@ -14,7 +14,7 @@ namespace Presentation.Controllers
             var assembly = typeof(Permissions).Assembly;
             var enums = assembly.ExportedTypes
                 .Where(e => e.IsEnum)
-                .Where(e => name == null || e.Name.StartsWith(name, StringComparison.InvariantCultureIgnoreCase))
+                .Where(e => name == null || e.Name.Contains(name, StringComparison.InvariantCultureIgnoreCase))
                 .Select(e => new
                 {
                     Name = e.Name,
