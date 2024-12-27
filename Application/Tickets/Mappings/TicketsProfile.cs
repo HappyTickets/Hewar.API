@@ -1,5 +1,6 @@
 ﻿using Application.Tickets.Dtos;
 using AutoMapper;
+using Domain.Entities.TicketAggregates;
 
 namespace Application.Tickets.Mappings
 {

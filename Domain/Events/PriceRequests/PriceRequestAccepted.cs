@@ -1,4 +1,6 @@
-﻿namespace Domain.Events.PriceRequests
+﻿using Domain.Entities.PriceRequestAggregates;
+
+namespace Domain.Events.PriceRequests
 {
     public class PriceRequestAccepted: DomainEvent
     {

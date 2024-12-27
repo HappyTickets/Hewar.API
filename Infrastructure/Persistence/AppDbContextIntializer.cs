@@ -1,5 +1,4 @@
-﻿using Domain.Entities.UserEntities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -18,7 +17,7 @@ namespace Infrastructure.Persistence
 
         public async Task InitialiseAsync()
         {
-            await _context.Database.MigrateAsync();
+            //await _context.Database.MigrateAsync();
 
             if(!await _userManager.Users.AnyAsync())
             {

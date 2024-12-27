@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Domain.Entities.PriceRequestAggregates;
+using Domain.Entities.TicketAggregates;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Application.Common.Interfaces.Repositories
 {
@@ -17,8 +19,12 @@ namespace Application.Common.Interfaces.Repositories
         ISoftDeletableGenericRepositoryService<TicketMessage> TicketMessages { get; }
         ISoftDeletableGenericRepositoryService<PriceRequest> PriceRequests { get; }
         ISoftDeletableGenericRepositoryService<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; }
-        ISoftDeletableGenericRepositoryService<PriceRequestResponse> PriceRequestResponses { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequestOffer> PriceRequestOffers { get; }
         ISoftDeletableGenericRepositoryService<Notification> Notifications { get; }
+        ISoftDeletableGenericRepositoryService<InsuranceAd> InsuranceAds { get; }
+        ISoftDeletableGenericRepositoryService<InsuranceAdOffer> InsuranceAdOffers { get; }
+        ISoftDeletableGenericRepositoryService<InsuranceAdOfferMessage> InsuranceAdOfferMessages { get; }
+        ISoftDeletableGenericRepositoryService<PriceRequestMessage> PriceRequestMessages { get; }
 
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task CommitTransactionAsync();

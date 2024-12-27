@@ -205,13 +205,19 @@ namespace Infrastructure.Migrations
                     b.ToTable("Facilities");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Guard", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("BloodType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("City")
+                        .HasColumnType("int");
 
                     b.Property<long?>("CompanyId")
                         .HasColumnType("bigint");
@@ -238,6 +244,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double?>("Height")
+                        .HasColumnType("float");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -254,9 +263,15 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Skills")
+                    b.Property<string>("NationalId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Qualification")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -270,7 +285,168 @@ namespace Infrastructure.Migrations
                     b.ToTable("Guards");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserClaim", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRole", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Company",
+                            NormalizedName = "COMPANY"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "Facility",
+                            NormalizedName = "FACILITY"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            Name = "Guard",
+                            NormalizedName = "GUARD"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRoleClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUser", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AccountType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -294,7 +470,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserLogin", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -315,7 +491,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserRole", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -330,7 +506,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserToken", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserToken", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -349,7 +525,38 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RefreshToken", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTimeOffset>("CreationDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("ExpiryDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("RevokedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RolePermission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -373,147 +580,281 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1L,
-                            Permission = 50,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Permission = 51,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Permission = 52,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Permission = 53,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 5L,
                             Permission = 1,
                             RoleId = 1L
                         },
                         new
                         {
-                            Id = 6L,
+                            Id = 2L,
                             Permission = 2,
                             RoleId = 1L
                         },
                         new
                         {
-                            Id = 7L,
+                            Id = 3L,
                             Permission = 3,
                             RoleId = 1L
                         },
                         new
                         {
-                            Id = 8L,
+                            Id = 4L,
                             Permission = 4,
                             RoleId = 1L
                         },
                         new
                         {
-                            Id = 9L,
+                            Id = 5L,
                             Permission = 5,
                             RoleId = 1L
                         },
                         new
                         {
-                            Id = 10L,
+                            Id = 6L,
                             Permission = 6,
                             RoleId = 1L
                         },
                         new
                         {
+                            Id = 7L,
+                            Permission = 50,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            Permission = 51,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            Permission = 52,
+                            RoleId = 1L
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            Permission = 53,
+                            RoleId = 1L
+                        },
+                        new
+                        {
                             Id = 11L,
-                            Permission = 104,
-                            RoleId = 2L
+                            Permission = 100,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 12L,
-                            Permission = 102,
-                            RoleId = 2L
+                            Permission = 101,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 13L,
-                            Permission = 103,
-                            RoleId = 2L
+                            Permission = 102,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 14L,
-                            Permission = 151,
-                            RoleId = 2L
+                            Permission = 103,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 15L,
-                            Permission = 152,
-                            RoleId = 2L
+                            Permission = 150,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 16L,
-                            Permission = 153,
-                            RoleId = 2L
+                            Permission = 151,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 17L,
-                            Permission = 154,
-                            RoleId = 2L
+                            Permission = 152,
+                            RoleId = 1L
                         },
                         new
                         {
                             Id = 18L,
-                            Permission = 100,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            Permission = 101,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            Permission = 104,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 21L,
-                            Permission = 150,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 22L,
-                            Permission = 151,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 23L,
                             Permission = 153,
-                            RoleId = 3L
-                        },
-                        new
-                        {
-                            Id = 24L,
-                            Permission = 154,
-                            RoleId = 3L
+                            RoleId = 1L
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("ContractType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("FacilityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("GuardsCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("SecurityRole")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkShift")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacilityId");
+
+                    b.ToTable("InsuranceAds");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("InsuranceAdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Offer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("SentDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("InsuranceAdId");
+
+                    b.ToTable("InsuranceAdOffers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOfferMessage", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("InsuranceAdOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SenderType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SentDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InsuranceAdOfferId");
+
+                    b.ToTable("InsuranceAdOfferMessages");
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -531,9 +872,6 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ContentEn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -560,6 +898,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("NotifiedOn")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<long>("RecipientId")
@@ -746,7 +1087,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Policies");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequest", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -815,7 +1156,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("PriceRequests");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestFacilityDetails", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -942,7 +1283,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("PriceRequestFacilityDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestResponse", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestMessage", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -978,6 +1319,58 @@ namespace Infrastructure.Migrations
                     b.Property<long>("PriceRequestId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SenderType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("SentDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceRequestId");
+
+                    b.ToTable("PriceRequestMessages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Offer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PriceRequestId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTimeOffset>("RespondedDate")
                         .HasColumnType("datetimeoffset");
 
@@ -986,7 +1379,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PriceRequestId")
                         .IsUnique();
 
-                    b.ToTable("PriceRequestResponses");
+                    b.ToTable("PriceRequestOffers");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -1114,13 +1507,19 @@ namespace Infrastructure.Migrations
                     b.ToTable("Shifts");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AudienceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("AudienceType")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("ClosedDate")
                         .HasColumnType("datetimeoffset");
@@ -1146,6 +1545,12 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<long>("IssuerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("IssuerType")
+                        .HasColumnType("int");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1155,7 +1560,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset>("OpenedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("PriceRequestId")
+                    b.Property<long?>("PriceRequestId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Status")
@@ -1176,7 +1581,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TicketMessage", b =>
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.TicketMessage", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1228,197 +1633,9 @@ namespace Infrastructure.Migrations
                     b.ToTable("TicketMessages");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRole", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Company",
-                            NormalizedName = "COMPANY"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Facility",
-                            NormalizedName = "FACILITY"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Guard",
-                            NormalizedName = "GUARD"
-                        });
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRoleClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.RefreshToken", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTimeOffset>("CreationDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("ExpiryDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("RevokedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
-                    b.HasOne("Domain.Entities.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
                         .WithMany("Attendances")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1429,7 +1646,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "LoginDetails")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
                         .WithOne("Company")
                         .HasForeignKey("Domain.Entities.Company", "LoginDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1440,7 +1657,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Facility", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "LoginDetails")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
                         .WithOne("Facility")
                         .HasForeignKey("Domain.Entities.Facility", "LoginDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1449,7 +1666,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("LoginDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Guard", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
                 {
                     b.HasOne("Domain.Entities.Company", null)
                         .WithMany("Guards")
@@ -1459,42 +1676,110 @@ namespace Infrastructure.Migrations
                         .WithMany("Guards")
                         .HasForeignKey("FacilityId");
 
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "LoginDetails")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
                         .WithOne("Guard")
-                        .HasForeignKey("Domain.Entities.Guard", "LoginDetailsId")
+                        .HasForeignKey("Domain.Entities.GuardAggregates.Guard", "LoginDetailsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.OwnsMany("Domain.Entities.GuardAggregates.PrevCompany", "PrevCompanies", b1 =>
+                        {
+                            b1.Property<long>("GuardId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTimeOffset>("From")
+                                .HasColumnType("datetimeoffset");
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTimeOffset>("To")
+                                .HasColumnType("datetimeoffset");
+
+                            b1.HasKey("GuardId", "Id");
+
+                            b1.ToTable("PrevCompany");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GuardId");
+                        });
+
+                    b.OwnsMany("Domain.Entities.GuardAggregates.Skill", "Skills", b1 =>
+                        {
+                            b1.Property<long>("GuardId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("YearsOfExperience")
+                                .HasColumnType("int");
+
+                            b1.HasKey("GuardId", "Id");
+
+                            b1.ToTable("Skill");
+
+                            b1.WithOwner()
+                                .HasForeignKey("GuardId");
+                        });
 
                     b.Navigation("LoginDetails");
+
+                    b.Navigation("PrevCompanies");
+
+                    b.Navigation("Skills");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserClaim", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserLogin", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserLogin", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserRole", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserRole", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", "Role")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", "Role")
                         .WithMany("ApplicationUserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "User")
                         .WithMany("ApplicationUserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1505,18 +1790,29 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.ApplicationUserToken", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserToken", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", null)
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.Identity.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RefreshToken", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", "Role")
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RolePermission", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", "Role")
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1525,9 +1821,79 @@ namespace Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
+                {
+                    b.HasOne("Domain.Entities.Facility", "Facility")
+                        .WithMany()
+                        .HasForeignKey("FacilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Facility");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.Company", "Company")
+                        .WithMany("InsuranceAdOffers")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.InsuranceAdAggregates.InsuranceAd", "InsuranceAd")
+                        .WithMany("InsuranceAdOffers")
+                        .HasForeignKey("InsuranceAdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("InsuranceAd");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOfferMessage", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", "InsuranceAdOffer")
+                        .WithMany("InsuranceAdOfferMessages")
+                        .HasForeignKey("InsuranceAdOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("Domain.Common.Media", "Medias", b1 =>
+                        {
+                            b1.Property<long>("InsuranceAdOfferMessageId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("InsuranceAdOfferMessageId", "Id");
+
+                            b1.ToTable("InsuranceAdOfferMessages_Medias");
+
+                            b1.WithOwner()
+                                .HasForeignKey("InsuranceAdOfferMessageId");
+                        });
+
+                    b.Navigation("InsuranceAdOffer");
+
+                    b.Navigation("Medias");
+                });
+
             modelBuilder.Entity("Domain.Entities.Payroll", b =>
                 {
-                    b.HasOne("Domain.Entities.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
                         .WithMany("Payrolls")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1538,7 +1904,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.PerformanceReview", b =>
                 {
-                    b.HasOne("Domain.Entities.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
                         .WithMany("PerformanceReviews")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1558,7 +1924,7 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("FacilityId");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequest", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
                         .WithMany("PriceRequests")
@@ -1577,22 +1943,62 @@ namespace Infrastructure.Migrations
                     b.Navigation("Facility");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestFacilityDetails", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", b =>
                 {
-                    b.HasOne("Domain.Entities.PriceRequest", "PriceRequest")
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
                         .WithOne("FacilityDetails")
-                        .HasForeignKey("Domain.Entities.PriceRequestFacilityDetails", "PriceRequestId")
+                        .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", "PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PriceRequest");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestResponse", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestMessage", b =>
                 {
-                    b.HasOne("Domain.Entities.PriceRequest", "PriceRequest")
-                        .WithOne("Response")
-                        .HasForeignKey("Domain.Entities.PriceRequestResponse", "PriceRequestId")
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
+                        .WithMany()
+                        .HasForeignKey("PriceRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("Domain.Common.Media", "Medias", b1 =>
+                        {
+                            b1.Property<long>("PriceRequestMessageId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Type")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Url")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("PriceRequestMessageId", "Id");
+
+                            b1.ToTable("PriceRequestMessages_Medias");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PriceRequestMessageId");
+                        });
+
+                    b.Navigation("Medias");
+
+                    b.Navigation("PriceRequest");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
+                        .WithOne("Offer")
+                        .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", "PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1609,14 +2015,14 @@ namespace Infrastructure.Migrations
                         .WithMany("Reports")
                         .HasForeignKey("FacilityId");
 
-                    b.HasOne("Domain.Entities.Guard", null)
+                    b.HasOne("Domain.Entities.GuardAggregates.Guard", null)
                         .WithMany("Reports")
                         .HasForeignKey("GuardId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Shift", b =>
                 {
-                    b.HasOne("Domain.Entities.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
                         .WithMany("Shifts")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1631,7 +2037,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("ParentShift");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
                 {
                     b.HasOne("Domain.Entities.Company", null)
                         .WithMany("Tickets")
@@ -1641,24 +2047,20 @@ namespace Infrastructure.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("FacilityId");
 
-                    b.HasOne("Domain.Entities.PriceRequest", "PriceRequest")
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", null)
                         .WithMany("Tickets")
-                        .HasForeignKey("PriceRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceRequest");
+                        .HasForeignKey("PriceRequestId");
                 });
 
-            modelBuilder.Entity("Domain.Entities.TicketMessage", b =>
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.TicketMessage", b =>
                 {
-                    b.HasOne("Domain.Entities.Ticket", "Ticket")
+                    b.HasOne("Domain.Entities.TicketAggregates.Ticket", "Ticket")
                         .WithMany("Messages")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Domain.Entities.Owned.Media", "Medias", b1 =>
+                    b.OwnsMany("Domain.Common.Media", "Medias", b1 =>
                         {
                             b1.Property<long>("TicketMessageId")
                                 .HasColumnType("bigint");
@@ -1679,7 +2081,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("TicketMessageId", "Id");
 
-                            b1.ToTable("Media");
+                            b1.ToTable("TicketMessages_Medias");
 
                             b1.WithOwner()
                                 .HasForeignKey("TicketMessageId");
@@ -1690,29 +2092,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRoleClaim", b =>
-                {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationRole", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.RefreshToken", b =>
-                {
-                    b.HasOne("Domain.Entities.UserEntities.ApplicationUser", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
                     b.Navigation("Guards");
+
+                    b.Navigation("InsuranceAdOffers");
 
                     b.Navigation("Policies");
 
@@ -1736,7 +2120,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Guard", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
                 {
                     b.Navigation("Attendances");
 
@@ -1749,30 +2133,14 @@ namespace Infrastructure.Migrations
                     b.Navigation("Shifts");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequest", b =>
-                {
-                    b.Navigation("FacilityDetails")
-                        .IsRequired();
-
-                    b.Navigation("Response")
-                        .IsRequired();
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Ticket", b =>
-                {
-                    b.Navigation("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationRole", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRole", b =>
                 {
                     b.Navigation("ApplicationUserRoles");
 
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntities.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUser", b =>
                 {
                     b.Navigation("ApplicationUserRoles");
 
@@ -1783,6 +2151,32 @@ namespace Infrastructure.Migrations
                     b.Navigation("Guard");
 
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
+                {
+                    b.Navigation("InsuranceAdOffers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
+                {
+                    b.Navigation("InsuranceAdOfferMessages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
+                {
+                    b.Navigation("FacilityDetails")
+                        .IsRequired();
+
+                    b.Navigation("Offer")
+                        .IsRequired();
+
+                    b.Navigation("Tickets");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

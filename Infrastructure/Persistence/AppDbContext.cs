@@ -1,5 +1,5 @@
-﻿using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
+﻿using Domain.Entities.PriceRequestAggregates;
+using Domain.Entities.TicketAggregates;
 using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
 using MediatR;
@@ -78,11 +78,15 @@ namespace Infrastructure.Persistence
         public DbSet<Guard> Guards { get; set; }
         public DbSet<PriceRequest> PriceRequests { get; set; }
         public DbSet<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; set; }
-        public DbSet<PriceRequestResponse> PriceRequestResponses { get; set; }
+        public DbSet<PriceRequestOffer> PriceRequestOffers { get; set; }
+        public DbSet<PriceRequestMessage> PriceRequestMessages { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<InsuranceAd> InsuranceAds { get; set; }
+        public DbSet<InsuranceAdOffer> InsuranceAdOffers { get; set; }
+        public DbSet<InsuranceAdOfferMessage> InsuranceAdOfferMessages { get; set; }
         #endregion
 
     }

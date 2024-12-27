@@ -1,4 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Authentication;
+using Application.Guards.Validators;
 using FluentValidation;
 using Localization.ResourceFiles;
 
@@ -8,32 +9,55 @@ namespace Application.Authorization.Validators
     {
         public RegisterGuardRequestValidator()
         {
-            RuleFor(x => x.UserName)
+            RuleFor(g => g.UserName)
                 .NotEmpty().WithMessage(Resource.RequiredField)
                 .Must(un => !un.Contains(" ")).WithMessage(Resource.UserName_NoSpaces);
 
-            RuleFor(x => x.FirstName)
+            RuleFor(g => g.FirstName)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(x => x.LastName)
+            RuleFor(g => g.LastName)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+            
+            RuleFor(g => g.ImageUrl)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(x => x.Email)
+            RuleFor(g => g.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)
                 .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);
 
-            RuleFor(x => x.Phone)
+            RuleFor(g => g.Phone)
             .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(x => x.Password)
+            RuleFor(g => g.Password)
                 .NotEmpty().WithMessage(Resource.Password_Validation)
                 .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation);
 
-            RuleFor(x => x.DateOfBirth)
+            RuleFor(g => g.DateOfBirth)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(x => x.Skills)
+            RuleFor(g => g.NationalId)
                 .NotEmpty().WithMessage(Resource.RequiredField);
+            
+            RuleFor(g => g.Qualification)
+                .NotNull().WithMessage(Resource.RequiredField)
+                .IsInEnum().WithMessage(Resource.InvalidValue);
+            
+            RuleFor(g => g.City)
+                .NotNull().WithMessage(Resource.RequiredField)
+                .IsInEnum().WithMessage(Resource.InvalidValue);
+
+            RuleFor(g=> g.Skills)
+                .ForEach(b =>
+                {
+                    b.SetValidator(new SkillDtoValidator());
+                });
+            
+            RuleFor(g => g.PrevCompanies)
+                .ForEach(b =>
+                {
+                    b.SetValidator(new PrevCompanyDtoValidator());
+                });
         }
 
     }

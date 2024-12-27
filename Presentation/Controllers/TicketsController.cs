@@ -1,11 +1,12 @@
 ﻿using Application.Tickets.Dtos;
 using Application.Tickets.Service;
-using Infrastructure.Authentication.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
     [Route("api/tickets")]
+    [Authorize]
     public class TicketsController : ApiControllerBase
     {
         private readonly ITicketsService _ticketsService;
@@ -16,28 +17,27 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("createTicket")]
-        [HasPermission(Permissions.CreateTicket)]
         public async Task<IActionResult> CreateTicketAsync(CreateTicketDto dto)
             => Result(await _ticketsService.CreateTicketAsync(dto));
 
-        [HttpPost("createMessage")]
-        [HasPermission(Permissions.CreateTicketMessage)]
-        public async Task<IActionResult> CreateMessageAsync(CreateTicketMessageDto dto)
-            => Result(await _ticketsService.CreateMessageAsync(dto));
-
         [HttpPatch("closeTicket")]
-        [HasPermission(Permissions.CloseTicket)]
         public async Task<IActionResult> CloseTicketAsync(long ticketId)
            => Result(await _ticketsService.CloseTicketAsync(ticketId));
 
-        [HttpGet("getTickets")]
-        [HasPermission(Permissions.ViewTickets)]
-        public async Task<IActionResult> GetTicketsAsync(long priceRequestId)
-            => Result(await _ticketsService.GetTicketsAsync(priceRequestId));
+        [HttpGet("getMyReceivedTickets")]
+        public async Task<IActionResult> GetMyReceivedTicketsAsync()
+            => Result(await _ticketsService.GetMyReceivedTicketsAsync());
+        
+        [HttpGet("getMySentTickets")]
+        public async Task<IActionResult> GetMySentTicketsAsync()
+            => Result(await _ticketsService.GetMySentTicketsAsync());
 
-        [HttpGet("getMessages")]
-        [HasPermission(Permissions.ViewTicketMessages)]
-        public async Task<IActionResult> GetMessagesAsync(long ticketId)
-            => Result(await _ticketsService.GetMessagesAsync(ticketId));
+        [HttpPost("createTicketMessage")]
+        public async Task<IActionResult> CreateTicketMessageAsync(CreateTicketMessageDto dto)
+            => Result(await _ticketsService.CreateTicketMessageAsync(dto));
+
+        [HttpGet("getTicketMessages")]
+        public async Task<IActionResult> GetTicketMessagesAsync(long ticketId)
+            => Result(await _ticketsService.GetTicketMessagesAsync(ticketId));
     }
 }

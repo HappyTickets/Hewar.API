@@ -1,5 +1,4 @@
 ﻿using Application.AccountManagement.Dtos.Token;
-using Domain.Entities.UserEntities;
 
 namespace Application.AccountManagement.Service.Interfaces;
 

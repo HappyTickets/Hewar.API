@@ -10,6 +10,9 @@ namespace Application.Companies.Validators
             RuleFor(x => x.Name)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
+            RuleFor(g => g.ImageUrl)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)
                 .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);

@@ -5,9 +5,10 @@ namespace Application.Tickets.Service
     public interface ITicketsService
     {
         Task<Result<Empty>> CloseTicketAsync(long ticketId);
-        Task<Result<Empty>> CreateMessageAsync(CreateTicketMessageDto dto);
+        Task<Result<Empty>> CreateTicketMessageAsync(CreateTicketMessageDto dto);
         Task<Result<Empty>> CreateTicketAsync(CreateTicketDto dto);
-        Task<Result<TicketMessageDto[]>> GetMessagesAsync(long ticketId);
-        Task<Result<TicketDto[]>> GetTicketsAsync(long priceRequestId);
+        Task<Result<TicketMessageDto[]>> GetTicketMessagesAsync(long ticketId);
+        Task<Result<TicketDto[]>> GetMyReceivedTicketsAsync();
+        Task<Result<TicketDto[]>> GetMySentTicketsAsync();
     }
 }

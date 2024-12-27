@@ -9,39 +9,42 @@ namespace Application.Authorization.Validators
 
         public RegisterFacilityRequestValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(f => f.Name)
                 .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(r => r.Email)
+            RuleFor(g => g.ImageUrl)
+                .NotEmpty().WithMessage(Resource.RequiredField);
+
+            RuleFor(f => f.Email)
                 .NotEmpty().WithMessage(Resource.Email_Required_Validation)
                 .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);
 
-            RuleFor(r => r.Phone)
+            RuleFor(f => f.Phone)
             .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(r => r.Password)
+            RuleFor(f => f.Password)
                 .NotEmpty().WithMessage(Resource.Password_Validation)
                 .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation);
 
-            RuleFor(x => x.Type)
+            RuleFor(f => f.Type)
             .NotEmpty().WithMessage(Resource.RequiredField);
 
-            RuleFor(x => x.CommercialRegistration)
+            RuleFor(f => f.CommercialRegistration)
             .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(x => x.ActivityType)
+            RuleFor(f => f.ActivityType)
             .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(x => x.Address)
+            RuleFor(f => f.Address)
             .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(x => x.City)
+            RuleFor(f => f.City)
             .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(x => x.ResponsibleName)
+            RuleFor(f => f.ResponsibleName)
             .NotEmpty().WithMessage(Resource.RequiredField);
             
-            RuleFor(x => x.ResponsiblePhone)
+            RuleFor(f => f.ResponsiblePhone)
             .NotEmpty().WithMessage(Resource.RequiredField);
         }
 

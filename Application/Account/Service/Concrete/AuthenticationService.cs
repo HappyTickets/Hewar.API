@@ -3,9 +3,6 @@ using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Dtos.User;
 using Application.AccountManagement.Service.Interfaces;
 using AutoMapper;
-using Domain.Consts;
-using Domain.Entities.UserEntities;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -45,12 +42,20 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Guard,
+            ImageUrl = registerRequest.ImageUrl,
             Guard = new()
             {
                 FirstName = registerRequest.FirstName,
                 LastName = registerRequest.LastName,
                 DateOfBirth = registerRequest.DateOfBirth,
-                Skills = registerRequest.Skills
+                NationalId = registerRequest.NationalId,
+                Qualification = registerRequest.Qualification,
+                City = registerRequest.City,
+                BloodType = registerRequest.BloodType,
+                Height = registerRequest.Height,
+                Weight = registerRequest.Weight,
+                Skills = _mapper.Map<ICollection<Skill>>(registerRequest.Skills),
+                PrevCompanies = _mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
             }
         };
 
@@ -83,6 +88,7 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Facility,
+            ImageUrl = registerRequest.ImageUrl,
             Facility = new()
             {
                 Name = registerRequest.Name,
@@ -124,6 +130,7 @@ public class AuthenticationService(
             Email = registerRequest.Email,
             PhoneNumber = registerRequest.Phone,
             AccountType = AccountTypes.Company,
+            ImageUrl = registerRequest.ImageUrl,
             Company = new()
             {
                 Name = registerRequest.Name,
@@ -199,7 +206,8 @@ public class AuthenticationService(
             Id = long.Parse(claims.First(c=>c.Type == ClaimTypes.NameIdentifier)!.Value),
             UserName = user.UserName!,
             Email = user.Email!,
-            AccountType = user.AccountType.ToString(),
+            AccountType = user.AccountType,
+            ImageUrl = user.ImageUrl,
             Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,
             RefreshToken = tokens.Refresh.Token,

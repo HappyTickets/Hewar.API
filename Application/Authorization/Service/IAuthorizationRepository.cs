@@ -1,6 +1,5 @@
 ﻿using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
-using Domain.Entities.UserEntities;
 
 namespace Application.Authorization.Service
 {

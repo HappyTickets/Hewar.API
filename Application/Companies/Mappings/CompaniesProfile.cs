@@ -1,6 +1,5 @@
 ﻿using Application.Companies.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
 
 namespace Application.Companies.Mappings
 {
@@ -14,6 +13,10 @@ namespace Application.Companies.Mappings
             CreateMap<ApplicationUser, CompanyDto>()
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
 
+            CreateMap<Company, CompanyBreifDto>()
+                .IncludeMembers(c => c.LoginDetails);
+
+            CreateMap<ApplicationUser, CompanyBreifDto>();
         }
     }
 }

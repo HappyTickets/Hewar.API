@@ -2,7 +2,9 @@
 {
     public enum ReferenceTypes
     {
-        PriceRequest,
-        Ticket
+        PriceRequest = 1,
+        Ticket = 2,
+        InsuranceAd = 3,
+        InsuranceAdOffer = 4
     }
 }

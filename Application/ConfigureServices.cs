@@ -6,10 +6,10 @@ using Application.Companies.Service;
 using Application.Facilities.Service;
 using Application.Files.Service;
 using Application.Guards.Service;
+using Application.InsuranceAds.Service;
 using Application.Notifications.Service;
 using Application.PriceRequests.Service;
 using Application.Tickets.Service;
-using Domain.Entities.UserEntities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
@@ -43,7 +43,8 @@ namespace Application
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
               .AddScoped<IGuardsService, GuardsService>()
               .AddScoped<ICompaniesService, CompaniesService>()
-              .AddScoped<IFacilitiesService, FacilitiesService>();
+              .AddScoped<IFacilitiesService, FacilitiesService>()
+              .AddScoped<IInsuranceAdsService, InsuranceAdsService>();
 
 
             return services;

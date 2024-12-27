@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using static Application.Common.Utilities.Pagination.SearchInKey;
 
 namespace Application.Common.Utilities.Pagination;
 
@@ -41,13 +40,13 @@ public static class SearchFilterPagination
         {
             switch (pagination.SearchIn)
             {
-                case ApplicationUser.UserName:
+                case SearchInKey.ApplicationUser.UserName:
                     var userNameProperty = Expression.Property(parameter, nameof(ApplicationUser.UserName));
                     var userNameContainsExpression = Expression.Call(userNameProperty, containsMethod, searchKey);
                     finalExpression = userNameContainsExpression;
                     break;
 
-                case ApplicationUser.Email:
+                case SearchInKey.ApplicationUser.Email:
                     var emailProperty = Expression.Property(parameter, nameof(ApplicationUser.Email));
                     var emailContainsExpression = Expression.Call(emailProperty, containsMethod, searchKey);
                     if (finalExpression == null)
@@ -60,7 +59,7 @@ public static class SearchFilterPagination
                     }
                     break;
 
-                case ApplicationUser.PhoneNumber:
+                case SearchInKey.ApplicationUser.PhoneNumber:
                     var phoneNumberProperty = Expression.Property(parameter, nameof(ApplicationUser.PhoneNumber));
                     var phoneNumberContainsExpression = Expression.Call(phoneNumberProperty, containsMethod, searchKey);
                     if (finalExpression == null)
@@ -76,7 +75,7 @@ public static class SearchFilterPagination
                 default:
                     throw new ArgumentException("Invalid SearchIn value.");
             }
-            orderByProperty = ApplicationUser.UserName;
+            orderByProperty = SearchInKey.ApplicationUser.UserName;
         }
 
         // Check if we have a valid final expression to build the predicate
@@ -90,7 +89,7 @@ public static class SearchFilterPagination
 
         var orderByLambda = Expression.Lambda<Func<T, object>>(Expression.Convert(Expression.Property(parameter, orderByProperty), typeof(object)), parameter);
 
-        data = pagination.OrderBy == DESC ?
+        data = pagination.OrderBy == SearchInKey.DESC ?
                data.OrderByDescending(orderByLambda) :
                data.OrderBy(orderByLambda);
 
@@ -112,7 +111,7 @@ public static class SearchFilterPagination
         var predicate = Expression.Lambda<Func<T, bool>>(andExpression, parameter);
         data = data.Where(predicate);
 
-        data = pagination.OrderBy == DESC ?
+        data = pagination.OrderBy == SearchInKey.DESC ?
       data.OrderByDescending(predicate) :
      data.OrderBy(predicate);
 

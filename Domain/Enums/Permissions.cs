@@ -10,25 +10,22 @@
         AssignUserToRole = 5,
         UnassignUserToRole = 6,
 
-        // users
-        CreateUser = 50,
-        UpdateUser = 51,
-        DeleteUser = 52,
-        ViewUsers = 53,
+        // companies
+        CreateCompany = 50,
+        UpdateCompany = 51,
+        DeleteCompany = 52,
+        ViewCompanies = 53,
 
-        // PriceRquests
-        CreatePriceRequest = 100,
-        UpdatePriceRequest = 101,
-        AcceptPriceRequest = 102,
-        RejectPriceRequest = 103,
-        ViewPriceRequests = 104,
+        // facilities
+        CreateFacility = 100,
+        UpdateFacility = 101,
+        DeleteFacility = 102,
+        ViewFacilities = 103,
 
-        // tickets
-        CreateTicket = 150,
-        ViewTickets = 151,
-        CloseTicket = 152,
-        CreateTicketMessage = 153,
-        ViewTicketMessages = 154,
-
+        // guards
+        CreateGuard = 150,
+        UpdateGuard = 151,
+        DeleteGuard = 152,
+        ViewGuards = 153
     }
 }

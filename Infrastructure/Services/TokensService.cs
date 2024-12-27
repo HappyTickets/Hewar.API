@@ -1,6 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Entities.UserEntities;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity;

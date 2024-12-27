@@ -7,6 +7,6 @@ namespace Application.Authorization.DTOs.Request
         [Required]
         public string? RoleName { get; set; }
         public string? RoleDescription { get; set; }
-        public string[] Permissions { get; set; }
+        public Permissions[] Permissions { get; set; }
     }
 }

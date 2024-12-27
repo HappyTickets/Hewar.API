@@ -1,7 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Password;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Entities.UserEntities;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
 namespace Application.AccountManagement.Service.Concrete;
@@ -23,9 +21,10 @@ public class PasswordResetService : IPasswordResetService
         var user = await _userManager.FindByEmailAsync(request.Email);
         if (user is null) return new NotFoundException();
 
-        var token = HttpUtility.UrlEncode(await _userManager.GeneratePasswordResetTokenAsync(user));
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         await _emailSender.SendAsync(user.Email!, Resource.Password_Reset,
-            $"{Resource.Password_Reset_Message} \"فين العنوان يا نجم\"   {Resource.Password_Reset}</a>");
+            string.Format(Resource.Password_Reset_Message, token));
+        
         return Empty.Default;
     }
 
@@ -61,6 +60,6 @@ public class PasswordResetService : IPasswordResetService
 
     private Result<Empty> ProcessIdentityResult(IdentityResult result)
     {
-        return result.Succeeded ? new Result<Empty>() : new ValidationException(result.Errors.Select(e => e.Description));
+        return result.Succeeded ? Empty.Default : new ValidationException(result.Errors.Select(e => e.Description));
     }
 }

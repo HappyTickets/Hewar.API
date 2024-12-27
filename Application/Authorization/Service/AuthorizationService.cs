@@ -3,10 +3,7 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
-using Domain.Entities.Identity;
-using Domain.Entities.UserEntities;
 using LanguageExt;
-using Localization.ResourceFiles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +29,7 @@ namespace Application.Authorization.Service
             {
                 Name = addRoleDto.RoleName,
                 Description = addRoleDto.RoleDescription,
-                Permissions = addRoleDto.Permissions.Select(p=> new RolePermission { Permission = Enum.Parse<Permissions>(p)}).ToList()
+                Permissions = addRoleDto.Permissions.Select(p => new RolePermission { Permission = p }).ToList()
             };
 
             var result = await _roleManager.CreateAsync(identityRole);
@@ -84,7 +81,7 @@ namespace Application.Authorization.Service
             }
 
             role.Description = editRoleDto.RoleDescription;
-            role.Permissions = editRoleDto.Permissions.Select(p => new RolePermission { Permission = Enum.Parse<Permissions>(p) }).ToList();
+            role.Permissions = editRoleDto.Permissions.Select(p => new RolePermission { Permission = p }).ToList();
 
             var result = await _roleManager.UpdateAsync(role);
 

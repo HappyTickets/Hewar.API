@@ -6,33 +6,31 @@ namespace Application.Tickets.Events
     internal class TicketMessageCreatedEventHandler : INotificationHandler<TicketMessageCreated>
     {
         private readonly IUnitOfWorkService _ufw;
-        private readonly ICurrentUserService _currentUser;
 
-        public TicketMessageCreatedEventHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser)
+        public TicketMessageCreatedEventHandler(IUnitOfWorkService ufw)
         {
             _ufw = ufw;
-            _currentUser = currentUser;
         }
 
         public async Task Handle(TicketMessageCreated notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
             {
-                ContentEn = $"You have received a new message on your ticket.",
+                ContentEn = "You have received a new message on your ticket.",
                 ContentAr = "لقد استلمت رسالة جديدة على تذكرتك.",
                 IsRead = false,
                 ReferenceId = notification.TicketMessage.Ticket.Id,
                 ReferenceType = ReferenceTypes.Ticket,
                 Event = NotificationEvents.TicketMessageCreated,
-                CreatedAt = DateTimeOffset.UtcNow,
-                RecipientId = notification.TicketMessage.Ticket.PriceRequest.FacilityId,
-                RecipientType = AccountTypes.Facility
+                NotifiedOn = DateTimeOffset.UtcNow,
+                RecipientId = notification.TicketMessage.Ticket.AudienceId,
+                RecipientType = notification.TicketMessage.Ticket.AudienceType
             };
 
-            if(_currentUser.Type == AccountTypes.Facility)
+            if(notification.TicketMessage.SenderType == notification.TicketMessage.Ticket.AudienceType)
             {
-                userNotification.RecipientId = notification.TicketMessage.Ticket.PriceRequest.CompanyId;
-                userNotification.RecipientType = AccountTypes.Company;
+                userNotification.RecipientId = notification.TicketMessage.Ticket.IssuerId;
+                userNotification.RecipientType = notification.TicketMessage.Ticket.IssuerType;
             }
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

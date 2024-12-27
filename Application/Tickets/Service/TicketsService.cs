@@ -19,22 +19,16 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CreateTicketAsync(CreateTicketDto dto)
         {
-            var priceRequest = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);
-
-            if (priceRequest == null)
-                return new NotFoundException();
-
-            if (priceRequest.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
-
             var ticket = new Ticket
             {
                 Title = dto.Title,
                 OpenedDate = DateTimeOffset.UtcNow,
                 ClosedDate = null,
                 Status = TicketStatus.Opened,
-                PriceRequestId = dto.PriceRequestId,
-                PriceRequest = priceRequest,
+                AudienceId = dto.AudienceId,
+                AudienceType = dto.AudienceType,
+                IssuerId = _currentUser.Id!.Value,
+                IssuerType = _currentUser.Type!.Value,
                 Messages = 
                 [
                     new TicketMessage
@@ -55,9 +49,9 @@ namespace Application.Tickets.Service
             return Empty.Default;
         }
 
-        public async Task<Result<Empty>> CreateMessageAsync(CreateTicketMessageDto dto)
+        public async Task<Result<Empty>> CreateTicketMessageAsync(CreateTicketMessageDto dto)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId, ["PriceRequest"]);
+            var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId);
 
             if (ticket == null)
                 return new NotFoundException();
@@ -81,10 +75,13 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CloseTicketAsync(long ticketId)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(ticketId, ["PriceRequest"]);
+            var ticket = await _ufw.Tickets.GetByIdAsync(ticketId);
 
             if(ticket == null)
                 return new NotFoundException();
+
+            if (ticket.AudienceId != _currentUser.Id || ticket.AudienceType != _currentUser.Type)
+                return new ForbiddenException(Resource.TicketAudienceError);
 
             if (ticket.Status == TicketStatus.Closed)
                 return new ConflictException(Resource.ClosedTicketError);
@@ -98,15 +95,23 @@ namespace Application.Tickets.Service
             return Empty.Default;
         }
 
-        public async Task<Result<TicketDto[]>> GetTicketsAsync(long priceRequestId)
+        public async Task<Result<TicketDto[]>> GetMyReceivedTicketsAsync()
         {
             var tickets = await _ufw.Tickets
-                .FilterAsync(t=>t.PriceRequestId == priceRequestId);
+                .FilterAsync(t=>t.AudienceId == _currentUser.Id && t.AudienceType == _currentUser.Type);
+
+            return _mapper.Map<TicketDto[]>(tickets);
+        }       
+        
+        public async Task<Result<TicketDto[]>> GetMySentTicketsAsync()
+        {
+            var tickets = await _ufw.Tickets
+                .FilterAsync(t => t.IssuerId == _currentUser.Id && t.IssuerType == _currentUser.Type);
 
             return _mapper.Map<TicketDto[]>(tickets);
         }
 
-        public async Task<Result<TicketMessageDto[]>> GetMessagesAsync(long ticketId)
+        public async Task<Result<TicketMessageDto[]>> GetTicketMessagesAsync(long ticketId)
         {
             var messages = await _ufw.TicketMessages
                 .FilterAsync(t => t.TicketId == ticketId);

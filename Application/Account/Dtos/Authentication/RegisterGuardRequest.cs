@@ -1,4 +1,6 @@
-﻿namespace Application.AccountManagement.Dtos.Authentication;
+﻿using Application.Guards.Dtos;
+
+namespace Application.AccountManagement.Dtos.Authentication;
 
 public class RegisterGuardRequest
 {
@@ -8,6 +10,14 @@ public class RegisterGuardRequest
     public string Password { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public string ImageUrl { get; set; }
     public DateTimeOffset DateOfBirth { get; set; }
-    public string Skills { get; set; }
+    public string NationalId { get; set; }
+    public Qualifications Qualification { get; set; }
+    public Cities City { get; set; }
+    public string? BloodType { get; set; }
+    public double? Height { get; set; }
+    public double? Weight { get; set; }
+    public ICollection<SkillDto>? Skills { get; set; }
+    public ICollection<PrevCompanyDto>? PrevCompanies { get; set; }
 }

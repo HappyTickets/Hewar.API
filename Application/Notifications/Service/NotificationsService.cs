@@ -19,7 +19,8 @@ namespace Application.Notifications.Service
 
         public async Task<Result<Empty>> MarkAsReadAsync(long id)
         {
-            var notification = await _ufw.Notifications.FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.Id);
+            var notification = await _ufw.Notifications
+                .FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
             
             if (notification == null)
                 return new NotFoundException();

@@ -1,5 +1,4 @@
-﻿using Domain.Entities.UserEntities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Globalization;
 
 namespace Application.AccountManagement.OTP

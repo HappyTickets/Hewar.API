@@ -1,7 +1,5 @@
 ﻿using Application.Guards.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
-using LanguageExt;
 
 namespace Application.Guards.Mappings
 {
@@ -14,6 +12,12 @@ namespace Application.Guards.Mappings
 
             CreateMap<ApplicationUser, GuardDto>()
                   .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+
+            CreateMap<Skill, SkillDto>()
+                .ReverseMap();
+
+            CreateMap<PrevCompany, PrevCompanyDto>()
+                .ReverseMap();
         }
     }
 }

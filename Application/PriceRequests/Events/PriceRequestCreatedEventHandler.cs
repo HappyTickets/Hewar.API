@@ -23,7 +23,7 @@ namespace Application.PriceRequests.Events
                 ReferenceId = notification.PriceRequest.Id,
                 ReferenceType = ReferenceTypes.PriceRequest,
                 Event = NotificationEvents.PriceRequestCreated,
-                CreatedAt = DateTimeOffset.UtcNow,
+                NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.PriceRequest.CompanyId,
                 RecipientType = AccountTypes.Company
             };

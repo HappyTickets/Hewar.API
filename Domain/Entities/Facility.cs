@@ -1,4 +1,4 @@
-﻿using Domain.Entities.UserEntities;
+﻿using Domain.Entities.PriceRequestAggregates;
 
 namespace Domain.Entities
 {

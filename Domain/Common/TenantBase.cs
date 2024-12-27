@@ -1,4 +1,6 @@
-﻿namespace Domain.Common
+﻿using Domain.Entities.TicketAggregates;
+
+namespace Domain.Common
 {
     public abstract class TenantBase: SoftDeletableEntity
     {

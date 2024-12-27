@@ -1,8 +1,8 @@
 ﻿using Application.Companies.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Application.Companies.Service
 {
@@ -11,12 +11,52 @@ namespace Application.Companies.Service
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public CompaniesService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public CompaniesService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _ufw = ufw;
             _mapper = mapper;
             _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
+        public async Task<Result<Empty>> CreateAsync(CreateCompanyDto dto)
+        {
+            if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
+                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+
+            if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
+                return new ConflictException(Resource.EmailExistsError);
+
+            if (!await _roleManager.RoleExistsAsync(Roles.Company))
+                return new NotFoundException(Resource.RoleNotExistError);
+
+            var user = new ApplicationUser
+            {
+                UserName = null,
+                Email = dto.Email,
+                EmailConfirmed = true,
+                PhoneNumber = dto.Phone,
+                PhoneNumberConfirmed = true,
+                AccountType = AccountTypes.Company,
+                ImageUrl = dto.ImageUrl,
+                Company = new()
+                {
+                    Name = dto.Name,
+                    Address = dto.Address
+                }
+            };
+
+            var registrationResults = await _userManager.CreateAsync(user, dto.Password);
+
+            if (!registrationResults.Succeeded)
+                return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+
+            await _userManager.AddToRoleAsync(user, Roles.Company);
+            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
+
+            return Empty.Default;
         }
 
         public async Task<Result<Empty>> UpdateAsync(UpdateCompanyDto dto)
@@ -26,6 +66,9 @@ namespace Application.Companies.Service
             if (company == null)
                 return new NotFoundException();
 
+            if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Company.Id != dto.Id))
+                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Company.Id != dto.Id))
                 return new ConflictException(Resource.EmailExistsError);
 
@@ -33,6 +76,7 @@ namespace Application.Companies.Service
             company.Address = dto.Address;
             company.LoginDetails.Email = dto.Email;
             company.LoginDetails.PhoneNumber = dto.Phone;
+            company.LoginDetails.ImageUrl = dto.ImageUrl;
 
             await _ufw.SaveChangesAsync();
 

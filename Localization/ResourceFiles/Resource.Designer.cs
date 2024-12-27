@@ -2780,6 +2780,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ad status must be opened to complete this operation..
+        /// </summary>
+        public static string OnlyOpenedAds {
+            get {
+                return ResourceManager.GetString("OnlyOpenedAds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket status must be opened to complete this operation..
         /// </summary>
         public static string OnlyOpenedTickets {
@@ -2933,7 +2942,7 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please reset your password by clicking here: .
+        ///   Looks up a localized string similar to Your OTP for password reset is {0}. Please use it to securely update your password..
         /// </summary>
         public static string Password_Reset_Message {
             get {
@@ -4679,6 +4688,15 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Only ticket audience can close this ticket..
+        /// </summary>
+        public static string TicketAudienceError {
+            get {
+                return ResourceManager.GetString("TicketAudienceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ticket Details.
         /// </summary>
         public static string TicketDetails {
@@ -5048,7 +5066,7 @@ namespace Localization.ResourceFiles {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Spaces not allowed.
+        ///   Looks up a localized string similar to Spaces not allowed in User Name.
         /// </summary>
         public static string UserName_NoSpaces {
             get {

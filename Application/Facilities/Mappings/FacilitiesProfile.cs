@@ -1,6 +1,5 @@
 ﻿using Application.Facilities.Dtos;
 using AutoMapper;
-using Domain.Entities.UserEntities;
 
 namespace Application.Facilities.Mappings
 {
@@ -14,6 +13,10 @@ namespace Application.Facilities.Mappings
             CreateMap<ApplicationUser, FacilityDto>()
                 .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
 
+            CreateMap<Facility, FacilityBreifDto>()
+                .IncludeMembers(f => f.LoginDetails);
+
+            CreateMap<ApplicationUser, FacilityBreifDto>();
         }
     }
 }
