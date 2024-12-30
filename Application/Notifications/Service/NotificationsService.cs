@@ -23,7 +23,7 @@ namespace Application.Notifications.Service
                 .FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
             
             if (notification == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             notification.IsRead = true;
 

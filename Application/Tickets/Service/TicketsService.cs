@@ -54,10 +54,10 @@ namespace Application.Tickets.Service
             var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId);
 
             if (ticket == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (ticket.Status == TicketStatus.Closed)
-                return new ConflictException(Resource.OnlyOpenedTickets);
+                return new ConflictError(ErrorCodes.TicketClosed, Resource.OnlyOpenedTickets);
 
             var message = _mapper.Map<TicketMessage>(dto);
 
@@ -78,13 +78,13 @@ namespace Application.Tickets.Service
             var ticket = await _ufw.Tickets.GetByIdAsync(ticketId);
 
             if(ticket == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (ticket.AudienceId != _currentUser.Id || ticket.AudienceType != _currentUser.Type)
-                return new ForbiddenException(Resource.TicketAudienceError);
+                return new ForbiddenError(Resource.TicketAudienceError);
 
             if (ticket.Status == TicketStatus.Closed)
-                return new ConflictException(Resource.ClosedTicketError);
+                return new ConflictError(ErrorCodes.TicketClosed, Resource.ClosedTicketError);
 
             ticket.Status = TicketStatus.Closed;
             ticket.ClosedDate = DateTimeOffset.UtcNow;

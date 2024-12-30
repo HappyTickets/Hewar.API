@@ -1,5 +1,4 @@
-﻿using FluentValidation.Results;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Application.Common.Utilities
 {
@@ -7,6 +6,7 @@ namespace Application.Common.Utilities
     {
         public int Status { get; init; }
         public bool IsSuccess { get; init; }
+        public ErrorCodes ErrorCode { get; init; }
         public string? Message { get; init; }
         public IEnumerable<string>? Errors { get; init; }
         public TData? Data { get; init; }
@@ -15,26 +15,29 @@ namespace Application.Common.Utilities
         public static implicit operator Result<TData>(TData data)
             => new()
             {
-                IsSuccess = true,
                 Status = StatusCodes.Status200OK,
+                IsSuccess = true,
+                ErrorCode = ErrorCodes.None,
                 Data = data
             };
 
-        public static implicit operator Result<TData>(ExceptionBase ex)
+        public static implicit operator Result<TData>(ErrorBase err)
             => new()
             {
+                Status = err.Status,
                 IsSuccess = false,
-                Status = ex.Status,
-                Message = ex.Message,
+                ErrorCode = err.ErrorCode,
+                Message = err.Message,
             };
 
-        public static implicit operator Result<TData>(ValidationException ex)
+        public static implicit operator Result<TData>(ValidationError err)
             => new()
             {
+                Status = err.Status,
                 IsSuccess = false,
-                Status = ex.Status,
-                Message = ex.Message,
-                Errors = ex.Errors
+                ErrorCode = err.ErrorCode,
+                Message = err.Message,
+                Errors = err.Errors
             };
     }
 }

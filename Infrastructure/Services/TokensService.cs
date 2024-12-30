@@ -64,10 +64,10 @@ internal class TokensService
     public async Task<TokensInfo?> RefreshAsync(string accessToken, string refreshToken)
     {
         if (!await ValidateAccessTokenAsync(accessToken))
-            throw new UnauthorizedException("Invalid access token!");
+            throw new Exception("Invalid access token!");
 
         if (!await ValidateRefreshTokenAsync(refreshToken))
-            throw new UnauthorizedException("Invalid refresh token!");
+            throw new Exception("Invalid refresh token!");
 
         var rt = await _dbcontext.RefreshTokens
             .Include(rt => rt.User)
@@ -77,7 +77,7 @@ internal class TokensService
         var user = rt?.User;
         if (user is null)
         {
-            throw new NotFoundException("refresh token is not found!");
+            throw new Exception("refresh token is not found!");
         }
         // Revoke the token
         rt.RevokedOn = DateTime.UtcNow;

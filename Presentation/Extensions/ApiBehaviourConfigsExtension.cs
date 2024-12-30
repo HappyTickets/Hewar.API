@@ -1,4 +1,4 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Common.Errors;
 using Application.Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace Presentation.Extensions
                         .Select(v => v.Errors.Select(e => e.ErrorMessage))
                         .SelectMany(e => e);
 
-                        return new BadRequestObjectResult((Result<Empty>)new ValidationException(errors));
+                        return new BadRequestObjectResult((Result<Empty>)new ValidationError(errors));
                     };
                 });
 

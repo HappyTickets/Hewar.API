@@ -25,16 +25,16 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
         if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictException(Resource.EmailExistsError);
+            return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
         if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
-            return new ConflictException(Resource.UserNameExistsError);
+            return new ConflictError(ErrorCodes.UserNameExists, Resource.UserNameExistsError);
 
         if (!await _roleManager.RoleExistsAsync(Roles.Guard))
-            return new NotFoundException(Resource.RoleNotExistError);
+            return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
@@ -62,7 +62,7 @@ public class AuthenticationService(
         var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
 
         if (!registrationResults.Succeeded)
-            return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
         await _userManager.AddToRoleAsync(user, Roles.Guard);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
@@ -73,14 +73,14 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
         if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictException(Resource.EmailExistsError);
+            return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
 
         if (!await _roleManager.RoleExistsAsync(Roles.Facility))
-            return new NotFoundException(Resource.RoleNotExistError);
+            return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
@@ -105,7 +105,7 @@ public class AuthenticationService(
         var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
 
         if (!registrationResults.Succeeded)
-              return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+              return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
         await _userManager.AddToRoleAsync(user, Roles.Facility);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
@@ -116,13 +116,13 @@ public class AuthenticationService(
     public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
         if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+            return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
         if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictException(Resource.EmailExistsError);
+            return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
         if (!await _roleManager.RoleExistsAsync(Roles.Company))
-            return new NotFoundException(Resource.RoleNotExistError);
+            return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
 
         var user = new ApplicationUser
         {
@@ -141,7 +141,7 @@ public class AuthenticationService(
         var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
 
         if (!registrationResults.Succeeded)
-            return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
         await _userManager.AddToRoleAsync(user, Roles.Company);
         await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
@@ -155,13 +155,13 @@ public class AuthenticationService(
         var user = await FindUserWithRolesAsync(u => u.Email == loginRequest.Email);
 
         if (user == null)
-            return new NotFoundException(Resource.Invalid_UserName_Password);
-
-        if (!await _userManager.IsEmailConfirmedAsync(user))
-            return new UnauthorizedException(Resource.Email_NotConfirmed);
+            return new NotFoundError(ErrorCodes.InvalidEmailOrPassword, Resource.Invalid_UserName_Password);
 
         if (!await _userManager.CheckPasswordAsync(user, loginRequest.Password))
-            return new ValidationException(Resource.Credentials_Invalid);
+            return new ValidationError(ErrorCodes.InvalidEmailOrPassword, Resource.Credentials_Invalid);
+
+        if (!await _userManager.IsEmailConfirmedAsync(user))
+            return new UnauthorizedError(ErrorCodes.UnconfirmedEmail, Resource.Email_NotConfirmed);
 
         var tokens = await _tokensService.GenerateTokensAsync(user);
 
@@ -178,10 +178,10 @@ public class AuthenticationService(
     {
         var tokensInfo = await _tokensService.RefreshAsync(tokens.AccessToken, tokens.RefreshToken);
 
-        if (tokensInfo == null) return new UnauthorizedException();
+        if (tokensInfo == null) return new UnauthorizedError();
 
         var user = await FindUserWithRolesAsync(u => u.Id == tokensInfo.UserId);
-        if (user == null) return new NotFoundException(Resource.NotFoundInDB_Message);
+        if (user == null) return new NotFoundError(ErrorCodes.Unauthorized, Resource.NotFoundInDB_Message);
 
         return await BuildUserSessionDto(user, tokensInfo);
     }

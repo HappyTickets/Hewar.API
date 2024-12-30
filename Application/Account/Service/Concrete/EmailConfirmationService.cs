@@ -12,7 +12,7 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     public async Task<Result<Empty>> SendEmailConfirmationAsync(SendEmailConfirmationRequest request, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user is null) return new NotFoundException(Resource.Email_NotFound);
+        if (user is null) return new NotFoundError(ErrorCodes.UnregisteredEmail, Resource.Email_NotFound);
 
         return await SendConfirmationEmailAsync(user, cancellationToken);
     }
@@ -29,7 +29,7 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     public async Task<Result<Empty>> ConfirmEmailAsync(ConfirmEmailRequest request, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user is null) return new NotFoundException(Resource.NotFoundInDB_Message);
+        if (user is null) return new NotFoundError(ErrorCodes.UnregisteredEmail, Resource.NotFoundInDB_Message);
 
         var confirmationResults = await _userManager.ConfirmEmailAsync(user, request.VerificationCode);
         return ProcessIdentityResult(confirmationResults);
@@ -40,7 +40,7 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     {
 
         var user = await _userManager.FindByIdAsync(_currentUser.Id.ToString());
-        if (user is null) return new NotFoundException(Resource.NotFoundInDB_Message);
+        if (user is null) return new NotFoundError(ErrorCodes.UserNotExists, Resource.NotFoundInDB_Message);
 
         var tokenOtp = await _userManager.GenerateOtpTokenAsync("ChangeEmail", user);
 
@@ -52,12 +52,12 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
 
         }
 
-        return new UnauthorizedException();
+        return new UnauthorizedError();
     }
     private Result<Empty> ProcessIdentityResult(IdentityResult result)
     {
         return result.Succeeded
             ? Empty.Default
-            : new ValidationException(result.Errors.Select(e => e.Description));
+            : new ValidationError(result.Errors.Select(e => e.Description));
     }
 }

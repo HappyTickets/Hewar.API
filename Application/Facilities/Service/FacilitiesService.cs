@@ -24,13 +24,13 @@ namespace Application.Facilities.Service
         public async Task<Result<Empty>> CreateAsync(CreateFacilityDto dto)
         {
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictException(Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
             if (!await _roleManager.RoleExistsAsync(Roles.Facility))
-                return new NotFoundException(Resource.RoleNotExistError);
+                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
 
             var user = new ApplicationUser
             {
@@ -57,7 +57,7 @@ namespace Application.Facilities.Service
             var registrationResults = await _userManager.CreateAsync(user, dto.Password);
 
             if (!registrationResults.Succeeded)
-                return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+                return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
             await _userManager.AddToRoleAsync(user, Roles.Facility);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
@@ -70,13 +70,13 @@ namespace Application.Facilities.Service
             var facility = await _ufw.Facilities.GetByIdAsync(dto.Id, ["LoginDetails"]);
 
             if (facility == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Facility.Id != dto.Id))
-                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
             
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Facility.Id != dto.Id))
-                return new ConflictException(Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
 
             facility.LoginDetails.Email = dto.Email;
@@ -101,7 +101,7 @@ namespace Application.Facilities.Service
             var facility = await _ufw.Facilities.GetByIdAsync(id, ["LoginDetails"]);
 
             if (facility == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             return _mapper.Map<FacilityDto>(facility);
         }
@@ -118,7 +118,7 @@ namespace Application.Facilities.Service
             var facility = await _ufw.Facilities.GetByIdAsync(id, ["LoginDetails"]);
 
             if (facility == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             _ufw.Facilities.SoftDelete(facility);
             await _ufw.SaveChangesAsync();
@@ -131,7 +131,7 @@ namespace Application.Facilities.Service
             var facility = await _ufw.Facilities.GetByIdAsync(id, ["LoginDetails"]);
 
             if (facility == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             using (var tran = await _ufw.BeginTransactionAsync())
             {

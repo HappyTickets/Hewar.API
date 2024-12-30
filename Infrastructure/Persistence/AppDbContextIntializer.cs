@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LanguageExt;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -17,9 +18,12 @@ namespace Infrastructure.Persistence
 
         public async Task InitialiseAsync()
         {
-            //await _context.Database.MigrateAsync();
+            if((await _context.Database.GetPendingMigrationsAsync()).Count() > 1)
+            {
+                await _context.Database.MigrateAsync();
+            }
 
-            if(!await _userManager.Users.AnyAsync())
+            if (!await _userManager.Users.AnyAsync())
             {
                 var user = new ApplicationUser
                 {
