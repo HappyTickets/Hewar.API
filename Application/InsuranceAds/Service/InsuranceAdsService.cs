@@ -33,7 +33,7 @@ namespace Application.InsuranceAds.Service
             var ad = await _ufw.InsuranceAds.GetByIdAsync(dto.Id);
 
             if (ad == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             _mapper.Map(dto, ad);
             await _ufw.SaveChangesAsync();
@@ -46,7 +46,7 @@ namespace Application.InsuranceAds.Service
             var ad = await _ufw.InsuranceAds.GetByIdAsync(id, ["Facility.LoginDetails"]);
 
             if (ad == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             return _mapper.Map<InsuranceAdDto>(ad);
         }
@@ -72,10 +72,10 @@ namespace Application.InsuranceAds.Service
             var ad = await _ufw.InsuranceAds.GetByIdAsync(dto.InsuranceAdId);
 
             if (ad == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (ad.Status != InsuranceAdStatus.Opened)
-                return new ConflictException(Resource.OnlyOpenedAds);
+                return new ConflictError(ErrorCodes.AdNotOpened, Resource.OnlyOpenedAds);
 
             var offer = _mapper.Map<InsuranceAdOffer>(dto);
             offer.Status = RequestStatus.Pending;
@@ -95,10 +95,10 @@ namespace Application.InsuranceAds.Service
             var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId);
 
             if (offer == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if(offer.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending,Resource.OnlyPendingRequests);
 
             offer.Status = RequestStatus.Accepted;
 
@@ -113,10 +113,10 @@ namespace Application.InsuranceAds.Service
             var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId);
 
             if (offer == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
 
             offer.Status = RequestStatus.Rejected;
 
@@ -131,10 +131,10 @@ namespace Application.InsuranceAds.Service
             var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId, ["InsuranceAd"]);
 
             if (offer == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
 
             offer.Status = RequestStatus.Cancelled;
 
@@ -181,13 +181,13 @@ namespace Application.InsuranceAds.Service
             var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(dto.InsuranceAdOfferId, ["InsuranceAd"]);
 
             if (offer == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (offer.InsuranceAd.Status != InsuranceAdStatus.Opened)
-                return new ConflictException(Resource.OnlyOpenedAds);
+                return new ConflictError(ErrorCodes.AdNotOpened, Resource.OnlyOpenedAds);
 
             if(offer.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
 
             var message = _mapper.Map<InsuranceAdOfferMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;

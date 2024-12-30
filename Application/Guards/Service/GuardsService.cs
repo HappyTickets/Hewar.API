@@ -24,16 +24,16 @@ namespace Application.Guards.Service
         public async Task<Result<Empty>> CreateAsync(CreateGuardDto dto)
         {
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictException(Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
             if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName))
-                return new ConflictException(Resource.UserNameExistsError);
+                return new ConflictError(ErrorCodes.UserNameExists, Resource.UserNameExistsError);
 
             if (!await _roleManager.RoleExistsAsync(Roles.Guard))
-                return new NotFoundException(Resource.RoleNotExistError);
+                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
 
             var user = new ApplicationUser
             {
@@ -63,7 +63,7 @@ namespace Application.Guards.Service
             var registrationResults = await _userManager.CreateAsync(user, dto.Password);
 
             if (!registrationResults.Succeeded)
-                return new ValidationException(registrationResults.Errors.Select(er => er.Description));
+                return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
             await _userManager.AddToRoleAsync(user, Roles.Guard);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
@@ -79,16 +79,16 @@ namespace Application.Guards.Service
             var guard = await _ufw.Guards.GetByIdAsync(dto.Id, ["LoginDetails"]);
 
             if (guard == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Guard.Id != dto.Id))
-                return new ConflictException(Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Guard.Id != dto.Id))
-                return new ConflictException(Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
 
             if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Guard.Id != dto.Id))
-                return new ConflictException(Resource.UserNameExistsError);
+                return new ConflictError(ErrorCodes.UserNameExists, Resource.UserNameExistsError);
 
             guard.FirstName = dto.FirstName;
             guard.LastName = dto.LastName;
@@ -117,7 +117,7 @@ namespace Application.Guards.Service
             var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
 
             if (guard == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             return _mapper.Map<GuardDto>(guard);
         }
@@ -134,7 +134,7 @@ namespace Application.Guards.Service
             var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
 
             if (guard == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             _ufw.Guards.SoftDelete(guard);
             await _ufw.SaveChangesAsync();
@@ -147,7 +147,7 @@ namespace Application.Guards.Service
             var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
 
             if (guard == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             using (var tran = await _ufw.BeginTransactionAsync())
             {

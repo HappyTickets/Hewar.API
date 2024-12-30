@@ -35,7 +35,7 @@ namespace Application.PriceRequests.Service
         public async Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
         {
             if (!await _ufw.PriceRequests.AnyAsync(pr => pr.Id == dto.PriceRequestId && pr.Status == RequestStatus.Pending))
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             var details = _mapper.Map<PriceRequestFacilityDetails>(dto);
 
@@ -51,10 +51,10 @@ namespace Application.PriceRequests.Service
                 .GetByIdAsync(facilityDetailsId);
 
             if (details == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (!await _ufw.PriceRequests.AnyAsync(pr => pr.Id == details.PriceRequestId && pr.Status == RequestStatus.Pending))
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             _mapper.Map(dto, details);
             await _ufw.SaveChangesAsync();
@@ -91,10 +91,10 @@ namespace Application.PriceRequests.Service
             var request = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);
 
             if (request == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             var offer = _mapper.Map<PriceRequestOffer>(dto);
             offer.RespondedDate = DateTimeOffset.UtcNow;
@@ -114,10 +114,10 @@ namespace Application.PriceRequests.Service
             var request = await _ufw.PriceRequests.GetByIdAsync(priceRequestId);
 
             if (request == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             // mark request rejected
             request.Status = RequestStatus.Rejected;
@@ -133,10 +133,10 @@ namespace Application.PriceRequests.Service
             var request = await _ufw.PriceRequests.GetByIdAsync(priceRequestId);
 
             if (request == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             // mark request rejected
             request.Status = RequestStatus.Cancelled;
@@ -152,10 +152,10 @@ namespace Application.PriceRequests.Service
             var request = await _ufw.PriceRequests.GetByIdAsync(dto.PriceRequestId);
 
             if (request == null)
-                return new NotFoundException();
+                return new NotFoundError();
 
             if(request.Status != RequestStatus.Pending)
-                return new ConflictException(Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
 
             var message = _mapper.Map<PriceRequestMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;

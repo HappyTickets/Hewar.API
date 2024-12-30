@@ -19,7 +19,7 @@ public class PasswordResetService : IPasswordResetService
     public async Task<Result<Empty>> CreatePasswordResetTokenAsync(CreatePasswordResetTokenRequest request, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
-        if (user is null) return new NotFoundException();
+        if (user is null) return new NotFoundError();
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         await _emailSender.SendAsync(user.Email!, Resource.Password_Reset,
@@ -31,7 +31,7 @@ public class PasswordResetService : IPasswordResetService
     public async Task<Result<Empty>> ResetPasswordAsync(ResetPasswordTokenDto dto, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(dto.Email);
-        if (user is null) return new NotFoundException();
+        if (user is null) return new NotFoundError();
 
         var resetResult = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
         return ProcessIdentityResult(resetResult);
@@ -44,14 +44,14 @@ public class PasswordResetService : IPasswordResetService
 
         if (user is null)
         {
-            return new UnauthorizedException(Resource.Credentials_Invalid);
+            return new UnauthorizedError(ErrorCodes.UnregisteredEmail, Resource.Credentials_Invalid);
         }
 
         var changePasswordResult = await _userManager.ChangePasswordAsync(user, resetPasswordRequest.OldPassword, resetPasswordRequest.NewPassword);
 
         if (!changePasswordResult.Succeeded || changePasswordResult.Errors.Any())
         {
-            return new ValidationException(changePasswordResult.Errors.Select(e => e.Description).ToList());
+            return new ValidationError(changePasswordResult.Errors.Select(e => e.Description).ToList());
         }
 
         return Resource.Password_Reset_Succeed;
@@ -60,6 +60,6 @@ public class PasswordResetService : IPasswordResetService
 
     private Result<Empty> ProcessIdentityResult(IdentityResult result)
     {
-        return result.Succeeded ? Empty.Default : new ValidationException(result.Errors.Select(e => e.Description));
+        return result.Succeeded ? Empty.Default : new ValidationError(result.Errors.Select(e => e.Description));
     }
 }
