@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.AccountManagement;
 
-[Route("api/auth")]
+[Route("api/Authentication")]
 public class AuthenticationController(IAuthenticationService authenticationService) : ApiControllerBase
 {
     private readonly IAuthenticationService _authenticationService = authenticationService;
