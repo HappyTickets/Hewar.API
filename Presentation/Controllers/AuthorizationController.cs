@@ -1,90 +1,71 @@
 ﻿using Application.Authorization.DTOs.Request;
 using Application.Authorization.Service;
 using Application.Common.Utilities.Pagination;
-using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Controllers;
 
-namespace API.Controllers
+namespace Presentation.Controllers
 {
-    public class AuthorizationController(IAuthorizationService authorizationService) : ApiControllerBase
+    [Route("api/roles")]
+    public class AuthorizationController : ApiControllerBase
     {
-        private readonly IAuthorizationService _authorizationService = authorizationService;
+        private readonly IAuthorizationService _authorizationService;
 
-        [HttpPost("roles/create")]
-        [HasPermission(Permissions.CreateRole)]
-        public async Task<IActionResult> Create([FromBody] AddRoleDto addRoleDto)
+        public AuthorizationController(IAuthorizationService authorizationService)
         {
-            return Result(await _authorizationService.AddRoleAsync(addRoleDto));
+            _authorizationService = authorizationService;
         }
 
-        [HttpPut("roles/edit")]
-        [HasPermission(Permissions.UpdateRole)]
-        public async Task<IActionResult> Edit([FromBody] EditRoleDto editRoleDto)
-        {
-            return Result(await _authorizationService.EditRoleAsync(editRoleDto));
-        }
+        [HttpPost("create")]
+        //[HasPermission(Permissions.CreateRole)]
+        public async Task<IActionResult> CreateAsync([FromBody] AddRoleDto addRoleDto)
+            => Result(await _authorizationService.AddRoleAsync(addRoleDto));
 
-        [HttpDelete("roles/{id:long}")]
-        [HasPermission(Permissions.DeleteRole)]
-        public async Task<IActionResult> Delete([FromRoute] long id)
-        {
-            return Result(await _authorizationService.DeleteRoleAsync(id));
-        }
+        [HttpPut("update")]
+        //[HasPermission(Permissions.UpdateRole)]
+        public async Task<IActionResult> EditAsync([FromBody] EditRoleDto editRoleDto)
+            => Result(await _authorizationService.EditRoleAsync(editRoleDto));
 
-        [HttpGet("roles")]
-        [HasPermission(Permissions.ViewRoles)]
-        public async Task<IActionResult> GetRolesList()
-        {
-            return Result(await _authorizationService.GetRolesList());
-        }
+        [HttpDelete("delete/{id:long}")]
+        //[HasPermission(Permissions.DeleteRole)]
+        public async Task<IActionResult> DeleteAsync([FromRoute] long id)
+            => Result(await _authorizationService.DeleteRoleAsync(id));
 
-        [HttpGet("roles/{id:long}")]
-        [HasPermission(Permissions.ViewRoles)]
-        public async Task<IActionResult> GetRoleById([FromRoute] long id)
-        {
-            return Result(await _authorizationService.GetRoleById(id));
-        }
+        [HttpGet("getAll")]
+        //[HasPermission(Permissions.ViewRoles)]
+        public async Task<IActionResult> GetAllAsync()
+            => Result(await _authorizationService.GetRolesList());
 
-        [HttpPost("roles/assign-users")]
-        [HasPermission(Permissions.AssignUserToRole)]
-        public async Task<IActionResult> AssignUsersToRole([FromBody] AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken = default)
-        {
-            return Result(await _authorizationService.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken));
-        }
+        [HttpGet("getById/{id:long}")]
+        //[HasPermission(Permissions.ViewRoles)]
+        public async Task<IActionResult> GetByIdAsync([FromRoute] long id)
+            => Result(await _authorizationService.GetRoleById(id));
 
-        [HttpPost("roles/assign-user-to-roles")]
-        [HasPermission(Permissions.AssignUserToRole)]
-        public async Task<IActionResult> AssignUserToRoles([FromBody] AssignUserToRolesDto assignUserToRoleDto)
-        {
-            return Result(await _authorizationService.AssignUserToRolesAsync(assignUserToRoleDto));
-        }
+        [HttpPost("assign-users")]
+        //[HasPermission(Permissions.AssignUserToRole)]
+        public async Task<IActionResult> AssignUsersToRoleAsync([FromBody] AssignUsersToRoleDto assignUsersToRoleDto, CancellationToken cancellationToken = default)
+            => Result(await _authorizationService.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken));
 
-        [HttpPost("roles/remove-users")]
-        [HasPermission(Permissions.UnassignUserToRole)]
-        public async Task<IActionResult> RemoveUsersFromRole([FromBody] RemoveUsersFromRoleDto removeUserFromRoleDto, CancellationToken cancellationToken = default)
-        {
-            return Result(await _authorizationService.RemoveUsersFromRoleAsync(removeUserFromRoleDto, cancellationToken));
-        }
+        [HttpPost("assign-user-to-roles")]
+        //[HasPermission(Permissions.AssignUserToRole)]
+        public async Task<IActionResult> AssignUserToRolesAsync([FromBody] AssignUserToRolesDto assignUserToRoleDto)
+            => Result(await _authorizationService.AssignUserToRolesAsync(assignUserToRoleDto));
+
+        [HttpPost("remove-users")]
+        //[HasPermission(Permissions.UnassignUserToRole)]
+        public async Task<IActionResult> RemoveUsersFromRoleAsync([FromBody] RemoveUsersFromRoleDto removeUserFromRoleDto, CancellationToken cancellationToken = default)
+            => Result(await _authorizationService.RemoveUsersFromRoleAsync(removeUserFromRoleDto, cancellationToken));
 
         [HttpGet("users/{userId:long}/roles")]
-        public async Task<IActionResult> GetUserWithRoles([FromRoute] long userId)
-        {
-            return Result(await _authorizationService.GetUserWithRolesAsync(userId));
-        }
+        public async Task<IActionResult> GetUserWithRolesAsync([FromRoute] long userId)
+            => Result(await _authorizationService.GetUserWithRolesAsync(userId));
 
         [HttpGet("users-with-roles")]
-        public async Task<IActionResult> GetUsersWithRoles([FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
-        {
-            return Result(await _authorizationService.GetUsersWithRolesAsync(paginationSearchModel, cancellationToken));
-        }
+        public async Task<IActionResult> GetUsersWithRolesAsync([FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken = default)
+            => Result(await _authorizationService.GetUsersWithRolesAsync(paginationSearchModel, cancellationToken));
 
         [HttpGet("roles/{roleId:long}/users")]
-        [HasPermission(Permissions.ViewRoles)]
-        public async Task<IActionResult> GetRoleWithUsers([FromRoute] long roleId, [FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
-        {
-            var result = await _authorizationService.GetRoleWithUsersAsync(roleId, paginationSearchModel, cancellationToken);
-            return Result(result);
-        }
+        //[HasPermission(Permissions.ViewRoles)]
+        public async Task<IActionResult> GetRoleWithUsersAsync([FromRoute] long roleId, [FromQuery] PaginationSearchModel paginationSearchModel, CancellationToken cancellationToken)
+            => Result(await _authorizationService.GetRoleWithUsersAsync(roleId, paginationSearchModel, cancellationToken));
     }
 }
