@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.AccountManagement;
 
+[Route("api/password")]
 public class PasswordController : ApiControllerBase
 {
     private readonly IPasswordResetService _passwordResetService;
