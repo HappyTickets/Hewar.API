@@ -28,6 +28,7 @@
         RemoveRoleFailed = 302,
         AssignUserRoleFailed = 303,
         UnassignUserRoleFailed = 304,
+        GetRoleFaild = 305,
 
         // tickets
         TicketExists = 400,

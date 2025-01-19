@@ -3,7 +3,9 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
+using Domain.Enums;
 using LanguageExt;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,7 +42,9 @@ namespace Application.Authorization.Service
 
                 return addRoleFailedExp;
             }
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.RoleCreated);
+
         }
 
 
@@ -50,7 +54,7 @@ namespace Application.Authorization.Service
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             if (role?.Name is null)
             {
-                var notFoundExp = new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleDeletionFailed);
+                var notFoundExp = new NotFoundError(ErrorCodes.RoleNotExists);
                 return notFoundExp;
             }
 
@@ -58,22 +62,24 @@ namespace Application.Authorization.Service
             var result = await _roleManager.DeleteAsync(role);
             if (result.Succeeded)
             {
-                return Empty.Default;
+                return Result<Empty>.Success(Empty.Default, SuccessCodes.RoleDeleted);
+
             }
 
             var deleteFailedExp = new ValidationError(result.Errors.Select(e => e.Description).ToList());
 
             return deleteFailedExp;
+
         }
 
         public async Task<Result<Empty>> EditRoleAsync(EditRoleDto editRoleDto)
         {
             var role = await _roleManager.Roles
-                .Include(r=>r.Permissions)
+                .Include(r => r.Permissions)
                 .FirstOrDefaultAsync(r => r.Id == editRoleDto.RoleId);
 
             if (role == null)
-                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.NotFound);
+                return new NotFoundError(ErrorCodes.RoleNotExists);
 
             if (editRoleDto.RoleName != null)
             {
@@ -89,21 +95,25 @@ namespace Application.Authorization.Service
                 return new ValidationError(result.Errors.Select(e => e.Description));
 
 
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.RoleUpdated);
+
         }
 
         public async Task<Result<RoleDto>> GetRoleById(long id)
         {
             var role = await _roleManager.Roles
-                .Include(r=>r.Permissions)
+                .Include(r => r.Permissions)
                 .FirstOrDefaultAsync(r => r.Id == id);
             if (role == null)
             {
-                return new NotFoundError(Resource.GetRoleFailed);
+                return new NotFoundError(ErrorCodes.GetRoleFaild);
             }
 
             var roleDto = _mapper.Map<RoleDto>(role);
-            return roleDto;
+
+            return Result<RoleDto>.Success(roleDto, SuccessCodes.RoleReceived);
+
         }
 
         public async Task<Result<List<RoleDto>>> GetRolesList(CancellationToken cancellationToken)
@@ -112,18 +122,22 @@ namespace Application.Authorization.Service
                 .Include(r => r.Permissions)
                 .ToListAsync(cancellationToken);
             var rolesDto = _mapper.Map<List<RoleDto>>(roles);
-            return rolesDto;
+
+            return Result<List<RoleDto>>.Success(rolesDto, SuccessCodes.RolesReceived);
+
         }
 
-        public async Task<bool> IsRoleExist(string roleName)
+        public async Task<Result<bool>> IsRoleExist(string roleName)
         {
-            return await _roleManager.RoleExistsAsync(roleName);
+            var roleExists = await _roleManager.RoleExistsAsync(roleName);
+
+            return Result<bool>.Success(roleExists, SuccessCodes.RoleExists);
         }
 
-        public async Task<bool> IsRoleExistById(long roleId)
+        public async Task<Result<bool>> IsRoleExistById(long roleId)
         {
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
-            return role != null;
+            return Result<bool>.Success(role != null, SuccessCodes.RoleExists);
         }
 
         #endregion
@@ -137,7 +151,7 @@ namespace Application.Authorization.Service
             var user = await _userManager.FindByIdAsync(assignUserToRolesDto.UserId.ToString());
             if (user == null)
             {
-                return new NotFoundError(ErrorCodes.UserNotExists, Resource.NotFound);
+                return new NotFoundError(ErrorCodes.UserNotExists);
             }
 
             // Fetch current roles of the user
@@ -162,10 +176,11 @@ namespace Application.Authorization.Service
                 var addResult = await _userManager.AddToRolesAsync(user, rolesToAdd);
                 if (!addResult.Succeeded)
                 {
-                    return new ForbiddenError(ErrorCodes.AssignUserRoleFailed, Resource.AssignRoleFailed);
+                    return new ForbiddenError(ErrorCodes.AssignUserRoleFailed);
                 }
             }
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.RoleAssigned);
 
         }
 
@@ -175,10 +190,11 @@ namespace Application.Authorization.Service
             // Validate input
             if (assignUsersToRoleDto is null || assignUsersToRoleDto.RoleId == 0 || !assignUsersToRoleDto.UserIds.Any())
             {
-                return new ValidationError(ErrorCodes.AssignUserRoleFailed, Resource.AssignRoleFailed);
+                return new ValidationError(ErrorCodes.AssignUserRoleFailed);
             }
 
-            return await _authorizationRepository.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken);
+            await _authorizationRepository.AssignUsersToRoleAsync(assignUsersToRoleDto, cancellationToken);
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.RoleAssigned);
 
         }
 
@@ -187,10 +203,11 @@ namespace Application.Authorization.Service
 
             if (removeUsersFromRoleDto == null || removeUsersFromRoleDto.RoleId == 0 || !removeUsersFromRoleDto.UserIds.Any())
             {
-                return new ForbiddenError(ErrorCodes.RemoveRoleFailed, Resource.RemoveRoleFailed);
+                return new ForbiddenError(ErrorCodes.RemoveRoleFailed);
             }
 
-            return await _authorizationRepository.UnassignUsersFromRoleAsync(removeUsersFromRoleDto, cancellationToken);
+            await _authorizationRepository.UnassignUsersFromRoleAsync(removeUsersFromRoleDto, cancellationToken);
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.UserRemovedFromRole);
 
         }
 
@@ -200,7 +217,7 @@ namespace Application.Authorization.Service
             var role = await _roleManager.FindByIdAsync(roleId.ToString());
             if (role?.Name is null)
             {
-                return new NotFoundError(Resource.GetRoleFailed);
+                return new NotFoundError(ErrorCodes.GetRoleFaild);
             }
 
             // Use repository to fetch users and apply pagination
@@ -220,7 +237,7 @@ namespace Application.Authorization.Service
                 AssignedUsers = new(roleAppUsers, usersCount, paginationSearchModel.PageIndex, paginationSearchModel.PageSize),
             };
 
-            return roleWithUsersDto;
+            return Result<RoleWithUsersDto>.Success(roleWithUsersDto, SuccessCodes.RoleAssigned);
 
         }
 
@@ -230,7 +247,7 @@ namespace Application.Authorization.Service
             var user = await _userManager.FindByIdAsync(userId.ToString());
             if (user is null)
             {
-                return new NotFoundError(Resource.NotFoundInDB_Message);
+                return new NotFoundError(ErrorCodes.NotFound);
             }
 
             // Get the roles assigned to this user
@@ -245,7 +262,8 @@ namespace Application.Authorization.Service
                 AssignedRoles = rolesNames.ToList()
             };
 
-            return userWithRolesDto;
+            return Result<UserWithRolesDto>.Success(userWithRolesDto, SuccessCodes.UserReceived);
+
 
         }
 
@@ -258,7 +276,8 @@ namespace Application.Authorization.Service
 
             var items = _authorizationRepository.GetUsersWithRolesAsync(filteredUsersQuery, cancellationToken);
 
-            return new PaginatedList<UserWithRolesDto>(items, totalItems, paginationSearchModel.PageIndex, paginationSearchModel.PageSize);
+            var usersWithRoles = new PaginatedList<UserWithRolesDto>(items, totalItems, paginationSearchModel.PageIndex, paginationSearchModel.PageSize);
+            return Result<PaginatedList<UserWithRolesDto>>.Success(usersWithRoles, SuccessCodes.UserReceived);
 
         }
         #endregion

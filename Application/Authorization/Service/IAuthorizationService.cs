@@ -7,8 +7,8 @@ namespace Application.Authorization.Service
     public interface IAuthorizationService
     {
         Task<Result<Empty>> AddRoleAsync(AddRoleDto addRoleDto);
-        Task<bool> IsRoleExistById(long roleId);
-        Task<bool> IsRoleExist(string roleName);
+        Task<Result<bool>> IsRoleExistById(long roleId);
+        Task<Result<bool>> IsRoleExist(string roleName);
         Task<Result<Empty>> EditRoleAsync(EditRoleDto request);
         Task<Result<Empty>> DeleteRoleAsync(long roleId);
         Task<Result<List<RoleDto>>> GetRolesList(CancellationToken cancellationToken = default);

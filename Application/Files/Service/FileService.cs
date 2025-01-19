@@ -1,9 +1,10 @@
-﻿using AutoMapper;
+﻿using Application.Facilities.Dtos;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 
 namespace Application.Files.Service
 {
-    internal class FileService: IFileService
+    internal class FileService : IFileService
     {
         private readonly IMapper _mapper;
 
@@ -26,11 +27,13 @@ namespace Application.Files.Service
             using var fileStream = File.Create(physicalFilePath);
             await file.CopyToAsync(fileStream);
 
-            return new MediaDto
+            var mideaDto = new MediaDto
             {
                 Type = fileType,
                 Url = relativeFilePath
             };
+            return Result<MediaDto>.Success(mideaDto, SuccessCodes.fileUploaded);
+
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using Application.AccountManagement.Dtos.Password;
+﻿using Application.Account.OTP.Extensions;
+using Application.AccountManagement.Dtos.Password;
 using Application.AccountManagement.Service.Interfaces;
+using Domain.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Web;
 namespace Application.AccountManagement.Service.Concrete;
@@ -22,9 +25,10 @@ public class PasswordResetService : IPasswordResetService
         if (user is null) return new NotFoundError();
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        await _emailSender.SendAsync(user.Email!, Resource.Password_Reset,
-            string.Format(Resource.Password_Reset_Message, token));
-        
+        var subject = EnumExtension.GetDisplayName(SuccessCodes.PasswordReset);
+        await _emailSender.SendAsync(user.Email!, subject,
+            SuccessCodes.PasswordResetMessage, token);
+
         return Empty.Default;
     }
 
@@ -34,17 +38,17 @@ public class PasswordResetService : IPasswordResetService
         if (user is null) return new NotFoundError();
 
         var resetResult = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
-        return ProcessIdentityResult(resetResult);
+        return ProcessIdentityResult(resetResult, SuccessCodes.PasswordReset);
     }
 
-    public async Task<Result<string>> ResetPasswordAsync(ChangePasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
+    public async Task<Result<SuccessCodes>> ResetPasswordAsync(ChangePasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
     {
 
         var user = await _userManager.FindByIdAsync(_currentUser.Id.ToString());
 
         if (user is null)
         {
-            return new UnauthorizedError(ErrorCodes.UnregisteredEmail, Resource.Credentials_Invalid);
+            return new UnauthorizedError(ErrorCodes.UnregisteredEmail);
         }
 
         var changePasswordResult = await _userManager.ChangePasswordAsync(user, resetPasswordRequest.OldPassword, resetPasswordRequest.NewPassword);
@@ -54,12 +58,21 @@ public class PasswordResetService : IPasswordResetService
             return new ValidationError(changePasswordResult.Errors.Select(e => e.Description).ToList());
         }
 
-        return Resource.Password_Reset_Succeed;
+        return SuccessCodes.PasswordReset;
 
     }
 
-    private Result<Empty> ProcessIdentityResult(IdentityResult result)
+    private Result<Empty> ProcessIdentityResult(IdentityResult result, SuccessCodes successCode)
     {
-        return result.Succeeded ? Empty.Default : new ValidationError(result.Errors.Select(e => e.Description));
+        return result.Succeeded
+              ? new Result<Empty>
+              {
+                  Status = StatusCodes.Status200OK,
+                  IsSuccess = true,
+                  ErrorCode = ErrorCodes.None,
+                  SuccessCode = successCode,
+                  Data = Empty.Default
+              }
+              : new ValidationError(result.Errors.Select(e => e.Description));
     }
 }
