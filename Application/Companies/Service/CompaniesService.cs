@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Application.Companies.Service
 {
-    internal class CompaniesService: ICompaniesService
+    internal class CompaniesService : ICompaniesService
     {
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
@@ -24,13 +24,13 @@ namespace Application.Companies.Service
         public async Task<Result<Empty>> CreateAsync(CreateCompanyDto dto)
         {
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictError(ErrorCodes.PhoneExists,Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
             if (!await _roleManager.RoleExistsAsync(Roles.Company))
-                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
+                return new NotFoundError(ErrorCodes.RoleNotExists);
 
             var user = new ApplicationUser
             {
@@ -56,7 +56,8 @@ namespace Application.Companies.Service
             await _userManager.AddToRoleAsync(user, Roles.Company);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyCreated);
+
         }
 
         public async Task<Result<Empty>> UpdateAsync(UpdateCompanyDto dto)
@@ -67,10 +68,10 @@ namespace Application.Companies.Service
                 return new NotFoundError();
 
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Company.Id != dto.Id))
-                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Company.Id != dto.Id))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
             company.Name = dto.Name;
             company.Address = dto.Address;
@@ -80,7 +81,8 @@ namespace Application.Companies.Service
 
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyUpdated);
+
         }
 
         public async Task<Result<CompanyDto>> GetByIdAsync(long id)
@@ -90,14 +92,18 @@ namespace Application.Companies.Service
             if (company == null)
                 return new NotFoundError();
 
-            return _mapper.Map<CompanyDto>(company);
+            var companyDto = _mapper.Map<CompanyDto>(company);
+            return Result<CompanyDto>.Success(companyDto, SuccessCodes.CompanyReceived);
+
         }
 
         public async Task<Result<CompanyDto[]>> GetAllAsync()
         {
             var companies = await _ufw.Companies.GetAllAsync(["LoginDetails"]);
 
-            return _mapper.Map<CompanyDto[]>(companies);
+            var companiesDto = _mapper.Map<CompanyDto[]>(companies);
+            return Result<CompanyDto[]>.Success(companiesDto, SuccessCodes.CompaniesReceived);
+
         }
 
         public async Task<Result<Empty>> SoftDeleteAsync(long id)
@@ -110,7 +116,8 @@ namespace Application.Companies.Service
             _ufw.Companies.SoftDelete(company);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanySoftDeleted);
+            ;
         }
 
         public async Task<Result<Empty>> HardDeleteAsync(long id)
@@ -120,7 +127,7 @@ namespace Application.Companies.Service
             if (company == null)
                 return new NotFoundError();
 
-            using(var tran = await _ufw.BeginTransactionAsync())
+            using (var tran = await _ufw.BeginTransactionAsync())
             {
                 try
                 {
@@ -136,7 +143,8 @@ namespace Application.Companies.Service
                 }
             }
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyHardDeleted);
+
         }
     }
 }

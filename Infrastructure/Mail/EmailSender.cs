@@ -19,7 +19,7 @@ namespace Infrastructure.Mail
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendAsync(string to, string subject, string body)
+        public async Task SendAsync(string to, string subject, SuccessCodes successCodes, string token)
         {
             //create email message
             var message = new MimeMessage();
@@ -28,7 +28,7 @@ namespace Infrastructure.Mail
             message.Subject = subject;
             message.Body = new TextPart(TextFormat.Html)
             {
-                Text = body
+                Text = $"{(int)successCodes}: {token}"
             };
 
             //send email message

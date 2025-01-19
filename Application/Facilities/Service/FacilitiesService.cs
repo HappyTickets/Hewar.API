@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Application.Facilities.Service
 {
-    internal class FacilitiesService: IFacilitiesService
+    internal class FacilitiesService : IFacilitiesService
     {
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
@@ -24,13 +24,13 @@ namespace Application.Facilities.Service
         public async Task<Result<Empty>> CreateAsync(CreateFacilityDto dto)
         {
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
             if (!await _roleManager.RoleExistsAsync(Roles.Facility))
-                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
+                return new NotFoundError(ErrorCodes.RoleNotExists);
 
             var user = new ApplicationUser
             {
@@ -62,7 +62,8 @@ namespace Application.Facilities.Service
             await _userManager.AddToRoleAsync(user, Roles.Facility);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.FacilityCreated);
+
         }
 
         public async Task<Result<Empty>> UpdateAsync(UpdateFacilityDto dto)
@@ -73,10 +74,10 @@ namespace Application.Facilities.Service
                 return new NotFoundError();
 
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Facility.Id != dto.Id))
-                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
-            
+                return new ConflictError(ErrorCodes.PhoneExists);
+
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Facility.Id != dto.Id))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
 
             facility.LoginDetails.Email = dto.Email;
@@ -93,7 +94,8 @@ namespace Application.Facilities.Service
 
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.FacilityUpdated);
+
         }
 
         public async Task<Result<FacilityDto>> GetByIdAsync(long id)
@@ -103,14 +105,18 @@ namespace Application.Facilities.Service
             if (facility == null)
                 return new NotFoundError();
 
-            return _mapper.Map<FacilityDto>(facility);
+            var facilityDto = _mapper.Map<FacilityDto>(facility);
+            return Result<FacilityDto>.Success(facilityDto, SuccessCodes.FacilityReceived);
+
         }
 
         public async Task<Result<FacilityDto[]>> GetAllAsync()
         {
             var facilities = await _ufw.Facilities.GetAllAsync(["LoginDetails"]);
 
-            return _mapper.Map<FacilityDto[]>(facilities);
+            var facilitiesDto = _mapper.Map<FacilityDto[]>(facilities);
+            return Result<FacilityDto[]>.Success(facilitiesDto, SuccessCodes.FacilitiesReceived);
+
         }
 
         public async Task<Result<Empty>> SoftDeleteAsync(long id)
@@ -123,7 +129,8 @@ namespace Application.Facilities.Service
             _ufw.Facilities.SoftDelete(facility);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.FacilitySoftDeleted);
+
         }
 
         public async Task<Result<Empty>> HardDeleteAsync(long id)
@@ -149,7 +156,8 @@ namespace Application.Facilities.Service
                 }
             }
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.FacilityHardDeleted);
+
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace Application.Guards.Service
 {
-    internal class GuardsService: IGuardsService
+    internal class GuardsService : IGuardsService
     {
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
@@ -68,10 +68,11 @@ namespace Application.Guards.Service
             await _userManager.AddToRoleAsync(user, Roles.Guard);
             await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardCreated);
 
 
-            return Empty.Default;
+
+
         }
 
         public async Task<Result<Empty>> UpdateAsync(UpdateGuardDto dto)
@@ -109,7 +110,8 @@ namespace Application.Guards.Service
 
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardUpdated);
+
         }
 
         public async Task<Result<GuardDto>> GetByIdAsync(long id)
@@ -119,14 +121,18 @@ namespace Application.Guards.Service
             if (guard == null)
                 return new NotFoundError();
 
-            return _mapper.Map<GuardDto>(guard);
+            var guardDto = _mapper.Map<GuardDto>(guard);
+            return Result<GuardDto>.Success(guardDto, SuccessCodes.GuardReceived);
+
         }
 
         public async Task<Result<GuardDto[]>> GetAllAsync()
         {
             var guards = await _ufw.Guards.GetAllAsync(["LoginDetails"]);
 
-            return _mapper.Map<GuardDto[]>(guards);
+            var guardsDto = _mapper.Map<GuardDto[]>(guards);
+            return Result<GuardDto[]>.Success(guardsDto, SuccessCodes.GuardsReceived);
+
         }
 
         public async Task<Result<Empty>> SoftDeleteAsync(long id)
@@ -139,7 +145,8 @@ namespace Application.Guards.Service
             _ufw.Guards.SoftDelete(guard);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardSoftDeleted);
+
         }
 
         public async Task<Result<Empty>> HardDeleteAsync(long id)
@@ -165,7 +172,8 @@ namespace Application.Guards.Service
                 }
             }
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardHardDeleted);
+
         }
     }
 }
