@@ -20,7 +20,7 @@ namespace Application.InsuranceAds.Service
         public async Task<Result<Empty>> CreateAdAsync(CreateInsuranceAdDto dto)
         {
             var ad = _mapper.Map<InsuranceAd>(dto);
-            ad.FacilityId = _currentUser.Id?? 11;
+            ad.FacilityId = _currentUser.Id?? 1;
 
             _ufw.InsuranceAds.Create(ad);
             await _ufw.SaveChangesAsync();
