@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.AccountManagement;
-[Authorize]
+//[Authorize]
+
+[Route("api/email-confirmation")]
 public class EmailConfirmationController : ApiControllerBase
 {
     private readonly IEmailConfirmationService _emailConfirmationService;
