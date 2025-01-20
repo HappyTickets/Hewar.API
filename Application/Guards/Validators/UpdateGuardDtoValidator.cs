@@ -8,41 +8,41 @@ namespace Application.Guards.Validators
         public UpdateGuardDtoValidator()
         {
             RuleFor(x => x.UserName)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .Must(un => !un.Contains(" ")).WithMessage(Resource.UserName_NoSpaces);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .Must(un => !un.Contains(" ")).WithState(_ => (int)ValidationMsgs.UserName_NoSpaces);
 
             RuleFor(x => x.FirstName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.LastName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.ImageUrl)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage(Resource.Email_Required_Validation)
-                .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.Email_Required_Validation)
+                .Matches(RegexTemplates.Email).WithState(_ => (int)ValidationMsgs.Email_Format_Validation);
 
             RuleFor(x => x.Phone)
-            .NotEmpty().WithMessage(Resource.RequiredField);
+            .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.DateOfBirth)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Skills)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.NationalId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Qualification)
-                .NotNull().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.City)
-                .NotNull().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.Skills)
                 .ForEach(b =>

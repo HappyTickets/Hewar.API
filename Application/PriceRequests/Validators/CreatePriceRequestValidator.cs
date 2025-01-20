@@ -1,39 +1,38 @@
 ﻿using Application.PriceRequests.Dtos;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 namespace Application.PriceRequests.Validators
 {
-    public class CreatePriceRequestValidator: AbstractValidator<CreatePriceRequestDto>
+    public class CreatePriceRequestValidator : AbstractValidator<CreatePriceRequestDto>
     {
         public CreatePriceRequestValidator()
         {
             RuleFor(r => r.SecurityRole)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(r => r.GuardsCount)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.WorkShift)
-               .NotEmpty().WithMessage(Resource.RequiredField)
-               .IsInEnum().WithMessage(Resource.InvalidValue);
+               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+               .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(r => r.ContractType)
-               .NotEmpty().WithMessage(Resource.RequiredField)
-               .IsInEnum().WithMessage(Resource.InvalidValue);
+               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+               .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(r => r.StartDate)
-               .NotEmpty().WithMessage(Resource.RequiredField);
+               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.EndDate)
-               .NotEmpty().WithMessage(Resource.RequiredField);
+               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.Description)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.CompanyId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

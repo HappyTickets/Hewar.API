@@ -1,11 +1,12 @@
-﻿using Application.PriceRequests.Dtos;
+﻿using Application.InsuranceAds.Dtos;
+using Application.PriceRequests.Dtos;
 using AutoMapper;
 using Domain.Entities.PriceRequestAggregates;
 using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Service
 {
-    internal class PriceRequestsService: IPriceRequestsService
+    internal class PriceRequestsService : IPriceRequestsService
     {
         private readonly IUnitOfWorkService _ufw;
         private readonly IMapper _mapper;
@@ -21,7 +22,7 @@ namespace Application.PriceRequests.Service
         public async Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto)
         {
             var priceRequest = _mapper.Map<PriceRequest>(dto);
-            
+
             priceRequest.Status = RequestStatus.Pending;
             priceRequest.FacilityId = _currentUser.Id??1;
 
@@ -29,20 +30,24 @@ namespace Application.PriceRequests.Service
             _ufw.PriceRequests.Create(priceRequest);
             await _ufw.SaveChangesAsync();
 
-            return priceRequest.Id;
+            var id = priceRequest.Id;
+            return Result<long>.Success(id, SuccessCodes.PriceRequestCreated);
+
         }
 
         public async Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
         {
             if (!await _ufw.PriceRequests.AnyAsync(pr => pr.Id == dto.PriceRequestId && pr.Status == RequestStatus.Pending))
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             var details = _mapper.Map<PriceRequestFacilityDetails>(dto);
 
             _ufw.PriceRequestFacilityDetails.Create(details);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateRequestFacilityDetails);
+
         }
 
         public async Task<Result<Empty>> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
@@ -54,12 +59,13 @@ namespace Application.PriceRequests.Service
                 return new NotFoundError();
 
             if (!await _ufw.PriceRequests.AnyAsync(pr => pr.Id == details.PriceRequestId && pr.Status == RequestStatus.Pending))
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             _mapper.Map(dto, details);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.UpdateRequestFacilityDetails);
+
         }
 
         public async Task<Result<PriceRequestFacilityDetailsDto>> GetRequestFacilityDetailsAsync(long priceRequestId)
@@ -67,7 +73,10 @@ namespace Application.PriceRequests.Service
             var facilityDetails = await _ufw.PriceRequestFacilityDetails
                 .FirstOrDefaultAsync(d => d.PriceRequestId == priceRequestId);
 
-            return _mapper.Map<PriceRequestFacilityDetailsDto>(facilityDetails);
+            var priceRequestFacilityDetailsDto = _mapper.Map<PriceRequestFacilityDetailsDto>(facilityDetails);
+            return Result<PriceRequestFacilityDetailsDto>.Success(priceRequestFacilityDetailsDto,
+                SuccessCodes.GetRequestFacilityDetails);
+
         }
 
         public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
@@ -76,9 +85,13 @@ namespace Application.PriceRequests.Service
             var priceRequests = await _ufw.PriceRequests
                 .FilterAsync(pr => pr.FacilityId == currentUser, ["Company.LoginDetails", "Offer"]);
 
-            return _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
-        } 
-        
+            var facilityPriceRequestDto = _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
+            return Result<FacilityPriceRequestDto[]>.Success(facilityPriceRequestDto,
+                SuccessCodes.GetMyRequestsAsFacility);
+
+
+        }
+
         public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
         {
             var currentUser = _currentUser.Id ?? 1;
@@ -86,7 +99,9 @@ namespace Application.PriceRequests.Service
             var priceRequests = await _ufw.PriceRequests
                 .FilterAsync(pr => pr.CompanyId == currentUser, ["Facility.LoginDetails", "Offer"]);
 
-            return _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
+            var companyPriceRequestDto = _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
+            return Result<CompanyPriceRequestDto[]>.Success(companyPriceRequestDto,
+                SuccessCodes.GetMyRequestsAsCompany);
         }
 
         public async Task<Result<Empty>> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
@@ -97,7 +112,7 @@ namespace Application.PriceRequests.Service
                 return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             var offer = _mapper.Map<PriceRequestOffer>(dto);
             offer.RespondedDate = DateTimeOffset.UtcNow;
@@ -109,7 +124,9 @@ namespace Application.PriceRequests.Service
             request.AddDomainEvent(new PriceRequestAccepted(request));
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceRequestApproved);
+
         }
 
         public async Task<Result<Empty>> RejectRequestAsync(long priceRequestId)
@@ -120,7 +137,7 @@ namespace Application.PriceRequests.Service
                 return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             // mark request rejected
             request.Status = RequestStatus.Rejected;
@@ -128,7 +145,7 @@ namespace Application.PriceRequests.Service
             request.AddDomainEvent(new PriceRequestRejected(request));
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceRequestRejected);
         }
 
         public async Task<Result<Empty>> CancelRequestAsync(long priceRequestId)
@@ -139,7 +156,7 @@ namespace Application.PriceRequests.Service
                 return new NotFoundError();
 
             if (request.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             // mark request rejected
             request.Status = RequestStatus.Cancelled;
@@ -147,7 +164,9 @@ namespace Application.PriceRequests.Service
             request.AddDomainEvent(new PriceRequestCancelled(request));
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CancelRequest);
+
         }
 
         public async Task<Result<Empty>> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
@@ -157,8 +176,8 @@ namespace Application.PriceRequests.Service
             if (request == null)
                 return new NotFoundError();
 
-            if(request.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.PriceRequestNotPending, Resource.OnlyPendingRequests);
+            if (request.Status != RequestStatus.Pending)
+                return new ConflictError(ErrorCodes.PriceRequestNotPending);
 
             var message = _mapper.Map<PriceRequestMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;
@@ -170,15 +189,18 @@ namespace Application.PriceRequests.Service
             _ufw.PriceRequestMessages.Create(message);
             await _ufw.SaveChangesAsync();
 
-            return Empty.Default;
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateRequestMessage);
         }
 
         public async Task<Result<PriceRequestMessageDto[]>> GetRequestMessagesAsync(long requestId)
         {
             var messages = await _ufw.PriceRequestMessages
-                .FilterAsync(m=>m.PriceRequestId == requestId);
+                .FilterAsync(m => m.PriceRequestId == requestId);
 
-            return _mapper.Map<PriceRequestMessageDto[]>(messages);
+            var priceRequestMessageDto = _mapper.Map<PriceRequestMessageDto[]>(messages);
+            return Result<PriceRequestMessageDto[]>.Success(priceRequestMessageDto,
+                SuccessCodes.GetRequestMessages);
+
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Password;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 
 namespace Application.AccountManagement.Validators
@@ -12,17 +11,17 @@ namespace Application.AccountManagement.Validators
         {
 
             RuleFor(x => x.OldPassword)
-             .NotEmpty().WithMessage(Resource.RequiredField)
-             .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation);
+             .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+             .Matches(RegexTemplates.Password).WithState(_ => (int)ValidationMsgs.Password_Format_Validation);
 
             RuleFor(x => x.NewPassword)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation)
-                .NotEqual(x => x.OldPassword).WithMessage(Resource.RepeatedPassword);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .Matches(RegexTemplates.Password).WithState(_ => (int)ValidationMsgs.Password_Format_Validation)
+                .NotEqual(x => x.OldPassword).WithState(_ => (int)ValidationMsgs.RepeatedPassword);
 
             RuleFor(x => x.ConfirmNewPassword)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .Equal(x => x.NewPassword).WithMessage(Resource.Passwords_NotMatching);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .Equal(x => x.NewPassword).WithState(_ => (int)ValidationMsgs.Passwords_NotMatching);
         }
 
     }

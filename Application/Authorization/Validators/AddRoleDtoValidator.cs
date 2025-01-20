@@ -1,6 +1,5 @@
 ﻿using Application.Authorization.DTOs.Request;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 namespace Application.Authorization.Validators
 {
@@ -9,13 +8,13 @@ namespace Application.Authorization.Validators
         public AddRoleDtoValidator()
         {
             RuleFor(x => x.RoleName)
-                .NotEmpty().WithMessage(Resource.InvalidName)
-                .Matches(@"^[a-zA-Z\u0600-\u06FF\s]+$").WithMessage(Resource.InvalidName);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.InvalidName)
+                .Matches(@"^[a-zA-Z\u0600-\u06FF\s]+$").WithState(_ => (int)ValidationMsgs.InvalidName);
 
             RuleFor(r => r.Permissions)
                 .ForEach(b =>
                 {
-                    b.IsInEnum().WithMessage(Resource.InvalidValue);
+                    b.IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
                 });
         }
     }

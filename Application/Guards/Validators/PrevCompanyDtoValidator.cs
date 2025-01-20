@@ -3,18 +3,18 @@ using FluentValidation;
 
 namespace Application.Guards.Validators
 {
-    public class PrevCompanyDtoValidator: AbstractValidator<PrevCompanyDto>
+    public class PrevCompanyDtoValidator : AbstractValidator<PrevCompanyDto>
     {
         public PrevCompanyDtoValidator()
         {
             RuleFor(s => s.Name)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(s => s.From)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(s => s.To)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

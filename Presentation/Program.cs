@@ -2,7 +2,6 @@ using Application;
 using Infrastructure;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;
-using Localization;
 using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +17,6 @@ builder.Services
     .AddSwaggerService()
     .AddHttpContextAccessor()
     .AddCorsService()
-    .AddLocalizationService(builder.Configuration)
     .AddApplicationServices(builder.Configuration)
     .AddInfrastructureServices(builder.Configuration);
 

@@ -21,7 +21,7 @@ namespace Application.InsuranceAds.Service
         public async Task<Result<Empty>> CreateAdAsync(CreateInsuranceAdDto dto)
         {
             var ad = _mapper.Map<InsuranceAd>(dto);
-            ad.FacilityId = _currentUser.Id?? 1;
+            ad.FacilityId = _currentUser.Id ?? 1;
 
             _ufw.InsuranceAds.Create(ad);
             await _ufw.SaveChangesAsync();
@@ -58,7 +58,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<InsuranceAdDto[]>> GetMyAdsAsync()
         {
-            var userId = _currentUser.Id ?? 1; 
+            var userId = _currentUser.Id ?? 1;
 
             var ads = await _ufw.InsuranceAds
                 .FilterAsync(ad => ad.FacilityId == userId, ["Facility.LoginDetails"]);
@@ -86,12 +86,12 @@ namespace Application.InsuranceAds.Service
                 return new NotFoundError();
 
             if (ad.Status != InsuranceAdStatus.Opened)
-                return new ConflictError(ErrorCodes.AdNotOpened, Resource.OnlyOpenedAds);
+                return new ConflictError(ErrorCodes.AdNotOpened);
 
             var offer = _mapper.Map<InsuranceAdOffer>(dto);
             offer.Status = RequestStatus.Pending;
             offer.SentDate = DateTimeOffset.UtcNow;
-            offer.CompanyId = _currentUser.Id!??1;
+            offer.CompanyId = _currentUser.Id! ?? 1;
             offer.InsuranceAd = ad;
 
             offer.AddDomainEvent(new InsuranceAdOfferCreated(offer));
@@ -110,7 +110,7 @@ namespace Application.InsuranceAds.Service
                 return new NotFoundError();
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending);
 
             offer.Status = RequestStatus.Accepted;
 
@@ -129,7 +129,7 @@ namespace Application.InsuranceAds.Service
                 return new NotFoundError();
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending);
 
             offer.Status = RequestStatus.Rejected;
 
@@ -148,7 +148,7 @@ namespace Application.InsuranceAds.Service
                 return new NotFoundError();
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending);
 
             offer.Status = RequestStatus.Cancelled;
 
@@ -161,7 +161,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsFacilityAsync(long adId)
         {
-            var userId = _currentUser.Id ?? 1; 
+            var userId = _currentUser.Id ?? 1;
 
             var offers = await _ufw.InsuranceAdOffers
                 .FilterAsync(o => o.InsuranceAdId == adId && o.InsuranceAd.FacilityId == userId, ["Company.LoginDetails"]);
@@ -200,7 +200,7 @@ namespace Application.InsuranceAds.Service
         {
             var userId = _currentUser.Id ?? 1;
             var offers = await _ufw.InsuranceAdOffers
-                .FilterAsync(o => o.CompanyId == userId , ["InsuranceAd.Facility.LoginDetails"]);
+                .FilterAsync(o => o.CompanyId == userId, ["InsuranceAd.Facility.LoginDetails"]);
 
             var companyInsuranceAdOfferDto = _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
             return Result<CompanyInsuranceAdOfferDto[]>.Success(companyInsuranceAdOfferDto,
@@ -215,10 +215,10 @@ namespace Application.InsuranceAds.Service
                 return new NotFoundError();
 
             if (offer.InsuranceAd.Status != InsuranceAdStatus.Opened)
-                return new ConflictError(ErrorCodes.AdNotOpened, Resource.OnlyOpenedAds);
+                return new ConflictError(ErrorCodes.AdNotOpened);
 
             if (offer.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.AdOfferNotPending, Resource.OnlyPendingRequests);
+                return new ConflictError(ErrorCodes.AdOfferNotPending);
 
             var message = _mapper.Map<InsuranceAdOfferMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;

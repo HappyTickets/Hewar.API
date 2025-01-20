@@ -8,32 +8,32 @@ namespace Application.InsuranceAds.Validators
         public UpdateInsuranceAdDtoValidator()
         {
             RuleFor(g => g.SecurityRole)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.GuardsCount)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.WorkShift)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.ContractType)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.StartDate)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.EndDate)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Description)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Status)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
         }
     }
 }
