@@ -65,7 +65,7 @@ namespace Domain.Enums
         AdsReceived = 409,
         OfferRejected = 410,
         OfferCanceled = 411,
-        MyOffersByAdIdAsFacilityReveived = 412,
+        MyOffersByAdIdAsFacilityReceived = 412,
         MyOffersAsFacilityReceived = 413,
         MyOffersByAdIdAsCompanyReceived = 414,
         MyOffersAsCompanyReceived = 415,
