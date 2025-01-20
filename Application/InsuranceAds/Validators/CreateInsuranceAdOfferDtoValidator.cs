@@ -8,10 +8,10 @@ namespace Application.InsuranceAds.Validators
         public CreateInsuranceAdOfferDtoValidator()
         {
             RuleFor(g => g.InsuranceAdId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
             
             RuleFor(g => g.Offer)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

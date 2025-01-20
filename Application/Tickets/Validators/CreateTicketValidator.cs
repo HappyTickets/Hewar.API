@@ -3,21 +3,21 @@ using FluentValidation;
 
 namespace Application.Tickets.Validators
 {
-    public class CreateTicketValidator: AbstractValidator<CreateTicketDto>
+    public class CreateTicketValidator : AbstractValidator<CreateTicketDto>
     {
         public CreateTicketValidator()
         {
             RuleFor(t => t.Title)
-                .NotEmpty().WithMessage(Resource.RequiredField); 
-            
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(t => t.Content)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-            
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(t => t.AudienceId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-            
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(t => t.AudienceType)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

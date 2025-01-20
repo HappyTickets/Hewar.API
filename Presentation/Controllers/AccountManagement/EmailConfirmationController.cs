@@ -20,6 +20,7 @@ public class EmailConfirmationController : ApiControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> SendEmailConfirmation([FromBody] SendEmailConfirmationRequest request, CancellationToken cancellationToken = default)
     {
+
         return Result(await _emailConfirmationService.SendEmailConfirmationAsync(request, cancellationToken));
     }
 

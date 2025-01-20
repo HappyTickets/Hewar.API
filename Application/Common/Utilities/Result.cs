@@ -7,8 +7,7 @@ namespace Application.Common.Utilities
         public int Status { get; init; }
         public bool IsSuccess { get; init; }
         public ErrorCodes ErrorCode { get; init; }
-        public string? Message { get; init; }
-        public IEnumerable<string>? Errors { get; init; }
+        public SuccessCodes SuccessCode { get; init; }
         public TData? Data { get; init; }
 
 
@@ -18,8 +17,18 @@ namespace Application.Common.Utilities
                 Status = StatusCodes.Status200OK,
                 IsSuccess = true,
                 ErrorCode = ErrorCodes.None,
-                Data = data
+                Data = data,
+
             };
+        public static Result<TData> Success(TData data, SuccessCodes successCode)
+          => new()
+          {
+              Status = StatusCodes.Status200OK,
+              IsSuccess = true,
+              ErrorCode = ErrorCodes.None,
+              SuccessCode = successCode,
+              Data = data
+          };
 
         public static implicit operator Result<TData>(ErrorBase err)
             => new()
@@ -27,7 +36,7 @@ namespace Application.Common.Utilities
                 Status = err.Status,
                 IsSuccess = false,
                 ErrorCode = err.ErrorCode,
-                Message = err.Message,
+                SuccessCode = SuccessCodes.None
             };
 
         public static implicit operator Result<TData>(ValidationError err)
@@ -36,8 +45,9 @@ namespace Application.Common.Utilities
                 Status = err.Status,
                 IsSuccess = false,
                 ErrorCode = err.ErrorCode,
-                Message = err.Message,
-                Errors = err.Errors
+                SuccessCode = SuccessCodes.None
+
+
             };
     }
 }

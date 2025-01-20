@@ -8,10 +8,10 @@ namespace Application.Guards.Validators
         public SkillDtoValidator()
         {
             RuleFor(s => s.Name)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(s => s.YearsOfExperience)
-                .NotNull().WithMessage(Resource.RequiredField)
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .GreaterThan(-1);
         }
     }

@@ -28,11 +28,14 @@
         RemoveRoleFailed = 302,
         AssignUserRoleFailed = 303,
         UnassignUserRoleFailed = 304,
+        GetRoleFaild = 305,
 
         // tickets
         TicketExists = 400,
         TicketNotExists = 401,
         TicketClosed = 402,
+        TicketAudienceError = 403,
+
 
         // insurance ads
         AdExists = 500,
