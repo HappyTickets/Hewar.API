@@ -168,7 +168,7 @@ namespace Application.InsuranceAds.Service
 
             var facilityInsuranceAdOfferDto = _mapper.Map<FacilityInsuranceAdOfferDto[]>(offers);
             return Result<FacilityInsuranceAdOfferDto[]>.Success(facilityInsuranceAdOfferDto,
-                SuccessCodes.MyOffersByAdIdAsFacilityReveived);
+                SuccessCodes.MyOffersByAdIdAsFacilityReceived);
 
         }
 

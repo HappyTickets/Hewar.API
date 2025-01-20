@@ -72,10 +72,6 @@ namespace Domain.Enums
         CreateOfferMessage = 416,
         OfferMessagesReceived = 417,
 
-
-
-
-
         // price requests
         PriceRequestCreated = 500,
         PriceRequestApproved = 501,
@@ -99,7 +95,6 @@ namespace Domain.Enums
         CompaniesReceived = 703,
         CompanySoftDeleted = 704,
         CompanyHardDeleted = 705,
-
 
         //facilities
         FacilityCreated = 800,
