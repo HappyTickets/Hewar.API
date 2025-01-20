@@ -29,7 +29,8 @@ public class PasswordResetService : IPasswordResetService
         await _emailSender.SendAsync(user.Email!, subject,
             SuccessCodes.PasswordResetMessage, token);
 
-        return Empty.Default;
+        return Result<Empty>.Success(Empty.Default, SuccessCodes.PasswordResetMessage);
+
     }
 
     public async Task<Result<Empty>> ResetPasswordAsync(ResetPasswordTokenDto dto, CancellationToken cancellationToken = default)

@@ -3,25 +3,25 @@ using FluentValidation;
 
 namespace Application.Companies.Validators
 {
-    public class UpdateCompanyDtoValidator: AbstractValidator<UpdateCompanyDto>
+    public class UpdateCompanyDtoValidator : AbstractValidator<UpdateCompanyDto>
     {
         public UpdateCompanyDtoValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.ImageUrl)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage(Resource.Email_Required_Validation)
-                .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.Email_Required_Validation)
+                .Matches(RegexTemplates.Email).WithState(_ => (int)ValidationMsgs.Email_Format_Validation);
 
             RuleFor(x => x.Phone)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Address)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

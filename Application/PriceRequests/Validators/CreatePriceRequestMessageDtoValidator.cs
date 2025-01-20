@@ -8,10 +8,10 @@ namespace Application.PriceRequests.Validators
         public CreatePriceRequestMessageDtoValidator()
         {
             RuleFor(t => t.Content)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(t => t.PriceRequestId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

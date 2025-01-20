@@ -8,10 +8,10 @@ namespace Application.Tickets.Validators
         public CreateTicketMessageValidator()
         {
             RuleFor(t => t.Content)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(t => t.TicketId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

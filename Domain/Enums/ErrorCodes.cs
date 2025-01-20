@@ -34,6 +34,8 @@
         TicketExists = 400,
         TicketNotExists = 401,
         TicketClosed = 402,
+        TicketAudienceError = 403,
+
 
         // insurance ads
         AdExists = 500,

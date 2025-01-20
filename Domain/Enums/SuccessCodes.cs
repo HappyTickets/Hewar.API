@@ -46,6 +46,11 @@ namespace Domain.Enums
         // tickets
         TicketCreated = 300,
         TicketClosed = 301,
+        CreateTicketMessage = 302,
+        GetMyReceivedTickets = 303,
+        GetMySentTickets = 304,
+        GetTicketMessages = 305,
+
 
         // insurance ads
         AdCreated = 400,
@@ -74,6 +79,15 @@ namespace Domain.Enums
         // price requests
         PriceRequestCreated = 500,
         PriceRequestApproved = 501,
+        CreateRequestFacilityDetails = 502,
+        UpdateRequestFacilityDetails = 503,
+        GetRequestFacilityDetails = 504,
+        GetMyRequestsAsFacility = 505,
+        GetMyRequestsAsCompany = 506,
+        PriceRequestRejected = 507,
+        CancelRequest = 508,
+        CreateRequestMessage = 509,
+        GetRequestMessages = 510,
 
         //tokens
         RefreshToken = 600,
@@ -103,8 +117,10 @@ namespace Domain.Enums
         GuardSoftDeleted = 904,
         GuardHardDeleted = 905,
 
-
-
+        //notification
+        MarkAsRead = 950,
+        NotificationsReceived = 951,
+        CountUnRead = 952,
 
     }
 }

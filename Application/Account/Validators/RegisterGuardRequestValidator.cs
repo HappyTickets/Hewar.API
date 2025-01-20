@@ -1,7 +1,7 @@
-﻿using Application.AccountManagement.Dtos.Authentication;
+﻿using Application.Account.OTP.Extensions;
+using Application.AccountManagement.Dtos.Authentication;
 using Application.Guards.Validators;
 using FluentValidation;
-using Localization.ResourceFiles;
 
 namespace Application.Authorization.Validators
 {
@@ -10,49 +10,50 @@ namespace Application.Authorization.Validators
         public RegisterGuardRequestValidator()
         {
             RuleFor(g => g.UserName)
-                .NotEmpty().WithMessage(Resource.RequiredField)
-                .Must(un => !un.Contains(" ")).WithMessage(Resource.UserName_NoSpaces);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .Must(un => !un.Contains(" "))
+                .WithState(_ => (int)ValidationMsgs.UserName_NoSpaces);
 
             RuleFor(g => g.FirstName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.LastName)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-            
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(g => g.ImageUrl)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Email)
-                .NotEmpty().WithMessage(Resource.Email_Required_Validation)
-                .Matches(RegexTemplates.Email).WithMessage(Resource.Email_Format_Validation);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.Email_Required_Validation)
+                .Matches(RegexTemplates.Email).WithState(_ => (int)ValidationMsgs.Email_Format_Validation);
 
             RuleFor(g => g.Phone)
-            .NotEmpty().WithMessage(Resource.RequiredField);
+            .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Password)
-                .NotEmpty().WithMessage(Resource.Password_Validation)
-                .Matches(RegexTemplates.Password).WithMessage(Resource.Password_Format_Validation);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.Password_Validation)
+                .Matches(RegexTemplates.Password).WithState(_ => (int)ValidationMsgs.Password_Format_Validation);
 
             RuleFor(g => g.DateOfBirth)
-                .NotEmpty().WithMessage(Resource.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.NationalId)
-                .NotEmpty().WithMessage(Resource.RequiredField);
-            
-            RuleFor(g => g.Qualification)
-                .NotNull().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
-            
-            RuleFor(g => g.City)
-                .NotNull().WithMessage(Resource.RequiredField)
-                .IsInEnum().WithMessage(Resource.InvalidValue);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(g=> g.Skills)
+            RuleFor(g => g.Qualification)
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
+
+            RuleFor(g => g.City)
+               .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
+
+            RuleFor(g => g.Skills)
                 .ForEach(b =>
                 {
                     b.SetValidator(new SkillDtoValidator());
                 });
-            
+
             RuleFor(g => g.PrevCompanies)
                 .ForEach(b =>
                 {

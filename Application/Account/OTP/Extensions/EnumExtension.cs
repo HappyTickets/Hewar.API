@@ -19,5 +19,6 @@ namespace Application.Account.OTP.Extensions
 
             return attribute?.Name ?? enumValue.ToString();
         }
+
     }
 }

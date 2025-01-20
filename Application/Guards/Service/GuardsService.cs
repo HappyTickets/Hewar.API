@@ -24,16 +24,16 @@ namespace Application.Guards.Service
         public async Task<Result<Empty>> CreateAsync(CreateGuardDto dto)
         {
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
             if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName))
-                return new ConflictError(ErrorCodes.UserNameExists, Resource.UserNameExistsError);
+                return new ConflictError(ErrorCodes.UserNameExists);
 
             if (!await _roleManager.RoleExistsAsync(Roles.Guard))
-                return new NotFoundError(ErrorCodes.RoleNotExists, Resource.RoleNotExistError);
+                return new NotFoundError(ErrorCodes.RoleNotExists);
 
             var user = new ApplicationUser
             {
@@ -83,13 +83,13 @@ namespace Application.Guards.Service
                 return new NotFoundError();
 
             if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Guard.Id != dto.Id))
-                return new ConflictError(ErrorCodes.PhoneExists, Resource.PhoneNumber_Unique_Validation);
+                return new ConflictError(ErrorCodes.PhoneExists);
 
             if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Guard.Id != dto.Id))
-                return new ConflictError(ErrorCodes.EmailExists, Resource.EmailExistsError);
+                return new ConflictError(ErrorCodes.EmailExists);
 
             if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Guard.Id != dto.Id))
-                return new ConflictError(ErrorCodes.UserNameExists, Resource.UserNameExistsError);
+                return new ConflictError(ErrorCodes.UserNameExists);
 
             guard.FirstName = dto.FirstName;
             guard.LastName = dto.LastName;
