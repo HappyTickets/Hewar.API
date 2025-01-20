@@ -23,7 +23,7 @@ namespace Application.PriceRequests.Service
             var priceRequest = _mapper.Map<PriceRequest>(dto);
             
             priceRequest.Status = RequestStatus.Pending;
-            priceRequest.FacilityId = _currentUser.Id!.Value;
+            priceRequest.FacilityId = _currentUser.Id??1;
 
             priceRequest.AddDomainEvent(new PriceRequestCreated(priceRequest));
             _ufw.PriceRequests.Create(priceRequest);
@@ -72,16 +72,19 @@ namespace Application.PriceRequests.Service
 
         public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
         {
+            var currentUser = _currentUser.Id??1;
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.FacilityId == _currentUser.Id, ["Company.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.FacilityId == currentUser, ["Company.LoginDetails", "Offer"]);
 
             return _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
         } 
         
         public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
         {
+            var currentUser = _currentUser.Id ?? 1;
+
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.CompanyId == _currentUser.Id, ["Facility.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.CompanyId == currentUser, ["Facility.LoginDetails", "Offer"]);
 
             return _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
         }
@@ -159,8 +162,8 @@ namespace Application.PriceRequests.Service
 
             var message = _mapper.Map<PriceRequestMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;
-            message.SenderId = _currentUser.Id!.Value;
-            message.SenderType = _currentUser.Type!.Value;
+            message.SenderId = _currentUser.Id??1;
+            message.SenderType = _currentUser.Type??AccountTypes.Facility;
             message.PriceRequest = request;
 
             message.AddDomainEvent(new PriceRequestMessageCreated(message));
