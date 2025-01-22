@@ -1,5 +1,4 @@
-﻿using Application.Guards.Dtos;
-using Application.InsuranceAds.Dtos;
+﻿using Application.InsuranceAds.Dtos;
 using AutoMapper;
 using Domain.Events.InsuranceAds;
 
@@ -21,7 +20,7 @@ namespace Application.InsuranceAds.Service
         public async Task<Result<Empty>> CreateAdAsync(CreateInsuranceAdDto dto)
         {
             var ad = _mapper.Map<InsuranceAd>(dto);
-            ad.FacilityId = _currentUser.Id ?? 1;
+            ad.FacilityId = _currentUser.AccountId ?? 1;
 
             _ufw.InsuranceAds.Create(ad);
             await _ufw.SaveChangesAsync();
@@ -58,7 +57,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<InsuranceAdDto[]>> GetMyAdsAsync()
         {
-            var userId = _currentUser.Id ?? 1;
+            var userId = _currentUser.AccountId ?? 1;
 
             var ads = await _ufw.InsuranceAds
                 .FilterAsync(ad => ad.FacilityId == userId, ["Facility.LoginDetails"]);
@@ -91,7 +90,7 @@ namespace Application.InsuranceAds.Service
             var offer = _mapper.Map<InsuranceAdOffer>(dto);
             offer.Status = RequestStatus.Pending;
             offer.SentDate = DateTimeOffset.UtcNow;
-            offer.CompanyId = _currentUser.Id! ?? 1;
+            offer.CompanyId = _currentUser.AccountId! ?? 1;
             offer.InsuranceAd = ad;
 
             offer.AddDomainEvent(new InsuranceAdOfferCreated(offer));
@@ -161,7 +160,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsFacilityAsync(long adId)
         {
-            var userId = _currentUser.Id ?? 1;
+            var userId = _currentUser.AccountId ?? 1;
 
             var offers = await _ufw.InsuranceAdOffers
                 .FilterAsync(o => o.InsuranceAdId == adId && o.InsuranceAd.FacilityId == userId, ["Company.LoginDetails"]);
@@ -175,7 +174,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<FacilityInsuranceAdOfferDto[]>> GetMyOffersAsFacilityAsync()
         {
-            var userId = _currentUser.Id ?? 1;
+            var userId = _currentUser.AccountId ?? 1;
 
             var offers = await _ufw.InsuranceAdOffers
                 .FilterAsync(o => o.InsuranceAd.FacilityId == userId, ["Company.LoginDetails"]);
@@ -187,7 +186,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersByAdIdAsCompanyAsync(long adId)
         {
-            var userId = _currentUser.Id ?? 1;
+            var userId = _currentUser.AccountId ?? 1;
             var offers = await _ufw.InsuranceAdOffers
                 .FilterAsync(o => o.InsuranceAdId == adId && o.CompanyId == userId, ["InsuranceAd.Facility.LoginDetails"]);
 
@@ -198,7 +197,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<CompanyInsuranceAdOfferDto[]>> GetMyOffersAsCompanyAsync()
         {
-            var userId = _currentUser.Id ?? 1;
+            var userId = _currentUser.AccountId ?? 1;
             var offers = await _ufw.InsuranceAdOffers
                 .FilterAsync(o => o.CompanyId == userId, ["InsuranceAd.Facility.LoginDetails"]);
 
@@ -222,7 +221,7 @@ namespace Application.InsuranceAds.Service
 
             var message = _mapper.Map<InsuranceAdOfferMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;
-            message.SenderId = _currentUser.Id!.Value;
+            message.SenderId = _currentUser.AccountId!.Value;
             message.SenderType = _currentUser.Type!.Value;
             message.InsuranceAdOffer = offer;
 

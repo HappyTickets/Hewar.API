@@ -8,191 +8,167 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Security.Claims;
+using LoginRequest = Application.AccountManagement.Dtos.Authentication.LoginRequest;
 
 namespace Application.AccountManagement.Service.Concrete;
 public class AuthenticationService(
     UserManager<ApplicationUser> userManager,
     ITokensService tokensService,
-    ICurrentUserService currenUser,
+    ICurrentUserService currentUser,
+    IEmailConfirmationService emailConfirmationService,
     IMapper mapper,
     RoleManager<ApplicationRole> roleManager) : IAuthenticationService
 {
-    private readonly UserManager<ApplicationUser> _userManager = userManager;
-    private readonly ITokensService _tokensService = tokensService;
-    private readonly IMapper _mapper = mapper;
-    private readonly ICurrentUserService _currenUser = currenUser;
-    private readonly RoleManager<ApplicationRole> _roleManager = roleManager;
 
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictError(ErrorCodes.PhoneExists);
+        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Guard);
+        if (validationResult != null) return validationResult;
 
-        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictError(ErrorCodes.EmailExists);
-
-        if (await _userManager.Users.AnyAsync(u => u.UserName == registerRequest.UserName))
-            return new ConflictError(ErrorCodes.UserNameExists);
-
-        if (!await _roleManager.RoleExistsAsync(Roles.Guard))
-            return new NotFoundError(ErrorCodes.RoleNotExists);
-
-        var user = new ApplicationUser
+        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Guard, registerRequest.ImageUrl);
+        user.UserName = registerRequest.UserName;
+        user.Guard = new Guard
         {
-            UserName = registerRequest.UserName,
-            Email = registerRequest.Email,
-            PhoneNumber = registerRequest.Phone,
-            AccountType = AccountTypes.Guard,
-            ImageUrl = registerRequest.ImageUrl,
-            Guard = new()
-            {
-                FirstName = registerRequest.FirstName,
-                LastName = registerRequest.LastName,
-                DateOfBirth = registerRequest.DateOfBirth,
-                NationalId = registerRequest.NationalId,
-                Qualification = registerRequest.Qualification,
-                City = registerRequest.City,
-                BloodType = registerRequest.BloodType,
-                Height = registerRequest.Height,
-                Weight = registerRequest.Weight,
-                Skills = _mapper.Map<ICollection<Skill>>(registerRequest.Skills),
-                PrevCompanies = _mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
-            }
+            FirstName = registerRequest.FirstName,
+            LastName = registerRequest.LastName,
+            DateOfBirth = registerRequest.DateOfBirth,
+            NationalId = registerRequest.NationalId,
+            Qualification = registerRequest.Qualification,
+            City = registerRequest.City,
+            BloodType = registerRequest.BloodType,
+            Height = registerRequest.Height,
+            Weight = registerRequest.Weight,
+            Skills = mapper.Map<ICollection<Skill>>(registerRequest.Skills),
+            PrevCompanies = mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
         };
 
-        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
-
-        if (!registrationResults.Succeeded)
-            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
-
-        await _userManager.AddToRoleAsync(user, Roles.Guard);
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
-
-        return new Result<Empty>
-        {
-            Status = StatusCodes.Status200OK,
-            IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
-            SuccessCode = SuccessCodes.UserRegistered,
-            Data = Empty.Default
-        };
+        return await RegisterUserAsync(user, registerRequest.Password, Roles.Guard);
     }
 
     public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictError(ErrorCodes.PhoneExists);
+        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Facility);
+        if (validationResult != null) return validationResult;
 
-        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictError(ErrorCodes.EmailExists);
+        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Facility, registerRequest.ImageUrl);
 
-
-        if (!await _roleManager.RoleExistsAsync(Roles.Facility))
-            return new NotFoundError(ErrorCodes.RoleNotExists);
-
-        var user = new ApplicationUser
+        user.Facility = new Facility
         {
-            UserName = null,
-            Email = registerRequest.Email,
-            PhoneNumber = registerRequest.Phone,
-            AccountType = AccountTypes.Facility,
-            ImageUrl = registerRequest.ImageUrl,
-            Facility = new()
-            {
-                Name = registerRequest.Name,
-                Type = registerRequest.Type,
-                CommercialRegistration = registerRequest.CommercialRegistration,
-                ActivityType = registerRequest.ActivityType,
-                Address = registerRequest.Address,
-                City = registerRequest.City,
-                ResponsibleName = registerRequest.ResponsibleName,
-                ResponsiblePhone = registerRequest.ResponsiblePhone,
-            }
+            Name = registerRequest.Name,
+            Type = registerRequest.Type,
+            CommercialRegistration = registerRequest.CommercialRegistration,
+            ActivityType = registerRequest.ActivityType,
+            Address = registerRequest.Address,
+            City = registerRequest.City,
+            ResponsibleName = registerRequest.ResponsibleName,
+            ResponsiblePhone = registerRequest.ResponsiblePhone,
         };
 
-        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
-
-        if (!registrationResults.Succeeded)
-            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
-
-        await _userManager.AddToRoleAsync(user, Roles.Facility);
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
-
-        return new Result<Empty>
-        {
-            Status = StatusCodes.Status200OK,
-            IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
-            SuccessCode = SuccessCodes.UserRegistered,
-            Data = Empty.Default
-        };
+        return await RegisterUserAsync(user, registerRequest.Password, Roles.Facility);
     }
 
     public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        if (await IsPhoneNumberTaken(registerRequest.Phone))
-            return new ConflictError(ErrorCodes.PhoneExists);
+        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Company);
+        if (validationResult != null) return validationResult;
 
-        if (await _userManager.Users.AnyAsync(u => u.Email == registerRequest.Email))
-            return new ConflictError(ErrorCodes.EmailExists);
+        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Company, registerRequest.ImageUrl);
 
-        if (!await _roleManager.RoleExistsAsync(Roles.Company))
-            return new NotFoundError(ErrorCodes.RoleNotExists);
-
-        var user = new ApplicationUser
+        user.Company = new Company
         {
-            UserName = null,
-            Email = registerRequest.Email,
-            PhoneNumber = registerRequest.Phone,
-            AccountType = AccountTypes.Company,
-            ImageUrl = registerRequest.ImageUrl,
-            Company = new()
-            {
-                Name = registerRequest.Name,
-                Address = registerRequest.Address
-            }
+            Name = registerRequest.Name,
+            Address = registerRequest.Address,
         };
 
-        var registrationResults = await _userManager.CreateAsync(user, registerRequest.Password);
+        return await RegisterUserAsync(user, registerRequest.Password, Roles.Company);
+    }
+
+    // Shared Validation Logic
+    private async Task<Result<Empty>?> ValidateRegistrationAsync(string phone, string email, string role)
+    {
+        if (await IsPhoneNumberTaken(phone))
+            return new ConflictError(ErrorCodes.PhoneExists);
+
+        if (await userManager.Users.AnyAsync(u => u.Email == email))
+            return new ConflictError(ErrorCodes.EmailExists);
+
+        if (!await roleManager.RoleExistsAsync(role))
+            return new NotFoundError(ErrorCodes.RoleNotExists);
+
+        return null;
+    }
+
+    // User Creation Helper
+    private ApplicationUser CreateUser(string email, string phone, AccountTypes accountType, string imageUrl)
+    {
+        return new ApplicationUser
+        {
+            Email = email,
+            PhoneNumber = phone,
+            AccountType = accountType,
+            ImageUrl = imageUrl
+        };
+    }
+
+    // Registration Helper
+    private async Task<Result<Empty>> RegisterUserAsync(ApplicationUser user, string password, string role)
+    {
+        var registrationResults = await userManager.CreateAsync(user, password);
 
         if (!registrationResults.Succeeded)
             return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
-        await _userManager.AddToRoleAsync(user, Roles.Company);
-        await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
+        await userManager.AddToRoleAsync(user, role);
+
+        var accountId = GetAccountId(user);
+
+        if (string.IsNullOrEmpty(accountId))
+            return new ValidationError("User must be associated with either Guard, Company, or Facility.");
+
+
+        await userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, accountId));
+        await userManager.AddClaimAsync(user, new Claim(CustomClaims.IdentityId, user.Id.ToString()));
+
+        // TO DO : Email confirmation 
+        //emailConfirmationService.SendEmailConfirmationAsync(new SendEmailConfirmationRequest { Email = user.Email });
 
         return new Result<Empty>
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
-            SuccessCode = SuccessCodes.UserRegistered,
-            Data = Empty.Default
+            SuccessCode = SuccessCodes.UserRegistered
         };
     }
+    private string? GetAccountId(ApplicationUser user)
+    {
+        return user.Guard?.Id.ToString()
+               ?? user.Company?.Id.ToString()
+               ?? user.Facility?.Id.ToString();
+    }
 
-
-    public async Task<Result<UserSessionDto>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
+    public async Task<Result<AccountSessionDto>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
         var user = await FindUserWithRolesAsync(u => u.Email == loginRequest.Email);
 
-        if (user == null)
+        if (user is null)
             return new NotFoundError(ErrorCodes.InvalidEmailOrPassword);
 
-        if (!await _userManager.CheckPasswordAsync(user, loginRequest.Password))
+        if (!await userManager.CheckPasswordAsync(user, loginRequest.Password))
             return new ValidationError(ErrorCodes.InvalidEmailOrPassword);
 
-        if (!await _userManager.IsEmailConfirmedAsync(user))
+        if (!await userManager.IsEmailConfirmedAsync(user))
+        {
+            //emailConfirmationService.SendEmailConfirmationAsync(new SendEmailConfirmationRequest { Email = loginRequest.Email });
             return new UnauthorizedError(ErrorCodes.UnconfirmedEmail);
+        }
 
-        var tokens = await _tokensService.GenerateTokensAsync(user);
+        var tokens = await tokensService.GenerateTokensAsync(user);
 
-        var userSessionDto = await BuildUserSessionDto(user, tokens);
-        return new Result<UserSessionDto>
+        var userSessionDto = await BuildAccountSessionDto(user, tokens);
+        return new Result<AccountSessionDto>
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
             SuccessCode = SuccessCodes.LoggedInSuccessfully,
             Data = userSessionDto
         };
@@ -200,32 +176,45 @@ public class AuthenticationService(
 
     public async Task<Result<Empty>> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default)
     {
-        await _tokensService.RemoveRefreshTokenAsync(refreshToken);
+        try
+        {
+            await tokensService.RemoveRefreshTokenAsync(refreshToken);
+        }
+        catch (Exception ex)
+        {
+            return new UnauthorizedError(ErrorCodes.NotFound, ex.Message);
+        }
+
         return new Result<Empty>
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
-            SuccessCode = SuccessCodes.LoggedoutSuccessfully,
-            Data = Empty.Default
+            SuccessCode = SuccessCodes.LoggedoutSuccessfully
         };
     }
 
-    public async Task<Result<UserSessionDto>> RefreshTokenAsync(RefreshAuthTokenRequest tokens, CancellationToken cancellationToken = default)
+    public async Task<Result<AccountSessionDto>> RefreshTokenAsync(RefreshAuthTokenRequest tokens, CancellationToken cancellationToken = default)
     {
-        var tokensInfo = await _tokensService.RefreshAsync(tokens.AccessToken, tokens.RefreshToken);
+        TokensInfo tokensInfo;
+        try
+        {
+            tokensInfo = await tokensService.RefreshAsync(tokens.AccessToken, tokens.RefreshToken);
+        }
+        catch (Exception ex)
+        {
+            return new UnauthorizedError(ErrorCodes.InvalidToken, ex.Message);
+        }
 
-        if (tokensInfo == null) return new UnauthorizedError();
+        if (tokensInfo is null) return new UnauthorizedError();
 
         var user = await FindUserWithRolesAsync(u => u.Id == tokensInfo.UserId);
         if (user == null) return new NotFoundError(ErrorCodes.Unauthorized);
 
-        var userSessionDto = await BuildUserSessionDto(user, tokensInfo);
-        return new Result<UserSessionDto>
+        var userSessionDto = await BuildAccountSessionDto(user, tokensInfo);
+        return new Result<AccountSessionDto>
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
-            ErrorCode = ErrorCodes.None,
             SuccessCode = SuccessCodes.RefreshToken,
             Data = userSessionDto
         };
@@ -234,22 +223,26 @@ public class AuthenticationService(
     #region Private Helper Methods
 
     private async Task<bool> IsPhoneNumberTaken(string phoneNumber)
-        => await _userManager.Users.AnyAsync(u => u.PhoneNumber == phoneNumber);
+        => await userManager.Users.AnyAsync(u => u.PhoneNumber == phoneNumber);
 
     private async Task<ApplicationUser?> FindUserWithRolesAsync(Expression<Func<ApplicationUser, bool>> predicate)
-      => await _userManager.Users
+      => await userManager.Users
           .Include(u => u.ApplicationUserRoles)
           .ThenInclude(ur => ur.Role)
           .ThenInclude(r => r.Permissions)
           .FirstOrDefaultAsync(predicate);
 
-    private async Task<UserSessionDto> BuildUserSessionDto(ApplicationUser user, TokensInfo tokens)
+    private async Task<AccountSessionDto> BuildAccountSessionDto(ApplicationUser user, TokensInfo tokens)
     {
-        var claims = await _userManager.GetClaimsAsync(user);
-        return new UserSessionDto
+        var accountClaims = await ClaimsHelper.ExtractClaimsFromToken(tokens.JWT.Token);
+
+        var account = new AccountSessionDto
         {
-            Id = long.Parse(claims.First(c => c.Type == ClaimTypes.NameIdentifier)!.Value),
-            UserName = user.UserName!,
+            IdentityId = user.Id,
+            AccountId = ClaimsHelper.GetClaimValue<long>(accountClaims, CustomClaims.AccountId),
+            UserName = user.UserName,
+            FirstName = ClaimsHelper.GetClaimValue(accountClaims, CustomClaims.FirstName),
+            Name = ClaimsHelper.GetClaimValue(accountClaims, CustomClaims.Name),
             Email = user.Email!,
             AccountType = user.AccountType,
             ImageUrl = user.ImageUrl,
@@ -259,6 +252,8 @@ public class AuthenticationService(
             AccessTokenExpDate = tokens.JWT.ExpiryDate.UtcDateTime,
             RefreshTokenExpDate = tokens.Refresh.ExpiryDate.UtcDateTime
         };
+
+        return account;
     }
 
     private Permissions[] ExtractPermissions(ApplicationUser user)

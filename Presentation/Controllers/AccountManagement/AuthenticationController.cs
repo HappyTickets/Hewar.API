@@ -17,14 +17,14 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     {
         return Result(await _authenticationService.RegisterGuardAsync(registerRequest, cancellationToken));
     }
-    
+
     [HttpPost("registerFacility")]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterFacility([FromBody] RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
         return Result(await _authenticationService.RegisterFacilityAsync(registerRequest, cancellationToken));
     }
-    
+
     [HttpPost("registerCompany")]
     [AllowAnonymous]
     public async Task<IActionResult> RegisterCompany([FromBody] RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
@@ -35,6 +35,7 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     [HttpPost("login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest, CancellationToken cancellationToken = default)
+
     {
         var res = await _authenticationService.LoginAsync(loginRequest, cancellationToken);
         return Result(res);

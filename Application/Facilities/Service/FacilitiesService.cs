@@ -60,7 +60,7 @@ namespace Application.Facilities.Service
                 return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
             await _userManager.AddToRoleAsync(user, Roles.Facility);
-            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Facility.Id.ToString()));
+            await _userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, user.Facility.Id.ToString()));
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.FacilityCreated);
 
@@ -116,7 +116,6 @@ namespace Application.Facilities.Service
 
             var facilitiesDto = _mapper.Map<FacilityDto[]>(facilities);
             return Result<FacilityDto[]>.Success(facilitiesDto, SuccessCodes.FacilitiesReceived);
-
         }
 
         public async Task<Result<Empty>> SoftDeleteAsync(long id)

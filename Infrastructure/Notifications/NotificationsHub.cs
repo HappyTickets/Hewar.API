@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 namespace Infrastructure.Notifications
 {
     [Authorize]
-    public class NotificationsHub: Hub<IClientNotificationMethods>
+    public class NotificationsHub : Hub<IClientNotificationMethods>
     {
         private readonly ICurrentUserService _currentUser;
 
@@ -15,12 +15,12 @@ namespace Infrastructure.Notifications
 
         public override Task OnConnectedAsync()
         {
-            return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Type}");
+            return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.Id}-{_currentUser.Type}");
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
         }
     }
 }

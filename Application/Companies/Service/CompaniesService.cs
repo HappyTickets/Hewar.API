@@ -54,7 +54,7 @@ namespace Application.Companies.Service
                 return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
             await _userManager.AddToRoleAsync(user, Roles.Company);
-            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Company.Id.ToString()));
+            await _userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, user.Company.Id.ToString()));
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyCreated);
 
