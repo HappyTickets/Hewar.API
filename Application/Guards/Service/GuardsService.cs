@@ -66,7 +66,7 @@ namespace Application.Guards.Service
                 return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
             await _userManager.AddToRoleAsync(user, Roles.Guard);
-            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
+            await _userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, user.Guard.Id.ToString()));
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardCreated);
 

@@ -27,7 +27,7 @@ namespace Presentation.Controllers
         [HttpGet("getMyReceivedTickets")]
         public async Task<IActionResult> GetMyReceivedTicketsAsync()
             => Result(await _ticketsService.GetMyReceivedTicketsAsync());
-        
+
         [HttpGet("getMySentTickets")]
         public async Task<IActionResult> GetMySentTicketsAsync()
             => Result(await _ticketsService.GetMySentTicketsAsync());

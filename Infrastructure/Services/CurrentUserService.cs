@@ -1,5 +1,4 @@
-﻿using Domain.Consts;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
 namespace Infrastructure.Services
@@ -13,11 +12,19 @@ namespace Infrastructure.Services
             _httpcontext = httpcontextAccessor.HttpContext;
         }
 
-        public long? Id
+        public long? AccountId
         {
             get
             {
-                var isParsed = long.TryParse(_httpcontext?.User.FindFirstValue(ClaimTypes.NameIdentifier), out var result);
+                var isParsed = long.TryParse(_httpcontext?.User.FindFirstValue(CustomClaims.AccountId), out var result);
+                return isParsed ? result : null;
+            }
+        }
+        public long? IdentityId
+        {
+            get
+            {
+                var isParsed = long.TryParse(_httpcontext?.User.FindFirstValue(CustomClaims.IdentityId), out var result);
                 return isParsed ? result : null;
             }
         }
@@ -26,7 +33,7 @@ namespace Infrastructure.Services
         {
             get
             {
-                var type = _httpcontext?.User.FindFirstValue(CustomeClaims.AccountType);
+                var type = _httpcontext?.User.FindFirstValue(CustomClaims.AccountType);
 
                 if (string.IsNullOrEmpty(type))
                     return null;

@@ -1,6 +1,5 @@
 ﻿using Application.Facilities.Dtos;
 using Application.Facilities.Service;
-using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -20,7 +19,7 @@ namespace Presentation.Controllers
         //[HasPermission(Permissions.CreateFacility)]
         public async Task<IActionResult> CreateAsync(CreateFacilityDto dto)
             => Result(await _facilitiesService.CreateAsync(dto));
-        
+
         [HttpPut("update")]
         //[HasPermission(Permissions.UpdateFacility)]
         public async Task<IActionResult> UpdateAsync(UpdateFacilityDto dto)

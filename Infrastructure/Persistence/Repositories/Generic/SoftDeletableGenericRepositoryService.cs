@@ -10,7 +10,7 @@
         {
             entity.IsDeleted = true;
 
-            entity.DeletedBy = _currentUserService.Id.ToString();
+            entity.DeletedBy = _currentUserService.IdentityId.ToString();
             entity.DeletedOn = DateTimeOffset.UtcNow;
 
             _dbContext.Update(entity);
@@ -22,7 +22,7 @@
             {
                 entity.IsDeleted = true;
 
-                entity.DeletedBy = _currentUserService.Id.ToString();
+                entity.DeletedBy = _currentUserService.IdentityId.ToString();
                 entity.DeletedOn = DateTimeOffset.UtcNow;
             }
 

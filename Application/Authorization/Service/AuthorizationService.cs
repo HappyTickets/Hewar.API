@@ -3,9 +3,7 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
-using Domain.Enums;
 using LanguageExt;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

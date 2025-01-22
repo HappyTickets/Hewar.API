@@ -1,5 +1,4 @@
-﻿using Application.Account.OTP.Extensions;
-using Application.AccountManagement.Dtos.Authentication;
+﻿using Application.AccountManagement.Dtos.Authentication;
 using Application.Guards.Validators;
 using FluentValidation;
 

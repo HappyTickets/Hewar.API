@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.Text.Json.Serialization;
 
 namespace Application.Common.Utilities
 {
@@ -6,8 +7,14 @@ namespace Application.Common.Utilities
     {
         public int Status { get; init; }
         public bool IsSuccess { get; init; }
-        public ErrorCodes ErrorCode { get; init; }
-        public SuccessCodes SuccessCode { get; init; }
+
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public ErrorCodes? ErrorCode { get; init; }
+
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public SuccessCodes? SuccessCode { get; init; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public TData? Data { get; init; }
 
 
@@ -16,7 +23,6 @@ namespace Application.Common.Utilities
             {
                 Status = StatusCodes.Status200OK,
                 IsSuccess = true,
-                ErrorCode = ErrorCodes.None,
                 Data = data,
 
             };
@@ -25,7 +31,6 @@ namespace Application.Common.Utilities
           {
               Status = StatusCodes.Status200OK,
               IsSuccess = true,
-              ErrorCode = ErrorCodes.None,
               SuccessCode = successCode,
               Data = data
           };
@@ -36,7 +41,6 @@ namespace Application.Common.Utilities
                 Status = err.Status,
                 IsSuccess = false,
                 ErrorCode = err.ErrorCode,
-                SuccessCode = SuccessCodes.None
             };
 
         public static implicit operator Result<TData>(ValidationError err)
@@ -45,9 +49,6 @@ namespace Application.Common.Utilities
                 Status = err.Status,
                 IsSuccess = false,
                 ErrorCode = err.ErrorCode,
-                SuccessCode = SuccessCodes.None
-
-
             };
     }
 }

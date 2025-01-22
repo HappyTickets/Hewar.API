@@ -1,5 +1,4 @@
-﻿using Application.InsuranceAds.Dtos;
-using Application.Notifications.Dtos;
+﻿using Application.Notifications.Dtos;
 using AutoMapper;
 using Domain.Events.Notifications;
 
@@ -21,7 +20,7 @@ namespace Application.Notifications.Service
         public async Task<Result<Empty>> MarkAsReadAsync(long id)
         {
             var notification = await _ufw.Notifications
-                .FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
+                .FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.AccountId && n.RecipientType == _currentUser.Type!.Value);
 
             if (notification == null)
                 return new NotFoundError();
@@ -37,7 +36,7 @@ namespace Application.Notifications.Service
         public async Task<Result<IEnumerable<NotificationDto>>> GetAllAsync()
         {
             var notifications = await _ufw.Notifications
-                .FilterAsync(n => n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
+                .FilterAsync(n => n.RecipientId == _currentUser.AccountId && n.RecipientType == _currentUser.Type!.Value);
 
             var notificationDto = _mapper.Map<NotificationDto[]>(notifications);
             return Result<IEnumerable<NotificationDto>>.Success(notificationDto,
@@ -47,7 +46,7 @@ namespace Application.Notifications.Service
         public async Task<Result<long>> CountUnReadAsync()
         {
             var count = await _ufw.Notifications
-                .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.Id && n.RecipientType == _currentUser.Type!.Value);
+                .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.AccountId && n.RecipientType == _currentUser.Type!.Value);
             return Result<long>.Success(count,
                           SuccessCodes.CountUnRead);
         }
