@@ -14,7 +14,7 @@ namespace Application.Common.Utilities
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public SuccessCodes? SuccessCode { get; init; }
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public TData? Data { get; init; }
 
 

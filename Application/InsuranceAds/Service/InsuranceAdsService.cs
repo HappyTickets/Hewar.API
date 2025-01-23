@@ -45,7 +45,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<InsuranceAdDto>> GetAdByIdAsync(long id)
         {
-            var ad = await _ufw.InsuranceAds.GetByIdAsync(id, ["Facility.LoginDetails"]);
+            var ad = await _ufw.InsuranceAds.GetByIdAsync(id, [$"{nameof(Facility)}.{nameof(Facility.LoginDetails)}"]);
 
             if (ad == null)
                 return new NotFoundError();
@@ -60,7 +60,7 @@ namespace Application.InsuranceAds.Service
             var userId = _currentUser.AccountId ?? 1;
 
             var ads = await _ufw.InsuranceAds
-                .FilterAsync(ad => ad.FacilityId == userId, ["Facility.LoginDetails"]);
+                .FilterAsync(ad => ad.FacilityId == userId, [$"{nameof(Facility)}.{nameof(Facility.LoginDetails)}"]);
 
             var insurancesAdDto = _mapper.Map<InsuranceAdDto[]>(ads);
             return Result<InsuranceAdDto[]>.Success(insurancesAdDto, SuccessCodes.MyAdReceived);
@@ -70,7 +70,7 @@ namespace Application.InsuranceAds.Service
         public async Task<Result<InsuranceAdDto[]>> GetOpenedAdsAsync()
         {
             var ads = await _ufw.InsuranceAds
-                .FilterAsync(ad => ad.Status == InsuranceAdStatus.Opened, ["Facility.LoginDetails"]);
+                .FilterAsync(ad => ad.Status == InsuranceAdStatus.Opened, [$"{nameof(Facility)}.{nameof(Facility.LoginDetails)}"]);
 
             var insurancesAdDto = _mapper.Map<InsuranceAdDto[]>(ads);
             return Result<InsuranceAdDto[]>.Success(insurancesAdDto, SuccessCodes.OpenAdsReceived);
@@ -141,7 +141,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<Empty>> CancelOfferAsync(long offerId)
         {
-            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId, ["InsuranceAd"]);
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(offerId, [nameof(InsuranceAdOffer.InsuranceAd)]);
 
             if (offer == null)
                 return new NotFoundError();
@@ -163,7 +163,7 @@ namespace Application.InsuranceAds.Service
             var userId = _currentUser.AccountId ?? 1;
 
             var offers = await _ufw.InsuranceAdOffers
-                .FilterAsync(o => o.InsuranceAdId == adId && o.InsuranceAd.FacilityId == userId, ["Company.LoginDetails"]);
+                .FilterAsync(o => o.InsuranceAdId == adId && o.InsuranceAd.FacilityId == userId, [$"{nameof(Company)}.{nameof(Company.LoginDetails)}"]);
 
             var facilityInsuranceAdOfferDto = _mapper.Map<FacilityInsuranceAdOfferDto[]>(offers);
             return Result<FacilityInsuranceAdOfferDto[]>.Success(facilityInsuranceAdOfferDto,
@@ -177,7 +177,7 @@ namespace Application.InsuranceAds.Service
             var userId = _currentUser.AccountId ?? 1;
 
             var offers = await _ufw.InsuranceAdOffers
-                .FilterAsync(o => o.InsuranceAd.FacilityId == userId, ["Company.LoginDetails"]);
+                .FilterAsync(o => o.InsuranceAd.FacilityId == userId, [$"{nameof(Company)}.{nameof(Company.LoginDetails)}"]);
 
             var facilityInsuranceAdOfferDto = _mapper.Map<FacilityInsuranceAdOfferDto[]>(offers);
             return Result<FacilityInsuranceAdOfferDto[]>.Success(facilityInsuranceAdOfferDto,
@@ -188,7 +188,7 @@ namespace Application.InsuranceAds.Service
         {
             var userId = _currentUser.AccountId ?? 1;
             var offers = await _ufw.InsuranceAdOffers
-                .FilterAsync(o => o.InsuranceAdId == adId && o.CompanyId == userId, ["InsuranceAd.Facility.LoginDetails"]);
+                .FilterAsync(o => o.InsuranceAdId == adId && o.CompanyId == userId, [$"{nameof(InsuranceAdOffer.InsuranceAd)}.{nameof(Facility)}.{nameof(Facility.LoginDetails)}"]);
 
             var companyInsuranceAdOfferDto = _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
             return Result<CompanyInsuranceAdOfferDto[]>.Success(companyInsuranceAdOfferDto,
@@ -199,7 +199,9 @@ namespace Application.InsuranceAds.Service
         {
             var userId = _currentUser.AccountId ?? 1;
             var offers = await _ufw.InsuranceAdOffers
-                .FilterAsync(o => o.CompanyId == userId, ["InsuranceAd.Facility.LoginDetails"]);
+                .FilterAsync(o => o.CompanyId == userId, [$"{nameof(InsuranceAdOffer.InsuranceAd)}.{nameof(Facility)}.{nameof(Facility.LoginDetails)}"]);
+
+
 
             var companyInsuranceAdOfferDto = _mapper.Map<CompanyInsuranceAdOfferDto[]>(offers);
             return Result<CompanyInsuranceAdOfferDto[]>.Success(companyInsuranceAdOfferDto,
@@ -208,7 +210,7 @@ namespace Application.InsuranceAds.Service
 
         public async Task<Result<Empty>> CreateOfferMessageAsync(CreateInsuranceAdOfferMessageDto dto)
         {
-            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(dto.InsuranceAdOfferId, ["InsuranceAd"]);
+            var offer = await _ufw.InsuranceAdOffers.GetByIdAsync(dto.InsuranceAdOfferId, []);
 
             if (offer == null)
                 return new NotFoundError();

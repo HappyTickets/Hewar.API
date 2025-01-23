@@ -2,7 +2,7 @@
 {
     public class AssignUserToRolesDto
     {
-        public List<string> Roles { get; set; }
+        public List<string> RolesNames { get; set; }
         public long UserId { get; set; }
     }
 }

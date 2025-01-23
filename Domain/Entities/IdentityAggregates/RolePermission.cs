@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-
-namespace Domain.Entities.IdentityAggregates
+﻿namespace Domain.Entities.IdentityAggregates
 {
-    public class RolePermission: BaseEntity
+    public class RolePermission : BaseEntity
     {
         public Permissions Permission { get; set; }
 

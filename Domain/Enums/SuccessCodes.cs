@@ -80,7 +80,7 @@
         GetRequestMessages = 510,
 
         //tokens
-        RefreshToken = 600,
+        RefreshedToken = 600,
 
         //companies
         CompanyCreated = 700,

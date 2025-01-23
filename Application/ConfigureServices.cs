@@ -1,4 +1,6 @@
-﻿using Application.Account.Validators;
+﻿using Application.Account.Service.Concrete;
+using Application.Account.Service.Interfaces;
+using Application.Account.Validators;
 using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
@@ -34,6 +36,7 @@ namespace Application
             services
               .AddScoped<IPasswordResetService, PasswordResetService>()
               .AddScoped<IEmailConfirmationService, EmailConfirmationService>()
+              .AddScoped<IRegistrationService, RegistrationService>()
               .AddScoped<IAuthenticationService, AuthenticationService>()
               .AddScoped<IAuthorizationService, AuthorizationService>()
               .AddScoped<INotificationsService, NotificationsService>()

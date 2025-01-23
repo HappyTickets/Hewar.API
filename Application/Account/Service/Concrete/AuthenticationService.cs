@@ -1,4 +1,5 @@
-﻿using Application.AccountManagement.Dtos.Authentication;
+﻿using Application.Account.Service.Interfaces;
+using Application.AccountManagement.Dtos.Authentication;
 using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Dtos.User;
 using Application.AccountManagement.Service.Interfaces;
@@ -7,25 +8,23 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Security.Claims;
 using LoginRequest = Application.AccountManagement.Dtos.Authentication.LoginRequest;
 
 namespace Application.AccountManagement.Service.Concrete;
 public class AuthenticationService(
     UserManager<ApplicationUser> userManager,
     ITokensService tokensService,
-    ICurrentUserService currentUser,
-    IEmailConfirmationService emailConfirmationService,
-    IMapper mapper,
-    RoleManager<ApplicationRole> roleManager) : IAuthenticationService
+    IRegistrationService registrationService,
+    //IEmailConfirmationService emailConfirmationService,
+    IMapper mapper) : IAuthenticationService
 {
 
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Guard);
+        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Guard);
         if (validationResult != null) return validationResult;
 
-        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Guard, registerRequest.ImageUrl);
+        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Guard, registerRequest.ImageUrl);
         user.UserName = registerRequest.UserName;
         user.Guard = new Guard
         {
@@ -42,15 +41,15 @@ public class AuthenticationService(
             PrevCompanies = mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
         };
 
-        return await RegisterUserAsync(user, registerRequest.Password, Roles.Guard);
+        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Guard);
     }
 
     public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Facility);
+        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Facility);
         if (validationResult != null) return validationResult;
 
-        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Facility, registerRequest.ImageUrl);
+        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Facility, registerRequest.ImageUrl);
 
         user.Facility = new Facility
         {
@@ -64,15 +63,15 @@ public class AuthenticationService(
             ResponsiblePhone = registerRequest.ResponsiblePhone,
         };
 
-        return await RegisterUserAsync(user, registerRequest.Password, Roles.Facility);
+        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Facility);
     }
 
     public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Company);
+        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Company);
         if (validationResult != null) return validationResult;
 
-        var user = CreateUser(registerRequest.Email, registerRequest.Phone, AccountTypes.Company, registerRequest.ImageUrl);
+        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Company, registerRequest.ImageUrl);
 
         user.Company = new Company
         {
@@ -80,71 +79,9 @@ public class AuthenticationService(
             Address = registerRequest.Address,
         };
 
-        return await RegisterUserAsync(user, registerRequest.Password, Roles.Company);
+        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Company);
     }
 
-    // Shared Validation Logic
-    private async Task<Result<Empty>?> ValidateRegistrationAsync(string phone, string email, string role)
-    {
-        if (await IsPhoneNumberTaken(phone))
-            return new ConflictError(ErrorCodes.PhoneExists);
-
-        if (await userManager.Users.AnyAsync(u => u.Email == email))
-            return new ConflictError(ErrorCodes.EmailExists);
-
-        if (!await roleManager.RoleExistsAsync(role))
-            return new NotFoundError(ErrorCodes.RoleNotExists);
-
-        return null;
-    }
-
-    // User Creation Helper
-    private ApplicationUser CreateUser(string email, string phone, AccountTypes accountType, string imageUrl)
-    {
-        return new ApplicationUser
-        {
-            Email = email,
-            PhoneNumber = phone,
-            AccountType = accountType,
-            ImageUrl = imageUrl
-        };
-    }
-
-    // Registration Helper
-    private async Task<Result<Empty>> RegisterUserAsync(ApplicationUser user, string password, string role)
-    {
-        var registrationResults = await userManager.CreateAsync(user, password);
-
-        if (!registrationResults.Succeeded)
-            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
-
-        await userManager.AddToRoleAsync(user, role);
-
-        var accountId = GetAccountId(user);
-
-        if (string.IsNullOrEmpty(accountId))
-            return new ValidationError("User must be associated with either Guard, Company, or Facility.");
-
-
-        await userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, accountId));
-        await userManager.AddClaimAsync(user, new Claim(CustomClaims.IdentityId, user.Id.ToString()));
-
-        // TO DO : Email confirmation 
-        //emailConfirmationService.SendEmailConfirmationAsync(new SendEmailConfirmationRequest { Email = user.Email });
-
-        return new Result<Empty>
-        {
-            Status = StatusCodes.Status200OK,
-            IsSuccess = true,
-            SuccessCode = SuccessCodes.UserRegistered
-        };
-    }
-    private string? GetAccountId(ApplicationUser user)
-    {
-        return user.Guard?.Id.ToString()
-               ?? user.Company?.Id.ToString()
-               ?? user.Facility?.Id.ToString();
-    }
 
     public async Task<Result<AccountSessionDto>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
     {
@@ -165,7 +102,7 @@ public class AuthenticationService(
         var tokens = await tokensService.GenerateTokensAsync(user);
 
         var userSessionDto = await BuildAccountSessionDto(user, tokens);
-        return new Result<AccountSessionDto>
+        return new()
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
@@ -185,7 +122,7 @@ public class AuthenticationService(
             return new UnauthorizedError(ErrorCodes.NotFound, ex.Message);
         }
 
-        return new Result<Empty>
+        return new()
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
@@ -211,19 +148,16 @@ public class AuthenticationService(
         if (user == null) return new NotFoundError(ErrorCodes.Unauthorized);
 
         var userSessionDto = await BuildAccountSessionDto(user, tokensInfo);
-        return new Result<AccountSessionDto>
+        return new()
         {
             Status = StatusCodes.Status200OK,
             IsSuccess = true,
-            SuccessCode = SuccessCodes.RefreshToken,
+            SuccessCode = SuccessCodes.RefreshedToken,
             Data = userSessionDto
         };
     }
 
     #region Private Helper Methods
-
-    private async Task<bool> IsPhoneNumberTaken(string phoneNumber)
-        => await userManager.Users.AnyAsync(u => u.PhoneNumber == phoneNumber);
 
     private async Task<ApplicationUser?> FindUserWithRolesAsync(Expression<Func<ApplicationUser, bool>> predicate)
       => await userManager.Users
