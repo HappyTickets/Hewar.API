@@ -39,7 +39,6 @@ public class PasswordResetService : IPasswordResetService
         var resetResult = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
         return ProcessIdentityResult(resetResult, SuccessCodes.PasswordReset);
     }
-
     public async Task<Result<SuccessCodes>> ResetPasswordAsync(ChangePasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
     {
 
