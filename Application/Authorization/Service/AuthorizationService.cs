@@ -155,8 +155,9 @@ namespace Application.Authorization.Service
             // Fetch current roles of the user
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            var rolesToRemove = currentRoles.Except(assignUserToRolesDto.Roles).ToList();
-            var rolesToAdd = assignUserToRolesDto.Roles.Except(currentRoles).ToList();
+            var rolesToRemove = currentRoles.Except(assignUserToRolesDto.RolesNames).ToList();
+
+            var rolesToAdd = assignUserToRolesDto.RolesNames.Except(currentRoles).ToList();
 
             // Remove roles if necessary
             if (rolesToRemove.Any())

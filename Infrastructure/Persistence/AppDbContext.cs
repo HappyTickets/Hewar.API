@@ -1,6 +1,4 @@
-﻿using Domain.Entities.PriceRequestAggregates;
-using Domain.Entities.TicketAggregates;
-using Infrastructure.Persistence.Extensions;
+﻿using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

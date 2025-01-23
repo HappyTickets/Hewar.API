@@ -81,7 +81,7 @@ namespace Application.PriceRequests.Service
         {
             var accId = _currentUser.AccountId ?? 1;
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.FacilityId == accId, ["Company.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.FacilityId == accId, [$"{nameof(Company)}.{nameof(Company.LoginDetails)}", $"{nameof(PriceRequest.Offer)}"]);
 
             var facilityPriceRequestDto = _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
             return Result<FacilityPriceRequestDto[]>.Success(facilityPriceRequestDto,
@@ -95,7 +95,7 @@ namespace Application.PriceRequests.Service
             var accId = _currentUser.AccountId ?? 1;
 
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.CompanyId == accId, ["Facility.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.CompanyId == accId, [$"{nameof(Facility)}.{nameof(Facility.LoginDetails)}", $"{nameof(PriceRequest.Offer)}"]);
 
             var companyPriceRequestDto = _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
             return Result<CompanyPriceRequestDto[]>.Success(companyPriceRequestDto,
