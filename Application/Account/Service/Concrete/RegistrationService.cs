@@ -1,4 +1,5 @@
 ﻿using Application.Account.Service.Interfaces;
+using Domain.Events.Accounts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Application.Account.Service.Concrete
 {
     public class RegistrationService(
         UserManager<ApplicationUser> userManager,
-        RoleManager<ApplicationRole> roleManager) : IRegistrationService
+        RoleManager<ApplicationRole> roleManager, IMediator mediator) : IRegistrationService
     {
         public async Task<Result<Empty>> ValidateRegistrationAsync(string phone, string email, string role)
         {
@@ -51,8 +52,14 @@ namespace Application.Account.Service.Concrete
             if (string.IsNullOrEmpty(accountId))
                 return new ValidationError("User must be associated with either Guard, Company, or Facility.");
 
-            await userManager.AddClaimAsync(user, new Claim(CustomClaims.AccountId, accountId));
-            await userManager.AddClaimAsync(user, new Claim(CustomClaims.IdentityId, user.Id.ToString()));
+
+            await userManager.AddClaimsAsync(user, [
+                        new Claim(CustomClaims.AccountId, accountId),
+                        new Claim(CustomClaims.IdentityId, user.Id.ToString())
+                    ]);
+
+
+            await mediator.Publish(new AccountCreated(user));
 
             return new()
             {
