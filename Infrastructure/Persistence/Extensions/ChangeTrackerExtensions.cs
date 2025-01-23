@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Persistence.Extensions
 {
@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Extensions
 
             foreach (var entry in entries)
             {
-                entry.Entity.CreatedBy = user.Id.ToString();
+                entry.Entity.CreatedBy = user.IdentityId.ToString();
                 entry.Entity.CreatedOn = DateTimeOffset.UtcNow;
             }
         }
@@ -26,7 +26,7 @@ namespace Infrastructure.Persistence.Extensions
 
             foreach (var entry in entries)
             {
-                entry.Entity.ModifiedBy = user.Id.ToString();
+                entry.Entity.ModifiedBy = user.IdentityId.ToString();
                 entry.Entity.ModifiedOn = DateTimeOffset.UtcNow;
             }
         }

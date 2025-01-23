@@ -3,7 +3,7 @@
     public enum ErrorCodes
     {
         // shared
-        None = 0,
+        //None = 0,
         NotFound = 1,
         Unauthorized = 2,
         Forbidden = 3,
@@ -17,6 +17,7 @@
         InvalidEmailOrPassword = 103,
         UnconfirmedEmail = 104,
         UnregisteredEmail = 105,
+        InvalidToken = 106,
 
         // users
         UserExists = 200,

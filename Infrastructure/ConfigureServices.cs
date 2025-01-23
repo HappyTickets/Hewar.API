@@ -4,6 +4,7 @@ using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
 using Infrastructure.Authentication.Handlers;
 using Infrastructure.Authentication.Requirements;
+using Infrastructure.Background;
 using Infrastructure.Mail;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;
@@ -43,7 +44,8 @@ namespace Infrastructure
                 .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddScoped<IUnitOfWorkService, UnitOfWorkService>()
                 .AddScoped<INotificationService, NotificationService>()
-                .AddScoped<AppDbContextIntializer>();
+                .AddScoped<AppDbContextIntializer>()
+                .AddHostedService<RefreshTokenCleaner>();
 
             // configs
             services
@@ -114,8 +116,8 @@ namespace Infrastructure
                         .RequireAuthenticatedUser()
                         .AddRequirements(new PermissionRequirement(permission));
                     });
-                } 
-                
+                }
+
                 //foreach (var type in Enum.GetNames(typeof(AccountTypes)))
                 //{
                 //    opt.AddPolicy(type, builder =>

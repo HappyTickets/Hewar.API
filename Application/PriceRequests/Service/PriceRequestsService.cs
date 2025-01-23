@@ -1,7 +1,5 @@
-﻿using Application.InsuranceAds.Dtos;
-using Application.PriceRequests.Dtos;
+﻿using Application.PriceRequests.Dtos;
 using AutoMapper;
-using Domain.Entities.PriceRequestAggregates;
 using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Service
@@ -24,7 +22,7 @@ namespace Application.PriceRequests.Service
             var priceRequest = _mapper.Map<PriceRequest>(dto);
 
             priceRequest.Status = RequestStatus.Pending;
-            priceRequest.FacilityId = _currentUser.Id??1;
+            priceRequest.FacilityId = _currentUser.AccountId ?? 1;
 
             priceRequest.AddDomainEvent(new PriceRequestCreated(priceRequest));
             _ufw.PriceRequests.Create(priceRequest);
@@ -81,9 +79,9 @@ namespace Application.PriceRequests.Service
 
         public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
         {
-            var currentUser = _currentUser.Id??1;
+            var accId = _currentUser.AccountId ?? 1;
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.FacilityId == currentUser, ["Company.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.FacilityId == accId, [$"{nameof(Company)}.{nameof(Company.LoginDetails)}", $"{nameof(PriceRequest.Offer)}"]);
 
             var facilityPriceRequestDto = _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
             return Result<FacilityPriceRequestDto[]>.Success(facilityPriceRequestDto,
@@ -94,10 +92,10 @@ namespace Application.PriceRequests.Service
 
         public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
         {
-            var currentUser = _currentUser.Id ?? 1;
+            var accId = _currentUser.AccountId ?? 1;
 
             var priceRequests = await _ufw.PriceRequests
-                .FilterAsync(pr => pr.CompanyId == currentUser, ["Facility.LoginDetails", "Offer"]);
+                .FilterAsync(pr => pr.CompanyId == accId, [$"{nameof(Facility)}.{nameof(Facility.LoginDetails)}", $"{nameof(PriceRequest.Offer)}"]);
 
             var companyPriceRequestDto = _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
             return Result<CompanyPriceRequestDto[]>.Success(companyPriceRequestDto,
@@ -181,8 +179,8 @@ namespace Application.PriceRequests.Service
 
             var message = _mapper.Map<PriceRequestMessage>(dto);
             message.SentDate = DateTimeOffset.UtcNow;
-            message.SenderId = _currentUser.Id??1;
-            message.SenderType = _currentUser.Type??AccountTypes.Facility;
+            message.SenderId = _currentUser.AccountId ?? 1;
+            message.SenderType = _currentUser.Type ?? AccountTypes.Facility;
             message.PriceRequest = request;
 
             message.AddDomainEvent(new PriceRequestMessageCreated(message));

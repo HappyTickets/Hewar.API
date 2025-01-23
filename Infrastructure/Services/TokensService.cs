@@ -2,6 +2,8 @@
 using Application.AccountManagement.Service.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
+using LanguageExt;
+using LanguageExt.Pipes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -135,15 +137,47 @@ internal class TokensService
     }
     private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
     {
-        var claims = (await _userManager.GetClaimsAsync(user)).AsEnumerable();
-        claims = claims
-            .Union([
-                new Claim(ClaimTypes.Email, user.Email!),
-                new Claim(CustomeClaims.AccountType, user.AccountType.ToString()),
-            ]);
+        // Retrieve existing claims
+        var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+
+        // Add common claims
+        claims.Add(new Claim(ClaimTypes.Email, user.Email!));
+        claims.Add(new Claim(CustomClaims.AccountType, user.AccountType.ToString()));
+
+        // Extract AccountId from claims
+        var accountIdClaim = claims.FirstOrDefault(c => c.Type == CustomClaims.AccountId);
+        if (accountIdClaim == null || !long.TryParse(accountIdClaim.Value, out var accountId))
+            throw new InvalidOperationException("AccountId claim is missing or invalid.");
+
+        claims.AddRange(await GetAccountSpecificClaimsAsync(user.AccountType, accountId));
 
         return claims;
     }
+    private async Task<IEnumerable<Claim>> GetAccountSpecificClaimsAsync(AccountTypes accountType, long accountId)
+    {
+        var additionalClaims = new List<Claim>();
+
+        switch (accountType)
+        {
+            case AccountTypes.Guard:
+                var guardFirstName = await _dbcontext.Guards.FindAsync(accountId).Select(g => g.FirstName);
+                additionalClaims.Add(new Claim(CustomClaims.FirstName, guardFirstName));
+                break;
+
+            case AccountTypes.Company:
+                var companyName = await _dbcontext.Companies.FindAsync(accountId).Select(g => g.Name);
+                additionalClaims.Add(new Claim(CustomClaims.Name, companyName));
+                break;
+
+            case AccountTypes.Facility:
+                var facilityName = await _dbcontext.Facilities.FindAsync(accountId).Select(g => g.Name);
+                additionalClaims.Add(new Claim(CustomClaims.Name, facilityName));
+                break;
+        }
+
+        return additionalClaims;
+    }
+
     private async Task<bool> ValidateAccessTokenAsync(string accessToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -152,7 +186,7 @@ internal class TokensService
 
         var claims = claimsPrincipal.Claims.ToList();
 
-        var hasId = long.TryParse(claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier))?.Value, out long userIdClaim);
+        var hasId = long.TryParse(claims.FirstOrDefault(c => c.Type.Equals(CustomClaims.IdentityId))?.Value, out long userIdClaim);
 
         if (!hasId) return false;
 

@@ -1,10 +1,8 @@
 ﻿using Application.Account.OTP.Extensions;
 using Application.AccountManagement.Dtos.Password;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Web;
 namespace Application.AccountManagement.Service.Concrete;
 public class PasswordResetService : IPasswordResetService
 {
@@ -41,11 +39,10 @@ public class PasswordResetService : IPasswordResetService
         var resetResult = await _userManager.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
         return ProcessIdentityResult(resetResult, SuccessCodes.PasswordReset);
     }
-
     public async Task<Result<SuccessCodes>> ResetPasswordAsync(ChangePasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
     {
 
-        var user = await _userManager.FindByIdAsync(_currentUser.Id.ToString());
+        var user = await _userManager.FindByIdAsync(_currentUser.IdentityId.ToString());
 
         if (user is null)
         {
@@ -70,7 +67,6 @@ public class PasswordResetService : IPasswordResetService
               {
                   Status = StatusCodes.Status200OK,
                   IsSuccess = true,
-                  ErrorCode = ErrorCodes.None,
                   SuccessCode = successCode,
                   Data = Empty.Default
               }

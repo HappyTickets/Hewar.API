@@ -30,6 +30,7 @@ public class PasswordController : ApiControllerBase
     }
 
     [HttpPatch("change")]
+    [Authorize]
     public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request, CancellationToken cancellationToken = default)
     {
         return Result(await _passwordResetService.ResetPasswordAsync(request, cancellationToken));

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Enums
+﻿namespace Domain.Enums
 {
     public enum SuccessCodes
     {
 
         // shared
-        None = 0,
+        //None = 0,
         OperationSuccessful = 1,
         Created = 2,
         Updated = 3,
@@ -86,7 +80,7 @@ namespace Domain.Enums
         GetRequestMessages = 510,
 
         //tokens
-        RefreshToken = 600,
+        RefreshedToken = 600,
 
         //companies
         CompanyCreated = 700,

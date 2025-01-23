@@ -1,8 +1,6 @@
-﻿using Domain.Entities.PriceRequestAggregates;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
-    public class Facility: TenantBase
+    public class Facility : TenantBase
     {
         public string Type { get; set; }
         public string Name { get; set; }

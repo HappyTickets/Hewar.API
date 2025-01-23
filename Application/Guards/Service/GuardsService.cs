@@ -1,94 +1,54 @@
-﻿using Application.Guards.Dtos;
+﻿using Application.Account.Service.Interfaces;
+using Application.Guards.Dtos;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Application.Guards.Service
 {
-    internal class GuardsService : IGuardsService
+    internal class GuardsService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, IRegistrationService registrationService) : IGuardsService
     {
-        private readonly IUnitOfWorkService _ufw;
-        private readonly IMapper _mapper;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
-
-        public GuardsService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
-        {
-            _ufw = ufw;
-            _mapper = mapper;
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
-
         public async Task<Result<Empty>> CreateAsync(CreateGuardDto dto)
         {
-            if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone))
-                return new ConflictError(ErrorCodes.PhoneExists);
+            var validationResult = await registrationService.ValidateRegistrationAsync(dto.Phone, dto.Email, Roles.Guard);
+            if (validationResult != null) return validationResult;
 
-            if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email))
-                return new ConflictError(ErrorCodes.EmailExists);
-
-            if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName))
-                return new ConflictError(ErrorCodes.UserNameExists);
-
-            if (!await _roleManager.RoleExistsAsync(Roles.Guard))
-                return new NotFoundError(ErrorCodes.RoleNotExists);
-
-            var user = new ApplicationUser
+            var user = registrationService.CreateUserBase(dto.Email, dto.Phone, AccountTypes.Guard, dto.ImageUrl, true);
+            user.UserName = dto.UserName;
+            user.Guard = new Guard
             {
-                UserName = dto.UserName,
-                Email = dto.Email,
-                EmailConfirmed = true,
-                PhoneNumber = dto.Phone,
-                PhoneNumberConfirmed = true,
-                AccountType = AccountTypes.Guard,
-                ImageUrl = dto.ImageUrl,
-                Guard = new()
-                {
-                    FirstName = dto.FirstName,
-                    LastName = dto.LastName,
-                    DateOfBirth = dto.DateOfBirth,
-                    NationalId = dto.NationalId,
-                    Qualification = dto.Qualification,
-                    City = dto.City,
-                    BloodType = dto.BloodType,
-                    Height = dto.Height,
-                    Weight = dto.Weight,
-                    Skills = _mapper.Map<ICollection<Skill>>(dto.Skills),
-                    PrevCompanies = _mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies),
-                }
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                DateOfBirth = dto.DateOfBirth,
+                NationalId = dto.NationalId,
+                Qualification = dto.Qualification,
+                City = dto.City,
+                BloodType = dto.BloodType,
+                Height = dto.Height,
+                Weight = dto.Weight,
+                Skills = mapper.Map<ICollection<Skill>>(dto.Skills),
+                PrevCompanies = mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies),
             };
 
-            var registrationResults = await _userManager.CreateAsync(user, dto.Password);
+            var res = await registrationService.RegisterAccountAsync(user, dto.Password, Roles.Guard);
 
-            if (!registrationResults.Succeeded)
-                return new ValidationError(registrationResults.Errors.Select(er => er.Description));
-
-            await _userManager.AddToRoleAsync(user, Roles.Guard);
-            await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Guard.Id.ToString()));
-
-            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardCreated);
-
-
-
-
+            return res.IsSuccess ? Result<Empty>.Success(Empty.Default, SuccessCodes.GuardCreated) : res;
         }
 
         public async Task<Result<Empty>> UpdateAsync(UpdateGuardDto dto)
         {
-            var guard = await _ufw.Guards.GetByIdAsync(dto.Id, ["LoginDetails"]);
+            var guard = await ufw.Guards.GetByIdAsync(dto.Id, [nameof(Guard.LoginDetails)]);
 
             if (guard == null)
                 return new NotFoundError();
 
-            if (await _userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Guard.Id != dto.Id))
+            if (await userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Guard.Id != dto.Id))
                 return new ConflictError(ErrorCodes.PhoneExists);
 
-            if (await _userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Guard.Id != dto.Id))
+            if (await userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Guard.Id != dto.Id))
                 return new ConflictError(ErrorCodes.EmailExists);
 
-            if (await _userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Guard.Id != dto.Id))
+            if (await userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Guard.Id != dto.Id))
                 return new ConflictError(ErrorCodes.UserNameExists);
 
             guard.FirstName = dto.FirstName;
@@ -100,15 +60,15 @@ namespace Application.Guards.Service
             guard.BloodType = dto.BloodType;
             guard.Height = dto.Height;
             guard.Weight = dto.Weight;
-            guard.Skills = _mapper.Map<ICollection<Skill>>(dto.Skills);
-            guard.PrevCompanies = _mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies);
+            guard.Skills = mapper.Map<ICollection<Skill>>(dto.Skills);
+            guard.PrevCompanies = mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies);
             guard.LoginDetails.UserName = dto.UserName;
             guard.LoginDetails.Email = dto.Email;
             guard.LoginDetails.PhoneNumber = dto.Phone;
             guard.LoginDetails.ImageUrl = dto.ImageUrl;
 
 
-            await _ufw.SaveChangesAsync();
+            await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardUpdated);
 
@@ -116,34 +76,34 @@ namespace Application.Guards.Service
 
         public async Task<Result<GuardDto>> GetByIdAsync(long id)
         {
-            var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
+            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
 
             if (guard == null)
                 return new NotFoundError();
 
-            var guardDto = _mapper.Map<GuardDto>(guard);
+            var guardDto = mapper.Map<GuardDto>(guard);
             return Result<GuardDto>.Success(guardDto, SuccessCodes.GuardReceived);
 
         }
 
         public async Task<Result<GuardDto[]>> GetAllAsync()
         {
-            var guards = await _ufw.Guards.GetAllAsync(["LoginDetails"]);
+            var guards = await ufw.Guards.GetAllAsync([nameof(Guard.LoginDetails)]);
 
-            var guardsDto = _mapper.Map<GuardDto[]>(guards);
+            var guardsDto = mapper.Map<GuardDto[]>(guards);
             return Result<GuardDto[]>.Success(guardsDto, SuccessCodes.GuardsReceived);
 
         }
 
         public async Task<Result<Empty>> SoftDeleteAsync(long id)
         {
-            var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
+            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
 
             if (guard == null)
                 return new NotFoundError();
 
-            _ufw.Guards.SoftDelete(guard);
-            await _ufw.SaveChangesAsync();
+            ufw.Guards.SoftDelete(guard);
+            await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardSoftDeleted);
 
@@ -151,18 +111,18 @@ namespace Application.Guards.Service
 
         public async Task<Result<Empty>> HardDeleteAsync(long id)
         {
-            var guard = await _ufw.Guards.GetByIdAsync(id, ["LoginDetails"]);
+            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
 
             if (guard == null)
                 return new NotFoundError();
 
-            using (var tran = await _ufw.BeginTransactionAsync())
+            using (var tran = await ufw.BeginTransactionAsync())
             {
                 try
                 {
-                    _ufw.Guards.HardDelete(guard);
-                    await _userManager.DeleteAsync(guard.LoginDetails);
-                    await _ufw.SaveChangesAsync();
+                    ufw.Guards.HardDelete(guard);
+                    await userManager.DeleteAsync(guard.LoginDetails);
+                    await ufw.SaveChangesAsync();
 
                     await tran.CommitAsync();
                 }

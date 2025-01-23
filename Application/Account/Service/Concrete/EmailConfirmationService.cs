@@ -2,7 +2,6 @@
 using Application.AccountManagement.Dtos.Email;
 using Application.AccountManagement.OTP.Extensions;
 using Application.AccountManagement.Service.Interfaces;
-using Domain.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 namespace Application.AccountManagement.Service.Concrete;
@@ -23,7 +22,6 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
             {
                 Status = StatusCodes.Status200OK,
                 IsSuccess = true,
-                ErrorCode = ErrorCodes.None,
                 SuccessCode = SuccessCodes.EmailConfirmation,
                 Data = Empty.Default
             }
@@ -49,7 +47,7 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
     public async Task<Result<Empty>> ConfirmChangeEmailAsync(ConfirmEmailRequest confirmEmailRequest, CancellationToken cancellationToken = default)
     {
 
-        var user = await _userManager.FindByIdAsync(_currentUser.Id.ToString());
+        var user = await _userManager.FindByIdAsync(_currentUser.IdentityId.ToString());
         if (user is null) return new NotFoundError(ErrorCodes.UserNotExists);
 
         var tokenOtp = await _userManager.GenerateOtpTokenAsync("ChangeEmail", user);
@@ -71,7 +69,6 @@ public class EmailConfirmationService(UserManager<ApplicationUser> userManager, 
             {
                 Status = StatusCodes.Status200OK,
                 IsSuccess = true,
-                ErrorCode = ErrorCodes.None,
                 SuccessCode = successCode,
                 Data = Empty.Default
             }

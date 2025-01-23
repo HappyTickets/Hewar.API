@@ -1,7 +1,5 @@
 ﻿using Application.PriceRequests.Dtos;
 using Application.PriceRequests.Service;
-using Infrastructure.Authentication.Attributes;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -26,7 +24,7 @@ namespace Presentation.Controllers
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
             => Result(await _priceRequestsService.AcceptRequestAsync(dto));
-        
+
         [HttpPatch("rejectRequest")]
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> RejectRequestAsync(long priceRequestId)
@@ -61,12 +59,12 @@ namespace Presentation.Controllers
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
             => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId));
-        
+
         [HttpPost("createRequestMessage")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
             => Result(await _priceRequestsService.CreateRequestMessageAsync(dto));
-        
+
         [HttpPost("getRequestMessages")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetRequestMessagesAsync(long requestId)

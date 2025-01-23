@@ -3,9 +3,7 @@ using Application.Authorization.DTOs.Request;
 using Application.Authorization.DTOs.Response;
 using Application.Common.Utilities.Pagination;
 using AutoMapper;
-using Domain.Enums;
 using LanguageExt;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -157,8 +155,9 @@ namespace Application.Authorization.Service
             // Fetch current roles of the user
             var currentRoles = await _userManager.GetRolesAsync(user);
 
-            var rolesToRemove = currentRoles.Except(assignUserToRolesDto.Roles).ToList();
-            var rolesToAdd = assignUserToRolesDto.Roles.Except(currentRoles).ToList();
+            var rolesToRemove = currentRoles.Except(assignUserToRolesDto.RolesNames).ToList();
+
+            var rolesToAdd = assignUserToRolesDto.RolesNames.Except(currentRoles).ToList();
 
             // Remove roles if necessary
             if (rolesToRemove.Any())

@@ -18,7 +18,7 @@ namespace Infrastructure.Persistence
 
         public async Task InitialiseAsync()
         {
-            if((await _context.Database.GetPendingMigrationsAsync()).Count() > 1)
+            if ((await _context.Database.GetPendingMigrationsAsync()).Count() > 1)
             {
                 await _context.Database.MigrateAsync();
             }
@@ -34,7 +34,7 @@ namespace Infrastructure.Persistence
 
                 await _userManager.CreateAsync(user, "Hema123!");
                 await _userManager.AddToRoleAsync(user, Roles.Admin);
-                await _userManager.AddClaimAsync(user, new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaims.IdentityId, user.Id.ToString()));
             }
         }
     }
