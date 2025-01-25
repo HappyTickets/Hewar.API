@@ -1,8 +1,5 @@
-﻿using Application.AccountManagement.OTP;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Caching.Memory;
-using System.Globalization;
-using static System.Net.WebRequestMethods;
 
 namespace Application.Account.OTP
 {
