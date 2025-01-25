@@ -111,11 +111,11 @@ public class AuthenticationService(
         };
     }
 
-    public async Task<Result<Empty>> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default)
+    public async Task<Result<Empty>> LogoutAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            await tokensService.RemoveRefreshTokenAsync(refreshToken);
+            await tokensService.RemoveRefreshTokenAsync();
         }
         catch (Exception ex)
         {
@@ -135,7 +135,7 @@ public class AuthenticationService(
         TokensInfo tokensInfo;
         try
         {
-            tokensInfo = await tokensService.RefreshAsync(tokens.AccessToken, tokens.RefreshToken);
+            tokensInfo = await tokensService.RefreshAsync(tokens.AccessToken);
         }
         catch (Exception ex)
         {
@@ -182,9 +182,7 @@ public class AuthenticationService(
             ImageUrl = user.ImageUrl,
             Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,
-            RefreshToken = tokens.Refresh.Token,
             AccessTokenExpDate = tokens.JWT.ExpiryDate.UtcDateTime,
-            RefreshTokenExpDate = tokens.Refresh.ExpiryDate.UtcDateTime
         };
 
         return account;

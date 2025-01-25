@@ -42,9 +42,9 @@ public class AuthenticationController(IAuthenticationService authenticationServi
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout([FromBody] string refreshToken, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Logout(CancellationToken cancellationToken = default)
     {
-        return Result(await _authenticationService.LogoutAsync(refreshToken, cancellationToken));
+        return Result(await _authenticationService.LogoutAsync(cancellationToken));
     }
 
     [HttpPost("refreshToken")]

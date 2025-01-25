@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Configurations;
 using LanguageExt;
 using LanguageExt.Pipes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -13,48 +14,34 @@ using System.Security.Cryptography;
 
 namespace Infrastructure.Services;
 internal class TokensService
-        (JwtSettings jwtSettings, UserManager<ApplicationUser> userManager, AppDbContext context) :
+        (JwtSettings jwtSettings, UserManager<ApplicationUser> userManager, AppDbContext dbcontext, IHttpContextAccessor httpContextAccessor) :
         ITokensService
 {
-    private readonly UserManager<ApplicationUser> _userManager = userManager;
-    private readonly AppDbContext _dbcontext = context;
-    private readonly JwtSettings _jwtSettings = jwtSettings;
-
     #region Public Methods
-    public async Task SaveRefreshTokenAsync(
-        long userId,
-        RefreshTokenDto refreshToken)
-    {
-        await _dbcontext.RefreshTokens
-         .AddAsync(new RefreshToken
-         {
-             UserId = userId,
-             Token = refreshToken.Token,
-             CreationDate = refreshToken.CreationDate,
-             ExpiryDate = refreshToken.ExpiryDate,
-         });
-        await _dbcontext.SaveChangesAsync();
-    }
 
     public async Task<TokensInfo> GenerateTokensAsync(ApplicationUser user)
     {
         var accessJwt = await GenerateAccessToken(user);
         var refreshToken = GenerateRefreshToken();
         await SaveRefreshTokenAsync(user.Id, refreshToken);
+        SetHttpOnlyCookie(nameof(RefreshToken), refreshToken.Token, refreshToken.ExpiryDate);
 
-        return new TokensInfo { UserId = user.Id, JWT = accessJwt, Refresh = refreshToken };
+        return new TokensInfo { UserId = user.Id, JWT = accessJwt };
     }
-    public async Task RemoveRefreshTokenAsync(string refreshToken)
+
+    public async Task RemoveRefreshTokenAsync()
     {
-        var token = await _dbcontext.RefreshTokens.FirstOrDefaultAsync(t => t.Token.Equals(refreshToken));
+        var refreshToken = GetRefreshTokenCookie();
+        var token = await dbcontext.RefreshTokens.FirstOrDefaultAsync(t => t.Token.Equals(refreshToken));
         if (token is null) throw new Exception("refresh token is not found!!");
 
-        _dbcontext.RefreshTokens.Remove(token);
-        await _dbcontext.SaveChangesAsync();
+        dbcontext.RefreshTokens.Remove(token);
+        await dbcontext.SaveChangesAsync();
+        ClearRefreshTokenCookie();
     }
     public async Task RemoveExpiredTokensAsync()
     {
-        var rowsAffected = await _dbcontext.RefreshTokens
+        var rowsAffected = await dbcontext.RefreshTokens
        .Where(t => DateTime.UtcNow >= t.ExpiryDate || t.RevokedOn.HasValue)
        .ExecuteDeleteAsync();
 
@@ -63,15 +50,17 @@ internal class TokensService
             Console.WriteLine($"{rowsAffected} expired or revoked tokens removed.");
         }
     }
-    public async Task<TokensInfo?> RefreshAsync(string accessToken, string refreshToken)
+    public async Task<TokensInfo?> RefreshAsync(string accessToken)
     {
+        var refreshToken = GetRefreshTokenCookie();
+
         if (!await ValidateAccessTokenAsync(accessToken))
             throw new Exception("Invalid access token!");
 
         if (!await ValidateRefreshTokenAsync(refreshToken))
             throw new Exception("Invalid refresh token!");
 
-        var rt = await _dbcontext.RefreshTokens
+        var rt = await dbcontext.RefreshTokens
             .Include(rt => rt.User)
                 .ThenInclude(u => u.ApplicationUserRoles)
                   .ThenInclude(ur => ur.Role)
@@ -83,8 +72,8 @@ internal class TokensService
         }
         // Revoke the token
         rt.RevokedOn = DateTime.UtcNow;
-        _dbcontext.RefreshTokens.Update(rt);
-        await _dbcontext.SaveChangesAsync();
+        dbcontext.RefreshTokens.Update(rt);
+        await dbcontext.SaveChangesAsync();
 
         return await GenerateTokensAsync(user);
     }
@@ -105,16 +94,43 @@ internal class TokensService
     };
     #endregion
     #region Private Methods
+    private void SetHttpOnlyCookie(string key, string value, DateTimeOffset expiry)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            SameSite = SameSiteMode.Strict,
+            Expires = expiry
+        };
+        httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, cookieOptions);
+    }
+    private async Task SaveRefreshTokenAsync(
+       long userId,
+       RefreshTokenDto refreshToken)
+    {
+        await dbcontext.RefreshTokens
+         .AddAsync(new RefreshToken
+         {
+             UserId = userId,
+             Token = refreshToken.Token,
+             CreationDate = refreshToken.CreationDate,
+             ExpiryDate = refreshToken.ExpiryDate,
+         });
+        await dbcontext.SaveChangesAsync();
+    }
+
+
     private async Task<TokenDto> GenerateAccessToken(ApplicationUser user)
     {
-        var expires = DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpMinutes);
+        var expires = DateTime.UtcNow.AddMinutes(jwtSettings.TokenExpMinutes);
         var claims = await GetClaimsAsync(user);
         var jwt = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            _jwtSettings.Audiences[0],
+            issuer: jwtSettings.Issuer,
+            jwtSettings.Audiences[0],
             claims,
             expires: expires,
-            signingCredentials: new SigningCredentials(_jwtSettings.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            signingCredentials: new SigningCredentials(jwtSettings.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
@@ -131,14 +147,14 @@ internal class TokensService
             {
                 Token = Convert.ToBase64String(randomNumber),
                 CreationDate = now,
-                ExpiryDate = now.AddMinutes(_jwtSettings.RefreshTokenExpMinutes),
+                ExpiryDate = now.AddMinutes(jwtSettings.RefreshTokenExpMinutes),
             };
         }
     }
     private async Task<IEnumerable<Claim>> GetClaimsAsync(ApplicationUser user)
     {
         // Retrieve existing claims
-        var claims = (await _userManager.GetClaimsAsync(user)).ToList();
+        var claims = (await userManager.GetClaimsAsync(user)).ToList();
 
         // Add common claims
         claims.Add(new Claim(ClaimTypes.Email, user.Email!));
@@ -160,17 +176,17 @@ internal class TokensService
         switch (accountType)
         {
             case AccountTypes.Guard:
-                var guardFirstName = await _dbcontext.Guards.FindAsync(accountId).Select(g => g.FirstName);
+                var guardFirstName = await dbcontext.Guards.FindAsync(accountId).Select(g => g.FirstName);
                 additionalClaims.Add(new Claim(CustomClaims.FirstName, guardFirstName));
                 break;
 
             case AccountTypes.Company:
-                var companyName = await _dbcontext.Companies.FindAsync(accountId).Select(g => g.Name);
+                var companyName = await dbcontext.Companies.FindAsync(accountId).Select(g => g.Name);
                 additionalClaims.Add(new Claim(CustomClaims.Name, companyName));
                 break;
 
             case AccountTypes.Facility:
-                var facilityName = await _dbcontext.Facilities.FindAsync(accountId).Select(g => g.Name);
+                var facilityName = await dbcontext.Facilities.FindAsync(accountId).Select(g => g.Name);
                 additionalClaims.Add(new Claim(CustomClaims.Name, facilityName));
                 break;
         }
@@ -182,7 +198,7 @@ internal class TokensService
     {
         var tokenHandler = new JwtSecurityTokenHandler();
 
-        var claimsPrincipal = tokenHandler.ValidateToken(accessToken, GetTokenValidationParameters(_jwtSettings), out var _);
+        var claimsPrincipal = tokenHandler.ValidateToken(accessToken, GetTokenValidationParameters(jwtSettings), out var _);
 
         var claims = claimsPrincipal.Claims.ToList();
 
@@ -193,15 +209,22 @@ internal class TokensService
         var userEmailClaim = claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email));
         if (userEmailClaim is null) return false;
 
-        var userExist = await _userManager.Users.AnyAsync(u => u.Id == userIdClaim && u.Email.Equals(userEmailClaim.Value));
+        var userExist = await userManager.Users.AnyAsync(u => u.Id == userIdClaim && u.Email.Equals(userEmailClaim.Value));
 
         return userExist;
     }
     private async Task<bool> ValidateRefreshTokenAsync(string refreshToken)
     {
-        var token = await _dbcontext.RefreshTokens.FirstOrDefaultAsync(t => t.Token.Equals(refreshToken));
+        var token = await dbcontext.RefreshTokens.FirstOrDefaultAsync(t => t.Token.Equals(refreshToken));
         return token is not null && token.IsActive;
     }
-
+    private string GetRefreshTokenCookie()
+    {
+        return httpContextAccessor.HttpContext.Request.Cookies[nameof(RefreshToken)];
+    }
+    private void ClearRefreshTokenCookie()
+    {
+        httpContextAccessor.HttpContext.Response.Cookies.Delete(nameof(RefreshToken));
+    }
     #endregion
 }
