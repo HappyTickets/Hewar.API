@@ -10,7 +10,7 @@ public interface IAuthenticationService
 
     Task<Result<AccountSessionDto>> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default);
 
-    Task<Result<Empty>> LogoutAsync(string refreshToken, CancellationToken cancellationToken = default);
+    Task<Result<Empty>> LogoutAsync(CancellationToken cancellationToken = default);
 
     Task<Result<AccountSessionDto>> RefreshTokenAsync(RefreshAuthTokenRequest request, CancellationToken cancellationToken = default);
     Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default);
