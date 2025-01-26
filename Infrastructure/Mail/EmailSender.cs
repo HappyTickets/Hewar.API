@@ -14,8 +14,7 @@ namespace Infrastructure.Mail
         private readonly MailSettings _emailSettings;
 
         public EmailSender(ILogger<EmailSender> logger, IOptions<MailSettings> emailSettings)
-        {
-            _logger = logger;
+        {            _logger = logger;
             _emailSettings = emailSettings.Value;
         }
 
