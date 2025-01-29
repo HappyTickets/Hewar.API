@@ -15,10 +15,10 @@
         TicketMessageCreated = 52,
 
         // insurance ads
-        InsuranceAdOfferCreated = 100,
-        InsuranceAdOfferAccepted = 101,
-        InsuranceAdOfferRejected = 102,
-        InsuranceAdOfferCancelled = 103,
-        InsuranceAdOfferMessageCreated = 104,
+        AdOfferCreated = 100,
+        AdOfferAccepted = 101,
+        AdOfferRejected = 102,
+        AdOfferCancelled = 103,
+        AdOfferMessageCreated = 104,
     }
 }
