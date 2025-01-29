@@ -1,4 +1,5 @@
-﻿using Application.Companies.Dtos;
+﻿using Application.AccountManagement.Dtos.Authentication;
+using Application.Companies.Dtos;
 using Application.Companies.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace Presentation.Controllers
 
         [HttpPost("create")]
         //[HasPermission(Permissions.CreateCompanyAsync)]
-        public async Task<IActionResult> CreateAsync(CreateCompanyDto dto)
+        public async Task<IActionResult> CreateAsync(RegisterCompanyRequest dto)
             => Result(await _companiesService.CreateAsync(dto));
 
         [HttpPut("update")]

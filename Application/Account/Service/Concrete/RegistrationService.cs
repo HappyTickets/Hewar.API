@@ -95,7 +95,8 @@ namespace Application.Account.Service.Concrete
                 }
 
                 await transaction.CommitAsync(cancellationToken);
-                await publisher.Publish(new AccountCreated(adminUser));
+                if (!adminUser.EmailConfirmed)
+                    await publisher.Publish(new AccountCreated(adminUser));
 
                 return entityResult;
             }

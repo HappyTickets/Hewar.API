@@ -1,4 +1,5 @@
-﻿using Application.Companies.Dtos;
+﻿using Application.Common.Validators;
+using Application.Companies.Dtos;
 using FluentValidation;
 
 namespace Application.Companies.Validators
@@ -10,18 +11,23 @@ namespace Application.Companies.Validators
             RuleFor(x => x.Name)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(g => g.ImageUrl)
+            RuleFor(g => g.RegistrationNumber)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(x => x.Email)
+            RuleFor(x => x.ContactEmail)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.Email_Required_Validation)
                 .Matches(RegexTemplates.Email).WithState(_ => (int)ValidationMsgs.Email_Format_Validation);
 
-            RuleFor(x => x.Phone)
+            RuleFor(x => x.PhoneNumber)
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
+            RuleFor(x => x.TaxId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Address)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                 .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                 .SetValidator(new AddressDtoValidator());
+
         }
     }
 }

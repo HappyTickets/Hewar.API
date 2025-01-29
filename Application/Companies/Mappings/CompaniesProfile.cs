@@ -8,12 +8,11 @@ namespace Application.Companies.Mappings
     {
         public CompaniesProfile()
         {
-            CreateMap<Company, CompanyDto>();
+            CreateMap<Company, CompanyDto>().ReverseMap();
 
-            CreateMap<ApplicationUser, CompanyDto>()
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
 
             CreateMap<Company, CompanyBreifDto>();
+
 
             CreateMap<ApplicationUser, CompanyBreifDto>();
         }
