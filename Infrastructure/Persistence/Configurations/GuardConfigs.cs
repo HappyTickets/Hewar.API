@@ -7,8 +7,8 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Guard> builder)
         {
-            builder.OwnsMany(g => g.Skills);
-            builder.OwnsMany(g => g.PrevCompanies);
+            builder.ToTable("Guards");
+            builder.HasBaseType<ApplicationUser>();
         }
     }
 }

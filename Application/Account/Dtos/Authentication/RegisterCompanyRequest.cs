@@ -1,11 +1,17 @@
-﻿namespace Application.AccountManagement.Dtos.Authentication;
+﻿using Application.Account.Dtos.User;
+using Application.Common.Dtos;
+
+namespace Application.AccountManagement.Dtos.Authentication;
 
 public class RegisterCompanyRequest
 {
-    public string Email { get; set; }
-    public string Phone { get; set; }
-    public string Password { get; set; }
+    public string ContactEmail { get; set; }
+
+    public string PhoneNumber { get; set; }
+    public string RegistrationNumber { get; set; }
+    public string TaxId { get; set; }
+
     public string Name { get; set; }
-    public string ImageUrl { get; set; }
-    public string Address { get; set; }
+    public AdminInfoDto AdminInfo { get; set; }
+    public AddressDto Address { get; set; }
 }

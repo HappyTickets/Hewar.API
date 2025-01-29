@@ -4,11 +4,11 @@
     {
         public SecurityRoles SecurityRole { get; set; }
         public int GuardsCount { get; set; }
-        public WorkShifts WorkShift { get; set; }
-        public ContractTypes ContractType { get; set; }
+        public ShiftType WorkShift { get; set; }
+        public ContractType ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public string Description { get; set; }
-        public InsuranceAdStatus Status { get; set; }
+        public AdStatus Status { get; set; }
     }
 }

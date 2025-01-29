@@ -16,8 +16,6 @@ namespace Application.Tickets.Validators
             RuleFor(t => t.AudienceId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(t => t.AudienceType)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }

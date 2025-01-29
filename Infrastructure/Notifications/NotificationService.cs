@@ -1,9 +1,8 @@
-﻿using Application.Notifications.Dtos;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 
 namespace Infrastructure.Notifications
 {
-    internal class NotificationService: INotificationService
+    internal class NotificationService : INotificationService
     {
         private readonly IHubContext<NotificationsHub, IClientNotificationMethods> _notificationHub;
 
@@ -12,10 +11,10 @@ namespace Infrastructure.Notifications
             _notificationHub = notificationHub;
         }
 
-        public Task NotifyUserAsync(long userId, AccountTypes type, NotificationDto notification)
-            => _notificationHub.Clients.Group($"{userId}-{type}").ReceiveNotification(notification);
+        //public Task NotifyUserAsync(long userId, AccountTypes type, NotificationDto notification)
+        //    => _notificationHub.Clients.Group($"{userId}-{type}").ReceiveNotification(notification);
 
-        public Task NotifyUserNotificationReadAsync(long userId, AccountTypes type, long notificationId)
-            => _notificationHub.Clients.Group($"{userId}-{type}").MarkNotificationAsRead(notificationId);
+        //public Task NotifyUserNotificationReadAsync(long userId, AccountTypes type, long notificationId)
+        //    => _notificationHub.Clients.Group($"{userId}-{type}").MarkNotificationAsRead(notificationId);
     }
 }

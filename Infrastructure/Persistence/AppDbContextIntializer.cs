@@ -27,14 +27,15 @@ namespace Infrastructure.Persistence
             {
                 var user = new ApplicationUser
                 {
+                    FirstName = "Anas",
+                    LastName = "Amin",
                     Email = "hema@gmail.com",
                     EmailConfirmed = true,
-                    AccountType = AccountTypes.Admin
                 };
 
                 await _userManager.CreateAsync(user, "Hema123!");
                 await _userManager.AddToRoleAsync(user, Roles.Admin);
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaims.IdentityId, user.Id.ToString()));
+                await _userManager.AddClaimAsync(user, new Claim(CustomClaims.UserId, user.Id.ToString()));
             }
         }
     }

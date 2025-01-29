@@ -6,7 +6,6 @@
         public ICollection<Media> Medias { get; set; }
         public DateTimeOffset SentDate { get; set; }
         public long SenderId { get; set; }
-        public AccountTypes SenderType { get; set; }
         public long TicketId { get; set; }
 
 

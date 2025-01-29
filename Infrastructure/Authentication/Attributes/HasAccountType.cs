@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace Presentation.Authentication.Attributes
+﻿namespace Presentation.Authentication.Attributes
 {
-    public class HasAccountType:AuthorizeAttribute
-    {
-        public HasAccountType(AccountTypes type)
-        {
-            Roles = type.ToString();
-        }
-    }
+    //public class HasAccountType:AuthorizeAttribute
+    //{
+    //    public HasAccountType(AccountTypes type)
+    //    {
+    //        Roles = type.ToString();
+    //    }
+    //}
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Enums
+﻿namespace Domain.Enums
 {
     public enum ValidationMsgs
     {
@@ -19,6 +13,7 @@ namespace Domain.Enums
         Passwords_NotMatching = 8,
         InvalidName = 9,
         PhoneNumber_Unique_Validation = 10,
+        MaxLengthExceeded = 11,
 
 
 

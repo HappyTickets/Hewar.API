@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Application.PriceRequests.Mappings
 {
-    internal class PriceRequestsProfile: Profile
+    internal class PriceRequestsProfile : Profile
     {
         public PriceRequestsProfile()
         {
@@ -11,15 +11,9 @@ namespace Application.PriceRequests.Mappings
             CreateMap<PriceRequest, FacilityPriceRequestDto>();
             CreateMap<PriceRequest, CompanyPriceRequestDto>();
 
-            CreateMap<CreatePriceRequestOfferDto, PriceRequestOffer>();
-            CreateMap<PriceRequestOffer, PriceRequestOfferDto>();
-           
-            CreateMap<CreatePriceRequestFacilityDetailsDto, PriceRequestFacilityDetails>();
-            CreateMap<UpdatePriceRequestFacilityDetailsDto, PriceRequestFacilityDetails>();
-            CreateMap<PriceRequestFacilityDetails, PriceRequestFacilityDetailsDto>();
+            CreateMap<CreatePriceRequestOfferDto, PriceOffer>();
+            CreateMap<PriceOffer, PriceRequestOfferDto>();
 
-            CreateMap<CreatePriceRequestMessageDto, PriceRequestMessage>();
-            CreateMap<PriceRequestMessage, PriceRequestMessageDto>();
         }
     }
 }

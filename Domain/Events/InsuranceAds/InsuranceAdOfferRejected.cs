@@ -2,9 +2,9 @@
 {
     public class InsuranceAdOfferRejected : DomainEvent
     {
-        public InsuranceAdOffer InsuranceAdOffer { get; }
+        public AdOffer InsuranceAdOffer { get; }
 
-        public InsuranceAdOfferRejected(InsuranceAdOffer insuranceAdOffer)
+        public InsuranceAdOfferRejected(AdOffer insuranceAdOffer)
         {
             InsuranceAdOffer = insuranceAdOffer;
         }

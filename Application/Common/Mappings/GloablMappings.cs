@@ -1,4 +1,5 @@
-﻿using Application.Common.Utilities.Pagination;
+﻿using Application.Common.Dtos;
+using Application.Common.Utilities.Pagination;
 using AutoMapper;
 
 namespace Application.Common.Mappings
@@ -9,6 +10,7 @@ namespace Application.Common.Mappings
         {
             CreateMap(typeof(PaginatedList<>), typeof(PaginatedList<>));
             CreateMap<Media, MediaDto>().ReverseMap();
+            CreateMap<Address, AddressDto>().ReverseMap();
         }
     }
 }

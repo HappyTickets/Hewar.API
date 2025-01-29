@@ -3,22 +3,19 @@ using AutoMapper;
 
 namespace Application.InsuranceAds.Mappings
 {
-    internal class InsuranceAdsMappings: Profile
+    internal class InsuranceAdsMappings : Profile
     {
         public InsuranceAdsMappings()
         {
 
-            CreateMap<CreateInsuranceAdDto, InsuranceAd>();
-            CreateMap<UpdateInsuranceAdDto, InsuranceAd>();
-            CreateMap<InsuranceAd, InsuranceAdDto>();
+            CreateMap<CreateInsuranceAdDto, Ad>();
+            CreateMap<UpdateInsuranceAdDto, Ad>();
+            CreateMap<Ad, InsuranceAdDto>();
 
-            CreateMap<CreateInsuranceAdOfferDto, InsuranceAdOffer>();   
-            CreateMap<InsuranceAdOffer, FacilityInsuranceAdOfferDto>();
-            CreateMap<InsuranceAdOffer, CompanyInsuranceAdOfferDto>()
-                .ForMember(dest => dest.Facility, opt => opt.MapFrom(src => src.InsuranceAd.Facility));
-
-            CreateMap<CreateInsuranceAdOfferMessageDto, InsuranceAdOfferMessage>();
-            CreateMap<InsuranceAdOfferMessage, InsuranceAdOfferMessageDto>();
+            CreateMap<CreateInsuranceAdOfferDto, AdOffer>();
+            CreateMap<AdOffer, FacilityInsuranceAdOfferDto>();
+            CreateMap<AdOffer, CompanyInsuranceAdOfferDto>()
+                .ForMember(dest => dest.Facility, opt => opt.MapFrom(src => src.Ad.Facility));
         }
     }
 }

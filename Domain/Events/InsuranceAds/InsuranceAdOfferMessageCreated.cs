@@ -1,12 +1,12 @@
 ﻿namespace Domain.Events.InsuranceAds
 {
-    public class InsuranceAdOfferMessageCreated: DomainEvent
-    {
-        public InsuranceAdOfferMessage InsuranceAdOfferMessage { get; }
+    //public class InsuranceAdOfferMessageCreated: DomainEvent
+    //{
+    //    public AdOfferMessage InsuranceAdOfferMessage { get; }
 
-        public InsuranceAdOfferMessageCreated(InsuranceAdOfferMessage insuranceAdOfferMessage)
-        {
-            InsuranceAdOfferMessage = insuranceAdOfferMessage;
-        }
-    }
+    //    public InsuranceAdOfferMessageCreated(AdOfferMessage insuranceAdOfferMessage)
+    //    {
+    //        InsuranceAdOfferMessage = insuranceAdOfferMessage;
+    //    }
+    //}
 }

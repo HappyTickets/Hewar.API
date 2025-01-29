@@ -2,9 +2,7 @@
 {
     public interface ICurrentUserService
     {
-        long? AccountId { get; }
-        long? IdentityId { get; }
+        long? UserId { get; }
         string? Email { get; }
-        AccountTypes? Type { get; }
     }
 }

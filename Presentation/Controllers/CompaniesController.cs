@@ -15,7 +15,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("create")]
-        //[HasPermission(Permissions.CreateCompany)]
+        //[HasPermission(Permissions.CreateCompanyAsync)]
         public async Task<IActionResult> CreateAsync(CreateCompanyDto dto)
             => Result(await _companiesService.CreateAsync(dto));
 

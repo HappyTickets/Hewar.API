@@ -1,4 +1,6 @@
-﻿using Infrastructure.Persistence.Extensions;
+﻿using Domain.Entities.CompanyAggregate;
+using Domain.Entities.FacilityAggregate;
+using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -29,7 +31,6 @@ namespace Infrastructure.Persistence
                    .HasForeignKey(ur => ur.UserId)
                    .IsRequired();
 
-               b.HasQueryFilter(e => !e.IsDeleted);
            });
 
             modelBuilder.Entity<ApplicationRole>(b =>
@@ -75,16 +76,13 @@ namespace Infrastructure.Persistence
         public DbSet<Company> Companies { get; set; }
         public DbSet<Guard> Guards { get; set; }
         public DbSet<PriceRequest> PriceRequests { get; set; }
-        public DbSet<PriceRequestFacilityDetails> PriceRequestFacilityDetails { get; set; }
-        public DbSet<PriceRequestOffer> PriceRequestOffers { get; set; }
-        public DbSet<PriceRequestMessage> PriceRequestMessages { get; set; }
+        public DbSet<PriceOffer> PriceRequestOffers { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<TicketMessage> TicketMessages { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
-        public DbSet<InsuranceAd> InsuranceAds { get; set; }
-        public DbSet<InsuranceAdOffer> InsuranceAdOffers { get; set; }
-        public DbSet<InsuranceAdOfferMessage> InsuranceAdOfferMessages { get; set; }
+        public DbSet<Ad> Ads { get; set; }
+        public DbSet<AdOffer> AdOffers { get; set; }
         #endregion
 
     }

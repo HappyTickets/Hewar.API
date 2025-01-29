@@ -24,7 +24,7 @@ namespace Application.InsuranceAds.Events
                 Event = NotificationEvents.InsuranceAdOfferRejected,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.InsuranceAdOffer.CompanyId,
-                RecipientType = AccountTypes.Company
+                //RecipientType = AccountTypes.Company
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

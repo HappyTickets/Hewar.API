@@ -22,4 +22,8 @@
     <PackageReference Include="MimeKit" Version="4.9.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

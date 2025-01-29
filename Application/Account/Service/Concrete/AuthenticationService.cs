@@ -4,83 +4,94 @@ using Application.AccountManagement.Dtos.Token;
 using Application.AccountManagement.Dtos.User;
 using Application.AccountManagement.Service.Interfaces;
 using AutoMapper;
+using Domain.Entities.CompanyAggregate;
+using Domain.Entities.FacilityAggregate;
+using Domain.Events.Accounts;
+using LanguageExt.Pipes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using LoginRequest = Application.AccountManagement.Dtos.Authentication.LoginRequest;
 
 namespace Application.AccountManagement.Service.Concrete;
 public class AuthenticationService(
     UserManager<ApplicationUser> userManager,
     ITokensService tokensService,
+    IPublisher publisher,
     IRegistrationService registrationService,
-    //IEmailConfirmationService emailConfirmationService,
     IMapper mapper) : IAuthenticationService
 {
 
     public async Task<Result<Empty>> RegisterGuardAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Guard);
+        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email);
+
         if (validationResult != null) return validationResult;
 
-        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Guard, registerRequest.ImageUrl);
-        user.UserName = registerRequest.UserName;
-        user.Guard = new Guard
+        var guard = new Guard
         {
+            UserName = registerRequest.UserName,
             FirstName = registerRequest.FirstName,
             LastName = registerRequest.LastName,
+            Email = registerRequest.Email,
+            PhoneNumber = registerRequest.Phone,
+            BloodType = registerRequest.BloodType,
+            ImageUrl = registerRequest.ImageUrl,
             DateOfBirth = registerRequest.DateOfBirth,
             NationalId = registerRequest.NationalId,
             Qualification = registerRequest.Qualification,
-            City = registerRequest.City,
-            BloodType = registerRequest.BloodType,
             Height = registerRequest.Height,
             Weight = registerRequest.Weight,
+            City = registerRequest.City,
             Skills = mapper.Map<ICollection<Skill>>(registerRequest.Skills),
             PrevCompanies = mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
         };
 
-        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Guard);
+        var registrationResults = await userManager.CreateAsync(guard, registerRequest.Password);
+
+        if (!registrationResults.Succeeded)
+            return new ValidationError(registrationResults.Errors.Select(er => er.Description));
+
+        await publisher.Publish(new AccountCreated(guard));
+
+        await userManager.AddToRoleAsync(guard, Roles.Guard);
+
+        await userManager.AddClaimsAsync(guard, [
+                    new Claim(CustomClaims.UserId, guard.Id.ToString()),
+                    new Claim(CustomClaims.FirstName, guard.FirstName)
+                    ]);
+
+
+
+        return new()
+        {
+            Status = StatusCodes.Status200OK,
+            IsSuccess = true,
+            SuccessCode = SuccessCodes.UserRegistered
+        };
+
     }
 
     public async Task<Result<Empty>> RegisterFacilityAsync(RegisterFacilityRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Facility);
-        if (validationResult != null) return validationResult;
+        var adminUser = mapper.Map<ApplicationUser>(registerRequest.AdminInfo);
+        var facility = mapper.Map<Facility>(registerRequest);
+        var roleName = $"{facility.Name} Admin";
 
-        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Facility, registerRequest.ImageUrl);
-
-        user.Facility = new Facility
-        {
-            Name = registerRequest.Name,
-            Type = registerRequest.Type,
-            CommercialRegistration = registerRequest.CommercialRegistration,
-            ActivityType = registerRequest.ActivityType,
-            Address = registerRequest.Address,
-            City = registerRequest.City,
-            ResponsibleName = registerRequest.ResponsibleName,
-            ResponsiblePhone = registerRequest.ResponsiblePhone,
-        };
-
-        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Facility);
+        return await registrationService.RegisterEntityWithAdminAsync(adminUser, registerRequest.AdminInfo.Password, roleName, () => registrationService.CreateFacilityAsync(facility), cancellationToken);
     }
 
     public async Task<Result<Empty>> RegisterCompanyAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
     {
-        var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email, Roles.Company);
-        if (validationResult != null) return validationResult;
+        var adminUser = mapper.Map<ApplicationUser>(registerRequest.AdminInfo);
+        var company = mapper.Map<Company>(registerRequest);
+        var roleName = $"{company.Name} Admin";
 
-        var user = registrationService.CreateUserBase(registerRequest.Email, registerRequest.Phone, AccountTypes.Company, registerRequest.ImageUrl);
-
-        user.Company = new Company
-        {
-            Name = registerRequest.Name,
-            Address = registerRequest.Address,
-        };
-
-        return await registrationService.RegisterAccountAsync(user, registerRequest.Password, Roles.Company);
+        return await registrationService.RegisterEntityWithAdminAsync(adminUser, registerRequest.AdminInfo.Password, roleName, () => registrationService.CreateCompanyAsync(company), cancellationToken);
     }
+
 
 
     public async Task<Result<AccountSessionDto>> LoginAsync(LoginRequest loginRequest, CancellationToken cancellationToken = default)
@@ -95,7 +106,6 @@ public class AuthenticationService(
 
         if (!await userManager.IsEmailConfirmedAsync(user))
         {
-            //emailConfirmationService.SendEmailConfirmationAsync(new SendEmailConfirmationRequest { Email = loginRequest.Email });
             return new UnauthorizedError(ErrorCodes.UnconfirmedEmail);
         }
 
@@ -109,6 +119,8 @@ public class AuthenticationService(
             SuccessCode = SuccessCodes.LoggedInSuccessfully,
             Data = userSessionDto
         };
+        throw new NotImplementedException();
+
     }
 
     public async Task<Result<Empty>> LogoutAsync(CancellationToken cancellationToken = default)
@@ -168,17 +180,12 @@ public class AuthenticationService(
 
     private async Task<AccountSessionDto> BuildAccountSessionDto(ApplicationUser user, TokensInfo tokens)
     {
-        var accountClaims = await ClaimsHelper.ExtractClaimsFromToken(tokens.JWT.Token);
-
         var account = new AccountSessionDto
         {
-            IdentityId = user.Id,
-            AccountId = ClaimsHelper.GetClaimValue<long>(accountClaims, CustomClaims.AccountId),
+            UserId = user.Id,
             UserName = user.UserName,
-            FirstName = ClaimsHelper.GetClaimValue(accountClaims, CustomClaims.FirstName),
-            Name = ClaimsHelper.GetClaimValue(accountClaims, CustomClaims.Name),
+            FirstName = user.FirstName,
             Email = user.Email!,
-            AccountType = user.AccountType,
             ImageUrl = user.ImageUrl,
             Permissions = ExtractPermissions(user),
             AccessToken = tokens.JWT.Token,

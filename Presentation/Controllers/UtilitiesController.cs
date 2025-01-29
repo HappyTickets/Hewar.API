@@ -26,13 +26,13 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("notify")]
-        public async Task<IActionResult> TestNotificationAsync(long userId, AccountTypes accountType, [FromServices] INotificationService notifier)
+        public async Task<IActionResult> TestNotificationAsync(long userId, [FromServices] INotificationService notifier)
         {
-            await notifier.NotifyUserAsync(userId, accountType, new()
-            {
-                ContentAr = "اهلا ابراهيم",
-                ContentEn = "Hello Ibrahim"
-            });
+            //await notifier.NotifyUserAsync(userId, accountType, new()
+            //{
+            //    ContentAr = "اهلا ابراهيم",
+            //    ContentEn = "Hello Ibrahim"
+            //});
             return Ok();
         }
     }

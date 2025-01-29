@@ -1,8 +1,9 @@
 ﻿namespace Domain.Enums
 {
-    public enum ContractTypes
+    public enum ContractType
     {
-        PartTime = 1,
-        FullTime = 2
+        Temporary,
+        PartTime,
+        FullTime
     }
 }

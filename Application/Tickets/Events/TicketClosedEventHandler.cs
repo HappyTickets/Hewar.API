@@ -24,7 +24,7 @@ namespace Application.Tickets.Events
                 Event = NotificationEvents.TicketClosed,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.Ticket.IssuerId,
-                RecipientType = notification.Ticket.IssuerType
+                //RecipientType = notification.Ticket.IssuerType
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

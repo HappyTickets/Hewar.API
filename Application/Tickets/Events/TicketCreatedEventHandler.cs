@@ -26,7 +26,7 @@ namespace Application.Tickets.Events
                 Event = NotificationEvents.TicketCreated,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.Ticket.AudienceId,
-                RecipientType = notification.Ticket.AudienceType
+                //RecipientType = notification.Ticket.AudienceType
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

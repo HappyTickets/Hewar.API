@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -21,6 +21,39 @@ namespace Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Domain.Common.Address", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
 
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
@@ -60,6 +93,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuardId");
@@ -67,7 +103,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Attendances");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company", b =>
+            modelBuilder.Entity("Domain.Entities.ChatAggregate.Chat", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,7 +111,116 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Chat");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ChatAggregate.Message", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("SenderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTimeOffset>("SentOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Message");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CompanyAggregate.Company", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AddressId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("City")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ContactEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -100,9 +245,6 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<long>("LoginDetailsId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,18 +255,66 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long>("ParentTenantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistrationNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SubscriptionPlan")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TaxId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("LoginDetailsId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Facility", b =>
+            modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("CompanyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("MissionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("CompanyService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -136,13 +326,11 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("AddressId")
+                        .HasColumnType("bigint");
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("City")
+                        .HasColumnType("int");
 
                     b.Property<string>("CommercialRegistration")
                         .IsRequired()
@@ -169,9 +357,6 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<long>("LoginDetailsId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -181,6 +366,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("ParentTenantId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("ResponsibleName")
                         .IsRequired()
@@ -193,19 +381,21 @@ namespace Infrastructure.Migrations
                     b.Property<string>("SubscriptionPlan")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LoginDetailsId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.ToTable("Facilities");
                 });
 
-            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.PrevCompany", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,79 +403,52 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("BloodType")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTimeOffset>("From")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("City")
-                        .HasColumnType("int");
-
-                    b.Property<long?>("CompanyId")
+                    b.Property<long?>("GuardId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateOfBirth")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long?>("FacilityId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("LoginDetailsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("ModifiedOn")
+                    b.Property<DateTimeOffset>("To")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NationalId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Qualification")
-                        .HasColumnType("int");
-
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
+                    b.HasIndex("GuardId");
 
-                    b.HasIndex("FacilityId");
-
-                    b.HasIndex("LoginDetailsId")
-                        .IsUnique();
-
-                    b.ToTable("Guards");
+                    b.ToTable("PrevCompany");
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRole", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.Skill", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("GuardId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuardId");
+
+                    b.ToTable("Skill");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRole", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,9 +474,7 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
 
@@ -323,28 +484,10 @@ namespace Infrastructure.Migrations
                             Id = 1L,
                             Name = "Admin",
                             NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Company",
-                            NormalizedName = "COMPANY"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Facility",
-                            NormalizedName = "FACILITY"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Guard",
-                            NormalizedName = "GUARD"
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -368,7 +511,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUser", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUser", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -377,9 +520,6 @@ namespace Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountType")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -393,12 +533,16 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -443,10 +587,12 @@ namespace Infrastructure.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("Users", (string)null);
+
+                    b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserClaim", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -470,7 +616,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserLogin", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -491,7 +637,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserRole", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserRole", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -506,7 +652,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserToken", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserToken", b =>
                 {
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -525,7 +671,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RefreshToken", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.RefreshToken", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -542,6 +688,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("RevokedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Token")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -556,7 +705,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.RolePermission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -568,6 +717,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -687,7 +839,7 @@ namespace Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -695,13 +847,13 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("ContractType")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DatePosted")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("DeletedBy")
@@ -714,14 +866,8 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<long>("FacilityId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("GuardsCount")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -732,32 +878,36 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("SecurityRole")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("WorkShift")
-                        .HasColumnType("int");
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("InsuranceAds");
+                    b.ToTable("Ads");
                 });
 
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ChatId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("CompanyId")
                         .HasColumnType("bigint");
@@ -773,9 +923,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("InsuranceAdId")
-                        .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -796,16 +943,21 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AdId");
+
+                    b.HasIndex("ChatId");
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("InsuranceAdId");
-
-                    b.ToTable("InsuranceAdOffers");
+                    b.ToTable("AdOffers");
                 });
 
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOfferMessage", b =>
+            modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -813,9 +965,11 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("CompanyId1")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
@@ -829,7 +983,10 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("InsuranceAdOfferId")
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("FacilityId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("IsDeleted")
@@ -841,20 +998,53 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("SenderType")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("SentDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InsuranceAdOfferId");
+                    b.HasIndex("CompanyId");
 
-                    b.ToTable("InsuranceAdOfferMessages");
+                    b.HasIndex("CompanyId1");
+
+                    b.HasIndex("FacilityId");
+
+                    b.ToTable("Mission");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MissionAggregate.MissionGuard", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("GuardId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("MissionId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GuardId");
+
+                    b.HasIndex("MissionId");
+
+                    b.ToTable("MissionGuard");
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -906,14 +1096,14 @@ namespace Infrastructure.Migrations
                     b.Property<long>("RecipientId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("RecipientType")
-                        .HasColumnType("int");
-
                     b.Property<long>("ReferenceId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("ReferenceType")
                         .HasColumnType("int");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -963,6 +1153,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("PeriodStart")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("TotalPay")
                         .HasColumnType("decimal(18,2)");
@@ -1020,6 +1213,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GuardId");
@@ -1074,6 +1270,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1087,6 +1286,87 @@ namespace Infrastructure.Migrations
                     b.ToTable("Policies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("ChatId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("PriceRequestId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatId")
+                        .IsUnique()
+                        .HasFilter("[ChatId] IS NOT NULL");
+
+                    b.HasIndex("PriceRequestId");
+
+                    b.ToTable("PriceRequestOffers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("CostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("PriceOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceOfferId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("PriceOfferService");
+                });
+
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
                     b.Property<long>("Id")
@@ -1094,6 +1374,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("ChatId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("CompanyId")
                         .HasColumnType("bigint");
@@ -1113,18 +1396,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<long>("FacilityId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("GuardsCount")
-                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -1135,19 +1411,22 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("SecurityRole")
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RequestStatus")
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WorkShift")
-                        .HasColumnType("int");
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChatId");
 
                     b.HasIndex("CompanyId");
 
@@ -1156,7 +1435,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("PriceRequests");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1164,222 +1443,25 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CommissionerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommissionerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommissionerNationalId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommissionerNationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommissionerNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommissionerPhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("FacilityActivityType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("FacilityCommercialRegistrationExpiryDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("FacilityCommercialRegistrationNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("FacilityLicenseExpiryDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("FacilityLicenseNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityPhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilitySize")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<long>("PriceRequestId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("RepresentativeEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepresentativeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepresentativeNationalId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepresentativeNationality")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepresentativeNotes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RepresentativePhone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceRequestId")
-                        .IsUnique();
-
-                    b.ToTable("PriceRequestFacilityDetails");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestMessage", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("PriceRequestId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SenderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("SenderType")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("SentDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PriceRequestId");
 
-                    b.ToTable("PriceRequestMessages");
-                });
+                    b.HasIndex("ServiceId");
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Offer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("PriceRequestId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("RespondedDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceRequestId")
-                        .IsUnique();
-
-                    b.ToTable("PriceRequestOffers");
+                    b.ToTable("PriceRequestService");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -1434,6 +1516,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("ReportType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1491,12 +1576,14 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ParentShiftId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("ShiftType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("StartTime")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1517,9 +1604,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<long>("AudienceId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("AudienceType")
-                        .HasColumnType("int");
 
                     b.Property<DateTimeOffset?>("ClosedDate")
                         .HasColumnType("datetimeoffset");
@@ -1548,9 +1632,6 @@ namespace Infrastructure.Migrations
                     b.Property<long>("IssuerId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("IssuerType")
-                        .HasColumnType("int");
-
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1560,11 +1641,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset>("OpenedDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long?>("PriceRequestId")
-                        .HasColumnType("bigint");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1575,8 +1656,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("FacilityId");
-
-                    b.HasIndex("PriceRequestId");
 
                     b.ToTable("Tickets");
                 });
@@ -1617,11 +1696,11 @@ namespace Infrastructure.Migrations
                     b.Property<long>("SenderId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("SenderType")
-                        .HasColumnType("int");
-
                     b.Property<DateTimeOffset>("SentDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("TicketId")
                         .HasColumnType("bigint");
@@ -1633,9 +1712,53 @@ namespace Infrastructure.Migrations
                     b.ToTable("TicketMessages");
                 });
 
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.Guard", b =>
+                {
+                    b.HasBaseType("Domain.Entities.IdentityAggregate.ApplicationUser");
+
+                    b.Property<long>("AddressID")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("City")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("CompanyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTimeOffset>("DateOfBirth")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("FacilityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<double?>("Height")
+                        .HasColumnType("float");
+
+                    b.Property<string>("NationalId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Qualification")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasIndex("AddressID");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("FacilityId");
+
+                    b.ToTable("Guards", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
-                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
                         .WithMany("Attendances")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1644,165 +1767,10 @@ namespace Infrastructure.Migrations
                     b.Navigation("Guard");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company", b =>
+            modelBuilder.Entity("Domain.Entities.ChatAggregate.Chat", b =>
                 {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
-                        .WithOne("Company")
-                        .HasForeignKey("Domain.Entities.Company", "LoginDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LoginDetails");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Facility", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
-                        .WithOne("Facility")
-                        .HasForeignKey("Domain.Entities.Facility", "LoginDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LoginDetails");
-                });
-
-            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
-                {
-                    b.HasOne("Domain.Entities.Company", null)
-                        .WithMany("Guards")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("Domain.Entities.Facility", null)
-                        .WithMany("Guards")
-                        .HasForeignKey("FacilityId");
-
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "LoginDetails")
-                        .WithOne("Guard")
-                        .HasForeignKey("Domain.Entities.GuardAggregates.Guard", "LoginDetailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.OwnsMany("Domain.Entities.GuardAggregates.PrevCompany", "PrevCompanies", b1 =>
-                        {
-                            b1.Property<long>("GuardId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<DateTimeOffset>("From")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTimeOffset>("To")
-                                .HasColumnType("datetimeoffset");
-
-                            b1.HasKey("GuardId", "Id");
-
-                            b1.ToTable("PrevCompany");
-
-                            b1.WithOwner()
-                                .HasForeignKey("GuardId");
-                        });
-
-                    b.OwnsMany("Domain.Entities.GuardAggregates.Skill", "Skills", b1 =>
-                        {
-                            b1.Property<long>("GuardId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("YearsOfExperience")
-                                .HasColumnType("int");
-
-                            b1.HasKey("GuardId", "Id");
-
-                            b1.ToTable("Skill");
-
-                            b1.WithOwner()
-                                .HasForeignKey("GuardId");
-                        });
-
-                    b.Navigation("LoginDetails");
-
-                    b.Navigation("PrevCompanies");
-
-                    b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRoleClaim", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", null)
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserClaim", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserLogin", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserRole", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", "Role")
-                        .WithMany("ApplicationUserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "User")
-                        .WithMany("ApplicationUserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUserToken", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RefreshToken", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationUser", "User")
-                        .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1810,58 +1778,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.RolePermission", b =>
+            modelBuilder.Entity("Domain.Entities.ChatAggregate.Message", b =>
                 {
-                    b.HasOne("Domain.Entities.IdentityAggregates.ApplicationRole", "Role")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Domain.Entities.ChatAggregate.Chat", null)
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatId");
 
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
-                {
-                    b.HasOne("Domain.Entities.Facility", "Facility")
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("FacilityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Facility");
-                });
-
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
-                {
-                    b.HasOne("Domain.Entities.Company", "Company")
-                        .WithMany("InsuranceAdOffers")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.InsuranceAdAggregates.InsuranceAd", "InsuranceAd")
-                        .WithMany("InsuranceAdOffers")
-                        .HasForeignKey("InsuranceAdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("InsuranceAd");
-                });
-
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOfferMessage", b =>
-                {
-                    b.HasOne("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", "InsuranceAdOffer")
-                        .WithMany("InsuranceAdOfferMessages")
-                        .HasForeignKey("InsuranceAdOfferId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.OwnsMany("Domain.Common.Media", "Medias", b1 =>
                         {
-                            b1.Property<long>("InsuranceAdOfferMessageId")
+                            b1.Property<long>("MessageId")
                                 .HasColumnType("bigint");
 
                             b1.Property<int>("Id")
@@ -1878,22 +1809,226 @@ namespace Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("InsuranceAdOfferMessageId", "Id");
+                            b1.HasKey("MessageId", "Id");
 
-                            b1.ToTable("InsuranceAdOfferMessages_Medias");
+                            b1.ToTable("Message_Medias");
 
                             b1.WithOwner()
-                                .HasForeignKey("InsuranceAdOfferMessageId");
+                                .HasForeignKey("MessageId");
                         });
 
-                    b.Navigation("InsuranceAdOffer");
-
                     b.Navigation("Medias");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CompanyAggregate.Company", b =>
+                {
+                    b.HasOne("Domain.Common.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
+                {
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
+                        .WithMany("Services")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("Domain.Entities.MissionAggregate.Mission", null)
+                        .WithMany("Services")
+                        .HasForeignKey("MissionId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
+                {
+                    b.HasOne("Domain.Common.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.PrevCompany", b =>
+                {
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", null)
+                        .WithMany("PrevCompanies")
+                        .HasForeignKey("GuardId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.Skill", b =>
+                {
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("GuardId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRoleClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserClaim", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserLogin", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserRole", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationRole", "Role")
+                        .WithMany("ApplicationUserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
+                        .WithMany("ApplicationUserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUserToken", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.RefreshToken", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.RolePermission", b =>
+                {
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationRole", "Role")
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
+                {
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", "Facility")
+                        .WithMany("Ads")
+                        .HasForeignKey("FacilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Facility");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
+                        .WithMany("AdOffers")
+                        .HasForeignKey("AdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
+                        .WithMany()
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
+                        .WithMany("InsuranceAdOffers")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Ad");
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("Company");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
+                {
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
+                        .WithMany("Missions")
+                        .HasForeignKey("CompanyId1");
+
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", "Facility")
+                        .WithMany()
+                        .HasForeignKey("FacilityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Facility");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MissionAggregate.MissionGuard", b =>
+                {
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
+                        .WithMany()
+                        .HasForeignKey("GuardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.MissionAggregate.Mission", "Mission")
+                        .WithMany("Guards")
+                        .HasForeignKey("MissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Guard");
+
+                    b.Navigation("Mission");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payroll", b =>
                 {
-                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
                         .WithMany("Payrolls")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1904,7 +2039,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.PerformanceReview", b =>
                 {
-                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
                         .WithMany("PerformanceReviews")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1915,114 +2050,113 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Policy", b =>
                 {
-                    b.HasOne("Domain.Entities.Company", null)
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
                         .WithMany("Policies")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("Domain.Entities.Facility", null)
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", null)
                         .WithMany("Policies")
                         .HasForeignKey("FacilityId");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceOffer", "ChatId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
+                        .WithMany()
+                        .HasForeignKey("PriceRequestId")
+                        .IsRequired();
+
+                    b.Navigation("Chat");
+
+                    b.Navigation("PriceRequest");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "PriceOffer")
+                        .WithMany("Services")
+                        .HasForeignKey("PriceOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PriceOffer");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
-                    b.HasOne("Domain.Entities.Company", "Company")
+                    b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
+                        .WithMany()
+                        .HasForeignKey("ChatId");
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
                         .WithMany("PriceRequests")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.Facility", "Facility")
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", "Facility")
                         .WithMany("PriceRequests")
                         .HasForeignKey("FacilityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Chat");
 
                     b.Navigation("Company");
 
                     b.Navigation("Facility");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithOne("FacilityDetails")
-                        .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceRequestFacilityDetails", "PriceRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceRequest");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestMessage", b =>
-                {
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithMany()
+                        .WithMany("Services")
                         .HasForeignKey("PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("Domain.Common.Media", "Medias", b1 =>
-                        {
-                            b1.Property<long>("PriceRequestMessageId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
-
-                            b1.Property<string>("Type")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Url")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("PriceRequestMessageId", "Id");
-
-                            b1.ToTable("PriceRequestMessages_Medias");
-
-                            b1.WithOwner()
-                                .HasForeignKey("PriceRequestMessageId");
-                        });
-
-                    b.Navigation("Medias");
-
-                    b.Navigation("PriceRequest");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", b =>
-                {
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithOne("Offer")
-                        .HasForeignKey("Domain.Entities.PriceRequestAggregates.PriceRequestOffer", "PriceRequestId")
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PriceRequest");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
                 {
-                    b.HasOne("Domain.Entities.Company", null)
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
                         .WithMany("Reports")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("Domain.Entities.Facility", null)
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", null)
                         .WithMany("Reports")
                         .HasForeignKey("FacilityId");
 
-                    b.HasOne("Domain.Entities.GuardAggregates.Guard", null)
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", null)
                         .WithMany("Reports")
                         .HasForeignKey("GuardId");
                 });
 
             modelBuilder.Entity("Domain.Entities.Shift", b =>
                 {
-                    b.HasOne("Domain.Entities.GuardAggregates.Guard", "Guard")
+                    b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
                         .WithMany("Shifts")
                         .HasForeignKey("GuardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -2039,17 +2173,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
                 {
-                    b.HasOne("Domain.Entities.Company", null)
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
                         .WithMany("Tickets")
                         .HasForeignKey("CompanyId");
 
-                    b.HasOne("Domain.Entities.Facility", null)
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", null)
                         .WithMany("Tickets")
                         .HasForeignKey("FacilityId");
-
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", null)
-                        .WithMany("Tickets")
-                        .HasForeignKey("PriceRequestId");
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.TicketMessage", b =>
@@ -2092,23 +2222,59 @@ namespace Infrastructure.Migrations
                     b.Navigation("Ticket");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Company", b =>
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.Guard", b =>
+                {
+                    b.HasOne("Domain.Common.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
+                        .WithMany("Guards")
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", null)
+                        .WithMany("Guards")
+                        .HasForeignKey("FacilityId");
+
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", null)
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.GuardAggregate.Guard", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ChatAggregate.Chat", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CompanyAggregate.Company", b =>
                 {
                     b.Navigation("Guards");
 
                     b.Navigation("InsuranceAdOffers");
 
+                    b.Navigation("Missions");
+
                     b.Navigation("Policies");
 
                     b.Navigation("PriceRequests");
 
                     b.Navigation("Reports");
 
+                    b.Navigation("Services");
+
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Facility", b =>
+            modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
                 {
+                    b.Navigation("Ads");
+
                     b.Navigation("Guards");
 
                     b.Navigation("Policies");
@@ -2120,7 +2286,48 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Domain.Entities.GuardAggregates.Guard", b =>
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRole", b =>
+                {
+                    b.Navigation("ApplicationUserRoles");
+
+                    b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationUser", b =>
+                {
+                    b.Navigation("ApplicationUserRoles");
+
+                    b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
+                {
+                    b.Navigation("AdOffers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
+                {
+                    b.Navigation("Guards");
+
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
+                {
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
+                {
+                    b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("Domain.Entities.GuardAggregate.Guard", b =>
                 {
                     b.Navigation("Attendances");
 
@@ -2128,55 +2335,13 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("PerformanceReviews");
 
+                    b.Navigation("PrevCompanies");
+
                     b.Navigation("Reports");
 
                     b.Navigation("Shifts");
-                });
 
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationRole", b =>
-                {
-                    b.Navigation("ApplicationUserRoles");
-
-                    b.Navigation("Permissions");
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityAggregates.ApplicationUser", b =>
-                {
-                    b.Navigation("ApplicationUserRoles");
-
-                    b.Navigation("Company");
-
-                    b.Navigation("Facility");
-
-                    b.Navigation("Guard");
-
-                    b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAd", b =>
-                {
-                    b.Navigation("InsuranceAdOffers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregates.InsuranceAdOffer", b =>
-                {
-                    b.Navigation("InsuranceAdOfferMessages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
-                {
-                    b.Navigation("FacilityDetails")
-                        .IsRequired();
-
-                    b.Navigation("Offer")
-                        .IsRequired();
-
-                    b.Navigation("Tickets");
-                });
-
-            modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
-                {
-                    b.Navigation("Messages");
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

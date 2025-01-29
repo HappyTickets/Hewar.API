@@ -42,7 +42,7 @@ public class PasswordResetService : IPasswordResetService
     public async Task<Result<SuccessCodes>> ResetPasswordAsync(ChangePasswordRequest resetPasswordRequest, CancellationToken cancellationToken = default)
     {
 
-        var user = await _userManager.FindByIdAsync(_currentUser.IdentityId.ToString());
+        var user = await _userManager.FindByIdAsync(_currentUser.UserId.ToString());
 
         if (user is null)
         {
