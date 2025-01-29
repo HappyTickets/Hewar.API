@@ -4,7 +4,7 @@
     {
         PriceRequest = 1,
         Ticket = 2,
-        InsuranceAd = 3,
-        InsuranceAdOffer = 4
+        Ad = 3,
+        AdOffer = 4
     }
 }
