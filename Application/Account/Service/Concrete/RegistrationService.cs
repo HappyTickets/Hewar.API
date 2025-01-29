@@ -29,7 +29,7 @@ namespace Application.Account.Service.Concrete
 
         public async Task<Result<Empty>> CreateFacilityAsync(Facility facility)
         {
-            await ufw.Facilities.CreateAsync(facility);
+            await ufw.GetRepository<Facility>().CreateAsync(facility);
             await ufw.SaveChangesAsync();
             return new()
             {
@@ -41,7 +41,7 @@ namespace Application.Account.Service.Concrete
 
         public async Task<Result<Empty>> CreateCompanyAsync(Company company)
         {
-            await ufw.Companies.CreateAsync(company);
+            await ufw.GetRepository<Company>().CreateAsync(company);
             await ufw.SaveChangesAsync();
             return new()
             {

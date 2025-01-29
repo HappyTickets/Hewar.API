@@ -28,7 +28,7 @@ namespace Application.Tickets.Events
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
-            _ufw.Notifications.Create(userNotification);
+            _ufw.GetRepository<Notification>().Create(userNotification);
             await _ufw.SaveChangesAsync();
         }
     }

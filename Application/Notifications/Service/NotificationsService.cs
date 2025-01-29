@@ -19,7 +19,7 @@ namespace Application.Notifications.Service
 
         public async Task<Result<Empty>> MarkAsReadAsync(long id)
         {
-            var notification = await _ufw.Notifications
+            var notification = await _ufw.GetRepository<Notification>()
                 .FirstOrDefaultAsync(n => n.Id == id && n.RecipientId == _currentUser.UserId);
 
             if (notification == null)
@@ -35,7 +35,7 @@ namespace Application.Notifications.Service
 
         public async Task<Result<IEnumerable<NotificationDto>>> GetAllAsync()
         {
-            var notifications = await _ufw.Notifications
+            var notifications = await _ufw.GetRepository<Notification>()
                 .FilterAsync(n => n.RecipientId == _currentUser.UserId);
 
             var notificationDto = _mapper.Map<NotificationDto[]>(notifications);
@@ -45,7 +45,7 @@ namespace Application.Notifications.Service
 
         public async Task<Result<long>> CountUnReadAsync()
         {
-            var count = await _ufw.Notifications
+            var count = await _ufw.GetRepository<Notification>()
                 .CountAsync(n => !n.IsRead && n.RecipientId == _currentUser.UserId);
             return Result<long>.Success(count,
                           SuccessCodes.CountUnRead);

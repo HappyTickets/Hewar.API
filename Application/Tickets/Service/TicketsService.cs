@@ -40,7 +40,7 @@ namespace Application.Tickets.Service
             };
 
             ticket.AddDomainEvent(new TicketCreated(ticket));
-            _ufw.Tickets.Create(ticket);
+            await _ufw.GetRepository<Ticket>().CreateAsync(ticket);
             await _ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.TicketCreated);
@@ -48,7 +48,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CreateTicketMessageAsync(CreateTicketMessageDto dto)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(dto.TicketId);
+            var ticket = await _ufw.GetRepository<Ticket>().GetByIdAsync(dto.TicketId);
 
             if (ticket == null)
                 return new NotFoundError();
@@ -63,7 +63,7 @@ namespace Application.Tickets.Service
             message.Ticket = ticket;
 
             message.AddDomainEvent(new TicketMessageCreated(message));
-            _ufw.TicketMessages.Create(message);
+            _ufw.GetRepository<TicketMessage>().Create(message);
             await _ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateTicketMessage);
@@ -71,7 +71,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<Empty>> CloseTicketAsync(long ticketId)
         {
-            var ticket = await _ufw.Tickets.GetByIdAsync(ticketId);
+            var ticket = await _ufw.GetRepository<Ticket>().GetByIdAsync(ticketId);
 
             if (ticket == null)
                 return new NotFoundError();
@@ -93,7 +93,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<TicketDto[]>> GetMyReceivedTicketsAsync()
         {
-            var tickets = await _ufw.Tickets
+            var tickets = await _ufw.GetRepository<Ticket>()
                 .FilterAsync(t => t.AudienceId == _currentUser.UserId);
 
             var ticketDto = _mapper.Map<TicketDto[]>(tickets);
@@ -103,7 +103,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<TicketDto[]>> GetMySentTicketsAsync()
         {
-            var tickets = await _ufw.Tickets
+            var tickets = await _ufw.GetRepository<Ticket>()
                 .FilterAsync(t => t.IssuerId == _currentUser.UserId);
 
             var ticketDto = _mapper.Map<TicketDto[]>(tickets);
@@ -113,7 +113,7 @@ namespace Application.Tickets.Service
 
         public async Task<Result<TicketMessageDto[]>> GetTicketMessagesAsync(long ticketId)
         {
-            var messages = await _ufw.TicketMessages
+            var messages = await _ufw.GetRepository<TicketMessage>()
                 .FilterAsync(t => t.TicketId == ticketId);
 
             var ticketMessageDto = _mapper.Map<TicketMessageDto[]>(messages);
