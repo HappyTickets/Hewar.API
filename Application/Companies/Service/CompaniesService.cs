@@ -1,117 +1,91 @@
-﻿//using Application.Account.Service.Interfaces;
-//using Application.Companies.Dtos;
-//using AutoMapper;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.EntityFrameworkCore;
+﻿using Application.Account.Service.Interfaces;
+using Application.AccountManagement.Dtos.Authentication;
+using Application.Companies.Dtos;
+using AutoMapper;
+using Domain.Entities.CompanyAggregate;
 
-//namespace Application.Companies.Service
-//{
-//    internal class CompaniesService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, IRegistrationService registrationService) : ICompaniesService
-//    {
+namespace Application.Companies.Service
+{
+    internal class CompaniesService(IUnitOfWorkService ufw, IMapper mapper, IRegistrationService registrationService) : ICompaniesService
+    {
+        public async Task<Result<Empty>> CreateAsync(RegisterCompanyRequest registerRequest, CancellationToken cancellationToken = default)
+        {
+            var adminUser = mapper.Map<ApplicationUser>(registerRequest.AdminInfo);
+            adminUser.EmailConfirmed = true;
+            adminUser.PhoneNumberConfirmed = true;
 
-//        public async Task<Result<Empty>> CreateAsync(CreateCompanyDto dto)
-//        {
-//            var validationResult = await registrationService.ValidateRegistrationAsync(dto.Phone, dto.Email, Roles.Company);
-//            if (validationResult != null) return validationResult;
+            var company = mapper.Map<Company>(registerRequest);
+            var roleName = $"{company.Name} Admin";
 
-//            var user = registrationService.CreateUserBase(dto.Email, dto.Phone, AccountTypes.Company, dto.ImageUrl, true);
-//            user.Company = new Company
-//            {
-//                Name = dto.Name,
-//                Address = dto.Address,
-//            };
+            return await registrationService.RegisterEntityWithAdminAsync(adminUser, registerRequest.AdminInfo.Password, roleName, () => registrationService.CreateCompanyAsync(company), cancellationToken);
+        }
 
-//            var res = await registrationService.RegisterAccountAsync(user, dto.Password, Roles.Company);
+        public async Task<Result<Empty>> UpdateAsync(UpdateCompanyDto dto)
+        {
+            var company = await ufw.GetRepository<Company>().GetByIdAsync(dto.Id, [nameof(Company.Address)]);
 
-//            return res.IsSuccess ? Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyCreated) : res;
+            if (company is null)
+                return new NotFoundError();
 
-//        }
+            company.Name = dto.Name;
+            company.PhoneNumber = dto.PhoneNumber;
+            company.RegistrationNumber = dto.RegistrationNumber;
+            company.ContactEmail = dto.ContactEmail;
+            company.Address = mapper.Map<Address>(dto.Address);
 
-//        public async Task<Result<Empty>> UpdateAsync(UpdateCompanyDto dto)
-//        {
-//            var company = await ufw.Companies.GetByIdAsync(dto.Id, [nameof(Company.LoginDetails)]);
+            await ufw.SaveChangesAsync();
 
-//            if (company == null)
-//                return new NotFoundError();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyUpdated);
 
-//            if (await userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Company.Id != dto.Id))
-//                return new ConflictError(ErrorCodes.PhoneExists);
+        }
 
-//            if (await userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Company.Id != dto.Id))
-//                return new ConflictError(ErrorCodes.EmailExists);
+        public async Task<Result<CompanyDto>> GetByIdAsync(long id)
+        {
+            var company = await ufw.GetRepository<Company>().GetByIdAsync(id, [nameof(Company.Address)]);
 
-//            company.Name = dto.Name;
-//            company.Address = dto.Address;
-//            company.LoginDetails.Email = dto.Email;
-//            company.LoginDetails.PhoneNumber = dto.Phone;
-//            company.LoginDetails.ImageUrl = dto.ImageUrl;
+            if (company is null) return new NotFoundError();
 
-//            await ufw.SaveChangesAsync();
+            var companyDto = mapper.Map<CompanyDto>(company);
+            return Result<CompanyDto>.Success(companyDto, SuccessCodes.CompanyReceived);
 
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyUpdated);
+        }
 
-//        }
+        public async Task<Result<CompanyDto[]>> GetAllAsync()
+        {
+            var companies = await ufw.GetRepository<Company>().GetAllAsync([nameof(Company.Address)]);
 
-//        public async Task<Result<CompanyDto>> GetByIdAsync(long id)
-//        {
-//            var company = await ufw.Companies.GetByIdAsync(id, [nameof(Company.LoginDetails)]);
+            var companiesDto = mapper.Map<CompanyDto[]>(companies);
+            return Result<CompanyDto[]>.Success(companiesDto, SuccessCodes.CompaniesReceived);
 
-//            if (company == null)
-//                return new NotFoundError();
+        }
 
-//            var companyDto = mapper.Map<CompanyDto>(company);
-//            return Result<CompanyDto>.Success(companyDto, SuccessCodes.CompanyReceived);
+        public async Task<Result<Empty>> SoftDeleteAsync(long id)
+        {
+            var company = await ufw.GetRepository<Company>().GetByIdAsync(id, [nameof(Company.Address)]);
 
-//        }
+            if (company == null)
+                return new NotFoundError();
 
-//        public async Task<Result<CompanyDto[]>> GetAllAsync()
-//        {
-//            var companies = await ufw.Companies.GetAllAsync([nameof(Company.LoginDetails)]);
+            ufw.GetRepository<Company>().SoftDelete(company);
+            await ufw.SaveChangesAsync();
 
-//            var companiesDto = mapper.Map<CompanyDto[]>(companies);
-//            return Result<CompanyDto[]>.Success(companiesDto, SuccessCodes.CompaniesReceived);
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanySoftDeleted);
+            ;
+        }
 
-//        }
+        public async Task<Result<Empty>> HardDeleteAsync(long id)
+        {
+            var company = await ufw.GetRepository<Company>().GetByIdAsync(id, [nameof(Company.Address)]);
 
-//        public async Task<Result<Empty>> SoftDeleteAsync(long id)
-//        {
-//            var company = await ufw.Companies.GetByIdAsync(id, [nameof(Company.LoginDetails)]);
+            if (company == null)
+                return new NotFoundError();
 
-//            if (company == null)
-//                return new NotFoundError();
+            ufw.GetRepository<Company>().HardDelete(company);
+            await ufw.SaveChangesAsync();
 
-//            ufw.Companies.SoftDelete(company);
-//            await ufw.SaveChangesAsync();
 
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanySoftDeleted);
-//            ;
-//        }
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyHardDeleted);
 
-//        public async Task<Result<Empty>> HardDeleteAsync(long id)
-//        {
-//            var company = await ufw.Companies.GetByIdAsync(id, [nameof(Company.LoginDetails)]);
-
-//            if (company == null)
-//                return new NotFoundError();
-
-//            using (var tran = await ufw.BeginTransactionAsync())
-//            {
-//                try
-//                {
-//                    ufw.Companies.HardDelete(company);
-//                    await userManager.DeleteAsync(company.LoginDetails);
-//                    await ufw.SaveChangesAsync();
-
-//                    await tran.CommitAsync();
-//                }
-//                catch
-//                {
-//                    await tran.RollbackAsync();
-//                }
-//            }
-
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.CompanyHardDeleted);
-
-//        }
-//    }
-//}
+        }
+    }
+}

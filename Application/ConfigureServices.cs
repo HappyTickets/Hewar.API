@@ -4,6 +4,7 @@ using Application.Account.Validators;
 using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
+using Application.Companies.Service;
 using Application.Files.Service;
 using Application.Notifications.Service;
 using Application.Tickets.Service;
@@ -37,10 +38,10 @@ namespace Application
               .AddScoped<INotificationsService, NotificationsService>()
               .AddScoped<IFileService, FileService>()
               .AddScoped<ITicketsService, TicketsService>()
+              .AddScoped<ICompaniesService, CompaniesService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
             //.AddScoped<IPriceRequestsService, PriceRequestsService>()
             //.AddScoped<IGuardsService, GuardsService>()
-            //.AddScoped<ICompaniesService, CompaniesService>()
             //.AddScoped<IFacilitiesService, FacilitiesService>()
             //.AddScoped<IInsuranceAdsService, InsuranceAdsService>();
 

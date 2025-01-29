@@ -7,7 +7,6 @@ public class RegisterFacilityRequest
 {
     public string Type { get; set; }
     public string Name { get; set; }
-    public string ImageUrl { get; set; }
     public string CommercialRegistration { get; set; }
     public string ActivityType { get; set; }
     public string ResponsibleName { get; set; }

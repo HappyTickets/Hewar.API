@@ -14,6 +14,7 @@
         InvalidName = 9,
         PhoneNumber_Unique_Validation = 10,
         MaxLengthExceeded = 11,
+        Required_AdminAccount = 12,
 
 
 

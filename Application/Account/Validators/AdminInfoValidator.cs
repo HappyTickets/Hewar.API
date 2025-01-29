@@ -24,8 +24,6 @@ namespace Application.Account.Validators
             RuleFor(f => f.LastName)
             .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(f => f.Phone)
-            .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }
 }
