@@ -21,8 +21,11 @@ namespace Infrastructure.Persistence.Repositories.Generic
 
         #region Command
 
+        public virtual async Task CreateAsync(TEntity entity)
+            => await _dbSet.AddAsync(entity);
+
         public virtual void Create(TEntity entity)
-            => _dbSet.Add(entity);
+        => _dbSet.Add(entity);
 
         public virtual void CreateRange(IEnumerable<TEntity> entities)
             => _dbSet.AddRange(entities);

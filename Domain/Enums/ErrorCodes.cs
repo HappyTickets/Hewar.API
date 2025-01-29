@@ -30,6 +30,7 @@
         AssignUserRoleFailed = 303,
         UnassignUserRoleFailed = 304,
         GetRoleFaild = 305,
+        RoleCreationFailed = 306,
 
         // tickets
         TicketExists = 400,

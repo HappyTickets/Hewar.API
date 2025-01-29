@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities
 {
-    public class Notification: SoftDeletableEntity
+    public class Notification : SoftDeletableEntity
     {
         public string ContentAr { get; set; }
         public string ContentEn { get; set; }
@@ -10,6 +10,5 @@
         public NotificationEvents Event { get; set; }
         public DateTimeOffset NotifiedOn { get; set; }
         public long RecipientId { get; set; }
-        public AccountTypes RecipientType { get; set; }
     }
 }

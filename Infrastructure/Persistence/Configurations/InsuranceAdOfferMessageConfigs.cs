@@ -1,13 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Infrastructure.Persistence.Configurations
+﻿namespace Infrastructure.Persistence.Configurations
 {
-    internal class InsuranceAdOfferMessageConfigs : IEntityTypeConfiguration<InsuranceAdOfferMessage>
-    {
-        public void Configure(EntityTypeBuilder<InsuranceAdOfferMessage> builder)
-        {
-            builder.OwnsMany(m => m.Medias);
-        }
-    }
+    //internal class InsuranceAdOfferMessageConfigs : IEntityTypeConfiguration<AdOfferMessage>
+    //{
+    //    public void Configure(EntityTypeBuilder<AdOfferMessage> builder)
+    //    {
+    //        builder.OwnsMany(m => m.Medias);
+    //    }
+    //}
 }

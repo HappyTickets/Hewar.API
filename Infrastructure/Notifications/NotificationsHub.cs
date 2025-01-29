@@ -13,14 +13,14 @@ namespace Infrastructure.Notifications
             _currentUser = currentUser;
         }
 
-        public override Task OnConnectedAsync()
-        {
-            return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
-        }
+        //public override Task OnConnectedAsync()
+        //{
+        //    return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.UserId}-{_currentUser.Type}");
+        //}
 
-        public override Task OnDisconnectedAsync(Exception? exception)
-        {
-            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
-        }
+        //public override Task OnDisconnectedAsync(Exception? exception)
+        //{
+        //    return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
+        //}
     }
 }

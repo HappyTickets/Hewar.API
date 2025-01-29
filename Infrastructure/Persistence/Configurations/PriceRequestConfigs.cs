@@ -1,5 +1,4 @@
-﻿using Domain.Entities.PriceRequestAggregates;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
@@ -18,13 +17,6 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(pr => pr.FacilityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(pr => pr.Offer)
-                .WithOne(r => r.PriceRequest)
-                .HasForeignKey<PriceRequestOffer>(r => r.PriceRequestId);
-            
-            builder.HasOne(pr => pr.FacilityDetails)
-                .WithOne(fd => fd.PriceRequest)
-                .HasForeignKey<PriceRequestFacilityDetails>(fd => fd.PriceRequestId);
         }
     }
 }

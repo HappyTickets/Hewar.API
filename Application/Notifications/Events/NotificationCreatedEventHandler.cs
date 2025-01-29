@@ -18,7 +18,6 @@ namespace Application.Notifications.Events
         public async Task Handle(NotificationCreated notification, CancellationToken cancellationToken)
         {
             var dto = _mapper.Map<NotificationDto>(notification.Notification);
-            await _notificationService.NotifyUserAsync(notification.Notification.RecipientId, notification.Notification.RecipientType, dto);
         }
     }
 }

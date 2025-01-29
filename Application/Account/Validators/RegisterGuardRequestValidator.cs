@@ -45,7 +45,7 @@ namespace Application.Authorization.Validators
 
             RuleFor(g => g.City)
                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
-                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
+                .WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.Skills)
                 .ForEach(b =>

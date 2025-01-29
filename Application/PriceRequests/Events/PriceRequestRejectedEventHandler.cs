@@ -24,7 +24,7 @@ namespace Application.PriceRequests.Events
                 Event = NotificationEvents.PriceRequestRejected,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.PriceRequest.FacilityId,
-                RecipientType = AccountTypes.Facility
+                //RecipientType = AccountTypes.Facility
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

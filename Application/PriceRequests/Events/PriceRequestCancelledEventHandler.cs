@@ -24,7 +24,7 @@ namespace Application.PriceRequests.Events
                 Event = NotificationEvents.PriceRequestCancelled,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.PriceRequest.CompanyId,
-                RecipientType = AccountTypes.Company
+                //RecipientType = AccountTypes.Company
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

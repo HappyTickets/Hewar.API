@@ -26,9 +26,7 @@ namespace Application.Tickets.Service
                 ClosedDate = null,
                 Status = TicketStatus.Opened,
                 AudienceId = dto.AudienceId,
-                AudienceType = dto.AudienceType,
-                IssuerId = _currentUser.AccountId!.Value,
-                IssuerType = _currentUser.Type!.Value,
+                IssuerId = _currentUser.UserId!.Value,
                 Messages =
                 [
                     new TicketMessage
@@ -36,8 +34,7 @@ namespace Application.Tickets.Service
                         Content = dto.Content,
                         Medias = _mapper.Map<Media[]>(dto.Medias),
                         SentDate = DateTimeOffset.UtcNow,
-                        SenderId = _currentUser.AccountId!.Value,
-                        SenderType =_currentUser.Type!.Value
+                        SenderId = _currentUser.UserId!.Value,
                     }
                 ]
             };
@@ -62,8 +59,7 @@ namespace Application.Tickets.Service
             var message = _mapper.Map<TicketMessage>(dto);
 
             message.SentDate = DateTimeOffset.UtcNow;
-            message.SenderId = _currentUser.AccountId!.Value;
-            message.SenderType = _currentUser.Type!.Value;
+            message.SenderId = _currentUser.UserId!.Value;
             message.Ticket = ticket;
 
             message.AddDomainEvent(new TicketMessageCreated(message));
@@ -80,7 +76,7 @@ namespace Application.Tickets.Service
             if (ticket == null)
                 return new NotFoundError();
 
-            if (ticket.AudienceId != _currentUser.AccountId || ticket.AudienceType != _currentUser.Type)
+            if (ticket.AudienceId != _currentUser.UserId)
                 return new ForbiddenError(ErrorCodes.TicketAudienceError);
 
             if (ticket.Status == TicketStatus.Closed)
@@ -98,7 +94,7 @@ namespace Application.Tickets.Service
         public async Task<Result<TicketDto[]>> GetMyReceivedTicketsAsync()
         {
             var tickets = await _ufw.Tickets
-                .FilterAsync(t => t.AudienceId == _currentUser.AccountId && t.AudienceType == _currentUser.Type);
+                .FilterAsync(t => t.AudienceId == _currentUser.UserId);
 
             var ticketDto = _mapper.Map<TicketDto[]>(tickets);
             return Result<TicketDto[]>.Success(ticketDto, SuccessCodes.GetMyReceivedTickets);
@@ -108,7 +104,7 @@ namespace Application.Tickets.Service
         public async Task<Result<TicketDto[]>> GetMySentTicketsAsync()
         {
             var tickets = await _ufw.Tickets
-                .FilterAsync(t => t.IssuerId == _currentUser.AccountId && t.IssuerType == _currentUser.Type);
+                .FilterAsync(t => t.IssuerId == _currentUser.UserId);
 
             var ticketDto = _mapper.Map<TicketDto[]>(tickets);
             return Result<TicketDto[]>.Success(ticketDto, SuccessCodes.GetMySentTickets);

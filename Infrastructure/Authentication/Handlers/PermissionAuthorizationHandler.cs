@@ -23,13 +23,13 @@ namespace Infrastructure.Authentication.Handlers
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            var cacheKey = $"{_currentUser.Type}-{_currentUser.IdentityId}";
+            var cacheKey = $"{_currentUser.UserId}";
             var permissions = _cache.Get<List<Permissions>>(cacheKey);
 
             if (permissions == null)
             {
                 permissions = await _roleManager.Roles
-                   .Where(r => r.ApplicationUserRoles!.Any(ur => ur.UserId == _currentUser.IdentityId))
+                   .Where(r => r.ApplicationUserRoles!.Any(ur => ur.UserId == _currentUser.UserId))
                    .SelectMany(r => r.Permissions)
                    .Select(r => r.Permission)
                    .Distinct()

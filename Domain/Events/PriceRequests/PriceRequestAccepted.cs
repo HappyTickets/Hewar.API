@@ -1,8 +1,6 @@
-﻿using Domain.Entities.PriceRequestAggregates;
-
-namespace Domain.Events.PriceRequests
+﻿namespace Domain.Events.PriceRequests
 {
-    public class PriceRequestAccepted: DomainEvent
+    public class PriceRequestAccepted : DomainEvent
     {
         public PriceRequest PriceRequest { get; }
 

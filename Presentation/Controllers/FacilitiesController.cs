@@ -16,7 +16,7 @@ namespace Presentation.Controllers
 
 
         [HttpPost("create")]
-        //[HasPermission(Permissions.CreateFacility)]
+        //[HasPermission(Permissions.CreateFacilityAsync)]
         public async Task<IActionResult> CreateAsync(CreateFacilityDto dto)
             => Result(await _facilitiesService.CreateAsync(dto));
 

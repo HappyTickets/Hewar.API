@@ -1,23 +1,25 @@
-﻿namespace Domain.Entities.PriceRequestAggregates
+﻿using Domain.Entities.ChatAggregate;
+using Domain.Entities.CompanyAggregate;
+using Domain.Entities.FacilityAggregate;
+
+namespace Domain.Entities.PriceRequestAggregates
 {
     public class PriceRequest : SoftDeletableEntity
     {
-        public SecurityRoles SecurityRole { get; set; }
-        public int GuardsCount { get; set; }
-        public WorkShifts WorkShift { get; set; }
-        public ContractTypes ContractType { get; set; }
+        public long FacilityId { get; set; }
+        public virtual Facility Facility { get; set; }
+
+        public long CompanyId { get; set; }
+        public virtual Company Company { get; set; }
+
+        public ContractType ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public string Description { get; set; }
-        public RequestStatus Status { get; set; }
-        public long FacilityId { get; set; }
-        public long CompanyId { get; set; }
+        public string Notes { get; set; }
+        public RequestStatus RequestStatus { get; set; }
 
-        // nav props
-        public Facility Facility { get; set; }
-        public Company Company { get; set; }
-        public ICollection<Ticket> Tickets { get; set; }
-        public PriceRequestOffer Offer { get; set; }
-        public PriceRequestFacilityDetails FacilityDetails { get; set; }
+        public virtual ICollection<PriceRequestService> Services { get; set; } = new List<PriceRequestService>();
+        public long? ChatId { get; set; }
+        public virtual Chat? Chat { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.Repositories.Generic;
+﻿using Domain.Entities.CompanyAggregate;
+using Infrastructure.Persistence.Repositories.Generic;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -11,7 +12,6 @@ namespace Infrastructure.Persistence.Repositories
         public override void SoftDelete(Company entity)
         {
             base.SoftDelete(entity);
-            entity.LoginDetails.IsDeleted = true;
         }
     }
 }

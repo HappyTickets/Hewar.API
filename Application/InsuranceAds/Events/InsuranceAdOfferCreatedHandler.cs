@@ -23,8 +23,8 @@ namespace Application.InsuranceAds.Events
                 ReferenceType = ReferenceTypes.InsuranceAdOffer,
                 Event = NotificationEvents.InsuranceAdOfferCreated,
                 NotifiedOn = DateTimeOffset.UtcNow,
-                RecipientId = notification.InsuranceAdOffer.InsuranceAd.FacilityId,
-                RecipientType = AccountTypes.Facility
+                RecipientId = notification.InsuranceAdOffer.Ad.FacilityId,
+                //RecipientType = AccountTypes.Facility
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

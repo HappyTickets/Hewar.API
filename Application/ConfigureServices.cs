@@ -4,13 +4,8 @@ using Application.Account.Validators;
 using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
-using Application.Companies.Service;
-using Application.Facilities.Service;
 using Application.Files.Service;
-using Application.Guards.Service;
-using Application.InsuranceAds.Service;
 using Application.Notifications.Service;
-using Application.PriceRequests.Service;
 using Application.Tickets.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -41,13 +36,13 @@ namespace Application
               .AddScoped<IAuthorizationService, AuthorizationService>()
               .AddScoped<INotificationsService, NotificationsService>()
               .AddScoped<IFileService, FileService>()
-              .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<ITicketsService, TicketsService>()
-              .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
-              .AddScoped<IGuardsService, GuardsService>()
-              .AddScoped<ICompaniesService, CompaniesService>()
-              .AddScoped<IFacilitiesService, FacilitiesService>()
-              .AddScoped<IInsuranceAdsService, InsuranceAdsService>();
+              .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
+            //.AddScoped<IPriceRequestsService, PriceRequestsService>()
+            //.AddScoped<IGuardsService, GuardsService>()
+            //.AddScoped<ICompaniesService, CompaniesService>()
+            //.AddScoped<IFacilitiesService, FacilitiesService>()
+            //.AddScoped<IInsuranceAdsService, InsuranceAdsService>();
 
 
             return services;

@@ -7,6 +7,5 @@
         public ICollection<MediaDto> Medias { get; set; }
         public DateTimeOffset SentDate { get; set; }
         public long SenderId { get; set; }
-        public AccountTypes SenderType { get; set; }
     }
 }
