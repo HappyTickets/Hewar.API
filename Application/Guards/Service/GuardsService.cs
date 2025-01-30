@@ -1,139 +1,112 @@
-﻿//using Application.Account.Service.Interfaces;
-//using Application.Guards.Dtos;
-//using AutoMapper;
-//using Microsoft.AspNetCore.Identity;
-//using Microsoft.EntityFrameworkCore;
+﻿using Application.Account.Service.Interfaces;
+using Application.AccountManagement.Dtos.Authentication;
+using Application.Guards.Dtos;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
-//namespace Application.Guards.Service
-//{
-//    internal class GuardsService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, IRegistrationService registrationService) : IGuardsService
-//    {
-//        public async Task<Result<Empty>> CreateAsync(CreateGuardDto dto)
-//        {
-//            var validationResult = await registrationService.ValidateRegistrationAsync(dto.Phone, dto.Email, Roles.Guard);
-//            if (validationResult != null) return validationResult;
+namespace Application.Guards.Service
+{
+    internal class GuardsService(IUnitOfWorkService ufw, IMapper mapper, UserManager<ApplicationUser> userManager, IRegistrationService registrationService) : IGuardsService
+    {
+        public async Task<Result<Empty>> CreateAsync(RegisterGuardRequest registerRequest, CancellationToken cancellationToken = default)
+        {
+            var validationResult = await registrationService.ValidateRegistrationAsync(registerRequest.Phone, registerRequest.Email);
+            if (validationResult != null) return validationResult;
 
-//            var user = registrationService.CreateUserBase(dto.Email, dto.Phone, AccountTypes.Guard, dto.ImageUrl, true);
-//            user.UserName = dto.UserName;
-//            user.Guard = new Guard
-//            {
-//                FirstName = dto.FirstName,
-//                LastName = dto.LastName,
-//                DateOfBirth = dto.DateOfBirth,
-//                NationalId = dto.NationalId,
-//                Qualification = dto.Qualification,
-//                City = dto.City,
-//                BloodType = dto.BloodType,
-//                Height = dto.Height,
-//                Weight = dto.Weight,
-//                Skills = mapper.Map<ICollection<Skill>>(dto.Skills),
-//                PrevCompanies = mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies),
-//            };
+            var guard = mapper.Map<Guard>(registerRequest);
+            guard.EmailConfirmed = true;
+            guard.PhoneNumberConfirmed = true;
 
-//            var res = await registrationService.RegisterAccountAsync(user, dto.Password, Roles.Guard);
+            var registrationResults = await userManager.CreateAsync(guard, registerRequest.Password);
+            if (!registrationResults.Succeeded)
+                return new ValidationError(registrationResults.Errors.Select(er => er.Description));
 
-//            return res.IsSuccess ? Result<Empty>.Success(Empty.Default, SuccessCodes.GuardCreated) : res;
-//        }
+            await userManager.AddClaimsAsync(guard, [new Claim(CustomClaims.UserId, guard.Id.ToString()), new Claim(CustomClaims.FirstName, guard.FirstName)]);
 
-//        public async Task<Result<Empty>> UpdateAsync(UpdateGuardDto dto)
-//        {
-//            var guard = await ufw.Guards.GetByIdAsync(dto.Id, [nameof(Guard.LoginDetails)]);
+            return new()
+            {
+                Status = StatusCodes.Status200OK,
+                IsSuccess = true,
+                SuccessCode = SuccessCodes.UserRegistered
+            };
 
-//            if (guard == null)
-//                return new NotFoundError();
+        }
 
-//            if (await userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Guard.Id != dto.Id))
-//                return new ConflictError(ErrorCodes.PhoneExists);
+        public async Task<Result<Empty>> UpdateAsync(UpdateGuardDto dto)
+        {
+            var guard = await userManager.Users
+                    .OfType<Guard>()
+                    .Include(g => g.Address)
+                    .FirstOrDefaultAsync(u => u.Id == dto.Id);
 
-//            if (await userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Guard.Id != dto.Id))
-//                return new ConflictError(ErrorCodes.EmailExists);
+            if (guard is null)
+                return new NotFoundError();
 
-//            if (await userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Guard.Id != dto.Id))
-//                return new ConflictError(ErrorCodes.UserNameExists);
+            if (await userManager.Users.AnyAsync(u => u.PhoneNumber == dto.Phone && u.Id != dto.Id))
+                return new ConflictError(ErrorCodes.PhoneExists);
 
-//            guard.FirstName = dto.FirstName;
-//            guard.LastName = dto.LastName;
-//            guard.DateOfBirth = dto.DateOfBirth;
-//            guard.NationalId = dto.NationalId;
-//            guard.Qualification = dto.Qualification;
-//            guard.City = dto.City;
-//            guard.BloodType = dto.BloodType;
-//            guard.Height = dto.Height;
-//            guard.Weight = dto.Weight;
-//            guard.Skills = mapper.Map<ICollection<Skill>>(dto.Skills);
-//            guard.PrevCompanies = mapper.Map<ICollection<PrevCompany>>(dto.PrevCompanies);
-//            guard.LoginDetails.UserName = dto.UserName;
-//            guard.LoginDetails.Email = dto.Email;
-//            guard.LoginDetails.PhoneNumber = dto.Phone;
-//            guard.LoginDetails.ImageUrl = dto.ImageUrl;
+            if (await userManager.Users.AnyAsync(u => u.Email == dto.Email && u.Id != dto.Id))
+                return new ConflictError(ErrorCodes.EmailExists);
+
+            if (await userManager.Users.AnyAsync(u => u.UserName == dto.UserName && u.Id != dto.Id))
+                return new ConflictError(ErrorCodes.UserNameExists);
+
+            mapper.Map(dto, guard);
+
+            await ufw.SaveChangesAsync();
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardUpdated);
+
+        }
+
+        public async Task<Result<GuardDto>> GetByIdAsync(long id)
+        {
+            var guard = await userManager.Users
+                    .OfType<Guard>()
+                    .Include(g => g.Address)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+
+            if (guard == null)
+                return new NotFoundError();
+
+            var guardDto = mapper.Map<GuardDto>(guard);
+            return Result<GuardDto>.Success(guardDto, SuccessCodes.GuardReceived);
+
+        }
+
+        public async Task<Result<GuardDto[]>> GetAllAsync()
+        {
+            var guards = await userManager.Users
+                    .OfType<Guard>()
+                    .Include(g => g.Address)
+                    .Include(g => g.Skills)
+                    .Include(g => g.PrevCompanies)
+                    .ToListAsync();
+
+            var guardsDto = mapper.Map<GuardDto[]>(guards);
+            return Result<GuardDto[]>.Success(guardsDto, SuccessCodes.GuardsReceived);
+
+        }
 
 
-//            await ufw.SaveChangesAsync();
+        public async Task<Result<Empty>> DeleteAsync(long id)
+        {
+            var guard = await userManager.Users
+                                  .OfType<Guard>()
+                                  .Include(g => g.Address)
+                                    .Include(g => g.Skills)
+                                   .Include(g => g.PrevCompanies)
+                                  .FirstOrDefaultAsync(u => u.Id == id);
+            if (guard == null)
+                return new NotFoundError();
 
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardUpdated);
 
-//        }
+            await userManager.DeleteAsync(guard);
 
-//        public async Task<Result<GuardDto>> GetByIdAsync(long id)
-//        {
-//            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
-
-//            if (guard == null)
-//                return new NotFoundError();
-
-//            var guardDto = mapper.Map<GuardDto>(guard);
-//            return Result<GuardDto>.Success(guardDto, SuccessCodes.GuardReceived);
-
-//        }
-
-//        public async Task<Result<GuardDto[]>> GetAllAsync()
-//        {
-//            var guards = await ufw.Guards.GetAllAsync([nameof(Guard.LoginDetails)]);
-
-//            var guardsDto = mapper.Map<GuardDto[]>(guards);
-//            return Result<GuardDto[]>.Success(guardsDto, SuccessCodes.GuardsReceived);
-
-//        }
-
-//        public async Task<Result<Empty>> SoftDeleteAsync(long id)
-//        {
-//            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
-
-//            if (guard == null)
-//                return new NotFoundError();
-
-//            ufw.Guards.SoftDelete(guard);
-//            await ufw.SaveChangesAsync();
-
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardSoftDeleted);
-
-//        }
-
-//        public async Task<Result<Empty>> HardDeleteAsync(long id)
-//        {
-//            var guard = await ufw.Guards.GetByIdAsync(id, [nameof(Guard.LoginDetails)]);
-
-//            if (guard == null)
-//                return new NotFoundError();
-
-//            using (var tran = await ufw.BeginTransactionAsync())
-//            {
-//                try
-//                {
-//                    ufw.Guards.HardDelete(guard);
-//                    await userManager.DeleteAsync(guard.LoginDetails);
-//                    await ufw.SaveChangesAsync();
-
-//                    await tran.CommitAsync();
-//                }
-//                catch
-//                {
-//                    await tran.RollbackAsync();
-//                }
-//            }
-
-//            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardHardDeleted);
-
-//        }
-//    }
-//}
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.GuardDeleted);
+        }
+    }
+}

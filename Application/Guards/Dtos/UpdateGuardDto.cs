@@ -1,4 +1,6 @@
-﻿namespace Application.Guards.Dtos
+﻿using Application.Common.Dtos;
+
+namespace Application.Guards.Dtos
 {
     public class UpdateGuardDto
     {
@@ -13,7 +15,9 @@
         public string NationalId { get; set; }
         public Qualifications Qualification { get; set; }
         public Cities City { get; set; }
-        public string? BloodType { get; set; }
+        public AddressDto Address { get; set; }
+
+        public BloodType? BloodType { get; set; }
         public double? Height { get; set; }
         public double? Weight { get; set; }
         public ICollection<SkillDto>? Skills { get; set; }

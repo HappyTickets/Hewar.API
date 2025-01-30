@@ -1,4 +1,5 @@
-﻿using Application.Guards.Dtos;
+﻿using Application.AccountManagement.Dtos.Authentication;
+using Application.Guards.Dtos;
 using Application.Guards.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +17,7 @@ namespace Presentation.Controllers
 
         [HttpPost("create")]
         //[HasPermission(Permissions.CreateGuard)]
-        public async Task<IActionResult> CreateAsync(CreateGuardDto dto)
+        public async Task<IActionResult> CreateAsync(RegisterGuardRequest dto)
             => Result(await _guardsService.CreateAsync(dto));
 
         [HttpPut("update")]
@@ -34,14 +35,9 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetAllAsync()
             => Result(await _guardsService.GetAllAsync());
 
-        [HttpDelete("softDelete")]
-        //[HasPermission(Permissions.DeleteGuard)]
-        public async Task<IActionResult> SoftDeleteAsync(long id)
-            => Result(await _guardsService.SoftDeleteAsync(id));
-
-        [HttpDelete("hardDelete")]
+        [HttpDelete]
         //[HasPermission(Permissions.DeleteGuard)]
         public async Task<IActionResult> HardDeleteAsync(long id)
-            => Result(await _guardsService.HardDeleteAsync(id));
+            => Result(await _guardsService.DeleteAsync(id));
     }
 }

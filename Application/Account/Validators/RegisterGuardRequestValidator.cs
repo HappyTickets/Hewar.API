@@ -1,4 +1,5 @@
 ﻿using Application.AccountManagement.Dtos.Authentication;
+using Application.Common.Validators;
 using Application.Guards.Validators;
 using FluentValidation;
 
@@ -46,6 +47,10 @@ namespace Application.Authorization.Validators
             RuleFor(g => g.City)
                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .WithState(_ => (int)ValidationMsgs.InvalidValue);
+
+            RuleFor(g => g.Address)
+               .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .SetValidator(new AddressDtoValidator());
 
             RuleFor(g => g.Skills)
                 .ForEach(b =>
