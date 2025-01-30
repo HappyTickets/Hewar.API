@@ -34,7 +34,7 @@ namespace Application.Tickets.Service
                         Content = dto.Content,
                         Medias = _mapper.Map<Media[]>(dto.Medias),
                         SentDate = DateTimeOffset.UtcNow,
-                        SenderId = _currentUser.UserId!.Value,
+                        SenderId = _currentUser.UserId!.Value
                     }
                 ]
             };
