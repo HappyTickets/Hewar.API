@@ -8,13 +8,10 @@ namespace Application.Facilities.Mappings
     {
         public FacilitiesProfile()
         {
-            CreateMap<Facility, FacilityDto>();
-
-            CreateMap<ApplicationUser, FacilityDto>()
-                .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
+            CreateMap<Facility, FacilityDto>()
+                .ForMember(x => x.Address, s => s.MapFrom(src => src.Address));
 
             CreateMap<Facility, FacilityBreifDto>();
-            CreateMap<ApplicationUser, FacilityBreifDto>();
         }
     }
 }
