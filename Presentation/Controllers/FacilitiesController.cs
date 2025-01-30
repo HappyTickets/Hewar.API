@@ -1,4 +1,5 @@
-﻿using Application.Facilities.Dtos;
+﻿using Application.AccountManagement.Dtos.Authentication;
+using Application.Facilities.Dtos;
 using Application.Facilities.Service;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace Presentation.Controllers
 
         [HttpPost("create")]
         //[HasPermission(Permissions.CreateFacilityAsync)]
-        public async Task<IActionResult> CreateAsync(CreateFacilityDto dto)
+        public async Task<IActionResult> CreateAsync(RegisterFacilityRequest dto)
             => Result(await _facilitiesService.CreateAsync(dto));
 
         [HttpPut("update")]

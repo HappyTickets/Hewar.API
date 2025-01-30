@@ -1,4 +1,5 @@
-﻿using Application.Facilities.Dtos;
+﻿using Application.Common.Validators;
+using Application.Facilities.Dtos;
 using FluentValidation;
 
 namespace Application.Facilities.Validators
@@ -8,16 +9,6 @@ namespace Application.Facilities.Validators
         public UpdateFacilityDtoValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
-
-            RuleFor(g => g.ImageUrl)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
-
-            RuleFor(r => r.Email)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.Email_Required_Validation)
-                .Matches(RegexTemplates.Email).WithState(_ => (int)ValidationMsgs.Email_Format_Validation);
-
-            RuleFor(r => r.Phone)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Type)
@@ -30,10 +21,8 @@ namespace Application.Facilities.Validators
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.Address)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
-
-            RuleFor(x => x.City)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .SetValidator(new AddressDtoValidator());
 
             RuleFor(x => x.ResponsibleName)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
