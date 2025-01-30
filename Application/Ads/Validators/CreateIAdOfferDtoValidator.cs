@@ -7,7 +7,7 @@ namespace Application.Ads.Validators
     {
         public CreateIAdOfferDtoValidator()
         {
-            RuleFor(g => g.InsuranceAdId)
+            RuleFor(g => g.AdId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Offer)

@@ -10,7 +10,7 @@ namespace Application.Ads.Validators
             RuleFor(t => t.Content)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(t => t.InsuranceAdOfferId)
+            RuleFor(t => t.AdOfferId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }

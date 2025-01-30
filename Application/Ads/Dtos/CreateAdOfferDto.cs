@@ -2,7 +2,7 @@
 {
     public class CreateAdOfferDto
     {
-        public long InsuranceAdId { get; set; }
+        public long AdId { get; set; }
         public string Offer { get; set; }
     }
 }
