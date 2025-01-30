@@ -30,24 +30,7 @@ public class AuthenticationService(
 
         if (validationResult != null) return validationResult;
 
-        var guard = new Guard
-        {
-            UserName = registerRequest.UserName,
-            FirstName = registerRequest.FirstName,
-            LastName = registerRequest.LastName,
-            Email = registerRequest.Email,
-            PhoneNumber = registerRequest.Phone,
-            BloodType = registerRequest.BloodType,
-            ImageUrl = registerRequest.ImageUrl,
-            DateOfBirth = registerRequest.DateOfBirth,
-            NationalId = registerRequest.NationalId,
-            Qualification = registerRequest.Qualification,
-            Height = registerRequest.Height,
-            Weight = registerRequest.Weight,
-            City = registerRequest.City,
-            Skills = mapper.Map<ICollection<Skill>>(registerRequest.Skills),
-            PrevCompanies = mapper.Map<ICollection<PrevCompany>>(registerRequest.PrevCompanies),
-        };
+        var guard = mapper.Map<Guard>(registerRequest);
 
         var registrationResults = await userManager.CreateAsync(guard, registerRequest.Password);
 
@@ -56,14 +39,9 @@ public class AuthenticationService(
 
         await publisher.Publish(new AccountCreated(guard));
 
-        await userManager.AddToRoleAsync(guard, Roles.Guard);
+        //await userManager.AddToRoleAsync(guard, Roles.Guard);
 
-        await userManager.AddClaimsAsync(guard, [
-                    new Claim(CustomClaims.UserId, guard.Id.ToString()),
-                    new Claim(CustomClaims.FirstName, guard.FirstName)
-                    ]);
-
-
+        await userManager.AddClaimsAsync(guard, [new Claim(CustomClaims.UserId, guard.Id.ToString()), new Claim(CustomClaims.FirstName, guard.FirstName)]);
 
         return new()
         {

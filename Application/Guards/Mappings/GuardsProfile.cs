@@ -9,14 +9,15 @@ namespace Application.Guards.Mappings
         {
             CreateMap<Guard, GuardDto>();
 
-            CreateMap<ApplicationUser, GuardDto>()
-                  .ForMember(dest => dest.Phone, opt => opt.MapFrom(src => src.PhoneNumber));
-
             CreateMap<Skill, SkillDto>()
                 .ReverseMap();
 
+            CreateMap<UpdateGuardDto, Guard>();
+
+
+
             CreateMap<PrevCompany, PrevCompanyDto>()
-                .ReverseMap();
+                    .ReverseMap();
         }
     }
 }

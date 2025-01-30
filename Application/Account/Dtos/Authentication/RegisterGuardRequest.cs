@@ -1,4 +1,5 @@
-﻿using Application.Guards.Dtos;
+﻿using Application.Common.Dtos;
+using Application.Guards.Dtos;
 
 namespace Application.AccountManagement.Dtos.Authentication;
 
@@ -15,6 +16,7 @@ public class RegisterGuardRequest
     public string NationalId { get; set; }
     public Qualifications Qualification { get; set; }
     public Cities City { get; set; }
+    public AddressDto Address { get; set; }
     public BloodType? BloodType { get; set; }
     public double? Height { get; set; }
     public double? Weight { get; set; }

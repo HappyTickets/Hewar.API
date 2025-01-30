@@ -7,6 +7,7 @@ using Application.Authorization.Service;
 using Application.Companies.Service;
 using Application.Facilities.Service;
 using Application.Files.Service;
+using Application.Guards.Service;
 using Application.Notifications.Service;
 using Application.Tickets.Service;
 using FluentValidation;
@@ -41,9 +42,9 @@ namespace Application
               .AddScoped<ITicketsService, TicketsService>()
               .AddScoped<ICompaniesService, CompaniesService>()
               .AddScoped<IFacilitiesService, FacilitiesService>()
+              .AddScoped<IGuardsService, GuardsService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
             //.AddScoped<IPriceRequestsService, PriceRequestsService>()
-            //.AddScoped<IGuardsService, GuardsService>()
             //.AddScoped<IInsuranceAdsService, InsuranceAdsService>();
 
 

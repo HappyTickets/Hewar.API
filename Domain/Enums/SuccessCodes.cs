@@ -103,8 +103,7 @@
         GuardUpdated = 901,
         GuardReceived = 902,
         GuardsReceived = 903,
-        GuardSoftDeleted = 904,
-        GuardHardDeleted = 905,
+        GuardDeleted = 904,
 
         //notification
         MarkAsRead = 950,
