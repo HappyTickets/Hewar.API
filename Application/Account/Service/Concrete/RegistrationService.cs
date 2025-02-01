@@ -5,6 +5,7 @@ using Domain.Events.Accounts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Application.Account.Service.Concrete
 {
@@ -27,56 +28,57 @@ namespace Application.Account.Service.Concrete
         }
 
 
-        public async Task<Result<Empty>> CreateFacilityAsync(Facility facility)
+        public async Task<Tuple<long, EntityTypes>> CreateFacilityAsync(Facility facility)
         {
             await ufw.GetRepository<Facility>().CreateAsync(facility);
             await ufw.SaveChangesAsync();
-            return new()
-            {
-                Status = StatusCodes.Status200OK,
-                IsSuccess = true,
-                SuccessCode = SuccessCodes.FacilityCreated,
-            };
+            return new Tuple<long, EntityTypes>(facility.Id, EntityTypes.Facility);
         }
 
-        public async Task<Result<Empty>> CreateCompanyAsync(Company company)
+        public async Task<Tuple<long, EntityTypes>> CreateCompanyAsync(Company company)
         {
             await ufw.GetRepository<Company>().CreateAsync(company);
             await ufw.SaveChangesAsync();
-            return new()
-            {
-                Status = StatusCodes.Status200OK,
-                IsSuccess = true,
-                SuccessCode = SuccessCodes.CompanyCreated,
-            };
+            return new Tuple<long, EntityTypes>(company.Id, EntityTypes.Company);
         }
 
         public async Task<Result<Empty>> RegisterEntityWithAdminAsync(
-        ApplicationUser adminUser,
-        string password,
-        string roleName,
-        Func<Task<Result<Empty>>> entityCreationFunction,
-        CancellationToken cancellationToken)
+          ApplicationUser adminUser,
+          string password,
+          string roleName,
+          Func<Task<Tuple<long, EntityTypes>>> entityCreationFunction,
+          CancellationToken cancellationToken)
         {
+            #region Validation
             var validationResult = await ValidateRegistrationAsync(adminUser.PhoneNumber, adminUser.Email);
             if (validationResult != null) return validationResult;
+            #endregion
 
+            #region Role Initialization
             var role = new ApplicationRole
             {
                 Name = roleName,
                 NormalizedName = roleName.ToUpper(),
             };
+            #endregion
 
             using var transaction = await ufw.BeginTransactionAsync();
             try
             {
+                #region Entity Creation
+                var (entityId, entityType) = await entityCreationFunction();
+                #endregion
+
+                #region Role Creation
                 var roleResult = await roleManager.CreateAsync(role);
                 if (!roleResult.Succeeded)
                 {
                     await transaction.RollbackAsync(cancellationToken);
                     return new ConflictError(ErrorCodes.RoleCreationFailed);
                 }
+                #endregion
 
+                #region User Creation & Role Assignment
                 var userResult = await userManager.CreateAsync(adminUser, password);
                 if (!userResult.Succeeded)
                 {
@@ -85,26 +87,26 @@ namespace Application.Account.Service.Concrete
                 }
 
                 await userManager.AddToRoleAsync(adminUser, roleName);
+                await userManager.AddClaimsAsync(adminUser,
+                    [new Claim(CustomClaims.EntityId, entityId.ToString()), new Claim(CustomClaims.EntityType, entityType.ToString())]);
 
-                var entityResult = await entityCreationFunction();
+                #endregion
 
-                if (!entityResult.IsSuccess)
-                {
-                    await transaction.RollbackAsync(cancellationToken);
-                    return entityResult;
-                }
-
+                #region Commit Transaction and Publish Event
                 await transaction.CommitAsync(cancellationToken);
                 if (!adminUser.EmailConfirmed)
                     await publisher.Publish(new AccountCreated(adminUser));
 
-                return entityResult;
+                return new Result<Empty> { Status = StatusCodes.Status200OK, IsSuccess = true, SuccessCode = SuccessCodes.Created };
+                #endregion
             }
             catch (Exception ex)
             {
+                #region Rollback and Error Handling
                 await transaction.RollbackAsync(cancellationToken);
                 // Log exception if necessary
                 return new ConflictError(ErrorCodes.Conflict);
+                #endregion
             }
         }
 

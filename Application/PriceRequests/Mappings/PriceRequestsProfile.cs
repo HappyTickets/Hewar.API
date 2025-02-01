@@ -1,5 +1,8 @@
-﻿using Application.PriceRequests.Dtos;
+﻿using Application.PriceRequests.Dtos.Chat;
+using Application.PriceRequests.Dtos.Offers;
+using Application.PriceRequests.Dtos.Requests;
 using AutoMapper;
+using Domain.Entities.ChatAggregate;
 
 namespace Application.PriceRequests.Mappings
 {
@@ -8,12 +11,22 @@ namespace Application.PriceRequests.Mappings
         public PriceRequestsProfile()
         {
             CreateMap<CreatePriceRequestDto, PriceRequest>();
+            CreateMap<PriceRequestServiceDto, PriceRequestService>();
+
             CreateMap<PriceRequest, FacilityPriceRequestDto>();
             CreateMap<PriceRequest, CompanyPriceRequestDto>();
 
-            CreateMap<CreatePriceRequestOfferDto, PriceOffer>();
-            CreateMap<PriceOffer, PriceRequestOfferDto>();
+            CreateMap<PriceOfferServiceDto, PriceOfferService>().ReverseMap();
 
+            CreateMap<Message, ChatMessageDto>().ReverseMap();
+            CreateMap<ApplicationUser, ChatParticipantDto>().ReverseMap();
+
+            CreateMap<PriceOfferDto, PriceOffer>()
+                .ForMember(dto => dto.Services, x => x.MapFrom(src => src.PricedServices)).ReverseMap()
+                .ReverseMap();
+
+            CreateMap<CreatePriceOfferDto, PriceOffer>()
+                .ForMember(dto => dto.Services, x => x.MapFrom(src => src.PricedServices)).ReverseMap();
         }
     }
 }

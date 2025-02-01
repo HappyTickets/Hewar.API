@@ -154,6 +154,7 @@ internal class TokensService
     {
         // Retrieve existing claims
         var claims = (await userManager.GetClaimsAsync(user)).ToList();
+        claims.Add(new Claim(CustomClaims.UserId, user.Id.ToString()));
         claims.Add(new Claim(ClaimTypes.Email, user.Email!));
 
         return claims;

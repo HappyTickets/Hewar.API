@@ -44,10 +44,20 @@
         AdNotExists = 501,
         AdNotOpened = 502,
         AdOfferNotPending = 503,
+
+        // price requests : offers
         AdOfferAccepted=504,
         // price requests
         PriceRequestExists = 600,
         PriceRequestNotExists = 601,
         PriceRequestNotPending = 602,
+
+        PriceOfferNotExists = 603,
+        PriceOfferExists = 604,
+        PriceOfferNotPending = 605,
+
+        // chat : messages
+        ChatClosed = 700,
+        ChatAlreadyExist = 701,
     }
 }

@@ -2,7 +2,7 @@
 {
     public enum ContractType
     {
-        Temporary,
+        Temporary = 0,
         PartTime,
         FullTime
     }

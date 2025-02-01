@@ -1,4 +1,4 @@
-﻿using Application.PriceRequests.Dtos;
+﻿using Application.PriceRequests.Dtos.Requests;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators
@@ -7,17 +7,6 @@ namespace Application.PriceRequests.Validators
     {
         public CreatePriceRequestValidator()
         {
-            RuleFor(r => r.SecurityRole)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
-                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
-
-            RuleFor(r => r.GuardsCount)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
-
-            RuleFor(r => r.WorkShift)
-               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
-               .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
-
             RuleFor(r => r.ContractType)
                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
@@ -28,11 +17,15 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.EndDate)
                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.Description)
+            RuleFor(r => r.Notes)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.CompanyId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+
+            RuleFor(r => r.RequestedServices)
+                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .ForEach(r => r.SetValidator(new RequestServiceValidator()));
         }
     }
 }

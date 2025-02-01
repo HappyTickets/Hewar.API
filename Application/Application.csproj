@@ -8,8 +8,11 @@
 
 	<ItemGroup>
 	  <Compile Remove="Customers\**" />
+	  <Compile Remove="PriceRequests\Dtos\Later %28Commented%29\**" />
 	  <EmbeddedResource Remove="Customers\**" />
+	  <EmbeddedResource Remove="PriceRequests\Dtos\Later %28Commented%29\**" />
 	  <None Remove="Customers\**" />
+	  <None Remove="PriceRequests\Dtos\Later %28Commented%29\**" />
 	</ItemGroup>
 
 	<ItemGroup>

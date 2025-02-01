@@ -1,16 +1,16 @@
-﻿using Application.PriceRequests.Dtos;
+﻿using Application.PriceRequests.Dtos.Chat;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators
 {
-    public class CreatePriceRequestMessageDtoValidator: AbstractValidator<CreatePriceRequestMessageDto>
+    public class CreateChatMessageDtoValidator : AbstractValidator<CreateChatMessageDto>
     {
-        public CreatePriceRequestMessageDtoValidator()
+        public CreateChatMessageDtoValidator()
         {
             RuleFor(t => t.Content)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(t => t.PriceRequestId)
+            RuleFor(t => t.ChatId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
         }
     }

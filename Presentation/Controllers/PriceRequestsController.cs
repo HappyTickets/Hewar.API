@@ -1,11 +1,14 @@
-﻿using Application.PriceRequests.Dtos;
+﻿using Application.PriceRequests.Dtos.Chat;
+using Application.PriceRequests.Dtos.Offers;
+using Application.PriceRequests.Dtos.Requests;
 using Application.PriceRequests.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
     [Route("api/priceRequests")]
-    //[Authorize]
+    [Authorize]
     public class PriceRequestsController : ApiControllerBase
     {
         private readonly IPriceRequestsService _priceRequestsService;
@@ -22,7 +25,7 @@ namespace Presentation.Controllers
 
         [HttpPatch("acceptRequest")]
         //[HasAccountType(AccountTypes.Company)]
-        public async Task<IActionResult> AcceptRequestAsync(CreatePriceRequestOfferDto dto)
+        public async Task<IActionResult> AcceptRequestAsync(CreatePriceOfferDto dto)
             => Result(await _priceRequestsService.AcceptRequestAsync(dto));
 
         [HttpPatch("rejectRequest")]
@@ -44,30 +47,42 @@ namespace Presentation.Controllers
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> GetMyRequestsAsCompanyAsync()
             => Result(await _priceRequestsService.GetMyRequestsAsCompanyAsync());
+        #region Facility Details Later
 
-        [HttpPost("createRequestFacilityDetails")]
-        //[HasAccountType(AccountTypes.Facility)]
-        public async Task<IActionResult> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
-            => Result(await _priceRequestsService.CreateRequestFacilityDetailsAsync(dto));
+        //[HttpPost("createRequestFacilityDetails")]
+        ////[HasAccountType(AccountTypes.Facility)]
+        //public async Task<IActionResult> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
+        //    => Result(await _priceRequestsService.CreateRequestFacilityDetailsAsync(dto));
 
-        [HttpPut("updateRequestFacilityDetails")]
-        //[HasAccountType(AccountTypes.Facility)]
-        public async Task<IActionResult> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
-            => Result(await _priceRequestsService.UpdateRequestFacilityDetailsAsync(facilityDetailsId, dto));
+        //[HttpPut("updateRequestFacilityDetails")]
+        ////[HasAccountType(AccountTypes.Facility)]
+        //public async Task<IActionResult> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto)
+        //    => Result(await _priceRequestsService.UpdateRequestFacilityDetailsAsync(facilityDetailsId, dto));
 
-        [HttpGet("getRequestFacilityDetails")]
+        //[HttpGet("getRequestFacilityDetails")]
+        ////[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        //public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
+        //    => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId)); 
+        #endregion
+
+        [HttpPost("createChatMessage")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
-            => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId));
-
-        [HttpPost("createRequestMessage")]
-        //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        public async Task<IActionResult> CreateRequestMessageAsync(CreatePriceRequestMessageDto dto)
+        public async Task<IActionResult> CreateRequestMessageAsync(CreateChatMessageDto dto)
             => Result(await _priceRequestsService.CreateRequestMessageAsync(dto));
 
-        [HttpPost("getRequestMessages")]
+        [HttpGet("initializeRequestChat")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        public async Task<IActionResult> GetRequestMessagesAsync(long requestId)
-            => Result(await _priceRequestsService.GetRequestMessagesAsync(requestId));
+        public async Task<IActionResult> InitialzeRequestChatAsync(long priceRequestId)
+            => Result(await _priceRequestsService.InitialzePriceRequestChatAsync(priceRequestId));
+
+        [HttpGet("initializeOfferChat")]
+        //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        public async Task<IActionResult> InitialzeOfferChatAsync(long offerId)
+            => Result(await _priceRequestsService.InitialzeOfferChatAsync(offerId));
+
+        [HttpPost("getChatMessages")]
+        //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
+        public async Task<IActionResult> GetChatMessagesAsync(long chatId)
+            => Result(await _priceRequestsService.GetChatMessagesAsync(chatId));
     }
 }
