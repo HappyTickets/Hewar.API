@@ -14,7 +14,8 @@ namespace Domain.Entities.PriceRequestAggregates
         public long ServiceId { get; set; }
         public virtual CompanyService Service { get; set; }
         public int Quantity { get; set; }
-        public decimal CostPerUnit { get; set; }
+        public decimal DailyCostPerUnit { get; set; }
+        public decimal MonthlyCostPerUnit { get; set; }
         public ShiftType ShiftType { get; set; }
     }
 

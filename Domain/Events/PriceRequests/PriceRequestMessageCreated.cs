@@ -1,12 +1,18 @@
-﻿namespace Domain.Events.PriceRequests
-{
-    //public class PriceRequestMessageCreated : DomainEvent
-    //{
-    //    public PriceRequestMessage PriceRequestMessage { get;}
+﻿using Domain.Entities.ChatAggregate;
 
-    //    public PriceRequestMessageCreated(PriceRequestMessage priceRequestMessage)
-    //    {
-    //        PriceRequestMessage = priceRequestMessage;
-    //    }
-    //}
+namespace Domain.Events.PriceRequests
+{
+    public class PriceRequestMessageCreated : DomainEvent
+    {
+        public Message PriceRequestMessage { get; }
+        public long EntityAudienceId { get; }
+        public long EntityIssuerId { get; }
+
+        public PriceRequestMessageCreated(Message priceRequestMessage, long entityAudienceId, long entityIssuerId)
+        {
+            PriceRequestMessage = priceRequestMessage;
+            EntityAudienceId = entityAudienceId;
+            EntityIssuerId = entityIssuerId;
+        }
+    }
 }

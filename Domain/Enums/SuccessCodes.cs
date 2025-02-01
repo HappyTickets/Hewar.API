@@ -90,6 +90,11 @@
         CompanySoftDeleted = 704,
         CompanyHardDeleted = 705,
 
+        CompanyServiceCreated = 706,
+        CompanyServiceUpdated = 707,
+        CompanyServiceReceived = 708,
+        CompanyServiceDeleted = 709,
+
         //facilities
         FacilityCreated = 800,
         FacilityUpdated = 801,
@@ -109,6 +114,9 @@
         MarkAsRead = 950,
         NotificationsReceived = 951,
         CountUnRead = 952,
+
+        // chat : messages
+        ChatInitialized = 1000,
 
     }
 }

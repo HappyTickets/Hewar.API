@@ -2,9 +2,14 @@
 {
     public class Chat : SoftDeletableEntity
     {
-        public string Content { get; set; }
-        public long UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public long RelatedEntityId { get; set; }
+        public ChatEntityType RelatedEntityType { get; set; } // PriceRequest  PriceOffer  AdOffer 
+
+        public long EntityIssuerId { get; set; }
+        public long EntityAudienceId { get; set; }
+
+        public ChatStatus Status { get; set; } = ChatStatus.Open;
         public ICollection<Message> Messages { get; set; } = new List<Message>();
     }
+
 }

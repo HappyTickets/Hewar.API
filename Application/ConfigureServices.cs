@@ -5,10 +5,13 @@ using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
 using Application.Companies.Service;
+using Application.Companies.Service.ProvidedServices;
+using Application.Companies.Service.ServicesProvided;
 using Application.Facilities.Service;
 using Application.Files.Service;
 using Application.Guards.Service;
 using Application.Notifications.Service;
+using Application.PriceRequests.Service;
 using Application.Tickets.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -41,10 +44,11 @@ namespace Application
               .AddScoped<IFileService, FileService>()
               .AddScoped<ITicketsService, TicketsService>()
               .AddScoped<ICompaniesService, CompaniesService>()
+              .AddScoped<ICompanyProvidedService, CompanyProvidedService>()
               .AddScoped<IFacilitiesService, FacilitiesService>()
               .AddScoped<IGuardsService, GuardsService>()
+              .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
-            //.AddScoped<IPriceRequestsService, PriceRequestsService>()
             //.AddScoped<IInsuranceAdsService, InsuranceAdsService>();
 
 

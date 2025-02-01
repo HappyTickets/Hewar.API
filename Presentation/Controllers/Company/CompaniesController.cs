@@ -3,7 +3,7 @@ using Application.Companies.Dtos;
 using Application.Companies.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Controllers
+namespace Presentation.Controllers.Company
 {
     [Route("api/companies")]
     public class CompaniesController : ApiControllerBase

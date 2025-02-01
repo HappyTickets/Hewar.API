@@ -11,5 +11,6 @@ namespace Application.Companies.Service
         Task<Result<Empty>> HardDeleteAsync(long id);
         Task<Result<Empty>> SoftDeleteAsync(long id);
         Task<Result<Empty>> UpdateAsync(UpdateCompanyDto dto);
+
     }
 }
