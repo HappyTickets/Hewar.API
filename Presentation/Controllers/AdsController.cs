@@ -91,7 +91,7 @@ namespace Presentation.Controllers
 
         [HttpGet("getAdOfferChatMessages")]
         //[HaveAccountTypes(AccountTypes.Company, AccountTypes.Facility)]
-        public async Task<IActionResult> GetAdOfferChatMessagesAsync(long offerId)
-            => Result(await _adsService.GetAdOfferChatMessagesAsync(offerId));
+        public async Task<IActionResult> GetAdOfferChatMessagesAsync(long chatId)
+            => Result(await _adsService.GetAdOfferChatMessagesAsync(chatId));
     }
 }
