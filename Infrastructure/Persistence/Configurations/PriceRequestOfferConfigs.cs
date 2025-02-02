@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class PriceRequestOfferConfiguration : IEntityTypeConfiguration<PriceOffer>
+    public class PriceRequestOfferConfigs : IEntityTypeConfiguration<PriceOffer>
     {
         public void Configure(EntityTypeBuilder<PriceOffer> builder)
         {

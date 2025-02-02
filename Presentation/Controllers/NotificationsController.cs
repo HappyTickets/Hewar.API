@@ -5,7 +5,6 @@ using Presentation.Controllers;
 
 namespace API.Controllers
 {
-    [Route("api/notifications")]
     [Authorize]
     public class NotificationsController : ApiControllerBase
     {

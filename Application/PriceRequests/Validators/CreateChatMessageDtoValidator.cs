@@ -1,4 +1,4 @@
-﻿using Application.PriceRequests.Dtos.Chat;
+﻿using Application.Chats.DTOs;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators

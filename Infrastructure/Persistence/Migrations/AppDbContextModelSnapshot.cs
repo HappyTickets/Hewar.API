@@ -55,6 +55,70 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Address");
                 });
 
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdOfferId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdServicePrice");
+                });
+
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
                     b.Property<long>("Id")
@@ -938,7 +1002,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long>("AdId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ChatId")
+                    b.Property<long?>("ChatId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CompanyId")
@@ -964,10 +1028,6 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Offer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SentDate")
                         .HasColumnType("datetimeoffset");
@@ -1799,6 +1859,44 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Guards", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
+                        .WithMany("ServicesPrice")
+                        .HasForeignKey("AdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ad");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
+                        .WithMany("ServicesPrice")
+                        .HasForeignKey("AdOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AdOffer");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
                     b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
@@ -1870,13 +1968,13 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
                 {
                     b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.MissionAggregate.Mission", null)
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("MissionId");
 
                     b.Navigation("Company");
@@ -2005,9 +2103,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
                         .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChatId");
 
                     b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
                         .WithMany("InsuranceAdOffers")
@@ -2117,7 +2213,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "PriceOffer")
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("PriceOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2167,7 +2263,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2310,7 +2406,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Reports");
 
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
 
                     b.Navigation("Tickets");
                 });
@@ -2347,23 +2443,30 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
                 {
                     b.Navigation("AdOffers");
+
+                    b.Navigation("ServicesPrice");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
+                {
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
                 {
                     b.Navigation("Guards");
 
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>

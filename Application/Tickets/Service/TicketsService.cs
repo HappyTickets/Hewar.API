@@ -4,19 +4,8 @@ using Domain.Events.Tickets;
 
 namespace Application.Tickets.Service
 {
-    internal class TicketsService : ITicketsService
+    internal class TicketsService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper) : ITicketsService
     {
-        private readonly IUnitOfWorkService _ufw;
-        private readonly ICurrentUserService _currentUser;
-        private readonly IMapper _mapper;
-
-        public TicketsService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper)
-        {
-            _ufw = ufw;
-            _currentUser = currentUser;
-            _mapper = mapper;
-        }
-
         public async Task<Result<Empty>> CreateTicketAsync(CreateTicketDto dto)
         {
             var ticket = new Ticket
@@ -26,29 +15,29 @@ namespace Application.Tickets.Service
                 ClosedDate = null,
                 Status = TicketStatus.Opened,
                 AudienceId = dto.AudienceId,
-                IssuerId = _currentUser.UserId!.Value,
+                IssuerId = currentUser.UserId!.Value,
                 Messages =
                 [
                     new TicketMessage
                     {
                         Content = dto.Content,
-                        Medias = _mapper.Map<Media[]>(dto.Medias),
+                        Medias = mapper.Map<Media[]>(dto.Medias),
                         SentDate = DateTimeOffset.UtcNow,
-                        SenderId = _currentUser.UserId!.Value
+                        SenderId = currentUser.UserId!.Value
                     }
                 ]
             };
 
             ticket.AddDomainEvent(new TicketCreated(ticket));
-            await _ufw.GetRepository<Ticket>().CreateAsync(ticket);
-            await _ufw.SaveChangesAsync();
+            await ufw.GetRepository<Ticket>().CreateAsync(ticket);
+            await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.TicketCreated);
         }
 
         public async Task<Result<Empty>> CreateTicketMessageAsync(CreateTicketMessageDto dto)
         {
-            var ticket = await _ufw.GetRepository<Ticket>().GetByIdAsync(dto.TicketId);
+            var ticket = await ufw.GetRepository<Ticket>().GetByIdAsync(dto.TicketId);
 
             if (ticket == null)
                 return new NotFoundError();
@@ -56,27 +45,27 @@ namespace Application.Tickets.Service
             if (ticket.Status == TicketStatus.Closed)
                 return new ConflictError(ErrorCodes.TicketClosed);
 
-            var message = _mapper.Map<TicketMessage>(dto);
+            var message = mapper.Map<TicketMessage>(dto);
 
             message.SentDate = DateTimeOffset.UtcNow;
-            message.SenderId = _currentUser.UserId!.Value;
-            message.Ticket = ticket;
+            message.SenderId = currentUser.UserId!.Value;
+            message.TicketId = ticket.Id;
 
             message.AddDomainEvent(new TicketMessageCreated(message));
-            _ufw.GetRepository<TicketMessage>().Create(message);
-            await _ufw.SaveChangesAsync();
+            ufw.GetRepository<TicketMessage>().Create(message);
+            await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateTicketMessage);
         }
 
         public async Task<Result<Empty>> CloseTicketAsync(long ticketId)
         {
-            var ticket = await _ufw.GetRepository<Ticket>().GetByIdAsync(ticketId);
+            var ticket = await ufw.GetRepository<Ticket>().GetByIdAsync(ticketId);
 
             if (ticket == null)
                 return new NotFoundError();
 
-            if (ticket.AudienceId != _currentUser.UserId)
+            if (ticket.AudienceId != currentUser.UserId)
                 return new ForbiddenError(ErrorCodes.TicketAudienceError);
 
             if (ticket.Status == TicketStatus.Closed)
@@ -86,37 +75,37 @@ namespace Application.Tickets.Service
             ticket.ClosedDate = DateTimeOffset.UtcNow;
 
             ticket.AddDomainEvent(new TicketClosed(ticket));
-            await _ufw.SaveChangesAsync();
+            await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.TicketClosed);
         }
 
         public async Task<Result<TicketDto[]>> GetMyReceivedTicketsAsync()
         {
-            var tickets = await _ufw.GetRepository<Ticket>()
-                .FilterAsync(t => t.AudienceId == _currentUser.UserId);
+            var tickets = await ufw.GetRepository<Ticket>()
+                .FilterAsync(t => t.AudienceId == currentUser.UserId);
 
-            var ticketDto = _mapper.Map<TicketDto[]>(tickets);
+            var ticketDto = mapper.Map<TicketDto[]>(tickets);
             return Result<TicketDto[]>.Success(ticketDto, SuccessCodes.GetMyReceivedTickets);
 
         }
 
         public async Task<Result<TicketDto[]>> GetMySentTicketsAsync()
         {
-            var tickets = await _ufw.GetRepository<Ticket>()
-                .FilterAsync(t => t.IssuerId == _currentUser.UserId);
+            var tickets = await ufw.GetRepository<Ticket>()
+                .FilterAsync(t => t.IssuerId == currentUser.UserId);
 
-            var ticketDto = _mapper.Map<TicketDto[]>(tickets);
+            var ticketDto = mapper.Map<TicketDto[]>(tickets);
             return Result<TicketDto[]>.Success(ticketDto, SuccessCodes.GetMySentTickets);
 
         }
 
         public async Task<Result<TicketMessageDto[]>> GetTicketMessagesAsync(long ticketId)
         {
-            var messages = await _ufw.GetRepository<TicketMessage>()
+            var messages = await ufw.GetRepository<TicketMessage>()
                 .FilterAsync(t => t.TicketId == ticketId);
 
-            var ticketMessageDto = _mapper.Map<TicketMessageDto[]>(messages);
+            var ticketMessageDto = mapper.Map<TicketMessageDto[]>(messages);
             return Result<TicketMessageDto[]>.Success(ticketMessageDto, SuccessCodes.GetTicketMessages);
         }
     }

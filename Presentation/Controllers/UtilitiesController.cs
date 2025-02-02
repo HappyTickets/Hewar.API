@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers
 {
     // this controller is only for testing purposes
-    [Route("api/utilities")]
     [ApiController]
     public class UtilitiesController : ControllerBase
     {

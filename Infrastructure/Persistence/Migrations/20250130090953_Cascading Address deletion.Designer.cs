@@ -1841,11 +1841,11 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
                 {
                     b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("CompanyId");
 
                     b.HasOne("Domain.Entities.MissionAggregate.Mission", null)
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("MissionId");
                 });
 
@@ -2084,7 +2084,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "PriceOffer")
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("PriceOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2128,7 +2128,7 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithMany("Services")
+                        .WithMany("ServicesPrice")
                         .HasForeignKey("PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2271,7 +2271,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Reports");
 
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
 
                     b.Navigation("Tickets");
                 });
@@ -2314,17 +2314,17 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("Guards");
 
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
-                    b.Navigation("Services");
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>

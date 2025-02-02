@@ -3,6 +3,7 @@ using Application.Account.Service.Interfaces;
 using Application.Account.Validators;
 using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
+using Application.Ads.Service;
 using Application.Authorization.Service;
 using Application.Companies.Service;
 using Application.Companies.Service.ProvidedServices;
@@ -48,8 +49,8 @@ namespace Application
               .AddScoped<IFacilitiesService, FacilitiesService>()
               .AddScoped<IGuardsService, GuardsService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
-              .AddScoped<IUserValidator<ApplicationUser>, UserValidator>();
-            //.AddScoped<IInsuranceAdsService, InsuranceAdsService>();
+              .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
+            .AddScoped<IAdsService, AdsService>();
 
 
             return services;

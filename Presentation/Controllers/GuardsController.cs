@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/guards")]
     public class GuardsController : ApiControllerBase
     {
         private readonly IGuardsService _guardsService;

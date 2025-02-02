@@ -18,6 +18,12 @@ namespace Infrastructure.Persistence.Configurations
                .HasForeignKey<Company>(c => c.AddressId)
                .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasMany(c => c.Services)
+           .WithOne(cs => cs.Company)
+           .HasForeignKey(cs => cs.CompanyId)
+           .IsRequired()
+           .OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }
