@@ -1,8 +1,6 @@
-﻿using Domain.Entities.TicketAggregates;
-
-namespace Domain.Events.Tickets
+﻿namespace Domain.Events.Tickets
 {
-    public class TicketCreated: DomainEvent
+    public class TicketCreated : DomainEvent
     {
         public Ticket Ticket { get; }
 

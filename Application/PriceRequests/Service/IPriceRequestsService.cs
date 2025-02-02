@@ -1,4 +1,4 @@
-﻿using Application.PriceRequests.Dtos.Chat;
+﻿using Application.Chats.DTOs;
 using Application.PriceRequests.Dtos.Offers;
 using Application.PriceRequests.Dtos.Requests;
 

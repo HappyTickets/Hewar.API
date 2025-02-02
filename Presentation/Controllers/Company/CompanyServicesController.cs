@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.Company
 {
-    [Route("api/[controller]")]
 
     public class CompanyServicesController : ApiControllerBase
     {

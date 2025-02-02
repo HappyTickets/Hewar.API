@@ -1,9 +1,9 @@
-﻿using Application.Files.Service;
+﻿using Application.Files.Dtos;
+using Application.Files.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/files")]
     public class FilesController : ApiControllerBase
     {
         private readonly IFileService _fileService;
@@ -14,7 +14,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadAsync(IFormFile file)
+        public async Task<IActionResult> UploadAsync(FileInfoDTO file)
             => Result(await _fileService.SaveFileAsync(file));
     }
 }

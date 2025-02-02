@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.Company
 {
-    [Route("api/companies")]
     public class CompaniesController : ApiControllerBase
     {
         private readonly ICompaniesService _companiesService;

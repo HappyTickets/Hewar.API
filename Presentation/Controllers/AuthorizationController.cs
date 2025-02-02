@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/roles")]
     public class AuthorizationController : ApiControllerBase
     {
         private readonly IAuthorizationService _authorizationService;

@@ -1,4 +1,4 @@
-﻿namespace Application.PriceRequests.Dtos.Chat
+﻿namespace Application.Chats.DTOs
 {
     public class CreateChatMessageDto
     {

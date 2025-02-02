@@ -43,10 +43,11 @@
         AdExists = 500,
         AdNotExists = 501,
         AdNotOpened = 502,
-        AdOfferNotPending = 503,
+        AdClosed = 503,
+        AdOfferNotPending = 504,
 
         // price requests : offers
-        AdOfferAccepted=504,
+        AdOfferAccepted = 504,
         // price requests
         PriceRequestExists = 600,
         PriceRequestNotExists = 601,

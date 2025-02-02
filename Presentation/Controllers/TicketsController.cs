@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/tickets")]
     [Authorize]
     public class TicketsController : ApiControllerBase
     {
