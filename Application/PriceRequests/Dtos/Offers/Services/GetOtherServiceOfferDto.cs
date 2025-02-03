@@ -1,8 +1,9 @@
-﻿namespace Application.Ads.Dtos.AdServices
+﻿namespace Application.PriceRequests.Dtos.Offers.Services
 {
-    public class AdServicePriceDto
+    public class GetOtherServiceOfferDto
     {
-        public long ServiceId { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; }
         public int Quantity { get; set; }
         public ShiftType ShiftType { get; set; }
         public decimal DailyCostPerUnit { get; set; }

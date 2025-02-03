@@ -11,7 +11,6 @@ namespace Application.Ads.Dtos.Offers
         public RequestStatus Status { get; set; }
         public DateTimeOffset SentDate { get; set; }
         public ICollection<AdServicePriceDto> ServicesPrice { get; set; }
-
         public FacilityBreifDto Facility { get; set; }
     }
 }

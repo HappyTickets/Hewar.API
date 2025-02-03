@@ -1,6 +1,6 @@
-﻿namespace Application.PriceRequests.Dtos.Offers
+﻿namespace Application.PriceRequests.Dtos.Offers.Services
 {
-    public class PriceOfferServiceDto
+    public class ServiceOfferDto
     {
         public long ServiceId { get; set; }
         public int Quantity { get; set; }

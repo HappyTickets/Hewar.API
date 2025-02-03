@@ -76,6 +76,16 @@ namespace Application.Companies.Service.ProvidedServices
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.Created);
         }
+
+        public async Task<Result<List<CompanyServiceDto>>> GetServicesByCompanyIdAsync(long companyId)
+        {
+            var companyServices = await unitOfWork
+                .GetRepository<CompanyService>()
+                .FilterAsync(cs => cs.CompanyId == companyId);
+
+            var companyServiceDtos = mapper.Map<List<CompanyServiceDto>>(companyServices);
+            return Result<List<CompanyServiceDto>>.Success(companyServiceDtos, SuccessCodes.CompanyServiceReceived);
+        }
     }
 
 }

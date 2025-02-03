@@ -95,6 +95,11 @@
         CompanyServiceReceived = 708,
         CompanyServiceDeleted = 709,
 
+        HewarServiceCreated = 710,
+        HewarServiceUpdated = 711,
+        HewarServiceReceived = 712,
+        HewarServiceDeleted = 713,
+
         //facilities
         FacilityCreated = 800,
         FacilityUpdated = 801,

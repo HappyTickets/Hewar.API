@@ -11,6 +11,7 @@ using Application.Companies.Service.ServicesProvided;
 using Application.Facilities.Service;
 using Application.Files.Service;
 using Application.Guards.Service;
+using Application.Hewar.Service;
 using Application.Notifications.Service;
 using Application.PriceRequests.Service;
 using Application.Tickets.Service;
@@ -48,6 +49,7 @@ namespace Application
               .AddScoped<ICompanyProvidedService, CompanyProvidedService>()
               .AddScoped<IFacilitiesService, FacilitiesService>()
               .AddScoped<IGuardsService, GuardsService>()
+              .AddScoped<IHewarProvidedService, HewarProvidedService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();

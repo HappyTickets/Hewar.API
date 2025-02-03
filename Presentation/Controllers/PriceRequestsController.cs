@@ -70,17 +70,17 @@ namespace Presentation.Controllers
         public async Task<IActionResult> CreateRequestMessageAsync(CreateChatMessageDto dto)
             => Result(await _priceRequestsService.CreateRequestMessageAsync(dto));
 
-        [HttpGet("initializeRequestChat")]
+        [HttpPatch("initializeRequestChat")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> InitialzeRequestChatAsync(long priceRequestId)
             => Result(await _priceRequestsService.InitialzePriceRequestChatAsync(priceRequestId));
 
-        [HttpGet("initializeOfferChat")]
+        [HttpPatch("initializeOfferChat")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> InitialzeOfferChatAsync(long offerId)
             => Result(await _priceRequestsService.InitialzeOfferChatAsync(offerId));
 
-        [HttpPost("getChatMessages")]
+        [HttpGet("getChatMessages")]
         //[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
         public async Task<IActionResult> GetChatMessagesAsync(long chatId)
             => Result(await _priceRequestsService.GetChatMessagesAsync(chatId));

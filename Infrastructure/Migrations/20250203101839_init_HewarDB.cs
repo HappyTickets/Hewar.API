@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Latest : Migration
+    public partial class init_HewarDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +44,53 @@ namespace Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Chat",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RelatedEntityId = table.Column<long>(type: "bigint", nullable: false),
+                    RelatedEntityType = table.Column<int>(type: "int", nullable: false),
+                    EntityIssuerId = table.Column<long>(type: "bigint", nullable: false),
+                    EntityAudienceId = table.Column<long>(type: "bigint", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chat", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HewarService",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TenantId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HewarService", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -306,13 +353,16 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Chat",
+                name: "Message",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    SentOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    RepresentedEntity = table.Column<int>(type: "int", nullable: true),
+                    SenderId = table.Column<long>(type: "bigint", nullable: false),
+                    ChatId = table.Column<long>(type: "bigint", nullable: false),
                     TenantId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -324,10 +374,16 @@ namespace Infrastructure.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Chat", x => x.Id);
+                    table.PrimaryKey("PK_Message", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Chat_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Message_Chat_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Message_Users_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -366,7 +422,10 @@ namespace Infrastructure.Persistence.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatePosted = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
+                    ContractType = table.Column<int>(type: "int", nullable: false),
                     FacilityId = table.Column<long>(type: "bigint", nullable: false),
                     TenantId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -549,84 +608,24 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message",
+                name: "Message_Medias",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    MessageId = table.Column<long>(type: "bigint", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SenderId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
-                    SentOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ChatId = table.Column<long>(type: "bigint", nullable: true),
-                    TenantId = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Message", x => x.Id);
+                    table.PrimaryKey("PK_Message_Medias", x => new { x.MessageId, x.Id });
                     table.ForeignKey(
-                        name: "FK_Message_Chat_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chat",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Message_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Message_Medias_Message_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Message",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PriceRequests",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FacilityId = table.Column<long>(type: "bigint", nullable: false),
-                    CompanyId = table.Column<long>(type: "bigint", nullable: false),
-                    ContractType = table.Column<int>(type: "int", nullable: false),
-                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RequestStatus = table.Column<int>(type: "int", nullable: false),
-                    ChatId = table.Column<long>(type: "bigint", nullable: true),
-                    TenantId = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PriceRequests", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PriceRequests_Chat_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chat",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_PriceRequests_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PriceRequests_Facilities_FacilityId",
-                        column: x => x.FacilityId,
-                        principalTable: "Facilities",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -635,12 +634,11 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Offer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     SentDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AdId = table.Column<long>(type: "bigint", nullable: false),
                     CompanyId = table.Column<long>(type: "bigint", nullable: false),
-                    ChatId = table.Column<long>(type: "bigint", nullable: false),
+                    ChatId = table.Column<long>(type: "bigint", nullable: true),
                     TenantId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -663,14 +661,41 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_AdOffers_Chat_ChatId",
                         column: x => x.ChatId,
                         principalTable: "Chat",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_AdOffers_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdService",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ShiftType = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<long>(type: "bigint", nullable: false),
+                    AdId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdService", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdService_Ads_AdId",
+                        column: x => x.AdId,
+                        principalTable: "Ads",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AdService_HewarService_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "HewarService",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -894,8 +919,16 @@ namespace Infrastructure.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CompanyId = table.Column<long>(type: "bigint", nullable: true),
-                    MissionId = table.Column<long>(type: "bigint", nullable: true)
+                    CompanyId = table.Column<long>(type: "bigint", nullable: false),
+                    MissionId = table.Column<long>(type: "bigint", nullable: true),
+                    TenantId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -904,7 +937,8 @@ namespace Infrastructure.Persistence.Migrations
                         name: "FK_CompanyService_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CompanyService_Mission_MissionId",
                         column: x => x.MissionId,
@@ -971,85 +1005,33 @@ namespace Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Message_Medias",
-                columns: table => new
-                {
-                    MessageId = table.Column<long>(type: "bigint", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Message_Medias", x => new { x.MessageId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_Message_Medias_Message_MessageId",
-                        column: x => x.MessageId,
-                        principalTable: "Message",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PriceRequestOffers",
+                name: "AdServicePrice",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PriceRequestId = table.Column<long>(type: "bigint", nullable: false),
-                    ChatId = table.Column<long>(type: "bigint", nullable: true),
-                    TenantId = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PriceRequestOffers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PriceRequestOffers_Chat_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chat",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_PriceRequestOffers_PriceRequests_PriceRequestId",
-                        column: x => x.PriceRequestId,
-                        principalTable: "PriceRequests",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PriceRequestService",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PriceRequestId = table.Column<long>(type: "bigint", nullable: false),
-                    ServiceId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ShiftType = table.Column<int>(type: "int", nullable: false)
+                    DailyCostPerUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MonthlyCostPerUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ShiftType = table.Column<int>(type: "int", nullable: false),
+                    ServiceId = table.Column<long>(type: "bigint", nullable: false),
+                    AdOfferId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PriceRequestService", x => x.Id);
+                    table.PrimaryKey("PK_AdServicePrice", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PriceRequestService_CompanyService_ServiceId",
+                        name: "FK_AdServicePrice_AdOffers_AdOfferId",
+                        column: x => x.AdOfferId,
+                        principalTable: "AdOffers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AdServicePrice_HewarService_ServiceId",
                         column: x => x.ServiceId,
-                        principalTable: "CompanyService",
+                        principalTable: "HewarService",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PriceRequestService_PriceRequests_PriceRequestId",
-                        column: x => x.PriceRequestId,
-                        principalTable: "PriceRequests",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1082,7 +1064,8 @@ namespace Infrastructure.Persistence.Migrations
                     PriceOfferId = table.Column<long>(type: "bigint", nullable: false),
                     ServiceId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    CostPerUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DailyCostPerUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MonthlyCostPerUnit = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ShiftType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -1094,10 +1077,112 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "CompanyService",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceRequestOffers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PriceRequestId = table.Column<long>(type: "bigint", nullable: false),
+                    OfferStatus = table.Column<int>(type: "int", nullable: false),
+                    ChatId = table.Column<long>(type: "bigint", nullable: true),
+                    TenantId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceRequestOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PriceOfferService_PriceRequestOffers_PriceOfferId",
-                        column: x => x.PriceOfferId,
+                        name: "FK_PriceRequestOffers_Chat_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chat",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceRequests",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FacilityId = table.Column<long>(type: "bigint", nullable: false),
+                    CompanyId = table.Column<long>(type: "bigint", nullable: false),
+                    ContractType = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RequestStatus = table.Column<int>(type: "int", nullable: false),
+                    OfferId = table.Column<long>(type: "bigint", nullable: true),
+                    ChatId = table.Column<long>(type: "bigint", nullable: true),
+                    TenantId = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    ModifiedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ModifiedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeletedOn = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceRequests", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PriceRequests_Chat_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chat",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PriceRequests_Companies_CompanyId",
+                        column: x => x.CompanyId,
+                        principalTable: "Companies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PriceRequests_Facilities_FacilityId",
+                        column: x => x.FacilityId,
+                        principalTable: "Facilities",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PriceRequests_PriceRequestOffers_OfferId",
+                        column: x => x.OfferId,
                         principalTable: "PriceRequestOffers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PriceRequestService",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PriceRequestId = table.Column<long>(type: "bigint", nullable: false),
+                    ServiceId = table.Column<long>(type: "bigint", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    ShiftType = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceRequestService", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PriceRequestService_CompanyService_ServiceId",
+                        column: x => x.ServiceId,
+                        principalTable: "CompanyService",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PriceRequestService_PriceRequests_PriceRequestId",
+                        column: x => x.PriceRequestId,
+                        principalTable: "PriceRequests",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -1153,6 +1238,26 @@ namespace Infrastructure.Persistence.Migrations
                 column: "FacilityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AdService_AdId",
+                table: "AdService",
+                column: "AdId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdService_ServiceId",
+                table: "AdService",
+                column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdServicePrice_AdOfferId",
+                table: "AdServicePrice",
+                column: "AdOfferId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdServicePrice_ServiceId",
+                table: "AdServicePrice",
+                column: "ServiceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -1183,14 +1288,10 @@ namespace Infrastructure.Persistence.Migrations
                 column: "GuardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chat_UserId",
-                table: "Chat",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Companies_AddressId",
                 table: "Companies",
-                column: "AddressId");
+                column: "AddressId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_CompanyService_CompanyId",
@@ -1205,7 +1306,8 @@ namespace Infrastructure.Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Facilities_AddressId",
                 table: "Facilities",
-                column: "AddressId");
+                column: "AddressId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Guards_AddressID",
@@ -1228,9 +1330,9 @@ namespace Infrastructure.Persistence.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Message_UserId",
+                name: "IX_Message_SenderId",
                 table: "Message",
-                column: "UserId");
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Mission_CompanyId",
@@ -1320,6 +1422,11 @@ namespace Infrastructure.Persistence.Migrations
                 column: "FacilityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PriceRequests_OfferId",
+                table: "PriceRequests",
+                column: "OfferId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PriceRequestService_PriceRequestId",
                 table: "PriceRequestService",
                 column: "PriceRequestId");
@@ -1395,13 +1502,51 @@ namespace Infrastructure.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PriceOfferService_PriceRequestOffers_PriceOfferId",
+                table: "PriceOfferService",
+                column: "PriceOfferId",
+                principalTable: "PriceRequestOffers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_PriceRequestOffers_PriceRequests_PriceRequestId",
+                table: "PriceRequestOffers",
+                column: "PriceRequestId",
+                principalTable: "PriceRequests",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_PriceRequestOffers_Chat_ChatId",
+                table: "PriceRequestOffers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PriceRequests_Chat_ChatId",
+                table: "PriceRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PriceRequests_Companies_CompanyId",
+                table: "PriceRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PriceRequests_Facilities_FacilityId",
+                table: "PriceRequests");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_PriceRequests_PriceRequestOffers_OfferId",
+                table: "PriceRequests");
+
             migrationBuilder.DropTable(
-                name: "AdOffers");
+                name: "AdService");
+
+            migrationBuilder.DropTable(
+                name: "AdServicePrice");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -1467,13 +1612,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "TicketMessages_Medias");
 
             migrationBuilder.DropTable(
-                name: "Ads");
+                name: "AdOffers");
+
+            migrationBuilder.DropTable(
+                name: "HewarService");
 
             migrationBuilder.DropTable(
                 name: "Message");
-
-            migrationBuilder.DropTable(
-                name: "PriceRequestOffers");
 
             migrationBuilder.DropTable(
                 name: "CompanyService");
@@ -1488,10 +1633,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "TicketMessages");
 
             migrationBuilder.DropTable(
-                name: "PriceRequests");
+                name: "Ads");
 
             migrationBuilder.DropTable(
                 name: "Mission");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Tickets");
@@ -1506,10 +1654,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "Facilities");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Address");
 
             migrationBuilder.DropTable(
-                name: "Address");
+                name: "PriceRequestOffers");
+
+            migrationBuilder.DropTable(
+                name: "PriceRequests");
         }
     }
 }

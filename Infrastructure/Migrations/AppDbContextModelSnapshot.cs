@@ -4,19 +4,16 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250129093423_Latest")]
-    partial class Latest
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +53,70 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdOfferId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdServicePrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
@@ -114,10 +175,6 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -130,6 +187,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long>("EntityAudienceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EntityIssuerId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -139,15 +202,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<long>("RelatedEntityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("RelatedEntityType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Chat");
                 });
@@ -160,7 +227,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("ChatId")
+                    b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Content")
@@ -188,6 +255,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int?>("RepresentedEntity")
+                        .HasColumnType("int");
+
                     b.Property<long>("SenderId")
                         .HasColumnType("bigint");
 
@@ -197,14 +267,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Message");
                 });
@@ -281,7 +348,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("Companies");
                 });
@@ -294,19 +362,43 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long?>("CompanyId")
+                    b.Property<long>("CompanyId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<long?>("MissionId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -393,7 +485,8 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.ToTable("Facilities");
                 });
@@ -449,6 +542,51 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("GuardId");
 
                     b.ToTable("Skill");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Hewar.HewarService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HewarService");
                 });
 
             modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRole", b =>
@@ -850,6 +988,9 @@ namespace Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<int>("ContractType")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -869,6 +1010,9 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<long>("FacilityId")
                         .HasColumnType("bigint");
 
@@ -879,6 +1023,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Status")
@@ -909,7 +1056,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<long>("AdId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ChatId")
+                    b.Property<long?>("ChatId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CompanyId")
@@ -935,10 +1082,6 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Offer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("SentDate")
                         .HasColumnType("datetimeoffset");
@@ -1289,6 +1432,68 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Policies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherRequestedService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PriceRequestId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceRequestId");
+
+                    b.ToTable("OtherRequestedService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherServiceOffer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("PriceOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceOfferId");
+
+                    b.ToTable("OtherServiceOffer");
+                });
+
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
                 {
                     b.Property<long>("Id")
@@ -1321,6 +1526,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<int>("OfferStatus")
+                        .HasColumnType("int");
+
                     b.Property<long>("PriceRequestId")
                         .HasColumnType("bigint");
 
@@ -1336,38 +1544,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasIndex("PriceRequestId");
 
                     b.ToTable("PriceRequestOffers");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<decimal>("CostPerUnit")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<long>("PriceOfferId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<long>("ServiceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ShiftType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PriceOfferId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("PriceOfferService");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
@@ -1418,6 +1594,9 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("OfferId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("RequestStatus")
                         .HasColumnType("int");
 
@@ -1435,10 +1614,47 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("FacilityId");
 
+                    b.HasIndex("OfferId");
+
                     b.ToTable("PriceRequests");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceOffer", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("PriceOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PriceOfferId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("ServiceOffer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceRequest", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1464,7 +1680,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("PriceRequestService");
+                    b.ToTable("ServiceRequest");
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -1759,6 +1975,44 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Guards", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
+                        .WithMany("Services")
+                        .HasForeignKey("AdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Hewar.HewarService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ad");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
+                        .WithMany("ServicesPrice")
+                        .HasForeignKey("AdOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Hewar.HewarService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AdOffer");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
                 {
                     b.HasOne("Domain.Entities.GuardAggregate.Guard", "Guard")
@@ -1770,26 +2024,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Guard");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ChatAggregate.Chat", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domain.Entities.ChatAggregate.Message", b =>
                 {
                     b.HasOne("Domain.Entities.ChatAggregate.Chat", null)
                         .WithMany("Messages")
-                        .HasForeignKey("ChatId");
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "User")
+                    b.HasOne("Domain.Entities.IdentityAggregate.ApplicationUser", "Sender")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1822,14 +2067,14 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Medias");
 
-                    b.Navigation("User");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.Company", b =>
                 {
                     b.HasOne("Domain.Common.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.CompanyAggregate.Company", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1838,20 +2083,24 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
                 {
-                    b.HasOne("Domain.Entities.CompanyAggregate.Company", null)
-                        .WithMany("ServicesPrice")
-                        .HasForeignKey("CompanyId");
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
+                        .WithMany("Services")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.MissionAggregate.Mission", null)
-                        .WithMany("ServicesPrice")
+                        .WithMany("Services")
                         .HasForeignKey("MissionId");
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
                 {
                     b.HasOne("Domain.Common.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.FacilityAggregate.Facility", "AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1970,9 +2219,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
                         .WithMany()
-                        .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ChatId");
 
                     b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
                         .WithMany("InsuranceAdOffers")
@@ -2062,6 +2309,20 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("FacilityId");
                 });
 
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherRequestedService", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", null)
+                        .WithMany("OtherServices")
+                        .HasForeignKey("PriceRequestId");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherServiceOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", null)
+                        .WithMany("OtherServices")
+                        .HasForeignKey("PriceOfferId");
+                });
+
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
                 {
                     b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
@@ -2077,25 +2338,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Chat");
 
                     b.Navigation("PriceRequest");
-                });
-
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOfferService", b =>
-                {
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "PriceOffer")
-                        .WithMany("ServicesPrice")
-                        .HasForeignKey("PriceOfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PriceOffer");
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
@@ -2116,17 +2358,42 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "Offer")
+                        .WithMany()
+                        .HasForeignKey("OfferId");
+
                     b.Navigation("Chat");
 
                     b.Navigation("Company");
 
                     b.Navigation("Facility");
+
+                    b.Navigation("Offer");
                 });
 
-            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequestService", b =>
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceOffer", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "PriceOffer")
+                        .WithMany("Services")
+                        .HasForeignKey("PriceOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PriceOffer");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceRequest", b =>
                 {
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithMany("ServicesPrice")
+                        .WithMany("Services")
                         .HasForeignKey("PriceRequestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2269,7 +2536,7 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Navigation("Reports");
 
-                    b.Navigation("ServicesPrice");
+                    b.Navigation("Services");
 
                     b.Navigation("Tickets");
                 });
@@ -2306,23 +2573,34 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
                 {
                     b.Navigation("AdOffers");
+
+                    b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
+                {
+                    b.Navigation("ServicesPrice");
                 });
 
             modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
                 {
                     b.Navigation("Guards");
 
-                    b.Navigation("ServicesPrice");
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
                 {
-                    b.Navigation("ServicesPrice");
+                    b.Navigation("OtherServices");
+
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
-                    b.Navigation("ServicesPrice");
+                    b.Navigation("OtherServices");
+
+                    b.Navigation("Services");
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>

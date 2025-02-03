@@ -10,7 +10,7 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.PriceRequestId)
              .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.PricedServices)
+            RuleFor(r => r.Services)
              .ForEach(s =>
              {
                  s.SetValidator(new PriceOfferServiceValidator());
