@@ -1,4 +1,4 @@
-﻿using Domain.Entities.CompanyAggregate;
+﻿using Domain.Entities.Hewar;
 
 namespace Domain.Entities.AdAggregate
 {
@@ -9,7 +9,7 @@ namespace Domain.Entities.AdAggregate
         public ShiftType ShiftType { get; set; }
 
         public long ServiceId { get; set; }
-        public virtual CompanyService Service { get; set; }
+        public virtual HewarService Service { get; set; }
 
         public long AdId { get; set; }
         public virtual Ad Ad { get; set; }

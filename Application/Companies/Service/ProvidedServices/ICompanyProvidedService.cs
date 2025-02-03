@@ -7,6 +7,7 @@ namespace Application.Companies.Service.ServicesProvided
         Task<Result<long>> CreateAsync(CreateCompanyServiceDto dto, CancellationToken cancellationToken = default);
         Task<Result<CompanyServiceDto>> GetByIdAsync(long id);
         Task<Result<List<CompanyServiceDto>>> GetAllAsync();
+        Task<Result<List<CompanyServiceDto>>> GetServicesByCompanyIdAsync(long companyId);
         Task<Result<Empty>> UpdateAsync(UpdateCompanyServiceDto dto);
         Task<Result<Empty>> DeleteAsync(long id);
     }
