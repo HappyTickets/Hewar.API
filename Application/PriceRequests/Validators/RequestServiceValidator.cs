@@ -1,9 +1,9 @@
-﻿using Application.PriceRequests.Dtos.Requests;
+﻿using Application.PriceRequests.Dtos.Requests.Services;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators
 {
-    internal class RequestServiceValidator : AbstractValidator<PriceRequestServiceDto>
+    internal class RequestServiceValidator : AbstractValidator<ServiceRequestDto>
     {
         public RequestServiceValidator()
         {

@@ -19,7 +19,9 @@ namespace Domain.Entities.PriceRequestAggregates
         public string Notes { get; set; }
         public RequestStatus RequestStatus { get; set; }
 
-        public virtual ICollection<PriceRequestService> Services { get; set; } = new List<PriceRequestService>();
+        public virtual ICollection<ServiceRequest> Services { get; set; } = new List<ServiceRequest>();
+        public virtual ICollection<OtherRequestedService>? OtherServices { get; set; }
+
         public long? OfferId { get; set; }
         [ForeignKey(nameof(OfferId))]
         public virtual PriceOffer? Offer { get; set; }

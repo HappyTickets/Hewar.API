@@ -1,5 +1,6 @@
 ﻿using Application.Facilities.Dtos;
 using Application.PriceRequests.Dtos.Offers;
+using Application.PriceRequests.Dtos.Requests.Services;
 
 namespace Application.PriceRequests.Dtos.Requests
 {
@@ -13,7 +14,10 @@ namespace Application.PriceRequests.Dtos.Requests
         public string Notes { get; set; }
         public RequestStatus RequestStatus { get; set; }
 
-        public PriceOfferDto Offer { get; set; }
+        public ICollection<ServiceRequestDto> Services { get; set; }
+        public ICollection<OtherRequestedServiceDto>? OtherServices { get; set; }
+
+        public GetPriceOfferDto Offer { get; set; }
         public FacilityBreifDto Facility { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace Domain.Entities.PriceRequestAggregates
         public virtual PriceRequest PriceRequest { get; set; }
         public RequestStatus OfferStatus { get; set; }
 
-        public virtual ICollection<PriceOfferService> Services { get; set; } = new List<PriceOfferService>();
+        public virtual ICollection<ServiceOffer> Services { get; set; } = new List<ServiceOffer>();
+        public virtual ICollection<OtherServiceOffer>? OtherServices { get; set; }
 
         public long? ChatId { get; set; }
         public virtual Chat? Chat { get; set; }
