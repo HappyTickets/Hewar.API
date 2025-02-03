@@ -7,6 +7,5 @@
         public ShiftType ShiftType { get; set; }
         public decimal DailyCostPerUnit { get; set; }
         public decimal MonthlyCostPerUnit { get; set; }
-
     }
 }
