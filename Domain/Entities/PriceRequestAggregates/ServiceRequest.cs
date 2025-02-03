@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceRequestService
+    public class ServiceRequest
     {
         public long Id { get; set; }
         public long PriceRequestId { get; set; }

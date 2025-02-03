@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceOfferService
+    public class ServiceOffer
     {
         public long Id { get; set; }
 

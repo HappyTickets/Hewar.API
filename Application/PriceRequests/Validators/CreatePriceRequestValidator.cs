@@ -23,7 +23,7 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.CompanyId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.RequestedServices)
+            RuleFor(r => r.Services)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .ForEach(r => r.SetValidator(new RequestServiceValidator()));
         }

@@ -89,7 +89,14 @@ namespace Application.PriceRequests.Service
             var entityId = _currentUser.EntityId ?? 1;
 
             var priceRequests = await _ufw.GetRepository<PriceRequest>()
-                .FilterAsync(pr => pr.FacilityId == entityId, [$"{nameof(Company)}", $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.Services)}"]);
+                .FilterAsync(pr => pr.FacilityId == entityId,
+                [
+                    nameof(Company),
+                    nameof(PriceRequest.Services),
+                    nameof(PriceRequest.OtherServices),
+                    $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.Services)}",
+                    $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.OtherServices)}",
+                    ]);
 
             var facilityPriceRequestDto = _mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
             return Result<FacilityPriceRequestDto[]>.Success(facilityPriceRequestDto,
@@ -103,8 +110,14 @@ namespace Application.PriceRequests.Service
             var entityId = _currentUser.EntityId ?? 1;
 
             var priceRequests = await _ufw.GetRepository<PriceRequest>()
-                .FilterAsync(pr => pr.CompanyId == entityId, [$"{nameof(Facility)}",
-                    $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.Services)}"]);
+                .FilterAsync(pr => pr.CompanyId == entityId, [
+                    nameof(Facility),
+                    nameof(PriceRequest.Services),
+                    nameof(PriceRequest.OtherServices),
+                    $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.Services)}",
+                    $"{nameof(PriceRequest.Offer)}.{nameof(PriceRequest.Offer.OtherServices)}",
+
+                    ]);
 
             var companyPriceRequestDto = _mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
             return Result<CompanyPriceRequestDto[]>.Success(companyPriceRequestDto,
