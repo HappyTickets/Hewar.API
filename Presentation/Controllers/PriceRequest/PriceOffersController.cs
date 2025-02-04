@@ -42,21 +42,6 @@ namespace Presentation.Controllers.PriceRequest
         [HttpGet("facility/offers/request/{requestId:long}")]
         public async Task<IActionResult> GetFacilityOffersByRequestIdAsync(long requestId)
             => Result(await prService.GetFacilityOffersByRequestIdAsync(requestId));
-
-
-        #region Chat
-
-        //[HttpPatch("initializeOfferChat")]
-        ////[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        //public async Task<IActionResult> InitialzeOfferChatAsync(long offerId)
-        //  => Result(await prService.InitialzeOfferChatAsync(offerId));
-
-        //[HttpGet("getChatMessages")]
-        ////[HaveAccountTypes(AccountTypes.Facility, AccountTypes.Company)]
-        //public async Task<IActionResult> GetChatMessagesAsync(long chatId)
-        //    => Result(await prService.GetChatMessagesAsync(chatId));
-
-        #endregion
     }
 
 }
