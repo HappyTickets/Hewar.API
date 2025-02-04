@@ -315,6 +315,10 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -451,6 +455,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Logo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -1591,11 +1599,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("OfferId")
-                        .HasColumnType("bigint");
 
                     b.Property<int>("RequestStatus")
                         .HasColumnType("int");
@@ -1613,8 +1617,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("FacilityId");
-
-                    b.HasIndex("OfferId");
 
                     b.ToTable("PriceRequests");
                 });
@@ -2331,7 +2333,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceRequest", "PriceRequest")
-                        .WithMany()
+                        .WithMany("Offers")
                         .HasForeignKey("PriceRequestId")
                         .IsRequired();
 
@@ -2358,17 +2360,11 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "Offer")
-                        .WithMany()
-                        .HasForeignKey("OfferId");
-
                     b.Navigation("Chat");
 
                     b.Navigation("Company");
 
                     b.Navigation("Facility");
-
-                    b.Navigation("Offer");
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceOffer", b =>
@@ -2598,6 +2594,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
                 {
+                    b.Navigation("Offers");
+
                     b.Navigation("OtherServices");
 
                     b.Navigation("Services");

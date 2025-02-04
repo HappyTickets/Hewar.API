@@ -1,9 +1,7 @@
 ﻿using Application.Ads.Dtos;
 using Application.Ads.Dtos.Offers;
 using Application.Ads.Dtos.Post;
-using Application.Chats.DTOs;
 using AutoMapper;
-using Domain.Entities.ChatAggregate;
 using Domain.Entities.CompanyAggregate;
 using Domain.Entities.FacilityAggregate;
 using Domain.Events.Ads;
@@ -208,75 +206,6 @@ namespace Application.Ads.Service
                 SuccessCodes.MyOffersAsCompanyReceived);
         }
 
-        public async Task<Result<long>> InitialzeAdOfferChatAsync(long adOfferId)
-        {
-            var adOffer = await ufw.GetRepository<AdOffer>().GetByIdAsync(adOfferId, [nameof(AdOffer.Ad)]);
-
-            if (adOffer is null)
-                return new NotFoundError();
-
-            if (adOffer.Status != RequestStatus.Pending)
-                return new ConflictError(ErrorCodes.AdOfferNotPending);
-
-            if (adOffer.ChatId.HasValue)
-                return new ConflictError(ErrorCodes.ChatAlreadyExist);
-
-            adOffer.Chat = new Chat
-            {
-                EntityAudienceId = adOffer.Ad.FacilityId,
-                EntityIssuerId = adOffer.CompanyId,
-                RelatedEntityId = adOffer.Id,
-                RelatedEntityType = ChatEntityType.AdOffer
-            };
-            await ufw.SaveChangesAsync();
-            return Result<long>.Success(adOffer.Chat.Id, SuccessCodes.ChatInitialized);
-        }
-        public async Task<Result<Empty>> CreateAdOfferMessageAsync(CreateChatMessageDto dto)
-        {
-            var chat = await ufw.GetRepository<Chat>().GetByIdAsync(dto.ChatId);
-            if (chat is null)
-                return new NotFoundError();
-
-            if (chat.Status == ChatStatus.Closed)
-                return new ConflictError(ErrorCodes.ChatClosed);
-
-            var message = new Message
-            {
-                SentOn = DateTimeOffset.UtcNow,
-                SenderId = currentUser.UserId ?? 1,
-                RepresentedEntity = currentUser.EntityType ?? null,
-                Content = dto.Content,
-                ChatId = chat.Id
-            };
-
-            if (dto.Medias != null)
-            {
-                var medias = mapper.Map<Media[]>(dto.Medias);
-                message.Medias = medias;
-            }
-            chat.Messages.Add(message);
-            message.AddDomainEvent(new AdOfferMessageCreated(message,
-            chat.EntityIssuerId, chat.EntityAudienceId));
-            await ufw.SaveChangesAsync();
-            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateOfferMessage);
-
-        }
-
-
-        public async Task<Result<ChatMessageDto[]>> GetAdOfferChatMessagesAsync(long chatId)
-        {
-            // TO DO : Retrive the latest 10 Messages 
-            var isChatExist = await ufw.GetRepository<Chat>().AnyAsync(ch => ch.Id == chatId);
-            if (!isChatExist)
-                return new NotFoundError();
-
-            var messages = await ufw.GetRepository<Message>()
-                .FilterAsync(msg => msg.ChatId == chatId, [nameof(Message.Sender)]);
-
-            var messagesDto = mapper.Map<ChatMessageDto[]>(messages);
-
-            return Result<ChatMessageDto[]>.Success(messagesDto, SuccessCodes.GetRequestMessages);
-        }
 
 
         #endregion

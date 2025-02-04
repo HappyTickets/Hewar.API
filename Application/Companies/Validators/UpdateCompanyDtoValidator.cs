@@ -24,6 +24,9 @@ namespace Application.Companies.Validators
             RuleFor(x => x.TaxId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
+            RuleFor(x => x.Logo)
+              .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(x => x.Address)
                  .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
                  .SetValidator(new AddressDtoValidator());

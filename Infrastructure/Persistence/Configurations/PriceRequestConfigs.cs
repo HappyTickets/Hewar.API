@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    internal class PriceRequestConfigs : IEntityTypeConfiguration<PriceRequest>
+    public class PriceRequestConfigs : IEntityTypeConfiguration<PriceRequest>
     {
         public void Configure(EntityTypeBuilder<PriceRequest> builder)
         {
@@ -17,6 +17,11 @@ namespace Infrastructure.Persistence.Configurations
                 .HasForeignKey(pr => pr.FacilityId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasMany(pr => pr.Offers)
+                .WithOne(po => po.PriceRequest)
+                .HasForeignKey(po => po.PriceRequestId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
+
 }

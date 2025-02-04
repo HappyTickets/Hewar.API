@@ -24,6 +24,9 @@ namespace Application.Facilities.Validators
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .SetValidator(new AddressDtoValidator());
 
+            RuleFor(x => x.Logo)
+           .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(x => x.ResponsibleName)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 

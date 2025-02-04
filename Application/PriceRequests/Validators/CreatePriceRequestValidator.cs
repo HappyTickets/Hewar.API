@@ -1,4 +1,4 @@
-﻿using Application.PriceRequests.Dtos.Requests;
+﻿using Application.PriceRequests.Dtos;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators
@@ -23,9 +23,20 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.CompanyId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.Services)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
-                .ForEach(r => r.SetValidator(new RequestServiceValidator()));
+            RuleFor(r => r)
+                      .Must(r => (r.Services != null && r.Services.Any()) ||
+                      (r.OtherServices != null && r.OtherServices.Any()))
+                      .WithState(_ => (int)ValidationMsgs.RequiredField)
+                      .WithMessage("You must provide at least Services or OtherServices.");
+
+            RuleForEach(r => r.Services)
+                .SetValidator(new RequestServiceValidator())
+                .When(r => r.Services != null && r.Services.Any());
+
+            RuleForEach(r => r.OtherServices)
+                .SetValidator(new CreateOtherServiceValidator())
+                .When(r => r.OtherServices != null && r.OtherServices.Any());
+
         }
     }
 }

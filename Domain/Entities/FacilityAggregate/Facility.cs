@@ -6,6 +6,8 @@
         public string Name { get; set; }
         public string CommercialRegistration { get; set; }
         public string ActivityType { get; set; }
+        public string Logo { get; set; }
+
         public long AddressId { get; set; }
         public virtual Address Address { get; set; }
         public string ResponsibleName { get; set; }

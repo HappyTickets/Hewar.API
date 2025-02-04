@@ -1,13 +1,11 @@
-﻿using Application.Chats.DTOs;
-using Application.PriceRequests.Dtos.Offers;
-using Application.PriceRequests.Dtos.Requests;
+﻿using Application.PriceRequests.Dtos;
 
 namespace Application.PriceRequests.Service
 {
     public interface IPriceRequestsService
     {
         Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto);
-        Task<Result<Empty>> AcceptRequestAsync(CreatePriceOfferDto dto);
+        Task<Result<Empty>> UpdateRequestAsync(UpdatePriceRequestDto dto);
 
         #region Facility Details
         //Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto);
@@ -15,15 +13,10 @@ namespace Application.PriceRequests.Service
         //Task<Result<Empty>> UpdateRequestFacilityDetailsAsync(long facilityDetailsId, UpdatePriceRequestFacilityDetailsDto dto); 
         #endregion
 
-        Task<Result<Empty>> CreateRequestMessageAsync(CreateChatMessageDto dto);
 
         Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync();
         Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync();
 
-        Task<Result<long>> InitialzePriceRequestChatAsync(long priceRequestId);
-        Task<Result<long>> InitialzeOfferChatAsync(long priceRequestId);
-
-        Task<Result<ChatMessageDto[]>> GetChatMessagesAsync(long chatId);
 
         Task<Result<Empty>> RejectRequestAsync(long priceRequestId);
         Task<Result<Empty>> CancelRequestAsync(long priceRequestId);

@@ -7,5 +7,6 @@
         public string Type { get; set; }
         public string ResponsibleName { get; set; }
         public string ResponsiblePhone { get; set; }
+        public string Logo { get; set; }
     }
 }

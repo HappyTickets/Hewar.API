@@ -1,10 +1,12 @@
 ﻿using Domain.Entities.ChatAggregate;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.PriceRequestAggregates
 {
     public class PriceOffer : SoftDeletableEntity
     {
         public long PriceRequestId { get; set; }
+        [ForeignKey(nameof(PriceRequestId))]
         public virtual PriceRequest PriceRequest { get; set; }
         public RequestStatus OfferStatus { get; set; }
 
