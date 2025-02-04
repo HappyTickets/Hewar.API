@@ -25,6 +25,9 @@ namespace Application.Authorization.Validators
              .NotNull().WithState(_ => (int)ValidationMsgs.Required_AdminAccount)
              .SetValidator(new AdminInfoValidator());
 
+            RuleFor(x => x.Logo)
+             .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
+
             RuleFor(x => x.Address)
              .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
              .SetValidator(new AddressDtoValidator());

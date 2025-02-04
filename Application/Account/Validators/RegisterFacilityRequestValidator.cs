@@ -22,6 +22,8 @@ namespace Application.Authorization.Validators
             RuleFor(f => f.ActivityType)
             .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
+            RuleFor(x => x.Logo)
+           .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(x => x.AdminInfo)
              .NotNull().WithState(_ => (int)ValidationMsgs.Required_AdminAccount)

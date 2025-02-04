@@ -10,6 +10,8 @@ namespace Application.Companies.Dtos
         public string RegistrationNumber { get; set; }
         public string TaxId { get; set; }
         public string Name { get; set; }
+        public string Logo { get; set; }
+
         public AddressDto Address { get; set; }
 
     }
