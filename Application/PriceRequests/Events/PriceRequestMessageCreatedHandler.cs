@@ -16,17 +16,17 @@
     //            ContentEn = "You have received a new message on your price request.",
     //            ContentAr = "لقد استلمت رسالة جديدة على طلب عرض السعر الخاص بك.",
     //            IsRead = false,
-    //            ReferenceId = notification.PriceRequestMessage.PriceRequestId,
+    //            ReferenceId = notification.PiceOfferMessage.PriceRequestId,
     //            ReferenceType = ReferenceTypes.PriceRequest,
     //            Event = NotificationEvents.PriceRequestMessageCreated,
     //            NotifiedOn = DateTimeOffset.UtcNow,
-    //            RecipientId = notification.PriceRequestMessage.PriceRequest.CompanyId,
+    //            RecipientId = notification.PiceOfferMessage.PriceRequest.CompanyId,
     //            RecipientType = AccountTypes.Company
     //        };
 
-    //        if (notification.PriceRequestMessage.SenderType == AccountTypes.Company)
+    //        if (notification.PiceOfferMessage.SenderType == AccountTypes.Company)
     //        {
-    //            userNotification.RecipientId = notification.PriceRequestMessage.PriceRequest.FacilityId;
+    //            userNotification.RecipientId = notification.PiceOfferMessage.PriceRequest.FacilityId;
     //            userNotification.RecipientType = AccountTypes.Facility;
     //        }
 

@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace Application.PriceRequests.Validators
 {
-    public class CreatePriceRequestValidator : AbstractValidator<CreatePriceRequestDto>
+    public class UpdatePriceRequestValidator : AbstractValidator<UpdatePriceRequestDto>
     {
-        public CreatePriceRequestValidator()
+        public UpdatePriceRequestValidator()
         {
             RuleFor(r => r.ContractType)
                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
@@ -20,7 +20,7 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.Notes)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.CompanyId)
+            RuleFor(r => r.PriceRequestId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r)

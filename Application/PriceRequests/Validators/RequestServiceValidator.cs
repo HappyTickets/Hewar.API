@@ -1,4 +1,4 @@
-﻿using Application.PriceRequests.Dtos.Requests.Services;
+﻿using Application.PriceRequests.Dtos.Services;
 using FluentValidation;
 
 namespace Application.PriceRequests.Validators

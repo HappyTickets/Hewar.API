@@ -1,7 +1,6 @@
 ﻿using Application.Ads.Dtos;
 using Application.Ads.Dtos.Offers;
 using Application.Ads.Dtos.Post;
-using Application.Chats.DTOs;
 
 namespace Application.Ads.Service
 {
@@ -21,9 +20,6 @@ namespace Application.Ads.Service
         Task<Result<Empty>> UpdateAdAsync(UpdateAdDto dto);
         Task<Result<Empty>> CancelOfferAsync(long offerId);
 
-        Task<Result<long>> InitialzeAdOfferChatAsync(long adOfferId);
-        Task<Result<Empty>> CreateAdOfferMessageAsync(CreateChatMessageDto dto);
-        Task<Result<ChatMessageDto[]>> GetAdOfferChatMessagesAsync(long chatId);
 
     }
 }

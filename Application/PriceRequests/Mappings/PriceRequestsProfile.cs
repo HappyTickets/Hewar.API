@@ -1,10 +1,6 @@
-﻿using Application.Chats.DTOs;
-using Application.PriceRequests.Dtos.Offers;
-using Application.PriceRequests.Dtos.Offers.Services;
-using Application.PriceRequests.Dtos.Requests;
-using Application.PriceRequests.Dtos.Requests.Services;
+﻿using Application.PriceRequests.Dtos;
+using Application.PriceRequests.Dtos.Services;
 using AutoMapper;
-using Domain.Entities.ChatAggregate;
 
 namespace Application.PriceRequests.Mappings
 {
@@ -13,33 +9,24 @@ namespace Application.PriceRequests.Mappings
         public PriceRequestsProfile()
         {
             CreateMap<CreatePriceRequestDto, PriceRequest>();
+            CreateMap<UpdatePriceRequestDto, PriceRequest>();
 
             CreateMap<ServiceRequestDto, ServiceRequest>().ReverseMap();
 
-            CreateMap<OtherRequestedService, CreateOtherRequestedServiceDto>()
-                .ReverseMap();
+            CreateMap<OtherRequestedService, CreateOtherServiceDto>().ReverseMap();
 
-            CreateMap<OtherRequestedService, OtherRequestedServiceDto>()
-                .ReverseMap();
+            CreateMap<OtherRequestedService, OtherRequestedServiceDto>().ReverseMap();
 
 
             CreateMap<PriceRequest, FacilityPriceRequestDto>()
+                .ForMember(dest => dest.HasOffers, opt => opt.MapFrom(src => src.Offers != null && src.Offers.Any()))
                 .ReverseMap();
 
-            CreateMap<PriceRequest, CompanyPriceRequestDto>().ReverseMap();
-
-            CreateMap<ServiceOfferDto, ServiceOffer>().ReverseMap();
-
-            CreateMap<GetOtherServiceOfferDto, OtherServiceOffer>().ReverseMap();
-            CreateMap<CreateOtherServiceOfferDto, OtherServiceOffer>().ReverseMap();
-
-            CreateMap<Message, ChatMessageDto>().ReverseMap();
-            CreateMap<ApplicationUser, ChatParticipantDto>().ReverseMap();
-
-            CreateMap<GetPriceOfferDto, PriceOffer>()
+            CreateMap<PriceRequest, CompanyPriceRequestDto>()
+                .ForMember(dest => dest.HasOffers, opt => opt.MapFrom(src => src.Offers != null && src.Offers.Any()))
                 .ReverseMap();
+            CreateMap<PriceRequest, GetPriceRequestBriefDto>().ReverseMap();
 
-            CreateMap<CreatePriceOfferDto, PriceOffer>().ReverseMap();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Domain.Entities.ChatAggregate;
 using Domain.Entities.CompanyAggregate;
 using Domain.Entities.FacilityAggregate;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.PriceRequestAggregates
 {
@@ -16,15 +15,13 @@ namespace Domain.Entities.PriceRequestAggregates
         public ContractType ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public string Notes { get; set; }
+        public string? Notes { get; set; }
         public RequestStatus RequestStatus { get; set; }
 
         public virtual ICollection<ServiceRequest> Services { get; set; } = new List<ServiceRequest>();
         public virtual ICollection<OtherRequestedService>? OtherServices { get; set; }
 
-        public long? OfferId { get; set; }
-        [ForeignKey(nameof(OfferId))]
-        public virtual PriceOffer? Offer { get; set; }
+        public virtual ICollection<PriceOffer> Offers { get; set; } = new List<PriceOffer>();
 
         public long? ChatId { get; set; }
         public virtual Chat? Chat { get; set; }

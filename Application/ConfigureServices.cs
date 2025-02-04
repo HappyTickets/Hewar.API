@@ -5,6 +5,7 @@ using Application.AccountManagement.Service.Concrete;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Ads.Service;
 using Application.Authorization.Service;
+using Application.Chats.Service;
 using Application.Companies.Service;
 using Application.Companies.Service.ProvidedServices;
 using Application.Companies.Service.ServicesProvided;
@@ -13,6 +14,7 @@ using Application.Files.Service;
 using Application.Guards.Service;
 using Application.Hewar.Service;
 using Application.Notifications.Service;
+using Application.PriceOffers.Services;
 using Application.PriceRequests.Service;
 using Application.Tickets.Service;
 using FluentValidation;
@@ -51,6 +53,8 @@ namespace Application
               .AddScoped<IGuardsService, GuardsService>()
               .AddScoped<IHewarProvidedService, HewarProvidedService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
+              .AddScoped<IPriceOfferService, PriceOfferService>()
+              .AddScoped<IChatService, ChatService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();
 
