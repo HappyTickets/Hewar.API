@@ -1,8 +1,10 @@
-﻿namespace Infrastructure.Persistence.Repositories.Generic
+﻿using AutoMapper;
+
+namespace Infrastructure.Persistence.Repositories.Generic
 {
     internal class SoftDeletableGenericRepositoryService<TEntity> : GenericRepositoryService<TEntity>, ISoftDeletableGenericRepositoryService<TEntity> where TEntity : SoftDeletableEntity
     {
-        public SoftDeletableGenericRepositoryService(AppDbContext dbContext, ICurrentUserService currentUserService) : base(dbContext, currentUserService)
+        public SoftDeletableGenericRepositoryService(AppDbContext dbContext, ICurrentUserService currentUserService, IMapper mapper) : base(dbContext, currentUserService, mapper)
         {
         }
 

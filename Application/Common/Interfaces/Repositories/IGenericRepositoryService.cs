@@ -14,6 +14,15 @@ namespace Application.Common.Interfaces.Repositories
         void CreateRange(IEnumerable<TEntity> entities);
         Task<IEnumerable<TEntity>> FilterAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
         Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
+
+        Task<TResult?> FirstOrDefaultAsync<TResult>(
+               Expression<Func<TEntity, bool>> predicate,
+               bool ignoreQueryFilters = false);
+
+        Task<IEnumerable<TResult>> FilterAsync<TResult>(
+             Expression<Func<TEntity, bool>> predicate,
+             bool ignoreQueryFilters = false);
+
         Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
         Task<TEntity?> GetByIdAsync(long id, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
         void HardDelete(TEntity entity);

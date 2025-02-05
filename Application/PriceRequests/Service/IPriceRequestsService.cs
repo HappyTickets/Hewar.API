@@ -6,6 +6,7 @@ namespace Application.PriceRequests.Service
     {
         Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto);
         Task<Result<Empty>> UpdateRequestAsync(UpdatePriceRequestDto dto);
+        Task<Result<GetPriceRequestDto>> GetByIdAsync(long priceRequestId);
 
         #region Facility Details
         //Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto);

@@ -1,23 +1,18 @@
 ﻿using Application.Common.Utilities.Pagination;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Persistence.Repositories.Generic
 {
-    internal class GenericRepositoryService<TEntity> : IGenericRepositoryService<TEntity> where TEntity : BaseEntity
+    internal class GenericRepositoryService<TEntity>(AppDbContext dbContext, ICurrentUserService currentUserService, IMapper mapper) : IGenericRepositoryService<TEntity> where TEntity : BaseEntity
     {
-        protected readonly AppDbContext _dbContext;
-        protected readonly ICurrentUserService _currentUserService;
+        protected readonly AppDbContext _dbContext = dbContext;
+        protected readonly ICurrentUserService _currentUserService = currentUserService;
 
-        protected readonly DbSet<TEntity> _dbSet;
-
-        public GenericRepositoryService(AppDbContext dbContext, ICurrentUserService currentUserService)
-        {
-            _dbContext = dbContext;
-            _dbSet = dbContext.Set<TEntity>();
-            _currentUserService = currentUserService;
-        }
+        protected readonly DbSet<TEntity> _dbSet = dbContext.Set<TEntity>();
 
         #region Command
 
@@ -161,6 +156,38 @@ namespace Infrastructure.Persistence.Repositories.Generic
 
             return query.CountAsync();
         }
+
+
+        public async Task<TResult?> FirstOrDefaultAsync<TResult>(
+            Expression<Func<TEntity, bool>> predicate,
+            bool ignoreQueryFilters = false)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (ignoreQueryFilters)
+                query = query.IgnoreQueryFilters();
+
+            return await query.Where(predicate)
+                               .ProjectTo<TResult>(mapper.ConfigurationProvider)
+                               .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<TResult>> FilterAsync<TResult>(
+            Expression<Func<TEntity, bool>> predicate,
+            bool ignoreQueryFilters = false)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (ignoreQueryFilters)
+                query = query.IgnoreQueryFilters();
+
+            return await query.Where(predicate)
+                               .ProjectTo<TResult>(mapper.ConfigurationProvider)
+                               .ToListAsync();
+        }
+
+
+
         #endregion
     }
 }

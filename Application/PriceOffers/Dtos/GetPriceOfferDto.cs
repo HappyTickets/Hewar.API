@@ -5,6 +5,8 @@ namespace Application.PriceOffers.Dtos
     public class GetPriceOfferDto
     {
         public long Id { get; set; }
+        public long? ChatId { get; set; }
+        public string FacilityName { get; set; }
         public long PriceRequestId { get; set; }
         public RequestStatus OfferStatus { get; set; }
         public ICollection<ServiceOfferDto> Services { get; set; }

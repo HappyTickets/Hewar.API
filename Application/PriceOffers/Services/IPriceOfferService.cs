@@ -7,6 +7,8 @@ namespace Application.PriceOffers.Services
         Task<Result<long>> CreateOfferAsync(CreatePriceOfferDto dto);
         Task<Result<Empty>> UpdateOfferAsync(UpdatePriceOfferDto dto);
 
+        Task<Result<GetPriceOfferDetailedDto>> GetByIdAsync(long offerId);
+
         Task<Result<Empty>> AcceptOfferAsync(long offerId);
         Task<Result<Empty>> RejectOfferAsync(long offerId);
         Task<Result<Empty>> CancelOfferAsync(long offerId);

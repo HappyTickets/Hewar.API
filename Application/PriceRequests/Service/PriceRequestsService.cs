@@ -190,5 +190,15 @@ namespace Application.PriceRequests.Service
             await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.Updated);
         }
+
+        public async Task<Result<GetPriceRequestDto>> GetByIdAsync(long priceRequestId)
+        {
+            var priceRequest = await ufw.GetRepository<PriceRequest>().FirstOrDefaultAsync<GetPriceRequestDto>(pr => pr.Id == priceRequestId);
+
+            if (priceRequest is null)
+                return new NotFoundError(ErrorCodes.PriceRequestNotExists);
+
+            return Result<GetPriceRequestDto>.Success(priceRequest, SuccessCodes.OperationSuccessful);
+        }
     }
 }

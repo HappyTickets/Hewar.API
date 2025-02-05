@@ -14,6 +14,11 @@ namespace Presentation.Controllers.PriceRequest
         public async Task<IActionResult> UpdateOfferAsync(UpdatePriceOfferDto dto)
             => Result(await prService.UpdateOfferAsync(dto));
 
+        [HttpGet("getById")]
+        public async Task<IActionResult> GetOfferByIdAsync(long offerId)
+            => Result(await prService.GetByIdAsync(offerId));
+
+
         [HttpPatch("accept")]
         public async Task<IActionResult> AcceptOfferAsync(long offerId)
             => Result(await prService.AcceptOfferAsync(offerId));

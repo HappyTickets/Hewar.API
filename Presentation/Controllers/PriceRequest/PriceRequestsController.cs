@@ -19,6 +19,9 @@ namespace Presentation.Controllers.PriceRequest
            => Result(await priceRequestsService.UpdateRequestAsync(dto));
 
 
+        [HttpGet("getById")]
+        public async Task<IActionResult> GetRequestByIdAsync(long priceRequestId)
+           => Result(await priceRequestsService.GetByIdAsync(priceRequestId));
 
         [HttpPatch("cancel")]
         //[HasAccountType(AccountTypes.Facility)]
@@ -34,6 +37,10 @@ namespace Presentation.Controllers.PriceRequest
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> GetMyCompanyRequestsAsync()
             => Result(await priceRequestsService.GetMyCompanyRequestsAsync());
+
+
+
+
 
         #region Facility Details Later
 
