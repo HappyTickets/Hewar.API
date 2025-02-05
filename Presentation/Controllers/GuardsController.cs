@@ -5,38 +5,31 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    public class GuardsController : ApiControllerBase
+    public class GuardsController(IGuardsService guardsService) : ApiControllerBase
     {
-        private readonly IGuardsService _guardsService;
-
-        public GuardsController(IGuardsService guardsService)
-        {
-            _guardsService = guardsService;
-        }
-
         [HttpPost("create")]
         //[HasPermission(Permissions.CreateGuard)]
         public async Task<IActionResult> CreateAsync(RegisterGuardRequest dto)
-            => Result(await _guardsService.CreateAsync(dto));
+            => Result(await guardsService.CreateAsync(dto));
 
         [HttpPut("update")]
         //[HasPermission(Permissions.UpdateGuard)]
         public async Task<IActionResult> UpdateAsync(UpdateGuardDto dto)
-            => Result(await _guardsService.UpdateAsync(dto));
+            => Result(await guardsService.UpdateAsync(dto));
 
         [HttpGet("getById")]
         //[HasPermission(Permissions.ViewGuards)]
         public async Task<IActionResult> GetByIdAsync(long id)
-            => Result(await _guardsService.GetByIdAsync(id));
+            => Result(await guardsService.GetByIdAsync(id));
 
         [HttpGet("getAll")]
         //[HasPermission(Permissions.ViewGuards)]
         public async Task<IActionResult> GetAllAsync()
-            => Result(await _guardsService.GetAllAsync());
+            => Result(await guardsService.GetAllAsync());
 
         [HttpDelete]
         //[HasPermission(Permissions.DeleteGuard)]
         public async Task<IActionResult> HardDeleteAsync(long id)
-            => Result(await _guardsService.DeleteAsync(id));
+            => Result(await guardsService.DeleteAsync(id));
     }
 }

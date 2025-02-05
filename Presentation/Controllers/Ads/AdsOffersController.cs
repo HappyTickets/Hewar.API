@@ -7,22 +7,22 @@ namespace Presentation.Controllers.Ads
     public class AdsOffersController(IAdsService adsService) : ApiControllerBase
     {
         #region Ads Offer
-        [HttpPost("createOffer")]
+        [HttpPost("create")]
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> CreateOfferAsync(CreateAdOfferDto dto)
           => Result(await adsService.CreateOfferAsync(dto));
 
-        [HttpPatch("acceptOffer")]
+        [HttpPatch("accept")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> AcceptOfferAsync(long offerId)
             => Result(await adsService.AcceptOfferAsync(offerId));
 
-        [HttpPatch("rejectOffer")]
+        [HttpPatch("reject")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> RejectOfferAsync(long offerId)
             => Result(await adsService.RejectOfferAsync(offerId));
 
-        [HttpPatch("cancelOffer")]
+        [HttpPatch("cancel")]
         //[HasAccountType(AccountTypes.Company)]
         public async Task<IActionResult> CancelOfferAsync(long offerId)
             => Result(await adsService.CancelOfferAsync(offerId));

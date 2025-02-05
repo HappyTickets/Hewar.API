@@ -12,10 +12,10 @@ namespace Application.PriceOffers.Services
         Task<Result<Empty>> CancelOfferAsync(long offerId);
         Task<Result<GetPriceOfferDetailedDto[]>> GetMyCompanyOffersAsync();
 
-        Task<Result<GetOffersForRequest>> GetCompanyOffersByRequestIdAsync(long requestId);
+        Task<Result<GetOffersForRequest>> GetMyCompanyOffersByRequestIdAsync(long requestId);
 
-        Task<Result<GetPriceOfferDetailedDto[]>> GetFacilityOffersAsync();
-        Task<Result<GetOffersForRequest>> GetFacilityOffersByRequestIdAsync(long requestId);
+        Task<Result<GetPriceOfferDetailedDto[]>> GetMyFacilityOffersAsync();
+        Task<Result<GetOffersForRequest>> GetMyFacilityOffersByRequestIdAsync(long requestId);
 
 
     }

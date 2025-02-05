@@ -8,32 +8,33 @@ namespace Presentation.Controllers.PriceRequest
     [Authorize]
     public class PriceRequestsController(IPriceRequestsService priceRequestsService) : ApiControllerBase
     {
-        [HttpPost("requests")]
+        [HttpPost("create")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> CreateRequestAsync(CreatePriceRequestDto dto)
             => Result(await priceRequestsService.CreateRequestAsync(dto));
 
-        [HttpPut("update-request")]
+        [HttpPut("update")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> UpdateRequestAsync(UpdatePriceRequestDto dto)
            => Result(await priceRequestsService.UpdateRequestAsync(dto));
 
 
 
-        [HttpPatch("requests/{priceRequestId}/cancel")]
+        [HttpPatch("cancel")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> CancelRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.CancelRequestAsync(priceRequestId));
 
-        [HttpGet("requests/facility")]
+        [HttpGet("getMyFacilityRequests")]
         //[HasAccountType(AccountTypes.Facility)]
-        public async Task<IActionResult> GetMyRequestsAsFacilityAsync()
-            => Result(await priceRequestsService.GetMyRequestsAsFacilityAsync());
+        public async Task<IActionResult> GetMyFacilityRequestsAsync()
+            => Result(await priceRequestsService.GetMyFacilityRequestsAsync());
 
-        [HttpGet("requests/company")]
+        [HttpGet("getMyCompanyRequests")]
         //[HasAccountType(AccountTypes.Company)]
-        public async Task<IActionResult> GetMyRequestsAsCompanyAsync()
-            => Result(await priceRequestsService.GetMyRequestsAsCompanyAsync());
+        public async Task<IActionResult> GetMyCompanyRequestsAsync()
+            => Result(await priceRequestsService.GetMyCompanyRequestsAsync());
+
         #region Facility Details Later
 
         //[HttpPost("createRequestFacilityDetails")]
@@ -51,7 +52,5 @@ namespace Presentation.Controllers.PriceRequest
         //public async Task<IActionResult> GetRequestFacilityDetailsAsync(long priceRequestId)
         //    => Result(await _priceRequestsService.GetRequestFacilityDetailsAsync(priceRequestId)); 
         #endregion
-
-
     }
 }

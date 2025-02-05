@@ -59,7 +59,7 @@ namespace Application.PriceRequests.Service
         //} 
         #endregion
 
-        public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
+        public async Task<Result<FacilityPriceRequestDto[]>> GetMyFacilityRequestsAsync()
         {
             var entityId = currentUser.EntityId ?? 1;
 
@@ -79,7 +79,7 @@ namespace Application.PriceRequests.Service
 
         }
 
-        public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
+        public async Task<Result<CompanyPriceRequestDto[]>> GetMyCompanyRequestsAsync()
         {
             var entityId = currentUser.EntityId ?? 1;
 

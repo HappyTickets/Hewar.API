@@ -8,7 +8,7 @@ namespace Presentation.Extensions
         {
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Library Management", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Hewar API", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,

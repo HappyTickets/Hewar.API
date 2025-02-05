@@ -6,42 +6,42 @@ namespace Presentation.Controllers.PriceRequest
 {
     public class PriceOffersController(IPriceOfferService prService) : ApiControllerBase
     {
-        [HttpPost("offers")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateOfferAsync(CreatePriceOfferDto dto)
           => Result(await prService.CreateOfferAsync(dto));
 
-        [HttpPut("offers")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateOfferAsync(UpdatePriceOfferDto dto)
             => Result(await prService.UpdateOfferAsync(dto));
 
-        [HttpPatch("offers/{offerId}/accept")]
+        [HttpPatch("accept")]
         public async Task<IActionResult> AcceptOfferAsync(long offerId)
             => Result(await prService.AcceptOfferAsync(offerId));
 
-        [HttpPatch("offers/{offerId}/reject")]
+        [HttpPatch("reject")]
         public async Task<IActionResult> RejectOfferAsync(long offerId)
             => Result(await prService.RejectOfferAsync(offerId));
 
-        [HttpPatch("offers/{offerId}/cancel")]
+        [HttpPatch("cancel")]
         public async Task<IActionResult> CancelOfferAsync(long offerId)
             => Result(await prService.CancelOfferAsync(offerId));
 
-        [HttpGet("company/offers")]
+        [HttpGet("getMyCompanyOffers")]
         public async Task<IActionResult> GetMyCompanyOffersAsync()
             => Result(await prService.GetMyCompanyOffersAsync());
 
 
-        [HttpGet("company/offers/request/{requestId:long}")]
-        public async Task<IActionResult> GetCompanyOffersByRequestIdAsync(long requestId)
-             => Result(await prService.GetCompanyOffersByRequestIdAsync(requestId));
+        [HttpGet("getMyCompanyOffersByRequestId")]
+        public async Task<IActionResult> GetMyCompanyOffersByRequestIdAsync(long requestId)
+             => Result(await prService.GetMyCompanyOffersByRequestIdAsync(requestId));
 
-        [HttpGet("facility/offers")]
-        public async Task<IActionResult> GetFacilityOffersAsync()
-            => Result(await prService.GetFacilityOffersAsync());
+        [HttpGet("getMyFacilityOffers")]
+        public async Task<IActionResult> GetMyFacilityOffersAsync()
+            => Result(await prService.GetMyFacilityOffersAsync());
 
-        [HttpGet("facility/offers/request/{requestId:long}")]
-        public async Task<IActionResult> GetFacilityOffersByRequestIdAsync(long requestId)
-            => Result(await prService.GetFacilityOffersByRequestIdAsync(requestId));
+        [HttpGet("getMyFacilityOffersByRequestId")]
+        public async Task<IActionResult> GetMyFacilityOffersByRequestIdAsync(long requestId)
+            => Result(await prService.GetMyFacilityOffersByRequestIdAsync(requestId));
     }
 
 }

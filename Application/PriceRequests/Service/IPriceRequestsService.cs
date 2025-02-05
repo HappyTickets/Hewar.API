@@ -14,8 +14,8 @@ namespace Application.PriceRequests.Service
         #endregion
 
 
-        Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync();
-        Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync();
+        Task<Result<CompanyPriceRequestDto[]>> GetMyCompanyRequestsAsync();
+        Task<Result<FacilityPriceRequestDto[]>> GetMyFacilityRequestsAsync();
 
 
         Task<Result<Empty>> RejectRequestAsync(long priceRequestId);

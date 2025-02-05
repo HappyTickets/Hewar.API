@@ -114,7 +114,7 @@ namespace Application.PriceOffers.Services
         }
 
 
-        public async Task<Result<GetOffersForRequest>> GetCompanyOffersByRequestIdAsync(long requestId)
+        public async Task<Result<GetOffersForRequest>> GetMyCompanyOffersByRequestIdAsync(long requestId)
         {
             var companyId = currentUser.EntityId;
 
@@ -132,7 +132,7 @@ namespace Application.PriceOffers.Services
             return Result<GetOffersForRequest>.Success(dto, SuccessCodes.OperationSuccessful);
         }
 
-        public async Task<Result<GetPriceOfferDetailedDto[]>> GetFacilityOffersAsync()
+        public async Task<Result<GetPriceOfferDetailedDto[]>> GetMyFacilityOffersAsync()
         {
             var facilityId = currentUser.EntityId;
             var offers = await ufw.GetRepository<PriceOffer>()
@@ -142,7 +142,7 @@ namespace Application.PriceOffers.Services
             return MapAndReturnSuccess(offers);
         }
 
-        public async Task<Result<GetOffersForRequest>> GetFacilityOffersByRequestIdAsync(long requestId)
+        public async Task<Result<GetOffersForRequest>> GetMyFacilityOffersByRequestIdAsync(long requestId)
         {
             var facilityId = currentUser.EntityId;
 

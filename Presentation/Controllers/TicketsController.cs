@@ -15,11 +15,11 @@ namespace Presentation.Controllers
             _ticketsService = ticketsService;
         }
 
-        [HttpPost("createTicket")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateTicketAsync(CreateTicketDto dto)
             => Result(await _ticketsService.CreateTicketAsync(dto));
 
-        [HttpPatch("closeTicket")]
+        [HttpPatch("close")]
         public async Task<IActionResult> CloseTicketAsync(long ticketId)
            => Result(await _ticketsService.CloseTicketAsync(ticketId));
 

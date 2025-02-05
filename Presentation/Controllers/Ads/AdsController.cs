@@ -6,12 +6,12 @@ namespace Presentation.Controllers.Ads
 {
     public class AdsController(IAdsService insuranceAdsService) : ApiControllerBase
     {
-        [HttpPost("createAd")]
+        [HttpPost("create")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> CreateAdAsync(CreateAdDto dto)
             => Result(await insuranceAdsService.CreateAdAsync(dto));
 
-        [HttpPut("updateAd")]
+        [HttpPut("update")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> UpdateAdAsync(UpdateAdDto dto)
             => Result(await insuranceAdsService.UpdateAdAsync(dto));
@@ -25,7 +25,7 @@ namespace Presentation.Controllers.Ads
         public async Task<IActionResult> GetMyAdsAsync()
             => Result(await insuranceAdsService.GetMyAdsAsync());
 
-        [HttpGet("getOpenedAds")]
+        [HttpGet("getOpened")]
         public async Task<IActionResult> GetOpenedAdsAsync()
             => Result(await insuranceAdsService.GetOpenedAdsAsync());
 
