@@ -6,5 +6,7 @@
         public string Content { get; set; }
         public IEnumerable<MediaDto>? Medias { get; set; }
         public long AudienceId { get; set; }
+        public EntityTypes AudienceType { get; set; }
+
     }
 }

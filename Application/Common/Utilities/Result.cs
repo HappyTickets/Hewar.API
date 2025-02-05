@@ -8,6 +8,10 @@ namespace Application.Common.Utilities
         public int Status { get; init; }
         public bool IsSuccess { get; init; }
 
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public string? Message { get; init; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public IEnumerable<string>? Errors { get; init; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ErrorCodes? ErrorCode { get; init; }
@@ -49,6 +53,7 @@ namespace Application.Common.Utilities
                 Status = err.Status,
                 IsSuccess = false,
                 ErrorCode = err.ErrorCode,
+                Errors = err.Errors
             };
     }
 }

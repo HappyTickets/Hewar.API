@@ -6,7 +6,10 @@
         public ChatEntityType RelatedEntityType { get; set; } // PriceRequest  PriceOffer  AdOffer 
 
         public long EntityIssuerId { get; set; }
+        public EntityTypes IssuerType { get; set; }
+
         public long EntityAudienceId { get; set; }
+        public EntityTypes AudienceType { get; set; }
 
         public ChatStatus Status { get; set; } = ChatStatus.Open;
         public ICollection<Message> Messages { get; set; } = new List<Message>();

@@ -25,7 +25,7 @@ namespace Presentation.Controllers.Company
         public async Task<IActionResult> GetByIdAsync(long id)
             => Result(await companyService.GetByIdAsync(id));
 
-        [HttpGet("getServicesByCompanyId/{companyId}")]
+        [HttpGet("getServicesByCompanyId")]
         //[HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetServicesByCompanyIdAsync(long companyId)
             => Result(await companyService.GetServicesByCompanyIdAsync(companyId));
