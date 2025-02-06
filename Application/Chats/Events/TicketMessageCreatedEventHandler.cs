@@ -1,17 +1,10 @@
 ﻿using Domain.Events.Notifications;
 using Domain.Events.Tickets;
 
-namespace Application.Tickets.Events
+namespace Application.Chats.Events
 {
-    internal class TicketMessageCreatedEventHandler : INotificationHandler<TicketMessageCreated>
+    internal class TicketMessageCreatedEventHandler(IUnitOfWorkService ufw) : INotificationHandler<TicketMessageCreated>
     {
-        private readonly IUnitOfWorkService _ufw;
-
-        public TicketMessageCreatedEventHandler(IUnitOfWorkService ufw)
-        {
-            _ufw = ufw;
-        }
-
         public async Task Handle(TicketMessageCreated notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
@@ -24,18 +17,18 @@ namespace Application.Tickets.Events
                 Event = NotificationEvents.TicketMessageCreated,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.TicketMessage.Ticket.AudienceId,
-                //RecipientType = notification.TicketMessage.Ticket.AudienceType
+                RecipientType = notification.TicketMessage.Ticket.AudienceType
             };
 
-            //if(notification.TicketMessage.SenderType == notification.TicketMessage.Ticket.AudienceType)
-            //{
-            //    userNotification.RecipientId = notification.TicketMessage.Ticket.IssuerId;
-            //    userNotification.RecipientType = notification.TicketMessage.Ticket.IssuerType;
-            //}
+            if (notification.TicketMessage.RepresentedEntity == notification.TicketMessage.Ticket.AudienceType)
+            {
+                userNotification.RecipientId = notification.TicketMessage.Ticket.IssuerId;
+                userNotification.RecipientType = notification.TicketMessage.Ticket.IssuerType;
+            }
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
-            _ufw.GetRepository<Notification>().Create(userNotification);
-            await _ufw.SaveChangesAsync();
+            ufw.GetRepository<Notification>().Create(userNotification);
+            await ufw.SaveChangesAsync();
         }
     }
 }

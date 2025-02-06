@@ -4,23 +4,16 @@ using Microsoft.AspNetCore.SignalR;
 namespace Infrastructure.Notifications
 {
     [Authorize]
-    public class NotificationsHub : Hub<IClientNotificationMethods>
+    public class NotificationsHub(ICurrentUserService currentUser) : Hub<IClientNotificationMethods>
     {
-        private readonly ICurrentUserService _currentUser;
-
-        public NotificationsHub(ICurrentUserService currentUser)
+        public override Task OnConnectedAsync()
         {
-            _currentUser = currentUser;
+            return Groups.AddToGroupAsync(Context.ConnectionId, $"{currentUser.EntityId}-{currentUser.EntityType}");
         }
 
-        //public override Task OnConnectedAsync()
-        //{
-        //    return Groups.AddToGroupAsync(Context.ConnectionId, $"{_currentUser.UserId}-{_currentUser.Type}");
-        //}
-
-        //public override Task OnDisconnectedAsync(Exception? exception)
-        //{
-        //    return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{_currentUser.AccountId}-{_currentUser.Type}");
-        //}
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            return Groups.RemoveFromGroupAsync(Context.ConnectionId, $"{currentUser.EntityId} - {currentUser.EntityType}");
+        }
     }
 }

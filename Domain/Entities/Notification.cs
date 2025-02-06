@@ -10,5 +10,6 @@
         public NotificationEvents Event { get; set; }
         public DateTimeOffset NotifiedOn { get; set; }
         public long RecipientId { get; set; }
+        public EntityTypes RecipientType { get; set; }
     }
 }

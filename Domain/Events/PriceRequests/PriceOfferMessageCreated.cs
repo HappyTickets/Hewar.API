@@ -2,17 +2,11 @@
 
 namespace Domain.Events.PriceRequests
 {
-    public class PriceOfferMessageCreated : DomainEvent
+    public class PriceOfferMessageCreated(Message priceOfferMessage, long piceOfferId, long audienceId, EntityTypes audienceType) : DomainEvent
     {
-        public Message PiceOfferMessage { get; }
-        public long EntityAudienceId { get; }
-        public long EntityIssuerId { get; }
-
-        public PriceOfferMessageCreated(Message priceOfferMessage, long entityAudienceId, long entityIssuerId)
-        {
-            PiceOfferMessage = priceOfferMessage;
-            EntityAudienceId = entityAudienceId;
-            EntityIssuerId = entityIssuerId;
-        }
+        public Message PiceOfferMessage { get; } = priceOfferMessage;
+        public long PiceOfferId { get; } = piceOfferId;
+        public long AudienceId { get; } = audienceId;
+        public EntityTypes AudienceType { get; } = audienceType;
     }
 }

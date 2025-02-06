@@ -24,7 +24,7 @@ namespace Application.Ads.Events
                 Event = NotificationEvents.AdOfferCancelled,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.AdOffer.Ad.FacilityId,
-                //RecipientType = AccountTypes.Facility
+                RecipientType = EntityTypes.Facility
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));

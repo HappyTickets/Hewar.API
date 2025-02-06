@@ -13,7 +13,7 @@ namespace Application.Notifications.Events
 
         public async Task Handle(NotificationRead notification, CancellationToken cancellationToken)
         {
-            //await _notificationService.NotifyUserNotificationReadAsync(notification.Notification.RecipientId, notification.Notification.RecipientType, notification.Notification.Id);
+            await _notificationService.NotifyUserNotificationReadAsync(notification.Notification.RecipientId, notification.Notification.RecipientType, notification.Notification.Id);
         }
     }
 }
