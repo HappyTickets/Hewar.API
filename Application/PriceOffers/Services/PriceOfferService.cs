@@ -37,8 +37,7 @@ namespace Application.PriceOffers.Services
         {
             // Retrieve the existing offer
             var offer = await ufw.GetRepository<PriceOffer>()
-                .GetByIdAsync(dto.PriceOfferId,
-                [nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);
+                .GetByIdAsync(dto.PriceOfferId, [nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);
 
             if (offer is null)
                 return new NotFoundError();
@@ -85,8 +84,7 @@ namespace Application.PriceOffers.Services
 
         public async Task<Result<Empty>> AcceptOfferAsync(long offerId)
         {
-            var offer = await ufw.GetRepository<PriceOffer>().GetByIdAsync(offerId,
-                [nameof(PriceOffer.PriceRequest)]);
+            var offer = await ufw.GetRepository<PriceOffer>().GetByIdAsync(offerId, [nameof(PriceOffer.PriceRequest)]);
 
             if (offer is null)
                 return new NotFoundError();
@@ -106,58 +104,42 @@ namespace Application.PriceOffers.Services
         {
             var companyId = currentUser.EntityId;
             var offers = await ufw.GetRepository<PriceOffer>()
-                .FilterAsync(o => o.PriceRequest.CompanyId == companyId,
-                [nameof(PriceOffer.PriceRequest),
-                 nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);
+                .FilterAsync<GetPriceOfferDetailedDto>(o => o.PriceRequest.CompanyId == companyId);
 
-            return MapAndReturnSuccess(offers);
+            return offers.ToArray();
         }
 
 
-        public async Task<Result<GetOffersForRequest>> GetCompanyOffersByRequestIdAsync(long requestId)
+        public async Task<Result<GetOffersForRequest>> GetMyCompanyOffersByRequestIdAsync(long requestId)
         {
             var companyId = currentUser.EntityId;
 
             var priceRequest = await ufw.GetRepository<PriceRequest>()
-                .FirstOrDefaultAsync(
-                    o => o.Id == requestId && o.CompanyId == companyId,
-                    [
-                nameof(PriceRequest.Offers),
-                $"{nameof(PriceRequest.Offers)}.{nameof(PriceOffer.Services)}",
-                $"{nameof(PriceRequest.Offers)}.{nameof(PriceOffer.OtherServices)}"
-                    ]);
+                .FirstOrDefaultAsync<GetOffersForRequest>(o => o.Id == requestId && o.CompanyId == companyId);
+            if (priceRequest is null)
+                return new NotFoundError(ErrorCodes.PriceRequestNotExists);
 
-            var dto = mapper.Map<GetOffersForRequest>(priceRequest);
-
-            return Result<GetOffersForRequest>.Success(dto, SuccessCodes.OperationSuccessful);
+            return Result<GetOffersForRequest>.Success(priceRequest, SuccessCodes.OperationSuccessful);
         }
 
-        public async Task<Result<GetPriceOfferDetailedDto[]>> GetFacilityOffersAsync()
+        public async Task<Result<GetPriceOfferDetailedDto[]>> GetMyFacilityOffersAsync()
         {
             var facilityId = currentUser.EntityId;
             var offers = await ufw.GetRepository<PriceOffer>()
-                .FilterAsync(o => o.PriceRequest.FacilityId == facilityId,
-              [nameof(PriceOffer.PriceRequest),
-                 nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);
-            return MapAndReturnSuccess(offers);
+                .FilterAsync<GetPriceOfferDetailedDto>(o => o.PriceRequest.FacilityId == facilityId);
+            return offers.ToArray();
         }
 
-        public async Task<Result<GetOffersForRequest>> GetFacilityOffersByRequestIdAsync(long requestId)
+        public async Task<Result<GetOffersForRequest>> GetMyFacilityOffersByRequestIdAsync(long requestId)
         {
             var facilityId = currentUser.EntityId;
 
             var priceRequest = await ufw.GetRepository<PriceRequest>()
-                .FirstOrDefaultAsync(
-                    o => o.Id == requestId && o.FacilityId == facilityId,
-                    [
-                nameof(PriceRequest.Offers),
-                $"{nameof(PriceRequest.Offers)}.{nameof(PriceOffer.Services)}",
-                $"{nameof(PriceRequest.Offers)}.{nameof(PriceOffer.OtherServices)}"
-                    ]);
+                .FirstOrDefaultAsync<GetOffersForRequest>(o => o.Id == requestId && o.FacilityId == facilityId);
+            if (priceRequest is null)
+                return new NotFoundError();
 
-            var dto = mapper.Map<GetOffersForRequest>(priceRequest);
-
-            return Result<GetOffersForRequest>.Success(dto, SuccessCodes.OperationSuccessful);
+            return Result<GetOffersForRequest>.Success(priceRequest, SuccessCodes.OperationSuccessful);
         }
 
         private Result<GetPriceOfferDetailedDto[]> MapAndReturnSuccess(IEnumerable<PriceOffer> offers)
@@ -166,6 +148,15 @@ namespace Application.PriceOffers.Services
             return Result<GetPriceOfferDetailedDto[]>.Success(dtoOffers, SuccessCodes.OperationSuccessful);
         }
 
+        public async Task<Result<GetPriceOfferDetailedDto>> GetByIdAsync(long offerId)
+        {
+            var offer = await ufw.GetRepository<PriceOffer>()
+                .FirstOrDefaultAsync<GetPriceOfferDetailedDto>(o => o.Id == offerId);
 
+            if (offer is null)
+                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
+
+            return offer;
+        }
     }
 }

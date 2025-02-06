@@ -2,8 +2,6 @@
 using Application.PriceRequests.Dtos;
 using AutoMapper;
 using Domain.Entities.ChatAggregate;
-using Domain.Entities.CompanyAggregate;
-using Domain.Entities.FacilityAggregate;
 using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Service
@@ -59,39 +57,26 @@ namespace Application.PriceRequests.Service
         //} 
         #endregion
 
-        public async Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync()
+        public async Task<Result<FacilityPriceRequestDto[]>> GetMyFacilityRequestsAsync()
         {
             var entityId = currentUser.EntityId ?? 1;
 
             var priceRequests = await ufw.GetRepository<PriceRequest>()
-                .FilterAsync(pr => pr.FacilityId == entityId,
-                [
-                    nameof(Company),
-                    nameof(PriceRequest.Services),
-                    nameof(PriceRequest.OtherServices),
-                    nameof(PriceRequest.Offers),
-                    ]);
+                .FilterAsync<FacilityPriceRequestDto>(pr => pr.FacilityId == entityId);
 
-            var facilityPriceRequestDto = mapper.Map<FacilityPriceRequestDto[]>(priceRequests);
-            return Result<FacilityPriceRequestDto[]>.Success(facilityPriceRequestDto,
-                SuccessCodes.GetMyRequestsAsFacility);
+            return Result<FacilityPriceRequestDto[]>.Success(priceRequests.ToArray(), SuccessCodes.GetMyRequestsAsFacility);
 
 
         }
 
-        public async Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync()
+        public async Task<Result<CompanyPriceRequestDto[]>> GetMyCompanyRequestsAsync()
         {
             var entityId = currentUser.EntityId ?? 1;
 
             var priceRequests = await ufw.GetRepository<PriceRequest>()
-                .FilterAsync(pr => pr.CompanyId == entityId, [
-                    nameof(Facility),
-                    nameof(PriceRequest.Services),
-                    nameof(PriceRequest.OtherServices),
-                    nameof(PriceRequest.Offers)]);
+                .FilterAsync<CompanyPriceRequestDto>(pr => pr.CompanyId == entityId);
 
-            var companyPriceRequestDto = mapper.Map<CompanyPriceRequestDto[]>(priceRequests);
-            return Result<CompanyPriceRequestDto[]>.Success(companyPriceRequestDto,
+            return Result<CompanyPriceRequestDto[]>.Success(priceRequests.ToArray(),
                 SuccessCodes.GetMyRequestsAsCompany);
         }
 
@@ -189,6 +174,16 @@ namespace Application.PriceRequests.Service
 
             await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.Updated);
+        }
+
+        public async Task<Result<GetPriceRequestDto>> GetByIdAsync(long priceRequestId)
+        {
+            var priceRequest = await ufw.GetRepository<PriceRequest>().FirstOrDefaultAsync<GetPriceRequestDto>(pr => pr.Id == priceRequestId);
+
+            if (priceRequest is null)
+                return new NotFoundError(ErrorCodes.PriceRequestNotExists);
+
+            return Result<GetPriceRequestDto>.Success(priceRequest, SuccessCodes.OperationSuccessful);
         }
     }
 }

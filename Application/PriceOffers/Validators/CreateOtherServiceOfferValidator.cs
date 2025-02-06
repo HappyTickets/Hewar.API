@@ -12,10 +12,10 @@ namespace Application.PriceOffers.Validators
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.DailyCostPerUnit)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.MonthlyCostPerUnit)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.ShiftType) // OPTIONAL but if passed then check is in enum
                 .IsInEnum().When(g => g.ShiftType != null)

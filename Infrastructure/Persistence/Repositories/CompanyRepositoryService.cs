@@ -1,11 +1,12 @@
-﻿using Domain.Entities.CompanyAggregate;
+﻿using AutoMapper;
+using Domain.Entities.CompanyAggregate;
 using Infrastructure.Persistence.Repositories.Generic;
 
 namespace Infrastructure.Persistence.Repositories
 {
     internal class CompanyRepositoryService : SoftDeletableGenericRepositoryService<Company>
     {
-        public CompanyRepositoryService(AppDbContext dbContext, ICurrentUserService currentUserService) : base(dbContext, currentUserService)
+        public CompanyRepositoryService(AppDbContext dbContext, ICurrentUserService currentUserService, IMapper mapper) : base(dbContext, currentUserService, mapper)
         {
         }
 

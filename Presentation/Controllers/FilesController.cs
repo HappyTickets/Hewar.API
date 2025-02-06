@@ -4,17 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    public class FilesController : ApiControllerBase
+    public class FilesController(IFileService fileService) : ApiControllerBase
     {
-        private readonly IFileService _fileService;
-
-        public FilesController(IFileService fileService)
-        {
-            _fileService = fileService;
-        }
-
         [HttpPost("upload")]
         public async Task<IActionResult> UploadAsync(FileInfoDTO file)
-            => Result(await _fileService.SaveFileAsync(file));
+            => Result(await fileService.SaveFileAsync(file));
     }
 }

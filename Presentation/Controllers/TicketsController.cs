@@ -6,37 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers
 {
     [Authorize]
-    public class TicketsController : ApiControllerBase
+    public class TicketsController(ITicketsService ticketsService) : ApiControllerBase
     {
-        private readonly ITicketsService _ticketsService;
+        [HttpPost("create")]
+        public async Task<IActionResult> CreateTicketAsync([FromBody] CreateTicketDto dto)
+            => Result(await ticketsService.CreateTicketAsync(dto));
 
-        public TicketsController(ITicketsService ticketsService)
-        {
-            _ticketsService = ticketsService;
-        }
-
-        [HttpPost("createTicket")]
-        public async Task<IActionResult> CreateTicketAsync(CreateTicketDto dto)
-            => Result(await _ticketsService.CreateTicketAsync(dto));
-
-        [HttpPatch("closeTicket")]
+        [HttpPatch("close")]
         public async Task<IActionResult> CloseTicketAsync(long ticketId)
-           => Result(await _ticketsService.CloseTicketAsync(ticketId));
+           => Result(await ticketsService.CloseTicketAsync(ticketId));
 
         [HttpGet("getMyReceivedTickets")]
         public async Task<IActionResult> GetMyReceivedTicketsAsync()
-            => Result(await _ticketsService.GetMyReceivedTicketsAsync());
+            => Result(await ticketsService.GetMyReceivedTicketsAsync());
 
         [HttpGet("getMySentTickets")]
         public async Task<IActionResult> GetMySentTicketsAsync()
-            => Result(await _ticketsService.GetMySentTicketsAsync());
+            => Result(await ticketsService.GetMySentTicketsAsync());
 
         [HttpPost("createTicketMessage")]
         public async Task<IActionResult> CreateTicketMessageAsync(CreateTicketMessageDto dto)
-            => Result(await _ticketsService.CreateTicketMessageAsync(dto));
+            => Result(await ticketsService.CreateTicketMessageAsync(dto));
 
         [HttpGet("getTicketMessages")]
         public async Task<IActionResult> GetTicketMessagesAsync(long ticketId)
-            => Result(await _ticketsService.GetTicketMessagesAsync(ticketId));
+            => Result(await ticketsService.GetTicketMessagesAsync(ticketId));
     }
 }

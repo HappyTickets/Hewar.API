@@ -18,9 +18,13 @@ namespace Application.PriceOffers.Mapping
                 .ForMember(dest => dest.Offers, opt => opt.MapFrom(src => src.Offers))
                 .ReverseMap();
 
+            CreateMap<PriceOffer, GetPriceOfferDto>()
+    .ForMember(dest => dest.FacilityName, opt => opt.MapFrom(src => src.PriceRequest.Facility.Name))
+                .ReverseMap();
 
-            CreateMap<GetPriceOfferDto, PriceOffer>().ReverseMap();
-            CreateMap<GetPriceOfferDetailedDto, PriceOffer>().ReverseMap();
+            CreateMap<PriceOffer, GetPriceOfferDetailedDto>()
+                .ForMember(dest => dest.FacilityName, opt => opt.MapFrom(src => src.PriceRequest.Facility.Name))
+                .ReverseMap();
 
             CreateMap<CreatePriceOfferDto, PriceOffer>().ReverseMap();
             CreateMap<UpdatePriceOfferDto, PriceOffer>().ReverseMap();

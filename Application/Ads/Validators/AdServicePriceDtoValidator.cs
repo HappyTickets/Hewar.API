@@ -11,17 +11,17 @@ namespace Application.Ads.Validators
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.Quantity)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.ShiftType)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(g => g.DailyCostPerUnit)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(g => g.MonthlyCostPerUnit)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
+                .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField);
 
         }
     }

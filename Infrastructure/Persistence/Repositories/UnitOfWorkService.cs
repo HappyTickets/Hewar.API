@@ -1,19 +1,12 @@
-﻿using Infrastructure.Persistence.Repositories.Generic;
+﻿using AutoMapper;
+using Infrastructure.Persistence.Repositories.Generic;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Persistence.Repositories
 {
-    internal class UnitOfWorkService : IUnitOfWorkService
+    internal class UnitOfWorkService(AppDbContext context, ICurrentUserService currentUserService, IMapper mapper) : IUnitOfWorkService
     {
-        private readonly AppDbContext _context;
-        private readonly ICurrentUserService _currentUserService;
         private readonly Dictionary<Type, object> _repositories = new();
-
-        public UnitOfWorkService(AppDbContext context, ICurrentUserService currentUserService)
-        {
-            _context = context;
-            _currentUserService = currentUserService;
-        }
 
         public ISoftDeletableGenericRepositoryService<TEntity> GetRepository<TEntity>() where TEntity : SoftDeletableEntity
         {
@@ -24,7 +17,7 @@ namespace Infrastructure.Persistence.Repositories
                 return (ISoftDeletableGenericRepositoryService<TEntity>)repository;
             }
 
-            var newRepository = new SoftDeletableGenericRepositoryService<TEntity>(_context, _currentUserService);
+            var newRepository = new SoftDeletableGenericRepositoryService<TEntity>(context, currentUserService, mapper);
             _repositories[entityType] = newRepository;
 
             return newRepository;
@@ -32,16 +25,16 @@ namespace Infrastructure.Persistence.Repositories
 
         #region Transaction Methods
         public Task<IDbContextTransaction> BeginTransactionAsync()
-            => _context.Database.BeginTransactionAsync();
+            => context.Database.BeginTransactionAsync();
 
         public Task CommitTransactionAsync()
-            => _context.Database.CommitTransactionAsync();
+            => context.Database.CommitTransactionAsync();
 
         public Task RollbackTransactionAsync()
-            => _context.Database.RollbackTransactionAsync();
+            => context.Database.RollbackTransactionAsync();
 
         public Task SaveChangesAsync()
-            => _context.SaveChangesAsync();
+            => context.SaveChangesAsync();
         #endregion
     }
 

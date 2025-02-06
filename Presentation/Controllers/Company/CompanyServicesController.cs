@@ -5,49 +5,42 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers.Company
 {
 
-    public class CompanyServicesController : ApiControllerBase
+    public class CompanyServicesController(ICompanyProvidedService companyService) : ApiControllerBase
     {
-        private readonly ICompanyProvidedService _companyService;
-
-        public CompanyServicesController(ICompanyProvidedService companyService)
-        {
-            _companyService = companyService;
-        }
-
         [HttpPost("create")]
         //[HasPermission(Permissions.CreateCompanyAsync)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateCompanyServiceDto dto)
 
-            => Result(await _companyService.CreateAsync(dto));
+            => Result(await companyService.CreateAsync(dto));
 
 
 
         [HttpPut("update")]
         //[HasPermission(Permissions.UpdateCompany)]
         public async Task<IActionResult> UpdateAsync([FromBody] UpdateCompanyServiceDto dto)
-       => Result(await _companyService.UpdateAsync(dto));
+       => Result(await companyService.UpdateAsync(dto));
 
-        [HttpGet("getById/{id}")]
+        [HttpGet("getById")]
         //[HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetByIdAsync(long id)
-            => Result(await _companyService.GetByIdAsync(id));
+            => Result(await companyService.GetByIdAsync(id));
 
-        [HttpGet("getServicesByCompanyId/{companyId}")]
+        [HttpGet("getServicesByCompanyId")]
         //[HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetServicesByCompanyIdAsync(long companyId)
-            => Result(await _companyService.GetServicesByCompanyIdAsync(companyId));
+            => Result(await companyService.GetServicesByCompanyIdAsync(companyId));
 
 
         [HttpGet("getAll")]
         //[HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetAllAsync()
-            => Result(await _companyService.GetAllAsync());
+            => Result(await companyService.GetAllAsync());
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete")]
         //[HasPermission(Permissions.DeleteCompany)]
         public async Task<IActionResult> HardDeleteAsync(long id)
-            => Result(await _companyService.DeleteAsync(id));
+            => Result(await companyService.DeleteAsync(id));
     }
 
 }

@@ -26,7 +26,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> UpdateAsync([FromBody] HewarServiceDto dto)
        => Result(await _hewarService.UpdateAsync(dto));
 
-        [HttpGet("getById/{id}")]
+        [HttpGet("getById")]
         //[HasPermission(Permissions.View)]
         public async Task<IActionResult> GetByIdAsync(long id)
             => Result(await _hewarService.GetByIdAsync(id));
@@ -38,7 +38,7 @@ namespace Presentation.Controllers
             => Result(await _hewarService.GetAllAsync());
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete")]
         //[HasPermission(Permissions.DeleteHewar)]
         public async Task<IActionResult> HardDeleteAsync(long id)
             => Result(await _hewarService.DeleteAsync(id));

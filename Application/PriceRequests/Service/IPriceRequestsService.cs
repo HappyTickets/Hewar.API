@@ -6,6 +6,7 @@ namespace Application.PriceRequests.Service
     {
         Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto);
         Task<Result<Empty>> UpdateRequestAsync(UpdatePriceRequestDto dto);
+        Task<Result<GetPriceRequestDto>> GetByIdAsync(long priceRequestId);
 
         #region Facility Details
         //Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto);
@@ -14,8 +15,8 @@ namespace Application.PriceRequests.Service
         #endregion
 
 
-        Task<Result<CompanyPriceRequestDto[]>> GetMyRequestsAsCompanyAsync();
-        Task<Result<FacilityPriceRequestDto[]>> GetMyRequestsAsFacilityAsync();
+        Task<Result<CompanyPriceRequestDto[]>> GetMyCompanyRequestsAsync();
+        Task<Result<FacilityPriceRequestDto[]>> GetMyFacilityRequestsAsync();
 
 
         Task<Result<Empty>> RejectRequestAsync(long priceRequestId);

@@ -8,7 +8,7 @@ namespace Application.PriceRequests.Validators
         public UpdatePriceRequestValidator()
         {
             RuleFor(r => r.ContractType)
-               .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
+               .NotNull().WithState(_ => (int)ValidationMsgs.RequiredField)
                .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);
 
             RuleFor(r => r.StartDate)
