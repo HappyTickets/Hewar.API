@@ -4,20 +4,13 @@ using Domain.Events.Notifications;
 
 namespace Application.Notifications.Events
 {
-    internal class NotificationCreatedEventHandler : INotificationHandler<NotificationCreated>
+    internal class NotificationCreatedEventHandler(INotificationService notificationService, IMapper mapper) : INotificationHandler<NotificationCreated>
     {
-        private readonly INotificationService _notificationService;
-        private readonly IMapper _mapper;
-
-        public NotificationCreatedEventHandler(INotificationService notificationService, IMapper mapper)
-        {
-            _notificationService = notificationService;
-            _mapper = mapper;
-        }
-
         public async Task Handle(NotificationCreated notification, CancellationToken cancellationToken)
         {
-            var dto = _mapper.Map<NotificationDto>(notification.Notification);
+            var dto = mapper.Map<NotificationDto>(notification.Notification);
+
+            await notificationService.NotifyUserAsync(notification.Notification.RecipientId, notification.Notification.RecipientType, dto);
         }
     }
 }

@@ -8,46 +8,66 @@ namespace Application.Chats.Service
 {
     public class ChatService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper) : IChatService
     {
-        #region Price Requests/Offers
-        private async Task<Result<Empty>> SendPriceRequestOrOfferMessageAsync(CreateChatMessageDto dto)
+
+        public async Task<Result<Empty>> SendPriceRequestMessageAsync(CreateChatMessageDto dto)
+            => await SendChatMessageAsync(dto, (message, chat, audienceId, audienceType) =>
+                new PriceRequestMessageCreated(message, chat.RelatedEntityId, audienceId, audienceType));
+
+        public async Task<Result<Empty>> SendPriceOfferMessageAsync(CreateChatMessageDto dto)
+            => await SendChatMessageAsync(dto, (message, chat, audienceId, audienceType) =>
+                new PriceOfferMessageCreated(message, chat.RelatedEntityId, audienceId, audienceType));
+
+        public async Task<Result<Empty>> SendAdOfferMessageAsync(CreateChatMessageDto dto)
+            => await SendChatMessageAsync(dto, (message, chat, audienceId, audienceType) =>
+                new AdOfferMessageCreated(message, chat.RelatedEntityId, audienceId, audienceType));
+
+        private async Task<Result<Empty>> SendChatMessageAsync(CreateChatMessageDto dto,
+            Func<Message, Chat, long, EntityTypes, DomainEvent> createDomainEvent)
         {
             var chat = await ufw.GetRepository<Chat>().GetByIdAsync(dto.ChatId);
+            var validationResult = ValidateChat(chat);
+            if (validationResult is not null)
+                return validationResult;
 
+            var message = CreateMessage(dto, chat.Id);
+
+            chat.Messages.Add(message);
+
+            var (audienceId, audienceType) = GetAudienceInfo(message.RepresentedEntity!.Value, chat);
+
+            var domainEvent = createDomainEvent(message, chat, audienceId, audienceType);
+            message.AddDomainEvent(domainEvent);
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateRequestMessage);
+        }
+
+        private static Result<Empty>? ValidateChat(Chat? chat)
+        {
             if (chat is null)
                 return new NotFoundError();
-
 
             if (chat.Status == ChatStatus.Closed)
                 return new ConflictError(ErrorCodes.ChatClosed);
 
+            return null;
+        }
 
-            var message = new Message
+        private Message CreateMessage(CreateChatMessageDto dto, long chatId)
+        {
+            return new Message
             {
                 SentOn = DateTimeOffset.UtcNow,
                 SenderId = currentUser.UserId ?? 1,
                 RepresentedEntity = currentUser.EntityType ?? null,
                 Content = dto.Content,
-                ChatId = chat.Id
+                ChatId = chatId,
+                Medias = dto.Medias != null ? mapper.Map<Media[]>(dto.Medias) : null
             };
-            if (dto.Medias != null)
-            {
-                var medias = mapper.Map<Media[]>(dto.Medias);
-                message.Medias = medias;
-            }
-
-            chat.Messages.Add(message);
-            message.AddDomainEvent(new PriceRequestMessageCreated(message, chat.EntityAudienceId, chat.EntityIssuerId));
-            await ufw.SaveChangesAsync();
-
-            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateRequestMessage);
         }
 
 
 
-        public async Task<Result<Empty>> SendPriceRequestMessageAsync(CreateChatMessageDto dto)
-            => await SendPriceRequestOrOfferMessageAsync(dto);
-        public async Task<Result<Empty>> SendPriceOfferMessageAsync(CreateChatMessageDto dto)
-          => await SendPriceRequestOrOfferMessageAsync(dto);
         public async Task<Result<long>> InitialzePriceRequestChatAsync(long priceRequestId)
         {
             var pr = await ufw.GetRepository<PriceRequest>().GetByIdAsync(priceRequestId);
@@ -93,7 +113,6 @@ namespace Application.Chats.Service
             await ufw.SaveChangesAsync();
             return Result<long>.Success(po.Chat.Id, SuccessCodes.ChatInitialized);
         }
-        #endregion
 
         #region Ads Chat
         public async Task<Result<long>> InitialzeAdOfferChatAsync(long adOfferId)
@@ -120,37 +139,14 @@ namespace Application.Chats.Service
             return Result<long>.Success(adOffer.Chat.Id, SuccessCodes.ChatInitialized);
         }
 
-        public async Task<Result<Empty>> SendAdOfferMessageAsync(CreateChatMessageDto dto)
+
+        private Tuple<long, EntityTypes> GetAudienceInfo(EntityTypes messageSenderType, Chat chat)
         {
-            var chat = await ufw.GetRepository<Chat>().GetByIdAsync(dto.ChatId);
-            if (chat is null)
-                return new NotFoundError();
-
-            if (chat.Status == ChatStatus.Closed)
-                return new ConflictError(ErrorCodes.ChatClosed);
-
-            var message = new Message
-            {
-                SentOn = DateTimeOffset.UtcNow,
-                SenderId = currentUser.UserId ?? 1,
-                RepresentedEntity = currentUser.EntityType ?? null,
-                Content = dto.Content,
-                ChatId = chat.Id
-            };
-
-            if (dto.Medias != null)
-            {
-                var medias = mapper.Map<Media[]>(dto.Medias);
-                message.Medias = medias;
-            }
-            chat.Messages.Add(message);
-            message.AddDomainEvent(new AdOfferMessageCreated(message,
-            chat.EntityIssuerId, chat.EntityAudienceId));
-            await ufw.SaveChangesAsync();
-            return Result<Empty>.Success(Empty.Default, SuccessCodes.CreateOfferMessage);
-
+            if (messageSenderType == chat.IssuerType)
+                return new(chat.EntityAudienceId, chat.AudienceType);
+            else
+                return new(chat.EntityIssuerId, chat.IssuerType);
         }
-
         #endregion
 
         public async Task<Result<ChatMessageDto[]>> GetChatMessagesAsync(long chatId)

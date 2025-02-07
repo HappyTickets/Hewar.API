@@ -8,6 +8,12 @@
         PriceRequestRejected = 3,
         PriceRequestCancelled = 4,
         PriceRequestMessageCreated = 5,
+        // Price offers
+        PriceOfferCreated = 20,
+        PriceOfferAccepted = 21,
+        PriceOfferRejected = 22,
+        PriceOfferCancelled = 23,
+        PriceOfferMessageCreated = 24,
 
         // tickets
         TicketCreated = 50,

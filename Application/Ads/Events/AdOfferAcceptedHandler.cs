@@ -3,15 +3,8 @@ using Domain.Events.Notifications;
 
 namespace Application.Ads.Events
 {
-    internal class AdOfferAcceptedHandler : INotificationHandler<AdOfferAccepted>
+    internal class AdOfferAcceptedHandler(IUnitOfWorkService ufw) : INotificationHandler<AdOfferAccepted>
     {
-        private readonly IUnitOfWorkService _ufw;
-
-        public AdOfferAcceptedHandler(IUnitOfWorkService ufw)
-        {
-            _ufw = ufw;
-        }
-
         public async Task Handle(AdOfferAccepted notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
@@ -24,12 +17,12 @@ namespace Application.Ads.Events
                 Event = NotificationEvents.AdOfferAccepted,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.AdOffer.CompanyId,
-                //RecipientType = AccountTypes.Company
+                RecipientType = EntityTypes.Company
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
-            _ufw.GetRepository<Notification>().Create(userNotification);
-            await _ufw.SaveChangesAsync();
+            ufw.GetRepository<Notification>().Create(userNotification);
+            await ufw.SaveChangesAsync();
         }
     }
 }

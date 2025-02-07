@@ -3,17 +3,8 @@ using Domain.Events.Tickets;
 
 namespace Application.Tickets.Events
 {
-    internal class TicketCreatedEventHandler : INotificationHandler<TicketCreated>
+    internal class TicketCreatedEventHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser) : INotificationHandler<TicketCreated>
     {
-        private readonly IUnitOfWorkService _ufw;
-        private readonly ICurrentUserService _currentUser;
-
-        public TicketCreatedEventHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser)
-        {
-            _ufw = ufw;
-            _currentUser = currentUser;
-        }
-
         public async Task Handle(TicketCreated notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
@@ -26,12 +17,12 @@ namespace Application.Tickets.Events
                 Event = NotificationEvents.TicketCreated,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.Ticket.AudienceId,
-                //RecipientType = notification.Ticket.AudienceType
+                RecipientType = notification.Ticket.AudienceType
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
-            _ufw.GetRepository<Notification>().Create(userNotification);
-            await _ufw.SaveChangesAsync();
+            ufw.GetRepository<Notification>().Create(userNotification);
+            await ufw.SaveChangesAsync();
         }
     }
 }

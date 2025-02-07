@@ -1,12 +1,7 @@
 ﻿namespace Domain.Events.PriceRequests
 {
-    public class PriceRequestAccepted : DomainEvent
+    public class PriceRequestAccepted(PriceRequest priceRequest) : DomainEvent
     {
-        public PriceRequest PriceRequest { get; }
-
-        public PriceRequestAccepted(PriceRequest priceRequest)
-        {
-            PriceRequest = priceRequest;
-        }
+        public PriceRequest PriceRequest { get; } = priceRequest;
     }
 }

@@ -1,8 +1,10 @@
-﻿namespace Application.Common.Interfaces.Services
+﻿using Application.Notifications.Dtos;
+
+namespace Application.Common.Interfaces.Services
 {
     public interface INotificationService
     {
-        //Task NotifyUserAsync(long userId, NotificationDto notification);
-        //Task NotifyUserNotificationReadAsync(long userId, long notificationId);
+        Task NotifyUserAsync(long entityId, EntityTypes entityType, NotificationDto notification);
+        Task NotifyUserNotificationReadAsync(long entityId, EntityTypes entityType, long notificationId);
     }
 }

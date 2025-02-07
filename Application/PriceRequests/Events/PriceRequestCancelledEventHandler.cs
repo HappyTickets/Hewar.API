@@ -3,15 +3,8 @@ using Domain.Events.PriceRequests;
 
 namespace Application.PriceRequests.Events
 {
-    internal class PriceRequestCancelledEventHandler : INotificationHandler<PriceRequestCancelled>
+    internal class PriceRequestCancelledEventHandler(IUnitOfWorkService ufw) : INotificationHandler<PriceRequestCancelled>
     {
-        private readonly IUnitOfWorkService _ufw;
-
-        public PriceRequestCancelledEventHandler(IUnitOfWorkService ufw)
-        {
-            _ufw = ufw;
-        }
-
         public async Task Handle(PriceRequestCancelled notification, CancellationToken cancellationToken)
         {
             var userNotification = new Notification
@@ -24,12 +17,12 @@ namespace Application.PriceRequests.Events
                 Event = NotificationEvents.PriceRequestCancelled,
                 NotifiedOn = DateTimeOffset.UtcNow,
                 RecipientId = notification.PriceRequest.CompanyId,
-                //RecipientType = AccountTypes.Company
+                RecipientType = EntityTypes.Company
             };
 
             userNotification.AddDomainEvent(new NotificationCreated(userNotification));
-            _ufw.GetRepository<Notification>().Create(userNotification);
-            await _ufw.SaveChangesAsync();
+            ufw.GetRepository<Notification>().Create(userNotification);
+            await ufw.SaveChangesAsync();
         }
     }
 }
