@@ -20,6 +20,11 @@ namespace Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.AppendGlobalQueryFilter<SoftDeletableEntity>(e => !e.IsDeleted);
+
+            modelBuilder.AppendGlobalQueryFilter<PriceRequest>(pr =>
+            (_currentUserService.EntityType == EntityTypes.Facility && !pr.IsFacilityHidden)
+            || (_currentUserService.EntityType == EntityTypes.Company && !pr.IsCompanyHidden));
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.SeedRoles();
 
