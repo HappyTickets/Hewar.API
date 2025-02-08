@@ -21,5 +21,7 @@ namespace Application.PriceRequests.Service
 
         Task<Result<Empty>> RejectRequestAsync(long priceRequestId);
         Task<Result<Empty>> CancelRequestAsync(long priceRequestId);
+        Task<Result<Empty>> HideRequestAsync(long priceRequestId);
+        Task<Result<Empty>> ShowRequestAsync(long priceRequestId);
     }
 }

@@ -9,6 +9,9 @@ namespace Domain.Entities.PriceRequestAggregates
         public long FacilityId { get; set; }
         public virtual Facility Facility { get; set; }
 
+        public bool IsFacilityHidden { get; set; } = false;
+        public bool IsCompanyHidden { get; set; } = false;
+
         public long CompanyId { get; set; }
         public virtual Company Company { get; set; }
 

@@ -28,6 +28,16 @@ namespace Presentation.Controllers.PriceRequest
         public async Task<IActionResult> CancelRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.CancelRequestAsync(priceRequestId));
 
+        [HttpPatch("hide")]
+        //[HasAccountType(AccountTypes.Facility)] or company 
+        public async Task<IActionResult> HidePriceRequestAsync(long priceRequestId)
+            => Result(await priceRequestsService.HideRequestAsync(priceRequestId));
+
+        [HttpPatch("show")]
+        //[HasAccountType(AccountTypes.Facility)] or company 
+        public async Task<IActionResult> ShowPriceRequestAsync(long priceRequestId)
+            => Result(await priceRequestsService.ShowRequestAsync(priceRequestId));
+
         [HttpGet("getMyFacilityRequests")]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> GetMyFacilityRequestsAsync()

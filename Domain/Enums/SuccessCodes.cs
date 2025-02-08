@@ -78,6 +78,8 @@
         CancelRequest = 508,
         CreateRequestMessage = 509,
         GetRequestMessages = 510,
+        PriceRequestHidden = 511,
+        PriceRequestShown = 512,
 
         //tokens
         RefreshedToken = 600,

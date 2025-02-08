@@ -9,8 +9,6 @@ namespace Application.PriceRequests.Service
     internal class PriceRequestsService(IUnitOfWorkService ufw, IMapper mapper, ICurrentUserService currentUser) : IPriceRequestsService
     {
 
-
-
         #region Facility Details
         //public async Task<Result<Empty>> CreateRequestFacilityDetailsAsync(CreatePriceRequestFacilityDetailsDto dto)
         //{
@@ -138,10 +136,6 @@ namespace Application.PriceRequests.Service
             return Result<ChatMessageDto[]>.Success(messagesDto, SuccessCodes.GetRequestMessages);
 
         }
-
-
-
-
         public async Task<Result<long>> CreateRequestAsync(CreatePriceRequestDto dto)
         {
             var priceRequest = mapper.Map<PriceRequest>(dto);
@@ -184,6 +178,45 @@ namespace Application.PriceRequests.Service
                 return new NotFoundError(ErrorCodes.PriceRequestNotExists);
 
             return Result<GetPriceRequestDto>.Success(priceRequest, SuccessCodes.OperationSuccessful);
+        }
+
+        public async Task<Result<Empty>> HideRequestAsync(long priceRequestId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var priceRequest = await ufw.GetRepository<PriceRequest>()
+                .FirstOrDefaultAsync(pr => pr.Id == priceRequestId);
+
+            if (priceRequest is null)
+                return new NotFoundError(ErrorCodes.PriceRequestNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                priceRequest.IsFacilityHidden = true;
+
+            else if (currentEntityType == EntityTypes.Company)
+                priceRequest.IsCompanyHidden = true;
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceRequestHidden);
+        }
+
+        public async Task<Result<Empty>> ShowRequestAsync(long priceRequestId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var priceRequest = await ufw.GetRepository<PriceRequest>()
+                .FirstOrDefaultAsync(pr => pr.Id == priceRequestId, ignoreQueryFilters: true);
+
+            if (priceRequest is null)
+                return new NotFoundError(ErrorCodes.PriceRequestNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                priceRequest.IsFacilityHidden = false;
+
+            else if (currentEntityType == EntityTypes.Company)
+                priceRequest.IsCompanyHidden = false;
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceRequestShown);
         }
     }
 }
