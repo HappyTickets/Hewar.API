@@ -4,6 +4,8 @@
     {
         public long Id { get; set; }
         public long? ChatId { get; set; }
+        public long CompanyId { get; set; }
+        public long FacilityId { get; set; }
 
         public ContractType ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
