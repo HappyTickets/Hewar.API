@@ -57,19 +57,17 @@ namespace Application.PriceRequests.Service
 
         public async Task<Result<FacilityPriceRequestDto[]>> GetMyFacilityRequestsAsync()
         {
-            var entityId = currentUser.EntityId ?? 1;
+            var entityId = currentUser.EntityId;
 
             var priceRequests = await ufw.GetRepository<PriceRequest>()
                 .FilterAsync<FacilityPriceRequestDto>(pr => pr.FacilityId == entityId);
 
             return Result<FacilityPriceRequestDto[]>.Success(priceRequests.ToArray(), SuccessCodes.GetMyRequestsAsFacility);
-
-
         }
 
         public async Task<Result<CompanyPriceRequestDto[]>> GetMyCompanyRequestsAsync()
         {
-            var entityId = currentUser.EntityId ?? 1;
+            var entityId = currentUser.EntityId;
 
             var priceRequests = await ufw.GetRepository<PriceRequest>()
                 .FilterAsync<CompanyPriceRequestDto>(pr => pr.CompanyId == entityId);
@@ -153,6 +151,7 @@ namespace Application.PriceRequests.Service
 
         public async Task<Result<Empty>> UpdateRequestAsync(UpdatePriceRequestDto dto)
         {
+
             var request = await ufw.GetRepository<PriceRequest>()
                 .GetByIdAsync(dto.PriceRequestId,
                 [nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);

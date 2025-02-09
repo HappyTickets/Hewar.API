@@ -1,5 +1,6 @@
 ﻿using Application.Ads.Dtos.Offers;
 using Application.Ads.Service;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.Ads
@@ -13,11 +14,13 @@ namespace Presentation.Controllers.Ads
           => Result(await adsService.CreateOfferAsync(dto));
 
         [HttpPatch("accept")]
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> AcceptOfferAsync(long offerId)
             => Result(await adsService.AcceptOfferAsync(offerId));
 
         [HttpPatch("reject")]
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> RejectOfferAsync(long offerId)
             => Result(await adsService.RejectOfferAsync(offerId));

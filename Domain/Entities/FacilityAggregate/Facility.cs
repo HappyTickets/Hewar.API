@@ -13,5 +13,10 @@
         public string ResponsibleName { get; set; }
         public string ResponsiblePhone { get; set; }
         public virtual ICollection<Ad> Ads { get; set; } = new List<Ad>();
+
+        public virtual ICollection<SecurityContract> SecurityContracts { get; set; } = new List<SecurityContract>();
+
+        public bool IsAuthorized() => SecurityContracts.Any(sc => sc.IsActive());
+
     }
 }
