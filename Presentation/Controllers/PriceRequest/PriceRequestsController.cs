@@ -1,5 +1,6 @@
 ﻿using Application.PriceRequests.Dtos;
 using Application.PriceRequests.Service;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,8 @@ namespace Presentation.Controllers.PriceRequest
     {
         [HttpPost("create")]
         //[HasAccountType(AccountTypes.Facility)]
+
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> CreateRequestAsync(CreatePriceRequestDto dto)
             => Result(await priceRequestsService.CreateRequestAsync(dto));
 
@@ -25,6 +28,7 @@ namespace Presentation.Controllers.PriceRequest
 
         [HttpPatch("cancel")]
         //[HasAccountType(AccountTypes.Facility)]
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> CancelRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.CancelRequestAsync(priceRequestId));
 

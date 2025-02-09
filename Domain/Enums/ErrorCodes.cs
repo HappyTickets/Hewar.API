@@ -60,5 +60,12 @@
         // chat : messages
         ChatClosed = 700,
         ChatAlreadyExist = 701,
+
+        // Contract
+        ContractNotExists = 801,
+        ContractNotPending = 802,
+        ContractNotActive = 803,
+        NoActiveContracts = 804
+
     }
 }

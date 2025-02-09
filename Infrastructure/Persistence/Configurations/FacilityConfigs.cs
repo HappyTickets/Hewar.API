@@ -8,12 +8,15 @@ namespace Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Facility> builder)
         {
-
-
             builder.HasOne(c => c.Address)
                .WithOne()
                .HasForeignKey<Facility>(c => c.AddressId)
                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(f => f.SecurityContracts)
+             .WithOne(sc => sc.Facility)
+             .HasForeignKey(sc => sc.FacilityId)
+             .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

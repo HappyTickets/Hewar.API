@@ -125,5 +125,13 @@
         // chat : messages
         ChatInitialized = 1000,
 
+        // Contracts 
+        ContractCreated = 1100,
+        ContractVerified = 1101,
+        ContractDeleted = 1102,
+        ContractRejected = 1103,
+        ContractUpdated = 1104,
+
+
     }
 }

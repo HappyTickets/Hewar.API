@@ -16,6 +16,7 @@ using Application.Hewar.Service;
 using Application.Notifications.Service;
 using Application.PriceOffers.Services;
 using Application.PriceRequests.Service;
+using Application.SecurityContracts.Service;
 using Application.Tickets.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -55,6 +56,7 @@ namespace Application
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<IPriceOfferService, PriceOfferService>()
               .AddScoped<IChatService, ChatService>()
+              .AddScoped<ISecurityContractService, SecurityContractService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();
 

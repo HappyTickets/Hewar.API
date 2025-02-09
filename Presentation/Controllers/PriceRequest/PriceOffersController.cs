@@ -1,5 +1,6 @@
 ﻿using Application.PriceOffers.Dtos;
 using Application.PriceOffers.Services;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.PriceRequest
@@ -20,10 +21,12 @@ namespace Presentation.Controllers.PriceRequest
 
 
         [HttpPatch("accept")]
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> AcceptOfferAsync(long offerId)
             => Result(await prService.AcceptOfferAsync(offerId));
 
         [HttpPatch("reject")]
+        [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> RejectOfferAsync(long offerId)
             => Result(await prService.RejectOfferAsync(offerId));
 

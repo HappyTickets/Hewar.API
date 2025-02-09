@@ -98,10 +98,11 @@ internal class TokensService
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = true,
+            Secure = false, // should be true in published
             SameSite = SameSiteMode.Strict,
             Expires = expiry
         };
+
         httpContextAccessor.HttpContext.Response.Cookies.Append(key, value, cookieOptions);
     }
     private async Task SaveRefreshTokenAsync(

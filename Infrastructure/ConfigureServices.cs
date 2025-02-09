@@ -2,6 +2,7 @@
 using Application.AccountManagement.OTP;
 using Application.AccountManagement.Service.Interfaces;
 using Application.Authorization.Service;
+using Infrastructure.Authentication.Attributes;
 using Infrastructure.Authentication.Handlers;
 using Infrastructure.Authentication.Requirements;
 using Infrastructure.Background;
@@ -44,6 +45,8 @@ namespace Infrastructure
                 .AddScoped<ICurrentUserService, CurrentUserService>()
                 .AddScoped<IUnitOfWorkService, UnitOfWorkService>()
                 .AddScoped<INotificationService, NotificationService>()
+                .AddScoped<IFacilityInspector, FacilityInspector>()
+                .AddScoped<IsVerifiedFacilityAttribute>()
                 .AddScoped<AppDbContextIntializer>()
                 .AddHostedService<RefreshTokenCleaner>();
 
