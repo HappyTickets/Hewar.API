@@ -17,8 +17,6 @@ namespace Application.PriceRequests.Validators
             RuleFor(r => r.EndDate)
                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(r => r.Notes)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
             RuleFor(r => r.PriceRequestId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);

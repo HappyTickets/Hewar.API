@@ -100,11 +100,11 @@ namespace Application.PriceOffers.Services
         }
 
 
-        public async Task<Result<GetPriceOfferDetailedDto[]>> GetMyCompanyOffersAsync()
+        public async Task<Result<GetCompanyPriceOfferDetailedDto[]>> GetMyCompanyOffersAsync()
         {
             var companyId = currentUser.EntityId;
             var offers = await ufw.GetRepository<PriceOffer>()
-                .FilterAsync<GetPriceOfferDetailedDto>(o => o.PriceRequest.CompanyId == companyId);
+                .FilterAsync<GetCompanyPriceOfferDetailedDto>(o => o.PriceRequest.CompanyId == companyId);
 
             return offers.ToArray();
         }
@@ -122,11 +122,11 @@ namespace Application.PriceOffers.Services
             return Result<GetOffersForRequest>.Success(priceRequest, SuccessCodes.OperationSuccessful);
         }
 
-        public async Task<Result<GetPriceOfferDetailedDto[]>> GetMyFacilityOffersAsync()
+        public async Task<Result<GetFacilityPriceOfferDetailedDto[]>> GetMyFacilityOffersAsync()
         {
             var facilityId = currentUser.EntityId;
             var offers = await ufw.GetRepository<PriceOffer>()
-                .FilterAsync<GetPriceOfferDetailedDto>(o => o.PriceRequest.FacilityId == facilityId);
+                .FilterAsync<GetFacilityPriceOfferDetailedDto>(o => o.PriceRequest.FacilityId == facilityId);
             return offers.ToArray();
         }
 
@@ -142,16 +142,16 @@ namespace Application.PriceOffers.Services
             return Result<GetOffersForRequest>.Success(priceRequest, SuccessCodes.OperationSuccessful);
         }
 
-        private Result<GetPriceOfferDetailedDto[]> MapAndReturnSuccess(IEnumerable<PriceOffer> offers)
+        private Result<GetCompanyPriceOfferDetailedDto[]> MapAndReturnSuccess(IEnumerable<PriceOffer> offers)
         {
-            var dtoOffers = mapper.Map<GetPriceOfferDetailedDto[]>(offers);
-            return Result<GetPriceOfferDetailedDto[]>.Success(dtoOffers, SuccessCodes.OperationSuccessful);
+            var dtoOffers = mapper.Map<GetCompanyPriceOfferDetailedDto[]>(offers);
+            return Result<GetCompanyPriceOfferDetailedDto[]>.Success(dtoOffers, SuccessCodes.OperationSuccessful);
         }
 
-        public async Task<Result<GetPriceOfferDetailedDto>> GetByIdAsync(long offerId)
+        public async Task<Result<GetCompanyPriceOfferDetailedDto>> GetByIdAsync(long offerId)
         {
             var offer = await ufw.GetRepository<PriceOffer>()
-                .FirstOrDefaultAsync<GetPriceOfferDetailedDto>(o => o.Id == offerId);
+                .FirstOrDefaultAsync<GetCompanyPriceOfferDetailedDto>(o => o.Id == offerId);
 
             if (offer is null)
                 return new NotFoundError(ErrorCodes.PriceOfferNotExists);

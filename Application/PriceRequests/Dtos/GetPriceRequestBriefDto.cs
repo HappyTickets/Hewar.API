@@ -1,4 +1,6 @@
-﻿namespace Application.PriceRequests.Dtos
+﻿using Application.Companies.Dtos;
+
+namespace Application.PriceRequests.Dtos
 {
     public class GetPriceRequestBriefDto
     {
@@ -7,8 +9,7 @@
         public ContractType ContractType { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
-        public long CompanyId { get; set; }
-        public string CompanyName { get; set; }
+        public CompanyBreifDto Company { get; set; }
         public RequestStatus Status { get; set; }
         public string? Notes { get; set; }
     }

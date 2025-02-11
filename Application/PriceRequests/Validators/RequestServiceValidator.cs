@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.PriceRequests.Validators
 {
-    internal class RequestServiceValidator : AbstractValidator<ServiceRequestDto>
+    internal class RequestServiceValidator : AbstractValidator<CreateServiceRequestDto>
     {
         public RequestServiceValidator()
         {

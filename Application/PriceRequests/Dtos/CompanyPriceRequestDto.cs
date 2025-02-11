@@ -13,8 +13,8 @@ namespace Application.PriceRequests.Dtos
         public string Notes { get; set; }
         public RequestStatus RequestStatus { get; set; }
 
-        public ICollection<ServiceRequestDto> Services { get; set; }
-        public ICollection<OtherRequestedServiceDto>? OtherServices { get; set; }
+        public ICollection<GetServiceRequestDto> Services { get; set; }
+        public ICollection<GetOtherRequestedServiceDto>? OtherServices { get; set; }
 
         public bool HasOffers { get; set; }
         public FacilityBreifDto Facility { get; set; }

@@ -12,8 +12,8 @@ namespace Application.PriceRequests.Dtos
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
         public RequestStatus Status { get; set; }
-        public ICollection<ServiceRequestDto>? Services { get; set; }
-        public ICollection<OtherRequestedServiceDto>? OtherServices { get; set; }
+        public ICollection<CreateServiceRequestDto>? Services { get; set; }
+        public ICollection<GetOtherRequestedServiceDto>? OtherServices { get; set; }
         public FacilityBreifDto Facility { get; set; }
         public CompanyBreifDto Company { get; set; }
 
