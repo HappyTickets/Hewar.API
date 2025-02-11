@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250211124237_Offer Contracts")]
+    partial class OfferContracts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,53 +420,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("MissionId");
 
                     b.ToTable("CompanyService");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ContractTemplate", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("ContractJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("CreatedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("DeletedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("DeletedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset?>("ModifiedOn")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<long>("OfferId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("TenantId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferId")
-                        .IsUnique();
-
-                    b.ToTable("ContractTemplate");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
@@ -1392,6 +1348,53 @@ namespace Infrastructure.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("Domain.Entities.OfferContract", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ContractTemplate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long>("OfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OfferId")
+                        .IsUnique();
+
+                    b.ToTable("OfferContracts", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Payroll", b =>
                 {
                     b.Property<long>("Id")
@@ -1641,9 +1644,6 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ChatId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("ContractType")
-                        .HasColumnType("int");
-
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1656,16 +1656,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<bool>("IsCompanyHidden")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFacilityHidden")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -1679,9 +1670,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<long>("PriceRequestId")
                         .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
@@ -2258,17 +2246,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ContractTemplate", b =>
-                {
-                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "Offer")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.ContractTemplate", "OfferId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Offer");
-                });
-
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
                 {
                     b.HasOne("Domain.Common.Address", "Address")
@@ -2466,6 +2443,17 @@ namespace Infrastructure.Migrations
                     b.Navigation("Guard");
 
                     b.Navigation("Mission");
+                });
+
+            modelBuilder.Entity("Domain.Entities.OfferContract", b =>
+                {
+                    b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "Offer")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.OfferContract", "OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Offer");
                 });
 
             modelBuilder.Entity("Domain.Entities.Payroll", b =>

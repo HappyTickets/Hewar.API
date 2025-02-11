@@ -11,6 +11,13 @@ namespace Domain.Entities.PriceRequestAggregates
         public virtual PriceRequest PriceRequest { get; set; }
         public RequestStatus OfferStatus { get; set; }
 
+
+        public ContractType ContractType { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
+
+
+
         public bool IsFacilityHidden { get; set; } = false;
         public bool IsCompanyHidden { get; set; } = false;
 
