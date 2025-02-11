@@ -12,6 +12,8 @@ namespace Application.PriceOffers.Services
         Task<Result<Empty>> AcceptOfferAsync(long offerId);
         Task<Result<Empty>> RejectOfferAsync(long offerId);
         Task<Result<Empty>> CancelOfferAsync(long offerId);
+        Task<Result<Empty>> ShowOfferAsync(long priceOfferId);
+        Task<Result<Empty>> HideOfferAsync(long priceOfferId);
 
         Task<Result<GetCompanyPriceOfferDetailedDto[]>> GetMyCompanyOffersAsync();
 

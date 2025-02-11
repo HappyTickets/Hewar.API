@@ -1,10 +1,11 @@
-﻿using Domain.Entities.ChatAggregate;
+﻿using Domain.Common.Interfaces;
+using Domain.Entities.ChatAggregate;
 using Domain.Entities.CompanyAggregate;
 using Domain.Entities.FacilityAggregate;
 
 namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceRequest : SoftDeletableEntity
+    public class PriceRequest : SoftDeletableEntity, IToggleableEntity
     {
         public long FacilityId { get; set; }
         public virtual Facility Facility { get; set; }
@@ -28,5 +29,6 @@ namespace Domain.Entities.PriceRequestAggregates
 
         public long? ChatId { get; set; }
         public virtual Chat? Chat { get; set; }
+
     }
 }

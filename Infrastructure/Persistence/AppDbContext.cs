@@ -1,4 +1,5 @@
-﻿using Domain.Entities.CompanyAggregate;
+﻿using Domain.Common.Interfaces;
+using Domain.Entities.CompanyAggregate;
 using Domain.Entities.FacilityAggregate;
 using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
@@ -21,9 +22,9 @@ namespace Infrastructure.Persistence
 
             modelBuilder.AppendGlobalQueryFilter<SoftDeletableEntity>(e => !e.IsDeleted);
 
-            modelBuilder.AppendGlobalQueryFilter<PriceRequest>(pr =>
-            (_currentUserService.EntityType == EntityTypes.Facility && !pr.IsFacilityHidden)
-            || (_currentUserService.EntityType == EntityTypes.Company && !pr.IsCompanyHidden));
+            modelBuilder.AppendGlobalQueryFilter<IToggleableEntity>(e =>
+            (_currentUserService.EntityType == EntityTypes.Facility && !e.IsFacilityHidden)
+            || (_currentUserService.EntityType == EntityTypes.Company && !e.IsCompanyHidden));
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             modelBuilder.SeedRoles();

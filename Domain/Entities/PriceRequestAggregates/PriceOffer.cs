@@ -1,14 +1,18 @@
-﻿using Domain.Entities.ChatAggregate;
+﻿using Domain.Common.Interfaces;
+using Domain.Entities.ChatAggregate;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities.PriceRequestAggregates
 {
-    public class PriceOffer : SoftDeletableEntity
+    public class PriceOffer : SoftDeletableEntity, IToggleableEntity
     {
         public long PriceRequestId { get; set; }
         [ForeignKey(nameof(PriceRequestId))]
         public virtual PriceRequest PriceRequest { get; set; }
         public RequestStatus OfferStatus { get; set; }
+
+        public bool IsFacilityHidden { get; set; } = false;
+        public bool IsCompanyHidden { get; set; } = false;
 
         public virtual ICollection<ServiceOffer> Services { get; set; } = new List<ServiceOffer>();
         public virtual ICollection<OtherServiceOffer>? OtherServices { get; set; }

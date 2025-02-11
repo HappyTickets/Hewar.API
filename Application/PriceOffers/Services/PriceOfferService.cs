@@ -158,5 +158,48 @@ namespace Application.PriceOffers.Services
 
             return offer;
         }
+
+
+        public async Task<Result<Empty>> HideOfferAsync(long priceOfferId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var priceOffer = await ufw.GetRepository<PriceOffer>()
+                .FirstOrDefaultAsync(po => po.Id == priceOfferId);
+
+            if (priceOffer is null)
+                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                priceOffer.IsFacilityHidden = true;
+            else if (currentEntityType == EntityTypes.Company)
+                priceOffer.IsCompanyHidden = true;
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceOfferHidden);
+        }
+
+        public async Task<Result<Empty>> ShowOfferAsync(long priceOfferId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var priceOffer = await ufw.GetRepository<PriceOffer>()
+                .FirstOrDefaultAsync(po => po.Id == priceOfferId, ignoreQueryFilters: true);
+
+            if (priceOffer is null)
+                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                priceOffer.IsFacilityHidden = false;
+
+            else if (currentEntityType == EntityTypes.Company)
+                priceOffer.IsCompanyHidden = false;
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.PriceOfferShown);
+        }
+
+
     }
+
 }
