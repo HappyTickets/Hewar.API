@@ -1,152 +1,153 @@
 {
-	"ContractTitle": {
-		"Ar": "ÚŞÏ ÊŞÏíã ÎÏãÇÊ ÇáÍÑÇÓÇÊ ÇáÃãäíÉ ÇáãÏäíÉ ÇáÎÇÕÉ",
-		"En": "Contract for Provision of Private Civil Security Guarding Services"
-	},
-	"ContractStartDate": "2025-08-15T00:00:00Z",
-	"PartyOne": {
-		"Name": {
-			"Ar": "ÔÑßÉ ÇáãÌÏ",
-			"En": "Almagd Company"
-		},
+  "ContractTitle": {
+    "Ar": "Ø¹Ù‚Ø¯ ØªÙ‚Ø¯ÙŠÙ… Ø®Ø¯Ù…Ø§Øª Ø§Ù„Ø­Ø±Ø§Ø³Ø§Øª Ø§Ù„Ø£Ù…Ù†ÙŠØ© Ø§Ù„Ù…Ø¯Ù†ÙŠØ© Ø§Ù„Ø®Ø§ØµØ©",
+    "En": "Contract for Provision of Private Civil Security Guarding Services"
+  },
+  "ContractSignDate": "2025-05-15T00:00:00Z",
+  "ContractStartDate": "2025-08-15T00:00:00Z",
+  "PartyOne": {
+    "Name": {
+      "Ar": "Ø´Ø±ÙƒØ© Ø§Ù„Ù…Ø¬Ø¯",
+      "En": "Almagd Company"
+    },
 
-		"MainOfficeCity": {
-			"Ar": "ÌÏÉ",
-			"En": "Jeddah"
-		},
-		"CommercialRegistration": "123456",
-		"PublicSecurityLicense": "78910",
-		"Telephone": "0123456789",
-		"Mobile": "0987654321",
-		"NationalAddress": {
-			"City": {
-				"Ar": "ÌÏÉ",
-				"En": "Jeddah"
-			},
-			"PostalCode": "12345",
-			"UnitNumber": "1",
-			"BuildingNumber": "2"
-		},
+    "MainOfficeCity": {
+      "Ar": "Ø¬Ø¯Ø©",
+      "En": "Jeddah"
+    },
+    "CommercialRegistration": "123456",
+    "PublicSecurityLicense": "78910",
+    "Telephone": "0123456789",
+    "Mobile": "0987654321",
+    "NationalAddress": {
+      "City": {
+        "Ar": "Ø¬Ø¯Ø©",
+        "En": "Jeddah"
+      },
+      "PostalCode": "12345",
+      "UnitNumber": "1",
+      "BuildingNumber": "2"
+    },
 
-		"RegistrationInSabl": "654321",
-		"Email": "contact@almagd.com",
-		"RepresentativeName": {
-			"Ar": "ÃÓÊÇĞ/ ãÍãÏ",
-			"En": "Mr. Mohammed"
-		},
-		"RepresentativeTitle": {
-			"Ar": "ÇáãÏíÑ ÇáÊäİíĞí",
-			"En": "CEO"
-		}
-	},
-	"PartyTwo": {
-		"Name": {
-			"Ar": "ãÄÓÓÉ ÇáÃãÇä",
-			"En": "Alaman Facility"
-		},
-		"MainOfficeCity": {
-			"Ar": "ÇáÑíÇÖ",
-			"En": "Riyadh"
-		},
-		"CommercialRegistrationCity": {
-			"Ar": "ÇáÎÈÑ",
-			"En": "Khabar"
-		},
-		"PublicSecurityLicense": "",
-		"Telephone": "0123456789",
-		"Mobile": "0987654321",
-		"NationalAddress": {
-			"City": {
-				"Ar": "ÌÏÉ",
-				"En": "Jeddah"
-			},
-			"PostalCode": "12345",
-			"UnitNumber": "1",
-			"BuildingNumber": "2"
-		},
-		"Email": "info@example.com",
-		"RepresentativeName": {
-			"Ar": "ÇáÔíÎ ÎÇáÏ  Èä ÚÈÏÇáßÑíã ÇáãäÕæÑ",
-			"En": "Mr. Abdullah"
-		},
-		"RepresentativeTitle": {
-			"Ar": "ÇáãÏíÑ ÇáÊäİíĞí",
-			"En": "CEO"
-		},
-		"LocationToBeSecured": {
-			"Ar": "ÇáãæŞÚ ÇáĞí ÓíÊã ÊÃãíäå",
-			"En": "Location to be secured"
-		}
-	},
-	"Preamble": {
-		"OfferNumber": "OF-001",
-		"OfferDate": "2023-08-15T00:00:00Z"
+    "RegistrationInSabl": "654321",
+    "Email": "contact@almagd.com",
+    "RepresentativeName": {
+      "Ar": "Ø£Ø³ØªØ§Ø°/ Ù…Ø­Ù…Ø¯",
+      "En": "Mr. Mohammed"
+    },
+    "RepresentativeTitle": {
+      "Ar": "Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„ØªÙ†ÙÙŠØ°ÙŠ",
+      "En": "CEO"
+    }
+  },
+  "PartyTwo": {
+    "Name": {
+      "Ar": "Ù…Ø¤Ø³Ø³Ø© Ø§Ù„Ø£Ù…Ø§Ù†",
+      "En": "Alaman Facility"
+    },
+    "MainOfficeCity": {
+      "Ar": "Ø§Ù„Ø±ÙŠØ§Ø¶",
+      "En": "Riyadh"
+    },
+    "CommercialRegistrationCity": {
+      "Ar": "Ø§Ù„Ø®Ø¨Ø±",
+      "En": "Khabar"
+    },
+    "PublicSecurityLicense": "",
+    "Telephone": "0123456789",
+    "Mobile": "0987654321",
+    "NationalAddress": {
+      "City": {
+        "Ar": "Ø¬Ø¯Ø©",
+        "En": "Jeddah"
+      },
+      "PostalCode": "12345",
+      "UnitNumber": "1",
+      "BuildingNumber": "2"
+    },
+    "Email": "info@example.com",
+    "RepresentativeName": {
+      "Ar": "Ø§Ù„Ø´ÙŠØ® Ø®Ø§Ù„Ø¯  Ø¨Ù† Ø¹Ø¨Ø¯Ø§Ù„ÙƒØ±ÙŠÙ… Ø§Ù„Ù…Ù†ØµÙˆØ±",
+      "En": "Mr. Abdullah"
+    },
+    "RepresentativeTitle": {
+      "Ar": "Ø§Ù„Ù…Ø¯ÙŠØ± Ø§Ù„ØªÙ†ÙÙŠØ°ÙŠ",
+      "En": "CEO"
+    },
+    "LocationToBeSecured": {
+      "Ar": "Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø°ÙŠ Ø³ÙŠØªÙ… ØªØ£Ù…ÙŠÙ†Ù‡",
+      "En": "Location to be secured"
+    }
+  },
+  "Preamble": {
+    "OfferNumber": "OF-001",
+    "OfferDate": "2023-08-15T00:00:00Z"
 
-	},
-	"ScheduleEntries": [
-		{
-			"Location": {
-				"Ar": "ÇáãæŞÚ ÇáÃæá",
-				"En": "First Location"
-			},
-			"GuardsRequired": {
-				"Ar": "2 ãÊÛíÑ",
-				"En": "2 Variable"
-			},
-			"ShiftTime": {
-				"Ar": "ÇáÊæŞíÊ",
-				"En": "Time"
-			},
-			"Notes": {
-				"Ar": "ãáÇÍÙÇÊ",
-				"En": "Notes"
-			}
-		},
-		{
-			"Location": {
-				"Ar": "ÇáãæŞÚ ÇáËÇäí",
-				"En": "Second Location"
-			},
-			"GuardsRequired": {
-				"Ar": "3 ãÊÛíÑ",
-				"En": "3 Variable"
-			},
-			"ShiftTime": {
-				"Ar": "ÇáÊæŞíÊ",
-				"En": "Time"
-			},
-			"Notes": {
-				"Ar": "ãáÇÍÙÇÊ",
-				"En": "Notes"
-			}
-		}
-	],
-	"CustomClauses": [
-		{
-			"Ar": "ÈäÏ ãÎÕÕ ÈÇáÚÑÈíÉ",
-			"En": "Custom clause in English"
-		},
-		{
-			"Ar": "ÈäÏ ãÎÕÕ ÈÇáÚÑÈíÉ",
-			"En": "Custom clause in English"
-		},
-		{
-			"Ar": "ÈäÏ ãÎÕÕ ÈÇáÚÑÈíÉ",
-			"En": "Custom clause in English"
-		}
-	],
-	"Footer": {
-		"ClosingRemark": {
-			"Ar": "æÇááå æáí ÇáÊæİíŞ",
-			"En": "And Allah is the source of success"
-		},
-		"PartyOneSignature": {
-			"Ar": "ÊæŞíÚ ÇáØÑİ ÇáÃæá",
-			"En": "First Party Signature"
-		},
-		"PartyTwoSignature": {
-			"Ar": "ÊæŞíÚ ÇáØÑİ ÇáËÇäí",
-			"En": "Second Party Signature"
-		}
-	}
+  },
+  "ScheduleEntries": [
+    {
+      "Location": {
+        "Ar": "Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø£ÙˆÙ„",
+        "En": "First Location"
+      },
+      "GuardsRequired": {
+        "Ar": "2 Ù…ØªØºÙŠØ±",
+        "En": "2 Variable"
+      },
+      "ShiftTime": {
+        "Ar": "Ø§Ù„ØªÙˆÙ‚ÙŠØª",
+        "En": "Time"
+      },
+      "Notes": {
+        "Ar": "Ù…Ù„Ø§Ø­Ø¸Ø§Øª",
+        "En": "Notes"
+      }
+    },
+    {
+      "Location": {
+        "Ar": "Ø§Ù„Ù…ÙˆÙ‚Ø¹ Ø§Ù„Ø«Ø§Ù†ÙŠ",
+        "En": "Second Location"
+      },
+      "GuardsRequired": {
+        "Ar": "3 Ù…ØªØºÙŠØ±",
+        "En": "3 Variable"
+      },
+      "ShiftTime": {
+        "Ar": "Ø§Ù„ØªÙˆÙ‚ÙŠØª",
+        "En": "Time"
+      },
+      "Notes": {
+        "Ar": "Ù…Ù„Ø§Ø­Ø¸Ø§Øª",
+        "En": "Notes"
+      }
+    }
+  ],
+  "CustomClauses": [
+    {
+      "Ar": "Ø¨Ù†Ø¯ Ù…Ø®ØµØµ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©",
+      "En": "Custom clause in English"
+    },
+    {
+      "Ar": "Ø¨Ù†Ø¯ Ù…Ø®ØµØµ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©",
+      "En": "Custom clause in English"
+    },
+    {
+      "Ar": "Ø¨Ù†Ø¯ Ù…Ø®ØµØµ Ø¨Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©",
+      "En": "Custom clause in English"
+    }
+  ],
+  "Footer": {
+    "ClosingRemark": {
+      "Ar": "ÙˆØ§Ù„Ù„Ù‡ ÙˆÙ„ÙŠ Ø§Ù„ØªÙˆÙÙŠÙ‚",
+      "En": "And Allah is the source of success"
+    },
+    "PartyOneSignature": {
+      "Ar": "ØªÙˆÙ‚ÙŠØ¹ Ø§Ù„Ø·Ø±Ù Ø§Ù„Ø£ÙˆÙ„",
+      "En": "First Party Signature"
+    },
+    "PartyTwoSignature": {
+      "Ar": "ØªÙˆÙ‚ÙŠØ¹ Ø§Ù„Ø·Ø±Ù Ø§Ù„Ø«Ø§Ù†ÙŠ",
+      "En": "Second Party Signature"
+    }
+  }
 }

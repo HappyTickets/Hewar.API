@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250211130955_Contract Templatets")]
+    partial class ContractTemplatets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -463,7 +466,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("OfferId")
                         .IsUnique();
 
-                    b.ToTable("ContractTemplate");
+                    b.ToTable("OfferContracts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
@@ -1653,13 +1656,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<bool>("IsCompanyHidden")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFacilityHidden")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
