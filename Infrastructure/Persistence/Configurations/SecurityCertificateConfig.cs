@@ -4,17 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class SecurityContractConfig : IEntityTypeConfiguration<SecurityContract>
+    public class SecurityCertificateConfig : IEntityTypeConfiguration<SecurityCertificate>
     {
-        public void Configure(EntityTypeBuilder<SecurityContract> builder)
+        public void Configure(EntityTypeBuilder<SecurityCertificate> builder)
         {
             builder.HasOne(sc => sc.Address)
                 .WithOne()
-                .HasForeignKey<SecurityContract>(sc => sc.AddressId)
+                .HasForeignKey<SecurityCertificate>(sc => sc.AddressId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(sc => sc.Facility)
-                .WithMany(f => f.SecurityContracts)
+                .WithMany(f => f.SecurityCertificates)
                 .HasForeignKey(sc => sc.FacilityId)
                 .OnDelete(DeleteBehavior.NoAction); // Ensure no cascading delete
         }

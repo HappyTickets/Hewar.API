@@ -12,7 +12,7 @@ namespace Infrastructure.Services
                 return false;
             }
             var hasActiveContract = await ufw
-                .GetRepository<SecurityContract>()
+                .GetRepository<SecurityCertificate>()
                 .AnyAsync(sc => sc.Status == ContractStatus.Verified && sc.EndDate > DateTimeOffset.UtcNow && sc.FacilityId == facilityId);
 
             if (hasActiveContract)

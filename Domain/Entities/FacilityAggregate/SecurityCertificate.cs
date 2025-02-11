@@ -1,5 +1,5 @@
 ﻿namespace Domain.Entities.FacilityAggregate;
-public class SecurityContract : SoftDeletableEntity
+public class SecurityCertificate : SoftDeletableEntity
 {
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }

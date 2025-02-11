@@ -1,19 +1,18 @@
-﻿using Application.SecurityContracts.DTOs;
-using Application.SecurityContracts.Service;
-using Microsoft.AspNetCore.Authorization;
+﻿using Application.SecurityCertificates.DTOs;
+using Application.SecurityCertificates.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
-[Authorize]
-public class SecurityContractsController(ISecurityContractService contractService) : ApiControllerBase
+//[Authorize]
+public class SecurityCertificateController(ISecurityCertificateService contractService) : ApiControllerBase
 {
     [HttpPost("create")]
-    public async Task<IActionResult> Create(SecurityContractCreateDto createDto)
+    public async Task<IActionResult> Create(SecurityCertificateCreateDto createDto)
         => Result(await contractService.CreateAsync(createDto));
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update(SecurityContractUpdateDto updateDto)
+    public async Task<IActionResult> Update(SecurityCertificateUpdateDto updateDto)
         => Result(await contractService.UpdateAsync(updateDto));
 
     [HttpDelete("delete")]
@@ -27,6 +26,10 @@ public class SecurityContractsController(ISecurityContractService contractServic
     [HttpGet("getByFacilityId")]
     public async Task<IActionResult> GetByFacilityId(long facilityId)
         => Result(await contractService.GetByFacilityIdAsync(facilityId));
+
+    [HttpGet("getAll")]
+    public async Task<IActionResult> GetAll() => Result(await contractService.GetAllAsync());
+
 
     [HttpPatch("approve")]
     public async Task<IActionResult> Approve(long id)

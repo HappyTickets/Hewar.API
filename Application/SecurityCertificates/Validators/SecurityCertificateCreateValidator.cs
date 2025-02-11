@@ -1,12 +1,12 @@
 ﻿using Application.Common.Validators;
-using Application.SecurityContracts.DTOs;
+using Application.SecurityCertificates.DTOs;
 using FluentValidation;
 
-namespace Application.SecurityContracts.Validators
+namespace Application.SecurityCertificates.Validators
 {
-    public class SecurityContractCreateValidator : AbstractValidator<SecurityContractCreateDto>
+    public class SecurityCertificateCreateValidator : AbstractValidator<SecurityCertificateCreateDto>
     {
-        public SecurityContractCreateValidator()
+        public SecurityCertificateCreateValidator()
         {
             RuleFor(x => x.StartDate)
                 .NotNull().WithState(x => ValidationMsgs.RequiredField)

@@ -13,7 +13,7 @@ namespace Infrastructure.Persistence.Configurations
                .HasForeignKey<Facility>(c => c.AddressId)
                .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(f => f.SecurityContracts)
+            builder.HasMany(f => f.SecurityCertificates)
              .WithOne(sc => sc.Facility)
              .HasForeignKey(sc => sc.FacilityId)
              .OnDelete(DeleteBehavior.NoAction);
