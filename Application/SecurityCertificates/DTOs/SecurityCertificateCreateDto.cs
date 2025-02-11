@@ -1,8 +1,8 @@
 ﻿using Application.Common.Dtos;
 
-namespace Application.SecurityContracts.DTOs
+namespace Application.SecurityCertificates.DTOs
 {
-    public class SecurityContractCreateDto
+    public class SecurityCertificateCreateDto
     {
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }

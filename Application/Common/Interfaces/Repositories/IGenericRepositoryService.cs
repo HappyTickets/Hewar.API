@@ -23,6 +23,7 @@ namespace Application.Common.Interfaces.Repositories
              Expression<Func<TEntity, bool>> predicate,
              bool ignoreQueryFilters = false);
 
+        Task<IEnumerable<TResult>> GetAllAsync<TResult>(bool ignoreQueryFilters = false);
         Task<IEnumerable<TEntity>> GetAllAsync(IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
         Task<TEntity?> GetByIdAsync(long id, IEnumerable<string>? includes = null, bool ignoreQueryFilters = false);
         void HardDelete(TEntity entity);

@@ -1,11 +1,11 @@
 ﻿using Application.Common.Validators;
-using Application.SecurityContracts.DTOs;
+using Application.SecurityCertificates.DTOs;
 using FluentValidation;
 
-namespace Application.SecurityContracts.Validators;
-public class SecurityContractUpdateValidator : AbstractValidator<SecurityContractUpdateDto>
+namespace Application.SecurityCertificates.Validators;
+public class SecurityCertificateUpdateValidator : AbstractValidator<SecurityCertificateUpdateDto>
 {
-    public SecurityContractUpdateValidator()
+    public SecurityCertificateUpdateValidator()
     {
         RuleFor(x => x.Id)
             .GreaterThan(0).WithState(x => ValidationMsgs.RequiredField);

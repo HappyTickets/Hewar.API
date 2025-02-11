@@ -1,8 +1,8 @@
 ﻿using Application.Common.Dtos;
 
-namespace Application.SecurityContracts.DTOs;
+namespace Application.SecurityCertificates.DTOs;
 
-public class SecurityContractDto
+public class SecurityCertificateDto
 {
     public long Id { get; set; }
     public long FacilityId { get; set; }

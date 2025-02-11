@@ -1,7 +1,7 @@
 ﻿using Application.Common.Dtos;
 
-namespace Application.SecurityContracts.DTOs;
-public class SecurityContractUpdateDto
+namespace Application.SecurityCertificates.DTOs;
+public class SecurityCertificateUpdateDto
 {
     public long Id { get; set; }
     public DateTimeOffset StartDate { get; set; }
