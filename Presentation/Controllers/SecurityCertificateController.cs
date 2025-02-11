@@ -1,10 +1,11 @@
 ﻿using Application.SecurityCertificates.DTOs;
 using Application.SecurityCertificates.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers;
 
-//[Authorize]
+[Authorize]
 public class SecurityCertificateController(ISecurityCertificateService contractService) : ApiControllerBase
 {
     [HttpPost("create")]
