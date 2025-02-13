@@ -1,0 +1,149 @@
+{
+  "ContractTitle": {
+    "Ar": "عقد تقديم خدمات الحراسات الأمنية المدنية الخاصة",
+    "En": "Contract for Provision of Private Civil Security Guarding Services"
+  },
+  "ContractSignDate": "2025-05-15T00:00:00Z",
+  "ContractStartDate": "2025-08-15T00:00:00Z",
+  "OfferDate": "2025-05-15T00:00:00Z",
+  "PartyOne": {
+    "Name": {
+      "Ar": "شركة المجد",
+      "En": "Almagd Company"
+    },
+
+    "MainOfficeCity": {
+      "Ar": "جدة",
+      "En": "Jeddah"
+    },
+    "CommercialRegistration": "123456",
+    "PublicSecurityLicense": "78910",
+    "Telephone": "0123456789",
+    "Mobile": "0987654321",
+    "NationalAddress": {
+      "City": {
+        "Ar": "جدة",
+        "En": "Jeddah"
+      },
+      "PostalCode": "12345",
+      "UnitNumber": "1",
+      "BuildingNumber": "2"
+    },
+
+    "RegistrationInSabl": "654321",
+    "Email": "contact@almagd.com",
+    "RepresentativeName": {
+      "Ar": "أستاذ/ محمد",
+      "En": "Mr. Mohammed"
+    },
+    "RepresentativeTitle": {
+      "Ar": "المدير التنفيذي",
+      "En": "CEO"
+    }
+  },
+  "PartyTwo": {
+    "Name": {
+      "Ar": "مؤسسة الأمان",
+      "En": "Alaman Facility"
+    },
+    "MainOfficeCity": {
+      "Ar": "الرياض",
+      "En": "Riyadh"
+    },
+    "CommercialRegistrationCity": {
+      "Ar": "الخبر",
+      "En": "Khabar"
+    },
+    "PublicSecurityLicense": "",
+    "Telephone": "0123456789",
+    "Mobile": "0987654321",
+    "NationalAddress": {
+      "City": {
+        "Ar": "جدة",
+        "En": "Jeddah"
+      },
+      "PostalCode": "12345",
+      "UnitNumber": "1",
+      "BuildingNumber": "2"
+    },
+    "Email": "info@example.com",
+    "RepresentativeName": {
+      "Ar": "الشيخ خالد  بن عبدالكريم المنصور",
+      "En": "Mr. Abdullah"
+    },
+    "RepresentativeTitle": {
+      "Ar": "المدير التنفيذي",
+      "En": "CEO"
+    },
+    "LocationToBeSecured": {
+      "Ar": "الموقع الذي سيتم تأمينه",
+      "En": "Location to be secured"
+    }
+  },
+  "ScheduleEntries": [
+    {
+      "Location": {
+        "Ar": "الموقع الأول",
+        "En": "First Location"
+      },
+      "GuardsRequired": {
+        "Ar": "2 متغير",
+        "En": "2 Variable"
+      },
+      "ShiftTime": {
+        "Ar": "التوقيت",
+        "En": "Time"
+      },
+      "Notes": {
+        "Ar": "ملاحظات",
+        "En": "Notes"
+      }
+    },
+    {
+      "Location": {
+        "Ar": "الموقع الثاني",
+        "En": "Second Location"
+      },
+      "GuardsRequired": {
+        "Ar": "3 متغير",
+        "En": "3 Variable"
+      },
+      "ShiftTime": {
+        "Ar": "التوقيت",
+        "En": "Time"
+      },
+      "Notes": {
+        "Ar": "ملاحظات",
+        "En": "Notes"
+      }
+    }
+  ],
+  "CustomClauses": [
+    {
+      "Ar": "بند مخصص بالعربية",
+      "En": "Custom clause in English"
+    },
+    {
+      "Ar": "بند مخصص بالعربية",
+      "En": "Custom clause in English"
+    },
+    {
+      "Ar": "بند مخصص بالعربية",
+      "En": "Custom clause in English"
+    }
+  ],
+  "Footer": {
+    "ClosingRemark": {
+      "Ar": "والله ولي التوفيق",
+      "En": "And Allah is the source of success"
+    },
+    "PartyOneSignature": {
+      "Ar": "توقيع الطرف الأول",
+      "En": "First Party Signature"
+    },
+    "PartyTwoSignature": {
+      "Ar": "توقيع الطرف الثاني",
+      "En": "Second Party Signature"
+    }
+  }
+}
