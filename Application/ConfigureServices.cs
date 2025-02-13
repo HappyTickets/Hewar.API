@@ -9,6 +9,7 @@ using Application.Chats.Service;
 using Application.Companies.Service;
 using Application.Companies.Service.ProvidedServices;
 using Application.Companies.Service.ServicesProvided;
+using Application.Contracts.Service;
 using Application.Facilities.Service;
 using Application.Files.Service;
 using Application.Guards.Service;
@@ -55,6 +56,7 @@ namespace Application
               .AddScoped<IHewarProvidedService, HewarProvidedService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<IPriceOfferService, PriceOfferService>()
+              .AddScoped<IContractService, ContractService>()
               .AddScoped<IChatService, ChatService>()
               .AddScoped<ISecurityCertificateService, SecurityCertificateService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()

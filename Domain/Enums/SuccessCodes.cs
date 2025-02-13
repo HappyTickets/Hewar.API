@@ -133,6 +133,7 @@
         ContractDeleted = 1102,
         ContractRejected = 1103,
         ContractUpdated = 1104,
+        ContractSigned = 1105,
 
 
     }
