@@ -9,7 +9,8 @@
         Forbidden = 3,
         Conflict = 4,
         Validation = 5,
-
+        DeserializeOperationFailed = 6,
+        SerializeOperationFailed = 7,
         // account
         PhoneExists = 100,
         EmailExists = 101,
@@ -65,7 +66,8 @@
         ContractNotExists = 801,
         ContractNotPending = 802,
         ContractNotActive = 803,
-        NoActiveContracts = 804
+        NoActiveContracts = 804,
+        ContractTemplatesNotExist = 805
 
     }
 }

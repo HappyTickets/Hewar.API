@@ -5,6 +5,7 @@
   },
   "ContractSignDate": "2025-05-15T00:00:00Z",
   "ContractStartDate": "2025-08-15T00:00:00Z",
+  "OfferDate": "2025-05-15T00:00:00Z",
   "PartyOne": {
     "Name": {
       "Ar": "شركة المجد",
@@ -78,11 +79,6 @@
       "Ar": "الموقع الذي سيتم تأمينه",
       "En": "Location to be secured"
     }
-  },
-  "Preamble": {
-    "OfferNumber": "OF-001",
-    "OfferDate": "2023-08-15T00:00:00Z"
-
   },
   "ScheduleEntries": [
     {

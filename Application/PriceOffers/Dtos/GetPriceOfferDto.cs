@@ -9,6 +9,7 @@ namespace Application.PriceOffers.Dtos
         public long PriceRequestId { get; set; }
 
         public ContractType ContractType { get; set; }
+        public DateTimeOffset CreatedOn { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset EndDate { get; set; }
 

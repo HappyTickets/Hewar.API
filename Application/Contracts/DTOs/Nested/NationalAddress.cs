@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities.ContractJson.Nested
+﻿namespace Application.Contracts.DTOs
 {
     public class NationalAddress
     {
