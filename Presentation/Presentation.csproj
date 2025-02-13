@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\JsonFiles\Contract\staticContractJson.json" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,10 +21,6 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\client\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\JsonFiles\Contract\staticContractJson.json" />
   </ItemGroup>
 
 </Project>

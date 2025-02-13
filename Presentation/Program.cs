@@ -2,6 +2,7 @@ using Application;
 using Infrastructure;
 using Infrastructure.Notifications;
 using Infrastructure.Persistence;
+using Microsoft.Extensions.FileProviders;
 using Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,6 +43,13 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
+// Serve JsonFiles directory explicitly
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot", "JsonFiles")),
+    RequestPath = "/json"
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
