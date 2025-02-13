@@ -9,6 +9,7 @@ using Application.Chats.Service;
 using Application.Companies.Service;
 using Application.Companies.Service.ProvidedServices;
 using Application.Companies.Service.ServicesProvided;
+using Application.Contracts.Service;
 using Application.Facilities.Service;
 using Application.Files.Service;
 using Application.Guards.Service;
@@ -16,7 +17,7 @@ using Application.Hewar.Service;
 using Application.Notifications.Service;
 using Application.PriceOffers.Services;
 using Application.PriceRequests.Service;
-using Application.SecurityContracts.Service;
+using Application.SecurityCertificates.Service;
 using Application.Tickets.Service;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -55,8 +56,9 @@ namespace Application
               .AddScoped<IHewarProvidedService, HewarProvidedService>()
               .AddScoped<IPriceRequestsService, PriceRequestsService>()
               .AddScoped<IPriceOfferService, PriceOfferService>()
+              .AddScoped<IContractService, ContractService>()
               .AddScoped<IChatService, ChatService>()
-              .AddScoped<ISecurityContractService, SecurityContractService>()
+              .AddScoped<ISecurityCertificateService, SecurityCertificateService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();
 

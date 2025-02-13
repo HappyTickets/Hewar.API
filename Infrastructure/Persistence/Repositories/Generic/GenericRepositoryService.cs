@@ -186,6 +186,15 @@ namespace Infrastructure.Persistence.Repositories.Generic
                                .ToListAsync();
         }
 
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult>(bool ignoreQueryFilters = false)
+        {
+            var query = _dbSet.AsQueryable();
+
+            if (ignoreQueryFilters) query = query.IgnoreQueryFilters();
+
+            return await query.ProjectTo<TResult>(mapper.ConfigurationProvider).ToListAsync();
+        }
+
 
 
         #endregion

@@ -65,6 +65,8 @@
         MyOffersAsCompanyReceived = 415,
         CreateOfferMessage = 416,
         OfferMessagesReceived = 417,
+        PriceOfferHidden = 418,
+        PriceOfferShown = 419,
 
         // price requests
         PriceRequestCreated = 500,
@@ -131,6 +133,7 @@
         ContractDeleted = 1102,
         ContractRejected = 1103,
         ContractUpdated = 1104,
+        ContractSigned = 1105,
 
 
     }

@@ -11,11 +11,12 @@ namespace Application.PriceRequests.Mappings
             CreateMap<CreatePriceRequestDto, PriceRequest>();
             CreateMap<UpdatePriceRequestDto, PriceRequest>();
 
-            CreateMap<ServiceRequestDto, ServiceRequest>().ReverseMap();
+            CreateMap<CreateServiceRequestDto, ServiceRequest>().ReverseMap();
+            CreateMap<GetServiceRequestDto, ServiceRequest>().ReverseMap();
 
             CreateMap<OtherRequestedService, CreateOtherServiceDto>().ReverseMap();
 
-            CreateMap<OtherRequestedService, OtherRequestedServiceDto>().ReverseMap();
+            CreateMap<OtherRequestedService, GetOtherRequestedServiceDto>().ReverseMap();
 
 
             CreateMap<PriceRequest, FacilityPriceRequestDto>()
@@ -27,8 +28,7 @@ namespace Application.PriceRequests.Mappings
                 .ReverseMap();
 
             CreateMap<PriceRequest, GetPriceRequestBriefDto>()
-                .ForMember(dest => dest.CompanyName, opt => opt.MapFrom(src => src.Company.Name))
-                .ForMember(dest => dest.CompanyId, opt => opt.MapFrom(src => src.Company.Id))
+                .ForMember(dest => dest.Company, opt => opt.MapFrom(src => src.Company))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.RequestStatus))
                 .ReverseMap();
 
