@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence.Seeds.Contract
     {
         public static ModelBuilder SeedStaticContract(this ModelBuilder builder)
         {
-            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "JsonFiles/Contract", "staticContractJson.json");
+            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "JsonFiles/Contract", "staticContractJson.json");
             var jsonData = File.ReadAllText(jsonFilePath);
 
             var staticContract = new StaticContractTemplate { Id = 1, JsonData = jsonData };

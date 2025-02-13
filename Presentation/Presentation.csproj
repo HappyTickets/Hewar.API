@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="JsonFiles\Contract\staticContractJson.json" />
+    <Content Remove="wwwroot\JsonFiles\Contract\staticContractJson.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="JsonFiles\Contract\staticContractJson.json" />
+    <None Include="wwwroot\JsonFiles\Contract\staticContractJson.json" />
   </ItemGroup>
 
 </Project>
