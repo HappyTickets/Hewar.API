@@ -31,9 +31,13 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetContractTemplateByIdAsync(long contractId)
             => Result(await contractService.GetContractTemplateByIdAsync(contractId));
 
+        [HttpGet("getContractTemplateByOfferId")]
+        public async Task<IActionResult> GetContractTemplateOfferIdAsync(long offerId)
+            => Result(await contractService.GetContractTemplateByOfferIdAsync(offerId));
+
 
         [HttpGet("getContractFieldsByOfferId")]
-        public async Task<IActionResult> GetContractByOfferIdAsync(long offerId)
-         => Result(await contractService.GetContractByOfferIdAsync(offerId));
+        public async Task<IActionResult> GetContractFieldsByOfferIdAsync(long offerId)
+         => Result(await contractService.GetContractFieldsByOfferIdAsync(offerId));
     }
 }
