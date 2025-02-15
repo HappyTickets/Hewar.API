@@ -91,15 +91,11 @@ namespace Application.Contracts.Service
 
 
 
-        private async Task<GetPriceOfferDto?> GetPriceOfferAsync(long offerId)
-        {
-            return await ufw.GetRepository<PriceOffer>()
-                            .FirstOrDefaultAsync<GetPriceOfferDto>(o => o.Id == offerId);
-        }
+        #region Helper Methods
 
-        private async Task<StaticContractTemplate?> GetStaticContractTemplateAsync()
+        private async Task<StaticContractTemplate?> GetStaticContractTemplateAsync(long templateId = 1)
         {
-            return await ufw.GetRepository<StaticContractTemplate>().GetByIdAsync(1);
+            return await ufw.GetRepository<StaticContractTemplate>().GetByIdAsync(templateId);
         }
 
         private void SetOfferFields(ContractFields contractFields, GetPriceOfferDto offer)
@@ -145,7 +141,10 @@ namespace Application.Contracts.Service
             if (contractFields is null)
                 return new ConflictError(ErrorCodes.DeserializeOperationFailed);
 
-            var offer = await GetPriceOfferAsync(contract.OfferId);
+            var offer = await ufw.GetRepository<PriceOffer>()
+                            .FirstOrDefaultAsync<GetPriceOfferDto>
+                            (o => o.Id == contract.OfferId);
+
             if (offer is null)
                 return new NotFoundError(ErrorCodes.PriceOfferNotExists);
 
@@ -163,6 +162,7 @@ namespace Application.Contracts.Service
 
             return filledContract;
         }
+        #endregion
 
         public async Task<Result<ContractDto?>> GetContractTemplateByIdAsync(long contractId)
         {
