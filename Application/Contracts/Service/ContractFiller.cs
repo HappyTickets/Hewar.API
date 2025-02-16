@@ -5,7 +5,7 @@ namespace Application.Contracts.Service
 {
     public static class ContractFiller
     {
-        public static string PopulateTemplateManually(string template, ContractFields contractFields)
+        public static string PopulateTemplateManually(string template, ContractFields1 contractFields)
         {
 
             var placeholders = new Dictionary<string, string>
@@ -73,7 +73,7 @@ namespace Application.Contracts.Service
 
             return template;
         }
-        public static string PopulateTemplate(string template, ContractFields contractFields)
+        public static string PopulateTemplate(string template, ContractFields1 contractFields)
         {
             var placeholders = GetPlaceholders(contractFields, "");
 
@@ -120,16 +120,16 @@ namespace Application.Contracts.Service
         }
 
 
-        public static ContractFields? DeserializeContractFields(string contractJson)
+        public static ContractFields1? DeserializeContractFields(string contractJson)
         {
-            return JsonConvert.DeserializeObject<ContractFields>(contractJson);
+            return JsonConvert.DeserializeObject<ContractFields1>(contractJson);
         }
         public static ContractDto? DeserializeContract(string contractJson)
         {
             return JsonConvert.DeserializeObject<ContractDto>(contractJson);
         }
 
-        public static string SerializeContract(ContractFields contract)
+        public static string SerializeContract(ContractFields1 contract)
         {
             return JsonConvert.SerializeObject(contract);
         }

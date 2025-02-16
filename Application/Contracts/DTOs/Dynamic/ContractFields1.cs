@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Application.Contracts.DTOs
 {
-    public class ContractFields
+    public class ContractFields1
     {
         [JsonIgnore]
         public long OfferNumber { get; set; }

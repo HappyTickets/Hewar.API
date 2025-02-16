@@ -1,10 +1,11 @@
 ﻿using Domain.Common.Interfaces;
 using Domain.Entities.CompanyAggregate;
+using Domain.Entities.ContractAggregate.Dynamic;
+using Domain.Entities.ContractAggregate.Static;
 using Domain.Entities.ContractJson;
 using Domain.Entities.FacilityAggregate;
 using Infrastructure.Persistence.Extensions;
 using Infrastructure.Persistence.Seeds;
-using Infrastructure.Persistence.Seeds.Contract;
 using MediatR;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,8 @@ namespace Infrastructure.Persistence
             || (_currentUserService.EntityType == EntityTypes.Company && !e.IsCompanyHidden));
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            modelBuilder.SeedRoles().SeedStaticContract();
+            modelBuilder.SeedRoles();
+            //modelBuilder.SeedRoles().SeedStaticContract();
 
             #region UserRolesRelationship
             modelBuilder.Entity<ApplicationUser>(b =>
@@ -91,6 +93,10 @@ namespace Infrastructure.Persistence
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Ad> Ads { get; set; }
         public DbSet<AdOffer> AdOffers { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<StaticContract> StaticContracts { get; set; }
+        public DbSet<StaticClause> StaticClauses { get; set; }
         public DbSet<StaticContractTemplate> StaticContractTemplates { get; set; }
 
         #endregion
