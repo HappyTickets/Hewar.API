@@ -3,6 +3,6 @@
     public class FillContractFieldsDto
     {
         public long OfferId { get; set; }
-        public ContractFields Contract { get; set; }
+        public ContractFields1 Contract { get; set; }
     }
 }

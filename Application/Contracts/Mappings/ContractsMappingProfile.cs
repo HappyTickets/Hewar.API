@@ -8,7 +8,7 @@ namespace Application.Contracts.Mappings
     {
         public ContractMappingProfile()
         {
-            CreateMap<ContractFields, GetContractFieldsDto>()
+            CreateMap<ContractFields1, GetContractFieldsDto>()
                 .ForMember(dest => dest.ContractId, opt => opt.Ignore());
         }
     }

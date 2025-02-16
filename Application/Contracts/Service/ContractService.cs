@@ -105,13 +105,13 @@ namespace Application.Contracts.Service
             return await ufw.GetRepository<StaticContractTemplate>().GetByIdAsync(templateId);
         }
 
-        private void SetOfferFields(ContractFields contractFields, GetPriceOfferDto offer)
+        private void SetOfferFields(ContractFields1 contractFields, GetPriceOfferDto offer)
         {
             contractFields.OfferNumber = offer.Id;
             contractFields.OfferDate = offer.CreatedOn.Date; // Test
         }
 
-        private ContractDto? PopulateAndDeserializeTemplate(string templateJson, ContractFields contractFields)
+        private ContractDto? PopulateAndDeserializeTemplate(string templateJson, ContractFields1 contractFields)
         {
             var template = ContractFiller.PopulateTemplate(templateJson, contractFields);
             return ContractFiller.DeserializeContract(template);
@@ -119,7 +119,7 @@ namespace Application.Contracts.Service
 
         private void MapAdditionalFields(
             ContractDto filledContract,
-            ContractFields contractFields,
+            ContractFields1 contractFields,
             GetPriceOfferDto offer,
             ContractTemplate contract)
         {

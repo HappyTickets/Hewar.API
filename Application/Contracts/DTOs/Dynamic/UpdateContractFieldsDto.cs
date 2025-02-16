@@ -3,6 +3,6 @@
     public class UpdateContractFieldsDto
     {
         public long Id { get; set; }
-        public ContractFields Contract { get; set; }
+        public ContractFields1 Contract { get; set; }
     }
 }
