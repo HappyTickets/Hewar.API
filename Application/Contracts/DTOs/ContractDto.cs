@@ -5,6 +5,7 @@ namespace Application.Contracts.DTOs
 {
     public class ContractDto
     {
+        public long ContractId { get; set; }
         public BilingualText ContractTitle { get; set; }
         public Preamble Preamble { get; set; } // filled through contract fields
         public List<Clause> Clauses { get; set; }
