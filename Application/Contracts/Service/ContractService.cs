@@ -1,11 +1,12 @@
 ﻿using Application.Contracts.DTOs;
 using Application.Contracts.DTOs.Dynamic;
 using Application.PriceOffers.Dtos;
+using AutoMapper;
 using Domain.Entities.ContractJson;
 
 namespace Application.Contracts.Service
 {
-    public class ContractService(IUnitOfWorkService ufw, ICurrentUserService currentUser) : IContractService
+    public class ContractService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper) : IContractService
     {
         public async Task<Result<long>> FillContractFieldsAsync(FillContractFieldsDto dto)
         {
@@ -38,7 +39,7 @@ namespace Application.Contracts.Service
             return Result<Empty>.Success(Empty.Default, SuccessCodes.Updated);
         }
 
-        public async Task<Result<ContractFields>> GetContractFieldsByOfferIdAsync(long offerId)
+        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByOfferIdAsync(long offerId)
         {
             var contract = await ufw.GetRepository<ContractTemplate>().FirstOrDefaultAsync(c => c.OfferId == offerId);
 
@@ -50,10 +51,13 @@ namespace Application.Contracts.Service
             if (contractJson is null)
                 return new ConflictError(ErrorCodes.Conflict);
 
-            return Result<ContractFields>.Success(contractJson, SuccessCodes.OperationSuccessful);
+            var resultDto = mapper.Map<GetContractFieldsDto>(contractJson);
+            resultDto.ContractId = contract.Id;
+
+            return Result<GetContractFieldsDto>.Success(resultDto, SuccessCodes.OperationSuccessful);
         }
 
-        public async Task<Result<ContractFields>> GetContractFieldsByIdAsync(long contractId)
+        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByIdAsync(long contractId)
         {
             var contract = await ufw.GetRepository<ContractTemplate>().GetByIdAsync(contractId);
 
@@ -65,7 +69,10 @@ namespace Application.Contracts.Service
             if (contractJson is null)
                 return new ConflictError(ErrorCodes.Conflict);
 
-            return Result<ContractFields>.Success(contractJson, SuccessCodes.OperationSuccessful);
+            var resultDto = mapper.Map<GetContractFieldsDto>(contractJson);
+            resultDto.ContractId = contract.Id;
+
+            return Result<GetContractFieldsDto>.Success(resultDto, SuccessCodes.OperationSuccessful);
         }
 
 
@@ -122,6 +129,7 @@ namespace Application.Contracts.Service
             filledContract.CustomClauses = contractFields.CustomClauses;
             filledContract.Signatures.PartyOneSignature = contract.PartyOneSignature;
             filledContract.Signatures.PartyTwoSignature = contract.PartyTwoSignature;
+            filledContract.ContractId = contract.Id;
         }
 
         private async Task<ContractTemplate?> getContractTemplateAsync(long contractId)

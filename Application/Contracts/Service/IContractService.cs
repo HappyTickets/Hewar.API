@@ -7,10 +7,10 @@ namespace Application.Contracts.Service
     {
         Task<Result<long>> FillContractFieldsAsync(FillContractFieldsDto dto);
         Task<Result<Empty>> UpdateContractFieldsAsync(UpdateContractFieldsDto dto);
-        Task<Result<ContractFields>> GetContractFieldsByIdAsync(long contractId);
+        Task<Result<GetContractFieldsDto>> GetContractFieldsByIdAsync(long contractId);
         Task<Result<ContractDto?>> GetContractTemplateByIdAsync(long contractId);
         Task<Result<ContractDto?>> GetContractTemplateByOfferIdAsync(long offerId);
-        Task<Result<ContractFields>> GetContractFieldsByOfferIdAsync(long offerId);
+        Task<Result<GetContractFieldsDto>> GetContractFieldsByOfferIdAsync(long offerId);
         Task<Result<Empty>> SignContractAsync(long contractId, string signature);
     }
 
