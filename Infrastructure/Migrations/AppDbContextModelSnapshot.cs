@@ -52,7 +52,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
@@ -81,7 +81,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("AdService");
+                    b.ToTable("AdService", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
@@ -116,7 +116,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("AdServicePrice");
+                    b.ToTable("AdServicePrice", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
@@ -164,7 +164,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("Attendances");
+                    b.ToTable("Attendances", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ChatAggregate.Chat", b =>
@@ -222,7 +222,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Chat");
+                    b.ToTable("Chat", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ChatAggregate.Message", b =>
@@ -279,7 +279,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Message", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.Company", b =>
@@ -361,7 +361,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.CompanyAggregate.CompanyService", b =>
@@ -416,7 +416,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("MissionId");
 
-                    b.ToTable("CompanyService");
+                    b.ToTable("CompanyService", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Contract", b =>
@@ -469,7 +469,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Contracts");
+                    b.ToTable("Contracts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.ContractKey", b =>
@@ -499,7 +499,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("KeyId");
 
-                    b.ToTable("ContractKey");
+                    b.ToTable("ContractKey", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.CustomClause", b =>
@@ -549,7 +549,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ContractId");
 
-                    b.ToTable("CustomClause");
+                    b.ToTable("CustomClause", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Key", b =>
@@ -569,7 +569,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Key");
+                    b.ToTable("Key", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Static.StaticClause", b =>
@@ -598,7 +598,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaticClauses");
+                    b.ToTable("StaticClauses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Static.StaticContract", b =>
@@ -635,7 +635,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaticContracts");
+                    b.ToTable("StaticContracts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractJson.StaticContractTemplate", b =>
@@ -676,7 +676,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaticContractTemplates");
+                    b.ToTable("StaticContractTemplates", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractTemplate", b =>
@@ -731,7 +731,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("OfferId")
                         .IsUnique();
 
-                    b.ToTable("ContractTemplate");
+                    b.ToTable("ContractTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
@@ -817,7 +817,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("AddressId")
                         .IsUnique();
 
-                    b.ToTable("Facilities");
+                    b.ToTable("Facilities", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.SecurityCertificate", b =>
@@ -889,7 +889,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("SecurityCertificate");
+                    b.ToTable("SecurityCertificate", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.GuardAggregate.PrevCompany", b =>
@@ -917,7 +917,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("PrevCompany");
+                    b.ToTable("PrevCompany", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.GuardAggregate.Skill", b =>
@@ -942,7 +942,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("Skill");
+                    b.ToTable("Skill", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Hewar.HewarService", b =>
@@ -987,7 +987,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HewarService");
+                    b.ToTable("HewarService", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.IdentityAggregate.ApplicationRole", b =>
@@ -1244,7 +1244,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.IdentityAggregate.RolePermission", b =>
@@ -1268,7 +1268,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermissions");
+                    b.ToTable("RolePermissions", (string)null);
 
                     b.HasData(
                         new
@@ -1443,7 +1443,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Ads");
+                    b.ToTable("Ads", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
@@ -1501,7 +1501,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("AdOffers");
+                    b.ToTable("AdOffers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>
@@ -1562,7 +1562,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Mission");
+                    b.ToTable("Mission", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.MissionAggregate.MissionGuard", b =>
@@ -1591,7 +1591,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("MissionId");
 
-                    b.ToTable("MissionGuard");
+                    b.ToTable("MissionGuard", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -1657,7 +1657,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Payroll", b =>
@@ -1714,7 +1714,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("Payrolls");
+                    b.ToTable("Payrolls", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PerformanceReview", b =>
@@ -1770,7 +1770,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("PerformanceReviews");
+                    b.ToTable("PerformanceReviews", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Policy", b =>
@@ -1833,7 +1833,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Policies");
+                    b.ToTable("Policies", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherRequestedService", b =>
@@ -1861,7 +1861,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PriceRequestId");
 
-                    b.ToTable("OtherRequestedService");
+                    b.ToTable("OtherRequestedService", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.OtherServiceOffer", b =>
@@ -1895,7 +1895,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PriceOfferId");
 
-                    b.ToTable("OtherServiceOffer");
+                    b.ToTable("OtherServiceOffer", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceOffer", b =>
@@ -1962,7 +1962,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PriceRequestId");
 
-                    b.ToTable("PriceRequestOffers");
+                    b.ToTable("PriceRequestOffers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.PriceRequest", b =>
@@ -2035,7 +2035,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("PriceRequests");
+                    b.ToTable("PriceRequests", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceOffer", b =>
@@ -2070,7 +2070,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("ServiceOffer");
+                    b.ToTable("ServiceOffer", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.PriceRequestAggregates.ServiceRequest", b =>
@@ -2099,7 +2099,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("ServiceRequest");
+                    b.ToTable("ServiceRequest", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Report", b =>
@@ -2166,7 +2166,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("GuardId");
 
-                    b.ToTable("Reports");
+                    b.ToTable("Reports", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Shift", b =>
@@ -2229,7 +2229,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ParentShiftId");
 
-                    b.ToTable("Shifts");
+                    b.ToTable("Shifts", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.Ticket", b =>
@@ -2301,7 +2301,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("FacilityId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TicketAggregates.TicketMessage", b =>
@@ -2358,7 +2358,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TicketId");
 
-                    b.ToTable("TicketMessages");
+                    b.ToTable("TicketMessages", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.GuardAggregate.Guard", b =>
@@ -2489,7 +2489,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("MessageId", "Id");
 
-                            b1.ToTable("Message_Medias");
+                            b1.ToTable("Message_Medias", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("MessageId");
@@ -2988,7 +2988,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("TicketMessageId", "Id");
 
-                            b1.ToTable("TicketMessages_Medias");
+                            b1.ToTable("TicketMessages_Medias", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TicketMessageId");

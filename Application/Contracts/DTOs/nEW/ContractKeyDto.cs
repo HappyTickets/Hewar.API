@@ -2,8 +2,8 @@
 {
     public class ContractKeyDto
     {
-        public int Id { get; set; }
-        public int KeyId { get; set; }
+        public long Id { get; set; }
+        public long KeyId { get; set; }
         public string KeyName { get; set; } = "";
         public string Value { get; set; } = "Key Value";
 

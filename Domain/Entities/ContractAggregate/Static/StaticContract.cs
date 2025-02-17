@@ -1,8 +1,7 @@
 ﻿namespace Domain.Entities.ContractAggregate.Static
 {
-    public class StaticContract
+    public class StaticContract : SoftDeletableEntity
     {
-        public int Id { get; set; }
 
         public string TitleAr { get; set; }
         public string TitleEn { get; set; }

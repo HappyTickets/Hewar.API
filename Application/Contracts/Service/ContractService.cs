@@ -1,196 +1,252 @@
-﻿using Application.Contracts.DTOs;
-using Application.Contracts.DTOs.Dynamic;
-using Application.PriceOffers.Dtos;
+﻿using Application.Clauses.DTOs;
+using Application.Contracts.DTOs.nEW;
 using AutoMapper;
-using Domain.Entities.ContractJson;
+using Domain.Entities.ContractAggregate.Dynamic;
+using Domain.Entities.ContractAggregate.Static;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Contracts.Service
 {
-    public class ContractService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper) : IContractService
+    public class ContractService(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMapper mapper, IMemoryCache cache) : IContractService
     {
-        public async Task<Result<long>> FillContractFieldsAsync(FillContractFieldsDto dto)
+        private const string STATIC_CONTRACT_CACHE_KEY = "static_contract";
+        private const string STATIC_CLAUSES_CACHE_KEY = "static_clauses";
+        private const string KEYS_CACHE_KEY = "contract_keys";
+        private TimeSpan CACHE_DURATION = new TimeSpan(1, 0, 0);
+
+        public async Task<Result<long>> CreateContractForOfferAsync(long offerId, ContractFieldsDto contractFields)
         {
-            var offer = await ufw.GetRepository<PriceOffer>().GetByIdAsync(dto.OfferId);
+            var offer = await ufw.GetRepository<PriceOffer>().GetByIdAsync(offerId);
             if (offer is null)
                 return new NotFoundError();
 
-            var contract = new ContractTemplate
+            var contract = new Contract
             {
-                ContractJson = ContractFiller.SerializeContract(dto.Contract),
-                OfferId = dto.OfferId
+                OfferId = offerId,
+                ContractKeys = await MapContractFields(contractFields)
             };
 
-            await ufw.GetRepository<ContractTemplate>().CreateAsync(contract);
+            await ufw.GetRepository<Contract>().CreateAsync(contract);
             await ufw.SaveChangesAsync();
 
             return Result<long>.Success(contract.Id, SuccessCodes.ContractCreated);
         }
 
-        public async Task<Result<Empty>> UpdateContractFieldsAsync(UpdateContractFieldsDto dto)
+        public async Task<Result<long>> CreateContractForCompanyAsync(long companyId, ContractFieldsDto contractFields, long? facilityId = null)
         {
-            var contract = await ufw.GetRepository<ContractTemplate>().GetByIdAsync(dto.Id);
+            var contract = new Contract
+            {
+                CompanyId = companyId,
+                FacilityId = facilityId,
+                ContractKeys = await MapContractFields(contractFields)
+            };
+
+            await ufw.GetRepository<Contract>().CreateAsync(contract);
+            await ufw.SaveChangesAsync();
+
+            return Result<long>.Success(contract.Id, SuccessCodes.ContractCreated);
+        }
+
+        public async Task<Result<Empty>> UpdateContractByFieldsAsync(long contractId, ContractFieldsDto contractFields)
+        {
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.Id == contractId, [nameof(Contract.ContractKeys)]);
 
             if (contract is null)
                 return new NotFoundError();
 
-            contract.ContractJson = ContractFiller.SerializeContract(dto.Contract);
+            contract.ContractKeys.Clear();
+            contract.ContractKeys = await MapContractFields(contractFields);
 
             await ufw.SaveChangesAsync();
-            return Result<Empty>.Success(Empty.Default, SuccessCodes.Updated);
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.ContractUpdated);
         }
 
-        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByOfferIdAsync(long offerId)
+        public async Task<Result<Empty>> UpdateContractByKeysAsync(long contractId, List<UpdateContractKeyDto> contractKeys)
         {
-            var contract = await ufw.GetRepository<ContractTemplate>().FirstOrDefaultAsync(c => c.OfferId == offerId);
+            var keyIds = contractKeys.Select(k => k.ContractKeyId).ToList();
+
+            var existingKeys = await ufw.GetRepository<ContractKey>()
+                .FilterAsync(ck => ck.ContractId == contractId && keyIds.Contains(ck.Id));
+
+            if (!existingKeys.Any())
+                return new NotFoundError();
+
+            var updateDict = contractKeys.ToDictionary(k => k.ContractKeyId, k => k.NewValue);
+
+            foreach (var key in existingKeys)
+            {
+                if (updateDict.TryGetValue(key.Id, out var newValue))
+                {
+                    key.Value = newValue;
+                }
+            }
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.ContractUpdated);
+        }
+        public async Task<Result<RichContractDto>> GetContractByIdAsync(long contractId)
+        {
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.Id == contractId,
+                [nameof(Contract.ContractKeys),
+                 nameof(Contract.CustomClauses)]);
 
             if (contract is null)
                 return new NotFoundError();
 
-            var contractJson = ContractFiller.DeserializeContractFields(contract.ContractJson);
-
-            if (contractJson is null)
-                return new ConflictError(ErrorCodes.Conflict);
-
-            var resultDto = mapper.Map<GetContractFieldsDto>(contractJson);
-            resultDto.ContractId = contract.Id;
-
-            return Result<GetContractFieldsDto>.Success(resultDto, SuccessCodes.OperationSuccessful);
+            var richContract = await BuildRichContractDto(contract);
+            return Result<RichContractDto>.Success(richContract);
         }
 
-        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByIdAsync(long contractId)
+        public async Task<Result<RichContractDto>> GetContractByOfferIdAsync(long offerId)
         {
-            var contract = await ufw.GetRepository<ContractTemplate>().GetByIdAsync(contractId);
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.OfferId == offerId,
+                [nameof(Contract.ContractKeys),
+                 nameof(Contract.CustomClauses)]);
 
             if (contract is null)
                 return new NotFoundError();
 
-            var contractJson = ContractFiller.DeserializeContractFields(contract.ContractJson);
-
-            if (contractJson is null)
-                return new ConflictError(ErrorCodes.Conflict);
-
-            var resultDto = mapper.Map<GetContractFieldsDto>(contractJson);
-            resultDto.ContractId = contract.Id;
-
-            return Result<GetContractFieldsDto>.Success(resultDto, SuccessCodes.OperationSuccessful);
+            var richContract = await BuildRichContractDto(contract);
+            return Result<RichContractDto>.Success(richContract);
         }
-
 
         public async Task<Result<Empty>> SignContractAsync(long contractId, string signature)
         {
-            var contract = await ufw.GetRepository<ContractTemplate>().GetByIdAsync(contractId);
+            var contract = await ufw.GetRepository<Contract>().GetByIdAsync(contractId);
             if (contract is null)
-                return new NotFoundError(ErrorCodes.ContractNotExists);
+                return new NotFoundError();
 
-            var entityType = currentUser.EntityType;
-
-            if (entityType == EntityTypes.Company)
-                contract.PartyOneSignature = signature;
-
-            else if (entityType == EntityTypes.Facility)
-                contract.PartyTwoSignature = signature;
+            if (currentUser.EntityType == EntityTypes.Company)
+                contract.CompanySignature = signature;
+            else if (currentUser.EntityType == EntityTypes.Facility)
+                contract.FacilitySignature = signature;
 
             await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.ContractSigned);
+        }
 
+        private async Task<RichContractDto> BuildRichContractDto(Contract contract)
+        {
+            var staticContract = await GetStaticContractAsync();
+            var staticClauses = await GetStaticClausesAsync();
+
+            return new RichContractDto
+            {
+                ContractId = contract.Id,
+                StaticContractTemplate = mapper.Map<StaticContractTemplateDto>(staticContract),
+                StaticClauses = mapper.Map<List<StaticClauseDto>>(staticClauses),
+                CustomClauses = mapper.Map<List<CustomClauseDto>>(contract.CustomClauses),
+                ContractKeys = mapper.Map<List<ContractKeyDto>>(contract.ContractKeys),
+                FacilitySignature = contract.FacilitySignature,
+                CompanySignature = contract.CompanySignature
+            };
+        }
+        private async Task<StaticContract> GetStaticContractAsync()
+        {
+            if (cache.TryGetValue(STATIC_CONTRACT_CACHE_KEY, out StaticContract? cachedContract))
+                return cachedContract!;
+
+            var contract = await ufw.GetRepository<StaticContract>().FirstOrDefaultAsync(c => c.Id == 1);
+
+            if (contract != null)
+            {
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(CACHE_DURATION)
+                    .SetPriority(CacheItemPriority.Normal);
+
+                cache.Set(STATIC_CONTRACT_CACHE_KEY, contract, cacheOptions);
+            }
+
+            return contract!;
+        }
+
+        private async Task<List<StaticClause>> GetStaticClausesAsync()
+        {
+            if (cache.TryGetValue(STATIC_CLAUSES_CACHE_KEY, out List<StaticClause>? cachedClauses))
+                return cachedClauses!;
+
+            var clauses = await ufw.GetRepository<StaticClause>().GetAllAsync();
+            if (clauses.Any())
+            {
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(CACHE_DURATION)
+                    .SetPriority(CacheItemPriority.Normal);
+
+                cache.Set(STATIC_CLAUSES_CACHE_KEY, clauses, cacheOptions);
+            }
+
+            return clauses.ToList();
+        }
+
+        private async Task<Dictionary<string, Key>> GetKeysAsync()
+        {
+            if (cache.TryGetValue(KEYS_CACHE_KEY, out Dictionary<string, Key>? cachedKeys))
+                return cachedKeys!;
+
+            var keys = (await ufw.GetRepository<Key>().GetAllAsync()).ToDictionary(k => k.Name);
+            if (keys.Any())
+            {
+                var cacheOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(CACHE_DURATION)
+                    .SetPriority(CacheItemPriority.Normal);
+
+                cache.Set(KEYS_CACHE_KEY, keys, cacheOptions);
+            }
+
+            return keys;
         }
 
 
-
-
-        #region Helper Methods
-
-        private async Task<StaticContractTemplate?> GetStaticContractTemplateAsync(long templateId = 1)
+        private async Task<List<ContractKey>> MapContractFields(ContractFieldsDto fields)
         {
-            return await ufw.GetRepository<StaticContractTemplate>().GetByIdAsync(templateId);
+            var contractKeys = new List<ContractKey>();
+            var keys = await GetKeysAsync();
+            var properties = typeof(ContractFieldsDto).GetProperties();
+
+            foreach (var property in properties)
+            {
+                if (keys.TryGetValue(property.Name, out var key))
+                {
+                    var value = property.GetValue(fields)?.ToString() ?? string.Empty;
+                    var contractKey = new ContractKey
+                    {
+                        KeyId = key.Id,
+                        Value = value
+                    };
+                    contractKeys.Add(contractKey);
+                }
+            }
+
+            return contractKeys;
         }
 
-        private void SetOfferFields(ContractFields1 contractFields, GetPriceOfferDto offer)
+        public async Task<Result<GetContractKeysDto?>> GetContractKeysByContractIdAsync(long contractId)
         {
-            contractFields.OfferNumber = offer.Id;
-            contractFields.OfferDate = offer.CreatedOn.Date; // Test
+
+            var contractKeys = await ufw.GetRepository<ContractKey>()
+                .FilterAsync<ContractKeyDto>(c => c.ContractId == contractId);
+
+            return Result<GetContractKeysDto?>.Success
+                (new GetContractKeysDto { ContractId = contractId, ContractKeys = contractKeys.ToList() });
         }
 
-        private ContractDto? PopulateAndDeserializeTemplate(string templateJson, ContractFields1 contractFields)
+        public async Task<Result<GetContractKeysDto?>> GetContractKeysByOfferIdAsync(long offer)
         {
-            var template = ContractFiller.PopulateTemplate(templateJson, contractFields);
-            return ContractFiller.DeserializeContract(template);
-        }
+            var contract = await ufw.GetRepository<Contract>().FirstOrDefaultAsync(c => c.OfferId == offer,
+                [nameof(Contract.ContractKeys)]);
 
-        private void MapAdditionalFields(
-            ContractDto filledContract,
-            ContractFields1 contractFields,
-            GetPriceOfferDto offer,
-            ContractTemplate contract)
-        {
-            filledContract.ServicesOffer = offer.Services.ToList();
-            filledContract.OtherServicesOffer = offer.OtherServices?.ToList() ?? new();
-            filledContract.ScheduleEntries = contractFields.ScheduleEntries;
-            filledContract.CustomClauses = contractFields.CustomClauses;
-            filledContract.Signatures.PartyOneSignature = contract.PartyOneSignature;
-            filledContract.Signatures.PartyTwoSignature = contract.PartyTwoSignature;
-            filledContract.ContractId = contract.Id;
-        }
+            if (contract is null || contract.ContractKeys is null)
+                return new NotFoundError();
 
-        private async Task<ContractTemplate?> getContractTemplateAsync(long contractId)
-        {
-            return await ufw.GetRepository<ContractTemplate>().GetByIdAsync(contractId);
-        }
+            var contractKeys = mapper.Map<List<ContractKeyDto>>(contract.ContractKeys);
 
-        private async Task<ContractTemplate?> getContractTemplateByOfferIdAsync(long offerId)
-        {
-            return await ufw.GetRepository<ContractTemplate>()
-                            .FirstOrDefaultAsync(c => c.OfferId == offerId);
-        }
-
-        private async Task<Result<ContractDto?>> ProcessContractTemplateAsync(ContractTemplate contract)
-        {
-            var contractFields = ContractFiller.DeserializeContractFields(contract.ContractJson);
-            if (contractFields is null)
-                return new ConflictError(ErrorCodes.DeserializeOperationFailed);
-
-            var offer = await ufw.GetRepository<PriceOffer>()
-                            .FirstOrDefaultAsync<GetPriceOfferDto>
-                            (o => o.Id == contract.OfferId);
-
-            if (offer is null)
-                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
-
-            SetOfferFields(contractFields, offer);
-
-            var staticContract = await GetStaticContractTemplateAsync();
-            if (staticContract is null)
-                return new NotFoundError(ErrorCodes.ContractTemplatesNotExist);
-
-            var filledContract = PopulateAndDeserializeTemplate(staticContract.JsonData, contractFields);
-            if (filledContract is null)
-                return new ConflictError(ErrorCodes.DeserializeOperationFailed);
-
-            MapAdditionalFields(filledContract, contractFields, offer, contract);
-
-            return filledContract;
-        }
-        #endregion
-
-        public async Task<Result<ContractDto?>> GetContractTemplateByIdAsync(long contractId)
-        {
-            var contract = await getContractTemplateAsync(contractId);
-            if (contract is null)
-                return new NotFoundError(ErrorCodes.ContractNotExists);
-
-            return await ProcessContractTemplateAsync(contract);
-        }
-
-        public async Task<Result<ContractDto?>> GetContractTemplateByOfferIdAsync(long offerId)
-        {
-            var contract = await getContractTemplateByOfferIdAsync(offerId);
-            if (contract is null)
-                return new NotFoundError(ErrorCodes.ContractNotExists);
-
-            return await ProcessContractTemplateAsync(contract);
+            return Result<GetContractKeysDto?>.Success
+              (new GetContractKeysDto { ContractId = contract.Id, ContractKeys = contractKeys });
         }
 
     }
-
 }
 

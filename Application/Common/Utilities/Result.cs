@@ -30,7 +30,7 @@ namespace Application.Common.Utilities
                 Data = data,
 
             };
-        public static Result<TData> Success(TData data, SuccessCodes successCode)
+        public static Result<TData> Success(TData data, SuccessCodes successCode = SuccessCodes.OperationSuccessful)
           => new()
           {
               Status = StatusCodes.Status200OK,

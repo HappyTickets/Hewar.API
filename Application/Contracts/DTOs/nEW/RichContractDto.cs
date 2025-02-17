@@ -1,4 +1,6 @@
-﻿namespace Application.Contracts.DTOs.nEW
+﻿using Application.Clauses.DTOs;
+
+namespace Application.Contracts.DTOs.nEW
 {
     public class RichContractDto
     {

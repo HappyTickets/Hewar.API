@@ -1,6 +1,6 @@
-﻿namespace Application.Contracts.DTOs.nEW
+﻿namespace Application.Clauses.DTOs
 {
-    public class CustomClauseDto
+    public class CreateCustomClauseDto
     {
         public string HtmlContentAr { get; set; } = "Temp Data";
         public string HtmlContentEn { get; set; } = "Temp Data";

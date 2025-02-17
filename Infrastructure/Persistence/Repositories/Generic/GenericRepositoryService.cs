@@ -25,6 +25,8 @@ namespace Infrastructure.Persistence.Repositories.Generic
         public virtual void CreateRange(IEnumerable<TEntity> entities)
             => _dbSet.AddRange(entities);
 
+        public virtual async Task CreateRangeAsync(IEnumerable<TEntity> entities)
+        => await _dbSet.AddRangeAsync(entities);
         public virtual void Update(TEntity entity)
             => _dbSet.Update(entity);
 
@@ -194,6 +196,8 @@ namespace Infrastructure.Persistence.Repositories.Generic
 
             return await query.ProjectTo<TResult>(mapper.ConfigurationProvider).ToListAsync();
         }
+
+
 
 
 

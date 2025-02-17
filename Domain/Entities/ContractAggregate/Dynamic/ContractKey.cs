@@ -2,11 +2,10 @@
 
 namespace Domain.Entities.ContractAggregate.Dynamic
 {
-    public class ContractKey
+    public class ContractKey : SoftDeletableEntity
     {
-        public int Id { get; set; }
         public long ContractId { get; set; }
-        public int KeyId { get; set; }
+        public long KeyId { get; set; }
         public string Value { get; set; }
 
 
@@ -18,41 +17,3 @@ namespace Domain.Entities.ContractAggregate.Dynamic
 
     }
 }
-
-/*
- 
- Keys {
-    
-    id: 1    
-    name: ContractSignDate
-    DataType: Date
-    }   
- 
-contract keys 
-     
-first send fields normal like : {
-
-public DateTime ContractSignDate {get; set;}
-        }
-
-initial the contract with fields
- offer id:  1
-ContractSignDate = 20/12/2025
-
-create new Contract {offerId = 1;
-    
-    contractKeys = new List {
-        new ContractKey { 
-            KeyId = keys [nameof(ContractSignDate)]
-            value = ContractSignDate
-        }
-            
-        } 
-} 
- */
-
-
-
-
-
-

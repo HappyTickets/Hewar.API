@@ -1,4 +1,4 @@
-﻿namespace Application.Contracts.DTOs.nEW
+﻿namespace Application.Clauses.DTOs
 {
     public class StaticClauseDto
     {
