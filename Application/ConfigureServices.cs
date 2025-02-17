@@ -6,6 +6,7 @@ using Application.AccountManagement.Service.Interfaces;
 using Application.Ads.Service;
 using Application.Authorization.Service;
 using Application.Chats.Service;
+using Application.Clauses.Service;
 using Application.Companies.Service;
 using Application.Companies.Service.ProvidedServices;
 using Application.Companies.Service.ServicesProvided;
@@ -58,6 +59,7 @@ namespace Application
               .AddScoped<IPriceOfferService, PriceOfferService>()
               .AddScoped<IContractService, ContractService>()
               .AddScoped<IChatService, ChatService>()
+              .AddScoped<IClauseService, ClauseService>()
               .AddScoped<ISecurityCertificateService, SecurityCertificateService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();

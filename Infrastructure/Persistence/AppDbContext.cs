@@ -30,7 +30,7 @@ namespace Infrastructure.Persistence
             || (_currentUserService.EntityType == EntityTypes.Company && !e.IsCompanyHidden));
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            modelBuilder.SeedRoles().SeedStaticContract();
+            modelBuilder.SeedRoles().SeedStaticContract().SeedKeys();
 
             #region UserRolesRelationship
             modelBuilder.Entity<ApplicationUser>(b =>

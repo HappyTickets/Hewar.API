@@ -9,7 +9,7 @@ namespace Domain.Entities.ContractAggregate.Dynamic
         public string Value { get; set; }
 
 
-        [ForeignKey(nameof(ContractKey))]
+        [ForeignKey(nameof(ContractId))]
         public Contract Contract { get; set; }
 
         [ForeignKey(nameof(KeyId))]

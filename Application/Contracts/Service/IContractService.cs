@@ -1,4 +1,5 @@
-﻿using Application.Contracts.DTOs.nEW;
+﻿using Application.Contracts.DTOs;
+using Application.Contracts.DTOs.Dynamic;
 
 namespace Application.Contracts.Service
 {

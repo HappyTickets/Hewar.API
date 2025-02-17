@@ -1,4 +1,4 @@
-﻿using Application.Contracts.DTOs.nEW;
+﻿using Application.Contracts.DTOs.Dynamic;
 using Application.Contracts.Service;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
-﻿namespace Application.Contracts.DTOs.nEW
+﻿namespace Application.Contracts.DTOs.Static
 {
-    public class StaticContractTemplateDto
+    public class StaticContractDto
     {
 
         public string TitleAr { get; set; } = "عقد تقديم خدمات الحراسات الأمنية المدنية الخاصة";

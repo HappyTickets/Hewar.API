@@ -1,4 +1,4 @@
-﻿namespace Application.Contracts.DTOs.nEW
+﻿namespace Application.Contracts.DTOs.Dynamic
 {
     public class ContractKeyDto
     {

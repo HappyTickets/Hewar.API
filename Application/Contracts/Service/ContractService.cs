@@ -1,5 +1,7 @@
 ﻿using Application.Clauses.DTOs;
-using Application.Contracts.DTOs.nEW;
+using Application.Contracts.DTOs;
+using Application.Contracts.DTOs.Dynamic;
+using Application.Contracts.DTOs.Static;
 using AutoMapper;
 using Domain.Entities.ContractAggregate.Dynamic;
 using Domain.Entities.ContractAggregate.Static;
@@ -90,6 +92,7 @@ namespace Application.Contracts.Service
             var contract = await ufw.GetRepository<Contract>()
                 .FirstOrDefaultAsync(c => c.Id == contractId,
                 [nameof(Contract.ContractKeys),
+                $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}",
                  nameof(Contract.CustomClauses)]);
 
             if (contract is null)
@@ -104,6 +107,7 @@ namespace Application.Contracts.Service
             var contract = await ufw.GetRepository<Contract>()
                 .FirstOrDefaultAsync(c => c.OfferId == offerId,
                 [nameof(Contract.ContractKeys),
+                $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}",
                  nameof(Contract.CustomClauses)]);
 
             if (contract is null)
@@ -136,7 +140,7 @@ namespace Application.Contracts.Service
             return new RichContractDto
             {
                 ContractId = contract.Id,
-                StaticContractTemplate = mapper.Map<StaticContractTemplateDto>(staticContract),
+                StaticContractTemplate = mapper.Map<StaticContractDto>(staticContract),
                 StaticClauses = mapper.Map<List<StaticClauseDto>>(staticClauses),
                 CustomClauses = mapper.Map<List<CustomClauseDto>>(contract.CustomClauses),
                 ContractKeys = mapper.Map<List<ContractKeyDto>>(contract.ContractKeys),
@@ -235,8 +239,9 @@ namespace Application.Contracts.Service
 
         public async Task<Result<GetContractKeysDto?>> GetContractKeysByOfferIdAsync(long offer)
         {
-            var contract = await ufw.GetRepository<Contract>().FirstOrDefaultAsync(c => c.OfferId == offer,
-                [nameof(Contract.ContractKeys)]);
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.OfferId == offer,
+                [nameof(Contract.ContractKeys), $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}"]);
 
             if (contract is null || contract.ContractKeys is null)
                 return new NotFoundError();
