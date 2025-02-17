@@ -13,7 +13,7 @@ namespace Presentation.Controllers.Contracts
 
 
         [HttpPut("UpdateCustomClauses")]
-        public async Task<IActionResult> UpdateCustomClausesAsync(long contractId, [FromBody] List<CustomClauseDto> customClauses)
+        public async Task<IActionResult> UpdateCustomClausesAsync(long contractId, [FromBody] List<UpdateCustomClauseDto> customClauses)
         => Result(await clauseService.UpdateCustomClausesAsync(contractId, customClauses));
 
 

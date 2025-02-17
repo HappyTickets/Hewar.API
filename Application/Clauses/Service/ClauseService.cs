@@ -3,7 +3,7 @@ using Domain.Entities.ContractAggregate.Dynamic;
 
 namespace Application.Clauses.Service
 {
-    public class ClauseService(IUnitOfWorkService ufw) : IClauseService
+    public class ClauseService(IUnitOfWorkService ufw, ICurrentUserService currentUser) : IClauseService
     {
         public async Task<Result<Empty>> CreateCustomClausesAsync(long contractId, List<CreateCustomClauseDto> customClauses)
         {
@@ -16,6 +16,7 @@ namespace Application.Clauses.Service
             var newClauses = customClauses.Select(cc => new CustomClause
             {
                 ContractId = contractId,
+                AuthorType = currentUser.EntityType,
                 HtmlContentAr = cc.HtmlContentAr,
                 HtmlContentEn = cc.HtmlContentEn
             }).ToList();
@@ -38,7 +39,7 @@ namespace Application.Clauses.Service
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CustomClauseDeleted);
         }
 
-        public async Task<Result<Empty>> UpdateCustomClausesAsync(long contractId, List<CustomClauseDto> customClauses)
+        public async Task<Result<Empty>> UpdateCustomClausesAsync(long contractId, List<UpdateCustomClauseDto> customClauses)
         {
             if (!customClauses.Any())
                 return Result<Empty>.Success(Empty.Default);

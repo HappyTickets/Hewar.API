@@ -7,6 +7,7 @@ namespace Domain.Entities.ContractAggregate.Dynamic
         public string HtmlContentAr { get; set; }
         public string HtmlContentEn { get; set; }
 
+        public EntityTypes? AuthorType { get; set; }
         public long ContractId { get; set; }
 
         [ForeignKey(nameof(ContractId))]
