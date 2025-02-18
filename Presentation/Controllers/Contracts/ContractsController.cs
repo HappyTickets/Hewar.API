@@ -55,9 +55,23 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetContractKeysByOfferId")]
-        public async Task<IActionResult> GetContractKeysByOfferIdAsync(long offer)
+        public async Task<IActionResult> GetContractKeysByOfferIdAsync(long offerId)
         {
-            var result = await contractService.GetContractKeysByOfferIdAsync(offer);
+            var result = await contractService.GetContractKeysByOfferIdAsync(offerId);
+            return Result(result);
+        }
+
+        [HttpGet("GetContractFieldsByOfferId")]
+        public async Task<IActionResult> GetContractFieldsByOfferIdAsync(long offerId)
+        {
+            var result = await contractService.GetContractFieldsByOfferIdAsync(offerId);
+            return Result(result);
+        }
+
+        [HttpGet("GetContractFieldsByContractId")]
+        public async Task<IActionResult> GetContractFieldsByContractIdAsync(long contractId)
+        {
+            var result = await contractService.GetContractFieldsByContractIdAsync(contractId);
             return Result(result);
         }
 
