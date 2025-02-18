@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\client\" />
+    <Folder Include="wwwroot\JsonFiles\" />
   </ItemGroup>
 
 </Project>
