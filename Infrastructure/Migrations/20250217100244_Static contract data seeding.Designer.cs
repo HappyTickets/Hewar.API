@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217100244_Static contract data seeding")]
+    partial class Staticcontractdataseeding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -488,6 +491,9 @@ namespace Infrastructure.Migrations
                     b.Property<long>("ContractId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ContractKey")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -521,7 +527,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractId");
+                    b.HasIndex("ContractKey");
 
                     b.HasIndex("KeyId");
 
@@ -623,295 +629,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Key");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            DataType = 1,
-                            IsDeleted = false,
-                            Name = "ContractSignDate"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            DataType = 1,
-                            IsDeleted = false,
-                            Name = "ContractStartDate"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyNameAr"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyNameEn"
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyMainOfficeCityAr"
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyMainOfficeCityEn"
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyCommercialRegistration"
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyPublicSecurityLicense"
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyTelephone"
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyMobile"
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyAddressCityAr"
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyAddressCityEn"
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyAddressPostalCode"
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyAddressUnitNumber"
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyAddressBuildingNumber"
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyRegistrationInSabl"
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyEmail"
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyRepresentativeNameAr"
-                        },
-                        new
-                        {
-                            Id = 19L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyRepresentativeNameEn"
-                        },
-                        new
-                        {
-                            Id = 20L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyRepresentativeTitleAr"
-                        },
-                        new
-                        {
-                            Id = 21L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "CompanyRepresentativeTitleEn"
-                        },
-                        new
-                        {
-                            Id = 22L,
-                            DataType = 0,
-                            IsDeleted = false,
-                            Name = "CompanyGuardsCount"
-                        },
-                        new
-                        {
-                            Id = 23L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityNameAr"
-                        },
-                        new
-                        {
-                            Id = 24L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityNameEn"
-                        },
-                        new
-                        {
-                            Id = 25L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityMainOfficeCityAr"
-                        },
-                        new
-                        {
-                            Id = 26L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityMainOfficeCityEn"
-                        },
-                        new
-                        {
-                            Id = 27L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityCommercialRegistrationCityAr"
-                        },
-                        new
-                        {
-                            Id = 28L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityCommercialRegistrationCityEn"
-                        },
-                        new
-                        {
-                            Id = 29L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityMobile"
-                        },
-                        new
-                        {
-                            Id = 30L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityAddressCityAr"
-                        },
-                        new
-                        {
-                            Id = 31L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityAddressCityEn"
-                        },
-                        new
-                        {
-                            Id = 32L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityAddressPostalCode"
-                        },
-                        new
-                        {
-                            Id = 33L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityAddressUnitNumber"
-                        },
-                        new
-                        {
-                            Id = 34L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityAddressBuildingNumber"
-                        },
-                        new
-                        {
-                            Id = 35L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityEmail"
-                        },
-                        new
-                        {
-                            Id = 36L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityRepresentativeNameAr"
-                        },
-                        new
-                        {
-                            Id = 37L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityRepresentativeNameEn"
-                        },
-                        new
-                        {
-                            Id = 38L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityRepresentativeTitleAr"
-                        },
-                        new
-                        {
-                            Id = 39L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityRepresentativeTitleEn"
-                        },
-                        new
-                        {
-                            Id = 40L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityLocationToBeSecuredAr"
-                        },
-                        new
-                        {
-                            Id = 41L,
-                            DataType = 2,
-                            IsDeleted = false,
-                            Name = "FacilityLocationToBeSecuredEn"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.ContractAggregate.Static.StaticClause", b =>
@@ -3067,7 +2784,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Contract", "Contract")
                         .WithMany("ContractKeys")
-                        .HasForeignKey("ContractId")
+                        .HasForeignKey("ContractKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

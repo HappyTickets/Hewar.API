@@ -1,5 +1,6 @@
-﻿using Domain.Entities.ContractJson;
+﻿using Domain.Entities.ContractAggregate.Static;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace Infrastructure.Persistence.Seeds.Contract
 {
@@ -7,15 +8,24 @@ namespace Infrastructure.Persistence.Seeds.Contract
     {
         public static ModelBuilder SeedStaticContract(this ModelBuilder builder)
         {
-            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "JsonFiles/Contract", "staticContractJson.json");
-            var jsonData = File.ReadAllText(jsonFilePath);
+            // Seed StaticContract data
+            var staticContractData = ReadJsonData<StaticContract>("StaticContractData.json");
+            builder.Entity<StaticContract>().HasData(staticContractData);
 
-            var staticContract = new StaticContractTemplate { Id = 1, JsonData = jsonData };
-
-            builder.Entity<StaticContractTemplate>().HasData(staticContract);
+            // Seed StaticClause data
+            var staticClausesData = ReadJsonData<StaticClause[]>("StaticClauses.json");
+            builder.Entity<StaticClause>().HasData(staticClausesData);
 
             return builder;
         }
+
+        private static T ReadJsonData<T>(string fileName)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "JsonFiles", "Contract", fileName);
+            var jsonData = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<T>(jsonData);
+        }
     }
+
 
 }

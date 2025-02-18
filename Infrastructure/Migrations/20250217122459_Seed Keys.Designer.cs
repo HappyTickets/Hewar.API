@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217122459_Seed Keys")]
+    partial class SeedKeys
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -488,6 +491,9 @@ namespace Infrastructure.Migrations
                     b.Property<long>("ContractId")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ContractKey")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -521,7 +527,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContractId");
+                    b.HasIndex("ContractKey");
 
                     b.HasIndex("KeyId");
 
@@ -3067,7 +3073,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Contract", "Contract")
                         .WithMany("ContractKeys")
-                        .HasForeignKey("ContractId")
+                        .HasForeignKey("ContractKey")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

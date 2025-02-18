@@ -136,5 +136,11 @@
         ContractSigned = 1105,
 
 
+        // Clauses 
+        CustomClauseCreated = 1150,
+        CustomClauseUpdated = 1151,
+        CustomClauseDeleted = 1152,
+
+
     }
 }
