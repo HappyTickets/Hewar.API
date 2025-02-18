@@ -25,7 +25,7 @@ namespace Application.Contracts.Service
             var contract = new Contract
             {
                 OfferId = offerId,
-                ContractKeys = await MapContractFields(contractFields)
+                ContractKeys = await MapContractFieldsToKeys(contractFields)
             };
 
             await ufw.GetRepository<Contract>().CreateAsync(contract);
@@ -40,7 +40,7 @@ namespace Application.Contracts.Service
             {
                 CompanyId = companyId,
                 FacilityId = facilityId,
-                ContractKeys = await MapContractFields(contractFields)
+                ContractKeys = await MapContractFieldsToKeys(contractFields)
             };
 
             await ufw.GetRepository<Contract>().CreateAsync(contract);
@@ -58,7 +58,7 @@ namespace Application.Contracts.Service
                 return new NotFoundError();
 
             contract.ContractKeys.Clear();
-            contract.ContractKeys = await MapContractFields(contractFields);
+            contract.ContractKeys = await MapContractFieldsToKeys(contractFields);
 
             await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.ContractUpdated);
@@ -203,29 +203,18 @@ namespace Application.Contracts.Service
             return keys;
         }
 
-
-        private async Task<List<ContractKey>> MapContractFields(ContractFieldsDto fields)
+        private async Task<List<ContractKey>> MapContractFieldsToKeys(ContractFieldsDto fields)
         {
-            var contractKeys = new List<ContractKey>();
             var keys = await GetKeysAsync();
-            var properties = typeof(ContractFieldsDto).GetProperties();
-
-            foreach (var property in properties)
-            {
-                if (keys.TryGetValue(property.Name, out var key))
-                {
-                    var value = property.GetValue(fields)?.ToString() ?? string.Empty;
-                    var contractKey = new ContractKey
-                    {
-                        KeyId = key.Id,
-                        Value = value
-                    };
-                    contractKeys.Add(contractKey);
-                }
-            }
-
-            return contractKeys;
+            return await ContractHelper.MapContractFields(fields, keys);
         }
+
+        private async Task<ContractFieldsDto> MapContractKeysToFields(ICollection<ContractKey> contractKeys)
+        {
+            var keys = await GetKeysAsync();
+            return await ContractHelper.MapContractFieldsToDto(contractKeys, keys);
+        }
+
 
         public async Task<Result<GetContractKeysDto?>> GetContractKeysByContractIdAsync(long contractId)
         {
@@ -251,6 +240,50 @@ namespace Application.Contracts.Service
             return Result<GetContractKeysDto?>.Success
               (new GetContractKeysDto { ContractId = contract.Id, ContractKeys = contractKeys });
         }
+
+        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByContractIdAsync(long contractId)
+        {
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.Id == contractId,
+                [nameof(Contract.ContractKeys), $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}"]);
+
+            if (contract is null || contract.ContractKeys is null)
+                return new NotFoundError();
+
+            var contractFields = await MapContractKeysToFields(contract.ContractKeys);
+
+            var resultDto = new GetContractFieldsDto
+            {
+                ContractId = contractId,
+                OfferId = contract.OfferId,
+                ContractFields = contractFields
+            };
+
+            return Result<GetContractFieldsDto>.Success(resultDto);
+        }
+
+        public async Task<Result<GetContractFieldsDto>> GetContractFieldsByOfferIdAsync(long offerId)
+        {
+            var contract = await ufw.GetRepository<Contract>()
+                .FirstOrDefaultAsync(c => c.OfferId == offerId,
+                [nameof(Contract.ContractKeys), $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}"]);
+
+            if (contract is null || contract.ContractKeys is null)
+                return new NotFoundError();
+
+            var contractFields = await MapContractKeysToFields(contract.ContractKeys);
+
+            var resultDto = new GetContractFieldsDto
+            {
+                ContractId = contract.Id,
+                OfferId = offerId,
+                ContractFields = contractFields
+            };
+
+            return Result<GetContractFieldsDto>.Success(resultDto);
+        }
+
+
 
     }
 }

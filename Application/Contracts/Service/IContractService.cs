@@ -14,6 +14,9 @@ namespace Application.Contracts.Service
         Task<Result<RichContractDto>> GetContractByIdAsync(long contractId);
         Task<Result<RichContractDto>> GetContractByOfferIdAsync(long offerId);
 
+        Task<Result<GetContractFieldsDto>> GetContractFieldsByContractIdAsync(long contractId);
+        Task<Result<GetContractFieldsDto>> GetContractFieldsByOfferIdAsync(long offerId);
+
         Task<Result<GetContractKeysDto?>> GetContractKeysByContractIdAsync(long contractId);
         Task<Result<GetContractKeysDto?>> GetContractKeysByOfferIdAsync(long offer);
 
