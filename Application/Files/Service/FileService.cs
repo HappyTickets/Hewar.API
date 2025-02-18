@@ -2,39 +2,64 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using MimeDetective;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Application.Files.Service
 {
-    internal class FileService(IMapper mapper, IWebHostEnvironment webHostEnvironment) : IFileService
+    public class FileService(IMapper mapper, IWebHostEnvironment webHostEnvironment) : IFileService
     {
         public async Task<Result<MediaDto>> SaveFileAsync(FileInfoDTO file)
         {
-
             file.Path = file.Path.Replace(" ", "_");
 
             var mediaDto = new MediaDto();
 
             if (file.FileData != null)
             {
+                file.Path = AdjustPathByCategory(file.FileData.ContentType, file.Path);
                 mediaDto.Url = await ConvertStreamToFileAsync(file.FileData, file.Path);
                 mediaDto.Type = DetermineFileCategory(file.FileData.ContentType);
-
             }
             else if (file.Base64 != null)
             {
+                file.Path = AdjustPathByCategory("application/octet-stream", file.Path);
                 mediaDto.Url = await ConvertBase64ToFileAsync(file.Base64, file.Path);
             }
             else if (file.Base64EncodedString != null)
             {
+                file.Path = AdjustPathByCategory("application/octet-stream", file.Path);
                 mediaDto.Url = await ConvertBase64ToFileAsync(file.Base64EncodedString, file.Path);
             }
 
             return Result<MediaDto>.Success(mediaDto, SuccessCodes.fileUploaded);
-
         }
+
+        private string AdjustPathByCategory(string contentType, string originalPath)
+        {
+            string baseDirectory = "/files/";
+
+            if (string.IsNullOrEmpty(contentType))
+            {
+                return Path.Combine(baseDirectory, originalPath);
+            }
+
+            if (contentType.StartsWith("image/"))
+            {
+                baseDirectory = "/images/";
+            }
+            else if (contentType == "application/pdf" ||
+                     contentType.StartsWith("application/msword") ||
+                     contentType.StartsWith("application/vnd"))
+            {
+                baseDirectory = "/files/";
+            }
+
+            return Path.Combine(baseDirectory, originalPath);
+        }
+
 
         private string DetermineFileCategory(string contentType)
         {
@@ -78,12 +103,11 @@ namespace Application.Files.Service
             return await ConvertStreamToFileAsync(stream, path);
         }
 
-        private async Task<string> ConvertStreamToFileAsync(IBrowserFile file, string path)
+        private async Task<string> ConvertStreamToFileAsync(IFormFile file, string path)
         {
-            using var stream = file.OpenReadStream(10000000);
-            return await ConvertStreamToFileAsync(stream, Path.Combine(path, file.Name));
+            using var stream = file.OpenReadStream();
+            return await ConvertStreamToFileAsync(stream, Path.Combine(path, file.FileName));
         }
-
         private async Task<string> ConvertStreamToFileAsync(Stream stream, string path)
         {
             try
@@ -114,7 +138,7 @@ namespace Application.Files.Service
 
                 string filePath = Path.Combine(fullPath.ToString(), fileName.ToString());
 
-                using var fileStream = System.IO.File.Create(filePath);
+                using var fileStream = File.Create(filePath);
                 await stream.CopyToAsync(fileStream);
 
                 return filePath.Replace(webHostEnvironment.WebRootPath, string.Empty);
@@ -127,15 +151,13 @@ namespace Application.Files.Service
 
         private string SanitizePath(string path)
         {
-            // Remove white spaces and potentially unwanted characters
             string directoryName = Path.GetDirectoryName(path).Replace(" ", "");
             string fileName = Path.GetFileName(path).Replace(" ", "");
-
-            // Optionally, sanitize further
             fileName = Regex.Replace(fileName, @"[^a-zA-Z0-9-_\.]", "");
 
             return Path.Combine(directoryName, fileName);
         }
+
 
     }
 }
