@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Files.Dtos
@@ -7,8 +7,12 @@ namespace Application.Files.Dtos
     {
         [Required]
         public string Path { get; set; } = string.Empty;
+
         public byte[]? Base64 { get; set; }
         public string? Base64EncodedString { get; set; }
-        public IBrowserFile? FileData { get; set; }
+
+        // Use IFormFile for file uploads
+        public IFormFile? FileData { get; set; }
     }
+
 }

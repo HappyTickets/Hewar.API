@@ -7,7 +7,9 @@ namespace Presentation.Controllers
     public class FilesController(IFileService fileService) : ApiControllerBase
     {
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadAsync(FileInfoDTO file)
-            => Result(await fileService.SaveFileAsync(file));
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UploadAsync([FromForm] FileInfoDTO file)
+     => Result(await fileService.SaveFileAsync(file));
+
     }
 }
