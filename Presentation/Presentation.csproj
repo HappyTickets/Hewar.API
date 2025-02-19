@@ -7,9 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="wwwroot\client\**" />
 		<Compile Remove="wwwroot\JsonFiles\**" />
+		<Content Remove="wwwroot\client\**" />
 		<Content Remove="wwwroot\JsonFiles\**" />
+		<EmbeddedResource Remove="wwwroot\client\**" />
 		<EmbeddedResource Remove="wwwroot\JsonFiles\**" />
+		<None Remove="wwwroot\client\**" />
 		<None Remove="wwwroot\JsonFiles\**" />
 	</ItemGroup>
 
@@ -27,9 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\client\" />
-		<Folder Include="wwwroot\files\JsonFiles\" />
-		<Folder Include="wwwroot\images\" />
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 
 </Project>
