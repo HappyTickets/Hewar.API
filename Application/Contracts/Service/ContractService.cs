@@ -2,6 +2,8 @@
 using Application.Contracts.DTOs;
 using Application.Contracts.DTOs.Dynamic;
 using Application.Contracts.DTOs.Static;
+using Application.PriceOffers.Dtos;
+using Application.ScheduleEntries.DTOs;
 using AutoMapper;
 using Domain.Entities.ContractAggregate.Dynamic;
 using Domain.Entities.ContractAggregate.Static;
@@ -93,7 +95,9 @@ namespace Application.Contracts.Service
                 .FirstOrDefaultAsync(c => c.Id == contractId,
                 [nameof(Contract.ContractKeys),
                 $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}",
-                 nameof(Contract.CustomClauses)]);
+                 nameof(Contract.ScheduleEntries),
+                 nameof(Contract.CustomClauses)
+                 ]);
 
             if (contract is null)
                 return new NotFoundError();
@@ -108,6 +112,7 @@ namespace Application.Contracts.Service
                 .FirstOrDefaultAsync(c => c.OfferId == offerId,
                 [nameof(Contract.ContractKeys),
                 $"{nameof(Contract.ContractKeys)}.{nameof(ContractKey.Key)}",
+                 nameof(Contract.ScheduleEntries),
                  nameof(Contract.CustomClauses)]);
 
             if (contract is null)
@@ -137,16 +142,20 @@ namespace Application.Contracts.Service
             var staticContract = await GetStaticContractAsync();
             var staticClauses = await GetStaticClausesAsync();
 
-            return new RichContractDto
+            var dto = new RichContractDto
             {
                 ContractId = contract.Id,
                 StaticContractTemplate = mapper.Map<StaticContractDto>(staticContract),
                 StaticClauses = mapper.Map<List<StaticClauseDto>>(staticClauses),
                 CustomClauses = mapper.Map<List<CustomClauseDto>>(contract.CustomClauses),
+                ScheduleEntries = mapper.Map<List<ScheduleEntryDto>>(contract.ScheduleEntries),
                 ContractKeys = mapper.Map<List<ContractKeyDto>>(contract.ContractKeys),
                 FacilitySignature = contract.FacilitySignature,
                 CompanySignature = contract.CompanySignature
             };
+
+            await SetOfferInfo(dto, contract.OfferId);
+            return dto;
         }
         private async Task<StaticContract> GetStaticContractAsync()
         {
@@ -213,6 +222,21 @@ namespace Application.Contracts.Service
         {
             var keys = await GetKeysAsync();
             return await ContractHelper.MapContractFieldsToDto(contractKeys, keys);
+        }
+        private async Task SetOfferInfo(RichContractDto dto, long? offerId)
+        {
+            if (offerId is null)
+                return;
+
+            var offer = await ufw.GetRepository<PriceOffer>().FirstOrDefaultAsync<GetPriceOfferDto>
+                (o => o.Id == offerId);
+            if (offer != null)
+            {
+                dto.OfferNumber = offer.Id;
+                dto.OfferDate = offer.CreatedOn;
+                dto.Services = offer.Services;
+                dto.OtherServices = offer.OtherServices;
+            }
         }
 
 

@@ -16,6 +16,14 @@ namespace Presentation.Controllers.Contracts
         public async Task<IActionResult> UpdateCustomClausesAsync(long contractId, [FromBody] List<UpdateCustomClauseDto> customClauses)
         => Result(await clauseService.UpdateCustomClausesAsync(contractId, customClauses));
 
+        [HttpGet("GetCustomClauseById")]
+        public async Task<IActionResult> GetCustomClauseByIdAsync(long clauseId)
+       => Result(await clauseService.GetCustomClauseByIdAsync(clauseId));
+
+        [HttpGet("GetCustomClausesByContractId")]
+        public async Task<IActionResult> GetCustomClausesByContractIdAsync(long contractId)
+            => Result(await clauseService.GetCustomClausesByContractIdAsync(contractId));
+
 
         [HttpDelete("DeleteCustomClause")]
         public async Task<IActionResult> DeleteCustomClauseAsync(long clauseId)

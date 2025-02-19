@@ -134,7 +134,9 @@
         ContractRejected = 1103,
         ContractUpdated = 1104,
         ContractSigned = 1105,
-
+        ScheduleEntryCreated = 1106,
+        ScheduleEntryUpdated = 1107,
+        ScheduleEntryDeleted = 1108,
 
         // Clauses 
         CustomClauseCreated = 1150,
