@@ -41,7 +41,6 @@ jobs:
 
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish /p:EnvironmentName=Development --verbosity diagnostic
-      
 
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
@@ -53,14 +52,14 @@ jobs:
         source: ./publish
         dangerous-clean-slate: true
 
-    - name: Set permissions on the server
+    - name: Set permissions on wwwroot (Recursive 777)
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_SERVICE_USERNAME }}
         password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
-           ${{ secrets.FTP_PERMISSIONS }}
+          sudo chmod -R 777 ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
 
     - name: Restart API Service
       uses: appleboy/ssh-action@v0.1.7
