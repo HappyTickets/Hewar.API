@@ -6,6 +6,7 @@ namespace Domain.Entities.ContractAggregate.Dynamic
 {
     public class Contract : SoftDeletableEntity
     {
+        public ICollection<ScheduleEntry>? ScheduleEntries { get; set; }
         public ICollection<CustomClause>? CustomClauses { get; set; }
         public ICollection<ContractKey> ContractKeys { get; set; } = new List<ContractKey>();
 

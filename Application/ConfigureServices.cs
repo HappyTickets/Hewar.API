@@ -18,6 +18,7 @@ using Application.Hewar.Service;
 using Application.Notifications.Service;
 using Application.PriceOffers.Services;
 using Application.PriceRequests.Service;
+using Application.ScheduleEntries.Service;
 using Application.SecurityCertificates.Service;
 using Application.Tickets.Service;
 using FluentValidation;
@@ -60,6 +61,7 @@ namespace Application
               .AddScoped<IContractService, ContractService>()
               .AddScoped<IChatService, ChatService>()
               .AddScoped<IClauseService, ClauseService>()
+              .AddScoped<IScheduleEntryService, ScheduleEntryService>()
               .AddScoped<ISecurityCertificateService, SecurityCertificateService>()
               .AddScoped<IUserValidator<ApplicationUser>, UserValidator>()
             .AddScoped<IAdsService, AdsService>();

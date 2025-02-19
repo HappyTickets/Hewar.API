@@ -7,5 +7,8 @@ namespace Application.Clauses.Service
         Task<Result<Empty>> CreateCustomClausesAsync(long contractId, List<CreateCustomClauseDto> customClauses);
         Task<Result<Empty>> UpdateCustomClausesAsync(long contractId, List<UpdateCustomClauseDto> customClauses);
         Task<Result<Empty>> DeleteCustomClauseAsync(long clauseId);
+        Task<Result<CustomClauseDto>> GetCustomClauseByIdAsync(long clauseId);
+        Task<Result<List<CustomClauseDto>>> GetCustomClausesByContractIdAsync(long contractId);
     }
+
 }

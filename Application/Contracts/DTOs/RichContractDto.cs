@@ -2,6 +2,7 @@
 using Application.Contracts.DTOs.Dynamic;
 using Application.Contracts.DTOs.Static;
 using Application.PriceOffers.Dtos.Services;
+using Application.ScheduleEntries.DTOs;
 
 namespace Application.Contracts.DTOs
 {
@@ -16,6 +17,7 @@ namespace Application.Contracts.DTOs
         public StaticContractDto StaticContractTemplate { get; set; } = new();
         public List<StaticClauseDto> StaticClauses { get; set; } = [new StaticClauseDto { }, new StaticClauseDto { }];
         public List<CustomClauseDto>? CustomClauses { get; set; } = [new CustomClauseDto { }, new CustomClauseDto { }];
+        public ICollection<ScheduleEntryDto>? ScheduleEntries { get; set; }
         public List<ContractKeyDto> ContractKeys { get; set; } = [new ContractKeyDto { }, new ContractKeyDto { }];
 
         public string? FacilitySignature { get; set; }

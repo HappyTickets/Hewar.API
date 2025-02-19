@@ -74,6 +74,39 @@ namespace Application.Clauses.Service
             await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CustomClauseUpdated);
         }
+
+        public async Task<Result<CustomClauseDto>> GetCustomClauseByIdAsync(long clauseId)
+        {
+            var clause = await ufw.GetRepository<CustomClause>().GetByIdAsync(clauseId);
+            if (clause is null)
+                return new NotFoundError();
+
+            var dto = new CustomClauseDto
+            {
+                Id = clause.Id,
+                ContractId = clause.ContractId,
+                HtmlContentAr = clause.HtmlContentAr,
+                HtmlContentEn = clause.HtmlContentEn,
+                AuthorType = clause.AuthorType
+            };
+
+            return Result<CustomClauseDto>.Success(dto);
+        }
+
+        public async Task<Result<List<CustomClauseDto>>> GetCustomClausesByContractIdAsync(long contractId)
+        {
+            var clauses = await ufw.GetRepository<CustomClause>().FilterAsync(c => c.ContractId == contractId);
+            var dtos = clauses.Select(c => new CustomClauseDto
+            {
+                Id = c.Id,
+                ContractId = c.ContractId,
+                HtmlContentAr = c.HtmlContentAr,
+                HtmlContentEn = c.HtmlContentEn,
+                AuthorType = c.AuthorType
+            }).ToList();
+
+            return Result<List<CustomClauseDto>>.Success(dtos);
+        }
     }
 
 

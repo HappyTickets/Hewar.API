@@ -4,9 +4,9 @@ using Domain.Entities.FacilityAggregate;
 
 namespace Application.SecurityCertificates.Mappings
 {
-    public class SecurityCertificateProfile : Profile
+    public class ScheduleEntryProfile : Profile
     {
-        public SecurityCertificateProfile()
+        public ScheduleEntryProfile()
         {
             CreateMap<SecurityCertificateCreateDto, SecurityCertificate>();
 
