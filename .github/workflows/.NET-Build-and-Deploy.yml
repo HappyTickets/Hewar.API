@@ -52,14 +52,28 @@ jobs:
         source: ./publish
         dangerous-clean-slate: true
 
-    - name: Set permissions on wwwroot (Recursive 777)
+    - name: Fix permissions before untar
       uses: appleboy/ssh-action@v0.1.7
       with:
         host: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_SERVICE_USERNAME }}
         password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
+          echo "Fixing permissions before extraction..."
+          sudo chown -R $USER:$USER ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
           sudo chmod -R 777 ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
+          sudo chmod -R u+w ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
+
+    - name: Set permissions after deployment
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_SERVICE_USERNAME }}
+        password: ${{ secrets.FTP_SERVICE_PASSWORD }}
+        script: |
+          echo "Ensuring correct permissions after deployment..."
+          sudo chown -R $USER:$USER ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
+          sudo chmod -R 755 ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
 
     - name: Restart API Service
       uses: appleboy/ssh-action@v0.1.7
