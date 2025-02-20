@@ -80,20 +80,22 @@ namespace Application.Chats.Service
             if (pr.ChatId.HasValue)
                 return new ConflictError(ErrorCodes.ChatAlreadyExist);
 
-            pr.Chat = new Chat
+            var chat = new Chat
             {
-                EntityAudienceId = pr.CompanyId,
-                EntityIssuerId = pr.FacilityId,
                 RelatedEntityId = pr.Id,
                 RelatedEntityType = ChatEntityType.PriceRequest
             };
+
+            SetChatParticipants(chat, pr.CompanyId, pr.FacilityId);
+            pr.Chat = chat;
+
             await ufw.SaveChangesAsync();
-            return Result<long>.Success(pr.Chat.Id, SuccessCodes.ChatInitialized);
+            return Result<long>.Success(chat.Id, SuccessCodes.ChatInitialized);
         }
+
         public async Task<Result<long>> InitialzePriceOfferChatAsync(long priceOfferId)
         {
             var po = await ufw.GetRepository<PriceOffer>().GetByIdAsync(priceOfferId, [nameof(PriceOffer.PriceRequest)]);
-
             if (po is null)
                 return new NotFoundError();
 
@@ -103,22 +105,36 @@ namespace Application.Chats.Service
             if (po.ChatId.HasValue)
                 return new ConflictError(ErrorCodes.ChatAlreadyExist);
 
-            po.Chat = new Chat
+            var chat = new Chat
             {
-                EntityAudienceId = po.PriceRequest.FacilityId,
-                EntityIssuerId = po.PriceRequest.CompanyId,
                 RelatedEntityId = po.Id,
                 RelatedEntityType = ChatEntityType.PriceOffer
             };
+
+            SetChatParticipants(chat, po.PriceRequest.CompanyId, po.PriceRequest.FacilityId);
+            po.Chat = chat;
+
             await ufw.SaveChangesAsync();
-            return Result<long>.Success(po.Chat.Id, SuccessCodes.ChatInitialized);
+            return Result<long>.Success(chat.Id, SuccessCodes.ChatInitialized);
         }
 
+
+
+        private void SetChatParticipants(Chat chat, long companyId, long facilityId)
+        {
+            if (currentUser.EntityType == EntityTypes.Company)
+            {
+                chat.EntityIssuerId = companyId;
+                chat.IssuerType = EntityTypes.Company;
+
+                chat.EntityAudienceId = facilityId;
+                chat.AudienceType = EntityTypes.Facility;
+            }
+        }
         #region Ads Chat
         public async Task<Result<long>> InitialzeAdOfferChatAsync(long adOfferId)
         {
             var adOffer = await ufw.GetRepository<AdOffer>().GetByIdAsync(adOfferId, [nameof(AdOffer.Ad)]);
-
             if (adOffer is null)
                 return new NotFoundError();
 
@@ -128,17 +144,18 @@ namespace Application.Chats.Service
             if (adOffer.ChatId.HasValue)
                 return new ConflictError(ErrorCodes.ChatAlreadyExist);
 
-            adOffer.Chat = new Chat
+            var chat = new Chat
             {
-                EntityAudienceId = adOffer.Ad.FacilityId,
-                EntityIssuerId = adOffer.CompanyId,
                 RelatedEntityId = adOffer.Id,
                 RelatedEntityType = ChatEntityType.AdOffer
             };
-            await ufw.SaveChangesAsync();
-            return Result<long>.Success(adOffer.Chat.Id, SuccessCodes.ChatInitialized);
-        }
 
+            SetChatParticipants(chat, adOffer.CompanyId, adOffer.Ad.FacilityId);
+            adOffer.Chat = chat;
+
+            await ufw.SaveChangesAsync();
+            return Result<long>.Success(chat.Id, SuccessCodes.ChatInitialized);
+        }
 
         private Tuple<long, EntityTypes> GetAudienceInfo(EntityTypes messageSenderType, Chat chat)
         {

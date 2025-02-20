@@ -8,6 +8,9 @@ namespace Infrastructure.Notifications
         public Task NotifyUserAsync(long entityId, EntityTypes entityType, NotificationDto notification)
             => notificationHub.Clients.Group($"{entityId}-{entityType}").ReceiveNotification(notification);
 
+        public Task NotifyAllUsersAsync(NotificationDto notification)
+            => notificationHub.Clients.All.ReceiveNotification(notification);
+
         public Task NotifyUserNotificationReadAsync(long entityId, EntityTypes entityType, long notificationId)
             => notificationHub.Clients.Group($"{entityId}-{entityType}").MarkNotificationAsRead(notificationId);
     }
