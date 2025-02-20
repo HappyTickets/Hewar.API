@@ -52,10 +52,10 @@ namespace Application.ScheduleEntries.Service
                     entry.LocationAr = updatedEntry.LocationAr;
                     entry.LocationEn = updatedEntry.LocationEn;
                     entry.GuardsRequired = updatedEntry.GuardsRequired;
-                    entry.ShiftTimeAr = entry.ShiftTimeAr;
-                    entry.ShiftTimeEn = entry.ShiftTimeEn;
-                    entry.NotesAr = entry.NotesAr;
-                    entry.NotesEn = entry.NotesEn;
+                    entry.ShiftTimeAr = updatedEntry.ShiftTimeAr;
+                    entry.ShiftTimeEn = updatedEntry.ShiftTimeEn;
+                    entry.NotesAr = updatedEntry.NotesAr;
+                    entry.NotesEn = updatedEntry.NotesEn;
                 }
             }
 
@@ -70,6 +70,7 @@ namespace Application.ScheduleEntries.Service
                 return new NotFoundError();
 
             ufw.GetRepository<ScheduleEntry>().HardDelete(scheduleEntry);
+            await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.ScheduleEntryDeleted);
         }
 

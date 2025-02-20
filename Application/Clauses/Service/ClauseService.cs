@@ -36,6 +36,7 @@ namespace Application.Clauses.Service
                 return new NotFoundError();
 
             ufw.GetRepository<CustomClause>().HardDelete(customClause);
+            await ufw.SaveChangesAsync();
             return Result<Empty>.Success(Empty.Default, SuccessCodes.CustomClauseDeleted);
         }
 
