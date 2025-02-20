@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-
-namespace Application.Notifications.Dtos
+﻿namespace Application.Notifications.Dtos
 {
     public class NotificationDto
     {

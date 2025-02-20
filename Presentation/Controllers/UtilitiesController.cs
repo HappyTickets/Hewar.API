@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces.Services;
+using Application.Notifications.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -25,13 +26,13 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("notify")]
-        public async Task<IActionResult> TestNotificationAsync(long userId, [FromServices] INotificationService notifier)
+        public async Task<IActionResult> TestNotificationAsync(long userId, EntityTypes entitesType, [FromServices] INotificationService notifier)
         {
-            //await notifier.NotifyUserAsync(userId, accountType, new()
-            //{
-            //    ContentAr = "اهلا ابراهيم",
-            //    ContentEn = "Hello Ibrahim"
-            //});
+            await notifier.NotifyUserAsync(userId, entitesType, new NotificationDto()
+            {
+                ContentAr = "اررررررحب باليوزر",
+                ContentEn = "Hello user"
+            });
             return Ok();
         }
     }
