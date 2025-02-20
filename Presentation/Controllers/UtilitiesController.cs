@@ -35,5 +35,16 @@ namespace Presentation.Controllers
             });
             return Ok();
         }
+        [HttpPost("notifyaLL")]
+
+        public async Task<IActionResult> TestNotificationUsersAsync([FromServices] INotificationService notifier)
+        {
+            await notifier.NotifyAllUsersAsync(new NotificationDto()
+            {
+                ContentAr = "اررررررحب باليوزر",
+                ContentEn = "Hello user"
+            });
+            return Ok();
+        }
     }
 }
