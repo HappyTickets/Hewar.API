@@ -14,7 +14,7 @@ namespace Application.Ads.Mappings
         {
 
             CreateMap<CreateAdDto, Ad>();
-            CreateMap<UpdateAdOfferDto, Ad>();
+            CreateMap<UpdateAdDto, Ad>();
 
             CreateMap<Ad, AdDto>();
 
