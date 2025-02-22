@@ -1,6 +1,6 @@
-﻿namespace Application.Ads.Dtos.AdServices
+﻿namespace Application.Ads.Dtos.AdServices.Req
 {
-    public class AdServiceDto
+    public class SelectHewarServiceDto
     {
         public long ServiceId { get; set; }
         public int Quantity { get; set; }

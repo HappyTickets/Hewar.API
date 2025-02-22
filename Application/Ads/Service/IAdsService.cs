@@ -8,6 +8,7 @@ namespace Application.Ads.Service
     {
         Task<Result<Empty>> AcceptOfferAsync(long offerId);
         Task<Result<Empty>> CreateAdAsync(CreateAdDto dto);
+        Task<Result<Empty>> DeleteAdAsync(long id);
         Task<Result<Empty>> CreateOfferAsync(CreateAdOfferDto dto);
         Task<Result<AdDto>> GetAdByIdAsync(long id);
         Task<Result<AdDto[]>> GetMyAdsAsync();
@@ -19,7 +20,6 @@ namespace Application.Ads.Service
         Task<Result<Empty>> RejectOfferAsync(long offerId);
         Task<Result<Empty>> UpdateAdAsync(UpdateAdDto dto);
         Task<Result<Empty>> CancelOfferAsync(long offerId);
-
 
     }
 }

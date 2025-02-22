@@ -46,6 +46,7 @@
         AdNotOpened = 502,
         AdClosed = 503,
         AdOfferNotPending = 504,
+        AdHasOffers = 505,
 
         // price requests : offers
         AdOfferAccepted = 504,

@@ -8,13 +8,13 @@ namespace Presentation.Controllers.Ads
     public class AdsController(IAdsService insuranceAdsService) : ApiControllerBase
     {
         [HttpPost("create")]
+        [AnyEntityType(EntityTypes.Facility)]
         [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
-        //[HasAccountType(AccountTypes.Facility)]
         public async Task<IActionResult> CreateAdAsync(CreateAdDto dto)
             => Result(await insuranceAdsService.CreateAdAsync(dto));
 
         [HttpPut("update")]
-        //[HasAccountType(AccountTypes.Facility)]
+        [AnyEntityType(EntityTypes.Facility)]
         [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> UpdateAdAsync(UpdateAdDto dto)
             => Result(await insuranceAdsService.UpdateAdAsync(dto));
@@ -24,7 +24,7 @@ namespace Presentation.Controllers.Ads
             => Result(await insuranceAdsService.GetAdByIdAsync(id));
 
         [HttpGet("getMyAds")]
-        //[HasAccountType(AccountTypes.Facility)]
+        [AnyEntityType(EntityTypes.Facility)]
         public async Task<IActionResult> GetMyAdsAsync()
             => Result(await insuranceAdsService.GetMyAdsAsync());
 
@@ -32,5 +32,9 @@ namespace Presentation.Controllers.Ads
         public async Task<IActionResult> GetOpenedAdsAsync()
             => Result(await insuranceAdsService.GetOpenedAdsAsync());
 
+        [HttpDelete("delete")]
+        [AnyEntityType(EntityTypes.Facility)]
+        public async Task<IActionResult> DeleteAdAsync(long id)
+            => Result(await insuranceAdsService.DeleteAdAsync(id));
     }
 }

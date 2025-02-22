@@ -11,7 +11,7 @@ namespace Application.Contracts.DTOs
         public long ContractId { get; set; }
         public long OfferNumber { get; set; }
         public DateTimeOffset? OfferDate { get; set; }
-        public ICollection<GetServiceOfferDto> Services { get; set; } = new List<GetServiceOfferDto>();
+        public ICollection<GetServiceCostDto> Services { get; set; } = new List<GetServiceCostDto>();
         public ICollection<GetOtherServiceOfferDto>? OtherServices { get; set; }
 
         public StaticContractDto StaticContractTemplate { get; set; } = new();

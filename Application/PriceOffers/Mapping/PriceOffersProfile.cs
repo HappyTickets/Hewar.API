@@ -8,11 +8,11 @@ namespace Application.PriceOffers.Mapping
     {
         public PriceOffersProfile()
         {
-            CreateMap<CreateServiceOfferDto, ServiceOffer>().ReverseMap();
-            CreateMap<GetServiceOfferDto, ServiceOffer>().ReverseMap();
+            CreateMap<CreateServiceCostDto, ServiceOffer>().ReverseMap();
+            CreateMap<GetServiceCostDto, ServiceOffer>().ReverseMap();
 
             CreateMap<GetOtherServiceOfferDto, OtherServiceOffer>().ReverseMap();
-            CreateMap<CreateOtherServiceOfferDto, OtherServiceOffer>().ReverseMap();
+            CreateMap<CreateOtherServiceCostDto, OtherServiceOffer>().ReverseMap();
 
 
             CreateMap<PriceRequest, GetOffersForRequest>()

@@ -10,7 +10,7 @@ namespace Application.Ads.Validators
             RuleFor(g => g.AdId)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(g => g.ServicesPrice)
+            RuleFor(g => g.ServicesCost)
                 .ForEach(b =>
                 {
                     b.SetValidator(new AdServicePriceDtoValidator());

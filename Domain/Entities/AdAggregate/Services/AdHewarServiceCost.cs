@@ -1,9 +1,9 @@
 ﻿using Domain.Entities.Hewar;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities.AdAggregate
+namespace Domain.Entities.AdAggregate.Services
 {
-    public class AdServicePrice
+    public class AdHewarServiceCost
     {
         public long Id { get; set; }
 

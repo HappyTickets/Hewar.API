@@ -2,8 +2,6 @@
 using Application.Ads.Dtos.Offers;
 using Application.Ads.Dtos.Post;
 using AutoMapper;
-using Domain.Entities.CompanyAggregate;
-using Domain.Entities.FacilityAggregate;
 using Domain.Events.Ads;
 
 namespace Application.Ads.Service
@@ -26,27 +24,27 @@ namespace Application.Ads.Service
 
         public async Task<Result<Empty>> UpdateAdAsync(UpdateAdDto dto)
         {
-            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(dto.Id);
+            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(dto.Id,
+                [nameof(Ad.Services), nameof(Ad.OtherServices)]);
 
             if (ad is null)
                 return new NotFoundError();
 
             mapper.Map(dto, ad);
+
             await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.AdUpdated);
-
         }
 
         public async Task<Result<AdDto>> GetAdByIdAsync(long id)
         {
-            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(id, [nameof(Facility), nameof(Ad.Services)]);
+            var ad = await ufw.GetRepository<Ad>().FirstOrDefaultAsync<AdDto>(a => a.Id == id);
 
-            if (ad == null)
+            if (ad is null)
                 return new NotFoundError();
 
-            var AdDto = mapper.Map<AdDto>(ad);
-            return Result<AdDto>.Success(AdDto, SuccessCodes.AdReceived);
+            return Result<AdDto>.Success(ad, SuccessCodes.AdReceived);
 
         }
 
@@ -54,21 +52,18 @@ namespace Application.Ads.Service
         {
             var entityId = currentUser.EntityId ?? 1;
 
-            var ads = await ufw.GetRepository<Ad>()
-                .FilterAsync(ad => ad.FacilityId == entityId, [nameof(Facility), nameof(Ad.Services)]);
+            var ads = await ufw.GetRepository<Ad>().FilterAsync<AdDto>(ad => ad.FacilityId == entityId);
 
-            var AdDto = mapper.Map<AdDto[]>(ads);
-            return Result<AdDto[]>.Success(AdDto, SuccessCodes.MyAdReceived);
+            return Result<AdDto[]>.Success(ads.ToArray(), SuccessCodes.MyAdReceived);
 
         }
 
         public async Task<Result<AdDto[]>> GetOpenedAdsAsync()
         {
             var ads = await ufw.GetRepository<Ad>()
-                .FilterAsync(ad => ad.Status == AdStatus.Opened, [nameof(Facility), nameof(Ad.Services)]);
+                .FilterAsync<AdDto>(ad => ad.Status == AdStatus.Opened);
 
-            var AdDto = mapper.Map<AdDto[]>(ads);
-            return Result<AdDto[]>.Success(AdDto, SuccessCodes.OpenAdsReceived);
+            return Result<AdDto[]>.Success(ads.ToArray(), SuccessCodes.OpenAdsReceived);
 
         }
 
@@ -161,11 +156,9 @@ namespace Application.Ads.Service
             var entityId = currentUser.EntityId ?? 1;
 
             var offers = await ufw.GetRepository<AdOffer>()
-                .FilterAsync(o => o.AdId == adId && o.Ad.FacilityId == entityId, [nameof(Company), nameof(AdOffer.ServicesPrice)]);
+                .FilterAsync<FacilityAdOfferDto>(o => o.AdId == adId && o.Ad.FacilityId == entityId);
 
-            var facilityAdOfferDto = mapper.Map<FacilityAdOfferDto[]>(offers);
-            return Result<FacilityAdOfferDto[]>.Success(facilityAdOfferDto,
-                SuccessCodes.MyOffersByAdIdAsFacilityReceived);
+            return Result<FacilityAdOfferDto[]>.Success(offers.ToArray(), SuccessCodes.MyOffersByAdIdAsFacilityReceived);
         }
 
 
@@ -174,42 +167,45 @@ namespace Application.Ads.Service
             var entityId = currentUser.EntityId ?? 1;
 
             var offers = await ufw.GetRepository<AdOffer>()
-                .FilterAsync(o => o.Ad.FacilityId == entityId, [nameof(Company), nameof(AdOffer.ServicesPrice)]);
+                .FilterAsync<FacilityAdOfferDto>(o => o.Ad.FacilityId == entityId);
 
-            var facilityInsuranceAdOfferDto = mapper.Map<FacilityAdOfferDto[]>(offers);
-            return Result<FacilityAdOfferDto[]>.Success(facilityInsuranceAdOfferDto,
+            return Result<FacilityAdOfferDto[]>.Success(offers.ToArray(),
                 SuccessCodes.MyOffersAsFacilityReceived);
         }
 
         public async Task<Result<CompanyAdOfferDto[]>> GetMyOffersByAdIdAsCompanyAsync(long adId)
         {
-            var entityId = currentUser.EntityId ?? 1;
+            var entityId = currentUser.EntityId;
             var offers = await ufw.GetRepository<AdOffer>()
-                .FilterAsync(o => o.AdId == adId &&
-                             o.CompanyId == entityId,
-                             [nameof(AdOffer.Ad), $"{nameof(Ad)}.{nameof(Ad.Facility)}", nameof(AdOffer.ServicesPrice)]);
+                .FilterAsync<CompanyAdOfferDto>(o => o.AdId == adId && o.CompanyId == entityId);
 
-            var companyAdOfferDto = mapper.Map<CompanyAdOfferDto[]>(offers);
-            return Result<CompanyAdOfferDto[]>.Success(companyAdOfferDto,
-                SuccessCodes.MyOffersByAdIdAsCompanyReceived);
+            return Result<CompanyAdOfferDto[]>.Success(offers.ToArray(), SuccessCodes.MyOffersByAdIdAsCompanyReceived);
         }
 
         public async Task<Result<CompanyAdOfferDto[]>> GetMyOffersAsCompanyAsync()
         {
             var entityId = currentUser.EntityId ?? 1;
             var offers = await ufw.GetRepository<AdOffer>()
-                .FilterAsync(o => o.CompanyId == entityId,
-                [nameof(AdOffer.Ad), $"{nameof(Ad)}.{nameof(Ad.Facility)}", nameof(AdOffer.ServicesPrice)]);
+                .FilterAsync<CompanyAdOfferDto>(o => o.CompanyId == entityId);
 
-            var companyAdOfferDto = mapper.Map<CompanyAdOfferDto[]>(offers);
-            return Result<CompanyAdOfferDto[]>.Success(companyAdOfferDto,
-                SuccessCodes.MyOffersAsCompanyReceived);
+            return Result<CompanyAdOfferDto[]>.Success(offers.ToArray(), SuccessCodes.MyOffersAsCompanyReceived);
         }
 
+        public async Task<Result<Empty>> DeleteAdAsync(long id)
+        {
+            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(id, [nameof(Ad.AdOffers)]);
 
+            if (ad is null)
+                return new NotFoundError();
 
+            if (ad.AdOffers is { Count: > 0 })
+                return new ConflictError(ErrorCodes.AdHasOffers);
+
+            ufw.GetRepository<Ad>().HardDelete(ad);
+            await ufw.SaveChangesAsync();
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.Deleted);
+        }
         #endregion
-
-
     }
 }

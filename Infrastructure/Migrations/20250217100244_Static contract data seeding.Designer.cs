@@ -2660,7 +2660,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
                 {
                     b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
-                        .WithMany("ServicesPrice")
+                        .WithMany("ServicesCost")
                         .HasForeignKey("AdOfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3323,7 +3323,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
                 {
-                    b.Navigation("ServicesPrice");
+                    b.Navigation("ServicesCost");
                 });
 
             modelBuilder.Entity("Domain.Entities.MissionAggregate.Mission", b =>

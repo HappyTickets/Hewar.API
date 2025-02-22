@@ -1,9 +1,9 @@
-﻿using Application.Ads.Dtos.AdServices;
+﻿using Application.Ads.Dtos.AdServices.Req;
 using FluentValidation;
 
 namespace Application.Ads.Validators
 {
-    internal class AdServicePriceDtoValidator : AbstractValidator<AdServicePriceDto>
+    internal class AdServicePriceDtoValidator : AbstractValidator<CreateAdHewarServiceCostDto>
     {
         public AdServicePriceDtoValidator()
         {
