@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.PriceOffers.Validators
 {
-    public class CreateOtherServiceOfferValidator : AbstractValidator<CreateOtherServiceOfferDto>
+    public class CreateOtherServiceOfferValidator : AbstractValidator<CreateOtherServiceCostDto>
     {
         public CreateOtherServiceOfferValidator()
         {

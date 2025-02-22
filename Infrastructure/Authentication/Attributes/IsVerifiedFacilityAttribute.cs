@@ -13,21 +13,20 @@ namespace Infrastructure.Authentication.Attributes
     {
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (currentUser.EntityType is EntityTypes.Facility)
+
+            var facilityId = currentUser.EntityId;
+            if (!facilityId.HasValue || !await facilityInspector.IsAuthorized(facilityId.Value))
             {
-                var facilityId = currentUser.EntityId;
-                if (!facilityId.HasValue || !await facilityInspector.IsAuthorized(facilityId.Value))
+                context.Result = new UnauthorizedObjectResult(new Result<Empty>
                 {
-                    context.Result = new UnauthorizedObjectResult(new Result<Empty>
-                    {
-                        Status = StatusCodes.Status401Unauthorized,
-                        IsSuccess = false,
-                        ErrorCode = ErrorCodes.NoActiveContracts,
-                        Message = "Authorization failed. No active contracts."
-                    });
-                    return;
-                }
+                    Status = StatusCodes.Status401Unauthorized,
+                    IsSuccess = false,
+                    ErrorCode = ErrorCodes.NoActiveContracts,
+                    Message = "Authorization failed. No active contracts."
+                });
+                return;
             }
+
 
             await next();
         }

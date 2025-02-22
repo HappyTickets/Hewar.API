@@ -1,4 +1,4 @@
-﻿using Application.Ads.Dtos.AdServices;
+﻿using Application.Ads.Dtos.AdServices.Res;
 using Application.Facilities.Dtos;
 
 namespace Application.Ads.Dtos.Offers
@@ -10,7 +10,9 @@ namespace Application.Ads.Dtos.Offers
 
         public RequestStatus Status { get; set; }
         public DateTimeOffset SentDate { get; set; }
-        public ICollection<AdServicePriceDto> ServicesPrice { get; set; }
+        public ICollection<GetAdHewarServiceCostDto> ServicesCost { get; set; }
+        public ICollection<GetOtherAdServiceCostDto>? OtherServicesCost { get; set; }
+        public ICollection<GetAdCompanyServiceCostDto>? CompanyServicesCost { get; set; }
         public FacilityBreifDto Facility { get; set; }
     }
 }

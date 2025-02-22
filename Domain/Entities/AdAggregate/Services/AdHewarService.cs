@@ -1,8 +1,8 @@
 ﻿using Domain.Entities.Hewar;
 
-namespace Domain.Entities.AdAggregate
+namespace Domain.Entities.AdAggregate.Services
 {
-    public class AdService
+    public class AdHewarService
     {
         public long Id { get; set; }
         public int Quantity { get; set; }

@@ -1,12 +1,12 @@
-﻿using Domain.Entities.AdAggregate;
+﻿using Domain.Entities.AdAggregate.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations
 {
-    public class AdServicePriceConfiguration : IEntityTypeConfiguration<AdServicePrice>
+    public class AdServicePriceConfiguration : IEntityTypeConfiguration<AdHewarServiceCost>
     {
-        public void Configure(EntityTypeBuilder<AdServicePrice> builder)
+        public void Configure(EntityTypeBuilder<AdHewarServiceCost> builder)
         {
             builder.HasKey(a => a.Id);
 

@@ -12,8 +12,6 @@ namespace Application.Ads.Validators
             RuleFor(g => g.Title)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(g => g.Description)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
             RuleFor(ad => ad.Services)
                 .ForEach(b =>
                 {

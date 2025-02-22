@@ -35,7 +35,6 @@ namespace Application.PriceOffers.Services
 
         public async Task<Result<Empty>> UpdateOfferAsync(UpdatePriceOfferDto dto)
         {
-            // Retrieve the existing offer
             var offer = await ufw.GetRepository<PriceOffer>()
                 .GetByIdAsync(dto.PriceOfferId, [nameof(PriceOffer.Services), nameof(PriceOffer.OtherServices)]);
 

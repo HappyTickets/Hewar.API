@@ -1,10 +1,13 @@
-﻿using Application.Ads.Dtos.AdServices;
+﻿using Application.Ads.Dtos.AdServices.Req;
 
 namespace Application.Ads.Dtos.Offers
 {
     public class CreateAdOfferDto
     {
         public long AdId { get; set; }
-        public ICollection<AdServicePriceDto> ServicesPrice { get; set; }
+        public ICollection<CreateAdHewarServiceCostDto> ServicesCost { get; set; }
+        public ICollection<CreateOtherAdServiceCostDto>? OtherServicesCost { get; set; }
+        public ICollection<CreateAdCompanyServiceCostDto>? CompanyServicesCost { get; set; }
+
     }
 }

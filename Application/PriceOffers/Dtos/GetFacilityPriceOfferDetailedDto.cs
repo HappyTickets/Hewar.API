@@ -15,7 +15,7 @@ namespace Application.PriceOffers.Dtos
         public DateTimeOffset EndDate { get; set; }
 
         public RequestStatus OfferStatus { get; set; }
-        public ICollection<GetServiceOfferDto> Services { get; set; }
+        public ICollection<GetServiceCostDto> Services { get; set; }
         public ICollection<GetOtherServiceOfferDto>? OtherServices { get; set; }
     }
 }

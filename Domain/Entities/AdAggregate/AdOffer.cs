@@ -1,4 +1,4 @@
-﻿using Domain.Entities.AdAggregate;
+﻿using Domain.Entities.AdAggregate.Services;
 using Domain.Entities.ChatAggregate;
 using Domain.Entities.CompanyAggregate;
 
@@ -8,8 +8,9 @@ namespace Domain.Entities.InsuranceAdAggregate
     {
         public RequestStatus Status { get; set; }
         public DateTimeOffset SentDate { get; set; }
-        public virtual ICollection<AdServicePrice> ServicesPrice { get; set; }
-            = new List<AdServicePrice>();
+        public virtual ICollection<AdHewarServiceCost> ServicesCost { get; set; } = new List<AdHewarServiceCost>();
+        public virtual ICollection<OtherAdServiceCost>? OtherServicesCost { get; set; }
+        public virtual ICollection<AdCompanyServiceCost>? CompanyServicesCost { get; set; }
 
 
         // nav props

@@ -10,9 +10,6 @@ namespace Application.Ads.Validators
             RuleFor(g => g.Title)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
 
-            RuleFor(g => g.Description)
-                .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField);
-
             RuleFor(g => g.Status)
                 .NotEmpty().WithState(_ => (int)ValidationMsgs.RequiredField)
                 .IsInEnum().WithState(_ => (int)ValidationMsgs.InvalidValue);

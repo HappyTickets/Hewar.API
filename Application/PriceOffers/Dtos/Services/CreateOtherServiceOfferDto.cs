@@ -1,6 +1,6 @@
 ﻿namespace Application.PriceOffers.Dtos.Services
 {
-    public class CreateOtherServiceOfferDto
+    public class CreateOtherServiceCostDto
     {
         public string Name { get; set; }
         public int Quantity { get; set; }
