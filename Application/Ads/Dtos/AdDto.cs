@@ -1,4 +1,4 @@
-﻿using Application.Ads.Dtos.AdServices.Req;
+﻿using Application.Ads.Dtos.AdServices.Res;
 using Application.Facilities.Dtos;
 
 namespace Application.Ads.Dtos
@@ -13,8 +13,8 @@ namespace Application.Ads.Dtos
         public DateTimeOffset EndDate { get; set; }
         public ContractType ContractType { get; set; }
 
-        public ICollection<SelectHewarServiceDto> Services { get; set; }
-        public ICollection<CreateOtherAdServiceDto>? OtherServices { get; set; }
+        public ICollection<GetAdHewarServiceDto> Services { get; set; }
+        public ICollection<GetOtherAdServiceDto>? OtherServices { get; set; }
         public FacilityBreifDto Facility { get; set; }
     }
 }

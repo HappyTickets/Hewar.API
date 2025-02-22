@@ -37,6 +37,18 @@ namespace Application.Ads.Service
             return Result<Empty>.Success(Empty.Default, SuccessCodes.AdUpdated);
         }
 
+        public async Task<Result<Empty>> ChangeAdStatusAsync(long id, AdStatus status)
+        {
+            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(id);
+
+            if (ad is null)
+                return new NotFoundError();
+            ad.Status = status;
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.AdUpdated);
+
+        }
+
         public async Task<Result<AdDto>> GetAdByIdAsync(long id)
         {
             var ad = await ufw.GetRepository<Ad>().FirstOrDefaultAsync<AdDto>(a => a.Id == id);
@@ -91,7 +103,23 @@ namespace Application.Ads.Service
             return Result<Empty>.Success(Empty.Default, SuccessCodes.AdOfferAccepted);
 
         }
+        public async Task<Result<Empty>> UpdateAdOfferAsync(UpdateAdOfferDto dto)
+        {
+            var offer = await ufw.GetRepository<AdOffer>().GetByIdAsync(dto.Id,
+                [nameof(AdOffer.ServicesCost), nameof(AdOffer.OtherServicesCost), nameof(AdOffer.CompanyServicesCost)]);
 
+            if (offer is null)
+                return new NotFoundError();
+
+            if (offer.Status != RequestStatus.Pending)
+                return new ConflictError(ErrorCodes.AdOfferNotPending);
+
+            mapper.Map(dto, offer);
+
+            await ufw.SaveChangesAsync();
+
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.AdOfferUpdated);
+        }
         public async Task<Result<Empty>> AcceptOfferAsync(long offerId)
         {
             var offer = await ufw.GetRepository<AdOffer>().GetByIdAsync(offerId, [nameof(AdOffer.Ad)]);
@@ -193,19 +221,58 @@ namespace Application.Ads.Service
 
         public async Task<Result<Empty>> DeleteAdAsync(long id)
         {
-            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(id, [nameof(Ad.AdOffers)]);
+            var ad = await ufw.GetRepository<Ad>().GetByIdAsync(id);
 
             if (ad is null)
                 return new NotFoundError();
-
-            if (ad.AdOffers is { Count: > 0 })
-                return new ConflictError(ErrorCodes.AdHasOffers);
 
             ufw.GetRepository<Ad>().HardDelete(ad);
             await ufw.SaveChangesAsync();
 
             return Result<Empty>.Success(Empty.Default, SuccessCodes.Deleted);
         }
+        public async Task<Result<Empty>> HideOfferAsync(long adOfferId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var adOffer = await ufw.GetRepository<AdOffer>()
+                .FirstOrDefaultAsync(ao => ao.Id == adOfferId);
+
+            if (adOffer is null)
+                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                adOffer.IsFacilityHidden = true;
+            else if (currentEntityType == EntityTypes.Company)
+                adOffer.IsCompanyHidden = true;
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.AdOfferHidden);
+        }
+
+        public async Task<Result<Empty>> ShowOfferAsync(long adOfferId)
+        {
+            var currentEntityType = currentUser.EntityType;
+
+            var adOffer = await ufw.GetRepository<AdOffer>()
+                .FirstOrDefaultAsync(ao => ao.Id == adOfferId, ignoreQueryFilters: true);
+
+            if (adOffer is null)
+                return new NotFoundError(ErrorCodes.PriceOfferNotExists);
+
+            if (currentEntityType == EntityTypes.Facility)
+                adOffer.IsFacilityHidden = false;
+
+            else if (currentEntityType == EntityTypes.Company)
+                adOffer.IsCompanyHidden = false;
+
+            await ufw.SaveChangesAsync();
+            return Result<Empty>.Success(Empty.Default, SuccessCodes.AdOfferShown);
+        }
+
+
+
+
         #endregion
     }
 }

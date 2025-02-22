@@ -67,6 +67,9 @@
         OfferMessagesReceived = 417,
         PriceOfferHidden = 418,
         PriceOfferShown = 419,
+        AdOfferUpdated = 420,
+        AdOfferHidden = 421,
+        AdOfferShown = 422,
 
         // price requests
         PriceRequestCreated = 500,

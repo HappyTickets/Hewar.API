@@ -2,8 +2,8 @@
 {
     public class GetOtherAdServiceDto
     {
-        public long ServiceId { get; set; }
-        public string ServiceName { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; }
         public int Quantity { get; set; }
         public ShiftType ShiftType { get; set; }
     }

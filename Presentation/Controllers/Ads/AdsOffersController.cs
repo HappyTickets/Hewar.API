@@ -13,6 +13,22 @@ namespace Presentation.Controllers.Ads
         public async Task<IActionResult> CreateOfferAsync(CreateAdOfferDto dto)
           => Result(await adsService.CreateOfferAsync(dto));
 
+
+        [HttpPut("update")]
+        [AnyEntityType(EntityTypes.Company)]
+        public async Task<IActionResult> UpdateAdOfferAsync(UpdateAdOfferDto dto)
+    => Result(await adsService.UpdateAdOfferAsync(dto));
+
+        [HttpPatch("hide")]
+        [AnyEntityType(EntityTypes.Facility, EntityTypes.Company)]
+        public async Task<IActionResult> HideOfferAsync(long adOfferId)
+            => Result(await adsService.HideOfferAsync(adOfferId));
+
+        [HttpPatch("show")]
+        [AnyEntityType(EntityTypes.Facility, EntityTypes.Company)]
+        public async Task<IActionResult> ShowOfferAsync(long adOfferId)
+            => Result(await adsService.ShowOfferAsync(adOfferId));
+
         [HttpPatch("accept")]
         [AnyEntityType(EntityTypes.Facility)]
         [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
