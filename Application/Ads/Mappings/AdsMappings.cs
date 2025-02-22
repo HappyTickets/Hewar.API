@@ -14,11 +14,12 @@ namespace Application.Ads.Mappings
         {
 
             CreateMap<CreateAdDto, Ad>();
-            CreateMap<UpdateAdDto, Ad>();
+            CreateMap<UpdateAdOfferDto, Ad>();
 
             CreateMap<Ad, AdDto>();
 
             CreateMap<CreateAdOfferDto, AdOffer>();
+            CreateMap<UpdateAdOfferDto, AdOffer>();
 
             CreateMap<AdOffer, FacilityAdOfferDto>();
 

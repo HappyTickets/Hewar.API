@@ -19,6 +19,11 @@ namespace Presentation.Controllers.Ads
         public async Task<IActionResult> UpdateAdAsync(UpdateAdDto dto)
             => Result(await insuranceAdsService.UpdateAdAsync(dto));
 
+        [HttpPatch("changeStatus")]
+        [AnyEntityType(EntityTypes.Facility)]
+        public async Task<IActionResult> ChangeAdStatusAsync(long id, AdStatus status)
+            => Result(await insuranceAdsService.ChangeAdStatusAsync(id, status));
+
         [HttpGet("getAdById")]
         public async Task<IActionResult> GetAdByIdAsync(long id)
             => Result(await insuranceAdsService.GetAdByIdAsync(id));
@@ -31,7 +36,6 @@ namespace Presentation.Controllers.Ads
         [HttpGet("getOpened")]
         public async Task<IActionResult> GetOpenedAdsAsync()
             => Result(await insuranceAdsService.GetOpenedAdsAsync());
-
         [HttpDelete("delete")]
         [AnyEntityType(EntityTypes.Facility)]
         public async Task<IActionResult> DeleteAdAsync(long id)

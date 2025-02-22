@@ -19,7 +19,12 @@ namespace Application.Ads.Service
         Task<Result<AdDto[]>> GetOpenedAdsAsync();
         Task<Result<Empty>> RejectOfferAsync(long offerId);
         Task<Result<Empty>> UpdateAdAsync(UpdateAdDto dto);
+        Task<Result<Empty>> UpdateAdOfferAsync(UpdateAdOfferDto dto);
+        Task<Result<Empty>> ChangeAdStatusAsync(long id, AdStatus status);
         Task<Result<Empty>> CancelOfferAsync(long offerId);
+
+        Task<Result<Empty>> HideOfferAsync(long adOfferId);
+        Task<Result<Empty>> ShowOfferAsync(long adOfferId);
 
     }
 }
