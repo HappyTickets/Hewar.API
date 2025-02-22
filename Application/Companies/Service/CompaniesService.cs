@@ -32,6 +32,8 @@ namespace Application.Companies.Service
             company.RegistrationNumber = dto.RegistrationNumber;
             company.ContactEmail = dto.ContactEmail;
             company.Address = mapper.Map<Address>(dto.Address);
+            company.TaxId = dto.TaxId;
+            company.Logo = dto.Logo;
 
             await ufw.SaveChangesAsync();
 
