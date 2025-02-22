@@ -40,6 +40,7 @@ namespace Application.Facilities.Service
             facility.Address = mapper.Map<Address>(dto.Address);
             facility.ResponsibleName = dto.ResponsibleName;
             facility.ResponsiblePhone = dto.ResponsiblePhone;
+            facility.Logo = dto.Logo;
 
             await ufw.SaveChangesAsync();
 
