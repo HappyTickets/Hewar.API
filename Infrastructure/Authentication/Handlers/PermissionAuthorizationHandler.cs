@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Authentication.Requirements;
+using LanguageExt.Pipes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,12 @@ namespace Infrastructure.Authentication.Handlers
         {
             var cacheKey = $"{currentUser.UserId}";
             var permissions = cache.Get<List<Permissions>>(cacheKey);
+
+            if (context.User.IsInRole(Roles.Admin)) // يعم عدي ; يعم عدي
+            {
+                context.Succeed(requirement);
+                return;
+            }
 
             if (permissions == null)
             {
