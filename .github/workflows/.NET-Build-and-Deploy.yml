@@ -49,7 +49,7 @@ jobs:
         username: ${{ secrets.FTP_SERVICE_USERNAME }}
         password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
-          mv ${{ secrets.FTP_REMOTE_DIR }}wwwroot ${{ secrets.FTP_REMOTE_DIR }}wwwroot_backup
+          sudo mv ${{ secrets.FTP_REMOTE_DIR }}wwwroot ${{ secrets.FTP_REMOTE_DIR }}wwwroot_backup
 
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
@@ -68,7 +68,7 @@ jobs:
         username: ${{ secrets.FTP_SERVICE_USERNAME }}
         password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
-          mv ${{ secrets.FTP_REMOTE_DIR }}wwwroot_backup ${{ secrets.FTP_REMOTE_DIR }}wwwroot
+          sudo mv ${{ secrets.FTP_REMOTE_DIR }}wwwroot_backup ${{ secrets.FTP_REMOTE_DIR }}wwwroot
 
     - name: Set permissions on the server
       uses: appleboy/ssh-action@v0.1.7
