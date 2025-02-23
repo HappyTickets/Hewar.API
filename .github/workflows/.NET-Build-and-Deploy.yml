@@ -68,7 +68,8 @@ jobs:
         username: ${{ secrets.FTP_SERVICE_USERNAME }}
         password: ${{ secrets.FTP_SERVICE_PASSWORD }}
         script: |
-          sudo mv ${{ secrets.FTP_REMOTE_DIR }}publish/wwwroot_backup ${{ secrets.FTP_REMOTE_DIR }}publish/wwwroot
+          sudo mv ${{ secrets.FTP_REMOTE_DIR }}publish/wwwroot_backup/* ${{ secrets.FTP_REMOTE_DIR }}publish/wwwroot/
+          sudo rm -r ${{ secrets.FTP_REMOTE_DIR }}publish/wwwroot_backup
 
     - name: Set permissions on the server
       uses: appleboy/ssh-action@v0.1.7
