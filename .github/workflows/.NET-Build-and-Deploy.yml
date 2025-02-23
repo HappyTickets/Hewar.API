@@ -41,7 +41,15 @@ jobs:
 
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish /p:EnvironmentName=Development --verbosity diagnostic
-      
+    
+    - name: Backup wwwroot on the server
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_SERVICE_USERNAME }}
+        password: ${{ secrets.FTP_SERVICE_PASSWORD }}
+        script: |
+          mv ${{ secrets.FTP_REMOTE_DIR }}/wwwroot ${{ secrets.FTP_REMOTE_DIR }}/wwwroot_backup
 
     - name: Deploy via SFTP
       uses: appleboy/scp-action@v0.1.7
@@ -52,6 +60,15 @@ jobs:
         target: ${{ secrets.FTP_REMOTE_DIR }}
         source: ./publish
         dangerous-clean-slate: true
+
+    - name: Restore wwwroot
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_SERVICE_USERNAME }}
+        password: ${{ secrets.FTP_SERVICE_PASSWORD }}
+        script: |
+          mv ${{ secrets.FTP_REMOTE_DIR }}/wwwroot_backup ${{ secrets.FTP_REMOTE_DIR }}/wwwroot
 
     - name: Set permissions on the server
       uses: appleboy/ssh-action@v0.1.7
