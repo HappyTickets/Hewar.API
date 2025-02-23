@@ -61,7 +61,6 @@ jobs:
         source: ./publish
         dangerous-clean-slate: true
 
-
     - name: Restore wwwroot
       uses: appleboy/ssh-action@v0.1.7
       with:
