@@ -14,30 +14,8 @@ namespace Infrastructure.Persistence.Seeds
                 NormalizedName = Roles.Admin.ToUpper()
             };
 
-            //var company = new ApplicationRole
-            //{
-            //    Id = 2,
-            //    Name = Roles.Company,
-            //    NormalizedName = Roles.Company.ToUpper()
-            //};
-
-            //var facility = new ApplicationRole
-            //{
-            //    Id = 3,
-            //    Name = Roles.Facility,
-            //    NormalizedName = Roles.Facility.ToUpper()
-            //};
-
-            //var guard = new ApplicationRole
-            //{
-            //    Id = 4,
-            //    Name = Roles.Guard,
-            //    NormalizedName = Roles.Guard.ToUpper()
-            //};
-
             builder.Entity<ApplicationRole>()
                 .HasData(admin);
-            //.HasData(admin, company, facility, guard);
 
             // permissions
             var rolePermissions = new RolePermission[]

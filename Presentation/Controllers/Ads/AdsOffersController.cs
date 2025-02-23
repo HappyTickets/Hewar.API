@@ -1,10 +1,12 @@
 ﻿using Application.Ads.Dtos.Offers;
 using Application.Ads.Service;
 using Infrastructure.Authentication.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers.Ads
 {
+    [Authorize]
     public class AdsOffersController(IAdsService adsService) : ApiControllerBase
     {
         #region Ads Offer
