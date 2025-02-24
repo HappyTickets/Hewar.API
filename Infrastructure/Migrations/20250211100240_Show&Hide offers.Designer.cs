@@ -712,7 +712,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1L,
-                            Name = "Admin",
+                            Name = "SuperAdmin",
                             NormalizedName = "ADMIN"
                         });
                 });

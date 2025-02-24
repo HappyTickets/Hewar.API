@@ -21,12 +21,10 @@ namespace Presentation.Controllers.Company
             => Result(await companiesService.UpdateAsync(dto));
 
         [HttpGet("getById")]
-        [HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetByIdAsync(long id)
             => Result(await companiesService.GetByIdAsync(id));
 
         [HttpGet("getAll")]
-        [HasPermission(Permissions.ViewCompanies)]
         public async Task<IActionResult> GetAllAsync()
             => Result(await companiesService.GetAllAsync());
 

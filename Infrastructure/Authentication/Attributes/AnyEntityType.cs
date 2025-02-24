@@ -10,7 +10,7 @@ namespace Infrastructure.Authentication.Attributes
         {
             var currentUser = context.HttpContext.RequestServices.GetRequiredService<ICurrentUserService>();
 
-            if (context.HttpContext.User.IsInRole(Roles.Admin))
+            if (context.HttpContext.User.IsInRole(Roles.SuperAdmin))
             {
                 return;
             }

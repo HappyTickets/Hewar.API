@@ -14,7 +14,7 @@ namespace Infrastructure.Authentication.Handlers
             var cacheKey = $"{currentUser.UserId}";
             var permissions = cache.Get<List<Permissions>>(cacheKey);
 
-            if (context.User.IsInRole(Roles.Admin)) // يعم عدي ; يعم عدي
+            if (context.User.IsInRole(Roles.SuperAdmin)) // يعم عدي ; يعم عدي
             {
                 context.Succeed(requirement);
                 return;

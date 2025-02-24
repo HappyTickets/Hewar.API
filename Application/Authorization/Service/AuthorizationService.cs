@@ -24,7 +24,10 @@ namespace Application.Authorization.Service
         #region Role Operations
         public async Task<Result<Empty>> AddRoleAsync(AddRoleDto addRoleDto)
         {
-
+            if (string.Equals(addRoleDto.RoleName, Roles.SuperAdmin, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new UnauthorizedError(ErrorCodes.SuperAdminNamePreserved);
+            }
             var identityRole = new ApplicationRole
             {
                 Name = addRoleDto.RoleName,

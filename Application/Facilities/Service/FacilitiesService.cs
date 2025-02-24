@@ -20,7 +20,7 @@ namespace Application.Facilities.Service
             adminUser.PhoneNumberConfirmed = true;
 
             var facility = mapper.Map<Facility>(registerRequest);
-            var roleName = $"{facility.Name} Admin";
+            var roleName = $"{facility.Name} SuperAdmin";
 
             return await registrationService.RegisterEntityWithAdminAsync(adminUser, registerRequest.AdminInfo.Password, roleName, () => registrationService.CreateFacilityAsync(facility), cancellationToken);
         }

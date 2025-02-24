@@ -35,7 +35,7 @@ namespace Presentation.Controllers
             });
             return Ok();
         }
-        [HttpPost("notifyaLL")]
+        [HttpPost("notifyAll")]
 
         public async Task<IActionResult> TestNotificationUsersAsync([FromServices] INotificationService notifier)
         {

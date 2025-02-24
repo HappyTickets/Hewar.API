@@ -1,41 +1,30 @@
 ﻿using LanguageExt;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Infrastructure.Persistence
 {
-    public class AppDbContextIntializer
+    public class AppDbContextIntializer(AppDbContext context, UserManager<ApplicationUser> userManager)
     {
-        private readonly AppDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public AppDbContextIntializer(AppDbContext context, UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-            _context = context;
-        }
-
         public async Task InitialiseAsync()
         {
-            if ((await _context.Database.GetPendingMigrationsAsync()).Count() > 1)
+            if ((await context.Database.GetPendingMigrationsAsync()).Count() > 1)
             {
-                await _context.Database.MigrateAsync();
+                await context.Database.MigrateAsync();
             }
 
-            if (!await _userManager.Users.AnyAsync())
+            if (!await userManager.Users.AnyAsync())
             {
                 var user = new ApplicationUser
                 {
                     FirstName = "Anas",
                     LastName = "Amin",
-                    Email = "hema@gmail.com",
+                    Email = "SuperAdmin@Hewar.com",
                     EmailConfirmed = true,
                 };
 
-                await _userManager.CreateAsync(user, "Hema123!");
-                await _userManager.AddToRoleAsync(user, Roles.Admin);
-                await _userManager.AddClaimAsync(user, new Claim(CustomClaims.UserId, user.Id.ToString()));
+                await userManager.CreateAsync(user, "Hewar@1234");
+                await userManager.AddToRoleAsync(user, Roles.SuperAdmin);
             }
         }
     }

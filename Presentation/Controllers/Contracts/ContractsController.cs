@@ -1,5 +1,6 @@
 ﻿using Application.Contracts.DTOs.Dynamic;
 using Application.Contracts.Service;
+using Infrastructure.Authentication.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ namespace Presentation.Controllers.Contracts
     public class ContractsController(IContractService contractService) : ApiControllerBase
     {
         [HttpPost("CreateContractForOffer")]
-        //[HasPermission(Permissions.CreateContract)]
+        [HasPermission(Permissions.CreateContract)]
         public async Task<IActionResult> CreateContractForOfferAsync(long offerId, [FromBody] ContractFieldsDto contractFields)
         {
             var result = await contractService.CreateContractForOfferAsync(offerId, contractFields);
@@ -17,14 +18,14 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpPost("CreateContractForCompany")]
-        //[HasPermission(Permissions.CreateContract)]
+        [HasPermission(Permissions.CreateContract)]
         public async Task<IActionResult> CreateContractForCompanyAsync(long companyId, [FromBody] ContractFieldsDto contractFields, long? facilityId = null)
         {
             var result = await contractService.CreateContractForCompanyAsync(companyId, contractFields, facilityId);
             return Result(result);
         }
         [HttpPut("UpdateContractByFields")]
-        //[HasPermission(Permissions.UpdateContract)]
+        [HasPermission(Permissions.UpdateContract)]
         public async Task<IActionResult> UpdateContractFieldsAsync(long contractId, [FromBody] ContractFieldsDto contractFields)
         {
             var result = await contractService.UpdateContractByFieldsAsync(contractId, contractFields);
@@ -32,7 +33,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpPut("UpdateContractByKeys")]
-        //[HasPermission(Permissions.UpdateContract)]
+        [HasPermission(Permissions.UpdateContract)]
         public async Task<IActionResult> UpdateContractByKeysAsync(long contractId, [FromBody] List<UpdateContractKeyDto> contractKeys)
         {
             var result = await contractService.UpdateContractByKeysAsync(contractId, contractKeys);
@@ -40,7 +41,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetById")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractByIdAsync(long contractId)
         {
             var result = await contractService.GetContractByIdAsync(contractId);
@@ -48,7 +49,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetByOfferId")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractByOfferIdAsync(long offerId)
         {
             var result = await contractService.GetContractByOfferIdAsync(offerId);
@@ -56,7 +57,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetContractKeysByContractId")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractKeysByContractIdAsync(long contractId)
         {
             var result = await contractService.GetContractKeysByContractIdAsync(contractId);
@@ -64,7 +65,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetContractKeysByOfferId")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractKeysByOfferIdAsync(long offerId)
         {
             var result = await contractService.GetContractKeysByOfferIdAsync(offerId);
@@ -72,7 +73,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetContractFieldsByOfferId")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractFieldsByOfferIdAsync(long offerId)
         {
             var result = await contractService.GetContractFieldsByOfferIdAsync(offerId);
@@ -80,7 +81,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpGet("GetContractFieldsByContractId")]
-        //[HasPermission(Permissions.ViewContracts)]
+        [HasPermission(Permissions.ViewContracts)]
         public async Task<IActionResult> GetContractFieldsByContractIdAsync(long contractId)
         {
             var result = await contractService.GetContractFieldsByContractIdAsync(contractId);
@@ -88,7 +89,7 @@ namespace Presentation.Controllers.Contracts
         }
 
         [HttpPatch("SignContract")]
-        //[HasPermission(Permissions.SignContract)]
+        [HasPermission(Permissions.SignContract)]
         public async Task<IActionResult> SignContractAsync(long contractId, string signature)
         {
             var result = await contractService.SignContractAsync(contractId, signature);

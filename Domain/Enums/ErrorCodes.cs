@@ -24,6 +24,7 @@
         UserExists = 200,
         UserNotExists = 201,
 
+
         // roles
         RoleExists = 300,
         RoleNotExists = 301,
@@ -32,6 +33,7 @@
         UnassignUserRoleFailed = 304,
         GetRoleFaild = 305,
         RoleCreationFailed = 306,
+        SuperAdminNamePreserved = 307,
 
         // tickets
         TicketExists = 400,
