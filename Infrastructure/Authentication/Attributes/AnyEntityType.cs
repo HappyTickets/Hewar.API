@@ -10,10 +10,17 @@ namespace Infrastructure.Authentication.Attributes
         {
             var currentUser = context.HttpContext.RequestServices.GetRequiredService<ICurrentUserService>();
 
+            if (context.HttpContext.User.IsInRole(Roles.SuperAdmin))
+            {
+                return;
+            }
+
             if (currentUser.EntityType == null || !allowedTypes.Contains(currentUser.EntityType.Value))
             {
                 context.Result = new ForbidResult();
             }
+
+
         }
     }
 

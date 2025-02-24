@@ -10,45 +10,51 @@ namespace Presentation.Controllers.PriceRequest
     public class PriceRequestsController(IPriceRequestsService priceRequestsService) : ApiControllerBase
     {
         [HttpPost("create")]
-        //[HasAccountType(AccountTypes.Facility)]
-
+        [AnyEntityType(EntityTypes.Facility)]
         [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
+        [HasPermission(Permissions.CreatePriceRequest)]
         public async Task<IActionResult> CreateRequestAsync(CreatePriceRequestDto dto)
             => Result(await priceRequestsService.CreateRequestAsync(dto));
 
         [HttpPut("update")]
-        //[HasAccountType(AccountTypes.Facility)]
+        [AnyEntityType(EntityTypes.Facility)]
+        [HasPermission(Permissions.UpdatePriceRequest)]
         public async Task<IActionResult> UpdateRequestAsync(UpdatePriceRequestDto dto)
            => Result(await priceRequestsService.UpdateRequestAsync(dto));
 
 
         [HttpGet("getById")]
+        [HasPermission(Permissions.ViewPriceRequests)]
         public async Task<IActionResult> GetRequestByIdAsync(long priceRequestId)
            => Result(await priceRequestsService.GetByIdAsync(priceRequestId));
 
         [HttpPatch("cancel")]
-        //[HasAccountType(AccountTypes.Facility)]
+        [AnyEntityType(EntityTypes.Facility)]
         [ServiceFilter(typeof(IsVerifiedFacilityAttribute))]
         public async Task<IActionResult> CancelRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.CancelRequestAsync(priceRequestId));
 
         [HttpPatch("hide")]
-        //[HasAccountType(AccountTypes.Facility)] or company 
+        [AnyEntityType(EntityTypes.Facility, EntityTypes.Company)]
+        [HasPermission(Permissions.HidePriceRequest)]
         public async Task<IActionResult> HidePriceRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.HideRequestAsync(priceRequestId));
 
         [HttpPatch("show")]
-        //[HasAccountType(AccountTypes.Facility)] or company 
+        [AnyEntityType(EntityTypes.Facility, EntityTypes.Company)]
+        [HasPermission(Permissions.ShowPriceRequest)]
         public async Task<IActionResult> ShowPriceRequestAsync(long priceRequestId)
             => Result(await priceRequestsService.ShowRequestAsync(priceRequestId));
 
         [HttpGet("getMyFacilityRequests")]
-        //[HasAccountType(AccountTypes.Facility)]
+        [AnyEntityType(EntityTypes.Facility)]
+        [HasPermission(Permissions.ViewPriceRequests)]
         public async Task<IActionResult> GetMyFacilityRequestsAsync()
             => Result(await priceRequestsService.GetMyFacilityRequestsAsync());
 
         [HttpGet("getMyCompanyRequests")]
-        //[HasAccountType(AccountTypes.Company)]
+        [AnyEntityType(EntityTypes.Company)]
+        [HasPermission(Permissions.ViewPriceRequests)]
         public async Task<IActionResult> GetMyCompanyRequestsAsync()
             => Result(await priceRequestsService.GetMyCompanyRequestsAsync());
 

@@ -15,7 +15,7 @@ namespace Application.Companies.Service
             adminUser.PhoneNumberConfirmed = true;
 
             var company = mapper.Map<Company>(registerRequest);
-            var roleName = $"{company.Name} Admin";
+            var roleName = $"{company.Name} SuperAdmin";
 
             return await registrationService.RegisterEntityWithAdminAsync(adminUser, registerRequest.AdminInfo.Password, roleName, () => registrationService.CreateCompanyAsync(company), cancellationToken);
         }

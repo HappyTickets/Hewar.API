@@ -70,7 +70,9 @@ namespace Application.Account.Service.Concrete
                 #endregion
 
                 #region Role Creation
+                SetRolePermissions(entityType, role);
                 var roleResult = await roleManager.CreateAsync(role);
+
                 if (!roleResult.Succeeded)
                 {
                     await transaction.RollbackAsync(cancellationToken);
@@ -111,6 +113,17 @@ namespace Application.Account.Service.Concrete
         }
 
 
+        private void SetRolePermissions(EntityTypes entityType, ApplicationRole role)
+        {
+            var permissions = entityType switch
+            {
+                EntityTypes.Company => Enum.GetValues<CompanyPermissions>().Select(p => (Permissions)p),
+                EntityTypes.Facility => Enum.GetValues<FacilityPermissions>().Select(p => (Permissions)p),
+                _ => throw new ArgumentOutOfRangeException(nameof(entityType), "Invalid entity type")
+            };
+
+            role.Permissions = permissions.Select(p => new RolePermission { Permission = p }).ToList();
+        }
 
 
         private async Task<bool> IsPhoneNumberTaken(string phoneNumber)

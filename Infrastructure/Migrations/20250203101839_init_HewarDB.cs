@@ -1190,7 +1190,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Description", "Name", "NormalizedName" },
-                values: new object[] { 1L, null, null, "Admin", "ADMIN" });
+                values: new object[] { 1L, null, null, "SuperAdmin", "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "RolePermissions",

@@ -158,6 +158,14 @@ internal class TokensService
         claims.Add(new Claim(CustomClaims.UserId, user.Id.ToString()));
         claims.Add(new Claim(ClaimTypes.Email, user.Email!));
 
+        if (user.ApplicationUserRoles?.Any() == true)
+        {
+            foreach (var role in user.ApplicationUserRoles.Select(r => r.Role?.Name))
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role!));
+            }
+        }
+
         return claims;
     }
     //private async Task<IEnumerable<Claim>> GetAccountSpecificClaimsAsync(AccountTypes accountType, long accountId)

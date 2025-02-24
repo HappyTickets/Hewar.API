@@ -1,4 +1,5 @@
 ﻿using Infrastructure.Authentication.Requirements;
+using LanguageExt.Pipes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -6,36 +7,29 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace Infrastructure.Authentication.Handlers
 {
-    internal class PermissionAuthorizationHandler : AuthorizationHandler<PermissionRequirement>
+    internal class PermissionAuthorizationHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMemoryCache cache, RoleManager<ApplicationRole> roleManager) : AuthorizationHandler<PermissionRequirement>
     {
-        private readonly IUnitOfWorkService _ufw;
-        private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly ICurrentUserService _currentUser;
-        private readonly IMemoryCache _cache;
-
-        public PermissionAuthorizationHandler(IUnitOfWorkService ufw, ICurrentUserService currentUser, IMemoryCache cache, RoleManager<ApplicationRole> roleManager)
-        {
-            _ufw = ufw;
-            _currentUser = currentUser;
-            _cache = cache;
-            _roleManager = roleManager;
-        }
-
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
         {
-            var cacheKey = $"{_currentUser.UserId}";
-            var permissions = _cache.Get<List<Permissions>>(cacheKey);
+            var cacheKey = $"{currentUser.UserId}";
+            var permissions = cache.Get<List<Permissions>>(cacheKey);
+
+            if (context.User.IsInRole(Roles.SuperAdmin)) // يعم عدي ; يعم عدي
+            {
+                context.Succeed(requirement);
+                return;
+            }
 
             if (permissions == null)
             {
-                permissions = await _roleManager.Roles
-                   .Where(r => r.ApplicationUserRoles!.Any(ur => ur.UserId == _currentUser.UserId))
+                permissions = await roleManager.Roles
+                   .Where(r => r.ApplicationUserRoles!.Any(ur => ur.UserId == currentUser.UserId))
                    .SelectMany(r => r.Permissions)
                    .Select(r => r.Permission)
                    .Distinct()
                    .ToListAsync();
 
-                _cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(15));
+                cache.Set(cacheKey, permissions, TimeSpan.FromMinutes(15));
             }
 
             if (permissions.Any(p => p == requirement.Permission))

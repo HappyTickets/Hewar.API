@@ -8,5 +8,6 @@ namespace Infrastructure.Authentication.Attributes
         {
             Policy = permission.ToString();
         }
+
     }
 }

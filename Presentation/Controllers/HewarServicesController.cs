@@ -1,47 +1,43 @@
 ﻿using Application.Hewar.Dtos;
 using Application.Hewar.Service;
+using Infrastructure.Authentication.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    public class HewarServicesController : ApiControllerBase
+    [Authorize]
+    public class HewarServicesController(IHewarProvidedService hewarService) : ApiControllerBase
     {
-        private readonly IHewarProvidedService _hewarService;
-
-        public HewarServicesController(IHewarProvidedService hewarService)
-        {
-            _hewarService = hewarService;
-        }
-
         [HttpPost("create")]
-        //[HasPermission(Permissions.CreateHewar)]
+        [HasPermission(Permissions.CreateHewarService)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateHewarServiceDto dto)
 
-            => Result(await _hewarService.CreateAsync(dto));
+            => Result(await hewarService.CreateAsync(dto));
 
 
 
         [HttpPut("update")]
-        //[HasPermission(Permissions.UpdateHewar)]
+        [HasPermission(Permissions.UpdateHewarService)]
         public async Task<IActionResult> UpdateAsync([FromBody] HewarServiceDto dto)
-       => Result(await _hewarService.UpdateAsync(dto));
+       => Result(await hewarService.UpdateAsync(dto));
 
         [HttpGet("getById")]
-        //[HasPermission(Permissions.View)]
+        [HasPermission(Permissions.ViewHewarServices)]
         public async Task<IActionResult> GetByIdAsync(long id)
-            => Result(await _hewarService.GetByIdAsync(id));
+            => Result(await hewarService.GetByIdAsync(id));
 
 
         [HttpGet("getAll")]
-        //[HasPermission(Permissions.View)]
+        [HasPermission(Permissions.ViewHewarServices)]
         public async Task<IActionResult> GetAllAsync()
-            => Result(await _hewarService.GetAllAsync());
+            => Result(await hewarService.GetAllAsync());
 
 
         [HttpDelete("Delete")]
-        //[HasPermission(Permissions.DeleteHewar)]
+        [HasPermission(Permissions.DeleteHewarService)]
         public async Task<IActionResult> HardDeleteAsync(long id)
-            => Result(await _hewarService.DeleteAsync(id));
+            => Result(await hewarService.DeleteAsync(id));
     }
 
 }

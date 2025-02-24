@@ -2,13 +2,8 @@
 
 namespace Infrastructure.Authentication.Requirements
 {
-    internal class PermissionRequirement: IAuthorizationRequirement
+    internal class PermissionRequirement(Permissions permission) : IAuthorizationRequirement
     {
-        public Permissions Permission { get; }
-
-        public PermissionRequirement(Permissions permission)
-        {
-            Permission = permission;
-        }
+        public Permissions Permission { get; } = permission;
     }
 }

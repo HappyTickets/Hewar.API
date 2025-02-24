@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250211130955_Contract Templatets")]
-    partial class ContractTemplatets
+    [Migration("20250224083115_superAdminRole")]
+    partial class superAdminRole
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,36 +58,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("AdId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<long>("ServiceId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ShiftType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdId");
-
-                    b.HasIndex("ServiceId");
-
-                    b.ToTable("AdService");
-                });
-
-            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdCompanyServiceCost", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,7 +90,133 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("AdServicePrice");
+                    b.ToTable("AdCompanyServiceCost");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdHewarService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdHewarService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdHewarServiceCost", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ServiceId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdOfferId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("AdHewarServiceCost");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.OtherAdService", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdId");
+
+                    b.ToTable("OtherAdService");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.OtherAdServiceCost", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("AdOfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("DailyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MonthlyCostPerUnit")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShiftType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdOfferId");
+
+                    b.ToTable("OtherAdServiceCost");
                 });
 
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
@@ -422,7 +519,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("CompanyService");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ContractTemplate", b =>
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Contract", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -430,7 +527,573 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("ContractJson")
+                    b.Property<long?>("CompanyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CompanySignature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("FacilityId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FacilitySignature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("OfferId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("FacilityId");
+
+                    b.HasIndex("OfferId");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.ContractKey", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ContractId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("KeyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.HasIndex("KeyId");
+
+                    b.ToTable("ContractKey");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.CustomClause", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("AuthorType")
+                        .HasColumnType("int");
+
+                    b.Property<long>("ContractId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("HtmlContentAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HtmlContentEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.ToTable("CustomClause");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Key", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("DataType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Key");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            DataType = 1,
+                            IsDeleted = false,
+                            Name = "ContractSignDate"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            DataType = 1,
+                            IsDeleted = false,
+                            Name = "ContractStartDate"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyNameAr"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyNameEn"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyMainOfficeCityAr"
+                        },
+                        new
+                        {
+                            Id = 6L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyMainOfficeCityEn"
+                        },
+                        new
+                        {
+                            Id = 7L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyCommercialRegistration"
+                        },
+                        new
+                        {
+                            Id = 8L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyPublicSecurityLicense"
+                        },
+                        new
+                        {
+                            Id = 9L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyTelephone"
+                        },
+                        new
+                        {
+                            Id = 10L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyMobile"
+                        },
+                        new
+                        {
+                            Id = 11L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyAddressCityAr"
+                        },
+                        new
+                        {
+                            Id = 12L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyAddressCityEn"
+                        },
+                        new
+                        {
+                            Id = 13L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyAddressPostalCode"
+                        },
+                        new
+                        {
+                            Id = 14L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyAddressUnitNumber"
+                        },
+                        new
+                        {
+                            Id = 15L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyAddressBuildingNumber"
+                        },
+                        new
+                        {
+                            Id = 16L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyRegistrationInSabl"
+                        },
+                        new
+                        {
+                            Id = 17L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyEmail"
+                        },
+                        new
+                        {
+                            Id = 18L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyRepresentativeNameAr"
+                        },
+                        new
+                        {
+                            Id = 19L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyRepresentativeNameEn"
+                        },
+                        new
+                        {
+                            Id = 20L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyRepresentativeTitleAr"
+                        },
+                        new
+                        {
+                            Id = 21L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "CompanyRepresentativeTitleEn"
+                        },
+                        new
+                        {
+                            Id = 22L,
+                            DataType = 0,
+                            IsDeleted = false,
+                            Name = "CompanyGuardsCount"
+                        },
+                        new
+                        {
+                            Id = 23L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityNameAr"
+                        },
+                        new
+                        {
+                            Id = 24L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityNameEn"
+                        },
+                        new
+                        {
+                            Id = 25L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityMainOfficeCityAr"
+                        },
+                        new
+                        {
+                            Id = 26L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityMainOfficeCityEn"
+                        },
+                        new
+                        {
+                            Id = 27L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityCommercialRegistrationCityAr"
+                        },
+                        new
+                        {
+                            Id = 28L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityCommercialRegistrationCityEn"
+                        },
+                        new
+                        {
+                            Id = 29L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityMobile"
+                        },
+                        new
+                        {
+                            Id = 30L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityAddressCityAr"
+                        },
+                        new
+                        {
+                            Id = 31L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityAddressCityEn"
+                        },
+                        new
+                        {
+                            Id = 32L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityAddressPostalCode"
+                        },
+                        new
+                        {
+                            Id = 33L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityAddressUnitNumber"
+                        },
+                        new
+                        {
+                            Id = 34L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityAddressBuildingNumber"
+                        },
+                        new
+                        {
+                            Id = 35L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityEmail"
+                        },
+                        new
+                        {
+                            Id = 36L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityRepresentativeNameAr"
+                        },
+                        new
+                        {
+                            Id = 37L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityRepresentativeNameEn"
+                        },
+                        new
+                        {
+                            Id = 38L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityRepresentativeTitleAr"
+                        },
+                        new
+                        {
+                            Id = 39L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityRepresentativeTitleEn"
+                        },
+                        new
+                        {
+                            Id = 40L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityLocationToBeSecuredAr"
+                        },
+                        new
+                        {
+                            Id = 41L,
+                            DataType = 2,
+                            IsDeleted = false,
+                            Name = "FacilityLocationToBeSecuredEn"
+                        });
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.ScheduleEntry", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ContractId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("GuardsRequired")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LocationAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LocationEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NotesAr")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NotesEn")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShiftTimeAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShiftTimeEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TenantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContractId");
+
+                    b.ToTable("ScheduleEntry");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Static.StaticClause", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ContentAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContentEn")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -455,18 +1118,81 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("ModifiedOn")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<long>("OfferId")
+                    b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StaticClauses");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Static.StaticContract", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("ClosingRemarkAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClosingRemarkEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("DeletedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset?>("ModifiedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("PreambleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreambleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("TitleAr")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TitleEn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("OfferId")
-                        .IsUnique();
-
-                    b.ToTable("OfferContracts", (string)null);
+                    b.ToTable("StaticContracts");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
@@ -760,7 +1486,7 @@ namespace Infrastructure.Migrations
                         {
                             Id = 1L,
                             Name = "SuperAdmin",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "SUPERADMIN"
                         });
                 });
 
@@ -1004,116 +1730,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RolePermissions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Permission = 1,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Permission = 2,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Permission = 3,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Permission = 4,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 5L,
-                            Permission = 5,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 6L,
-                            Permission = 6,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 7L,
-                            Permission = 50,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 8L,
-                            Permission = 51,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 9L,
-                            Permission = 52,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 10L,
-                            Permission = 53,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 11L,
-                            Permission = 100,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 12L,
-                            Permission = 101,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 13L,
-                            Permission = 102,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 14L,
-                            Permission = 103,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 15L,
-                            Permission = 150,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 16L,
-                            Permission = 151,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 17L,
-                            Permission = 152,
-                            RoleId = 1L
-                        },
-                        new
-                        {
-                            Id = 18L,
-                            Permission = 153,
-                            RoleId = 1L
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.Ad", b =>
@@ -1141,10 +1757,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("datetimeoffset");
@@ -1189,7 +1801,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<long>("AdId")
+                    b.Property<long?>("AdId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("ChatId")
@@ -1210,7 +1822,13 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<bool>("IsCompanyHidden")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFacilityHidden")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -1644,6 +2262,9 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ChatId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("ContractType")
+                        .HasColumnType("int");
+
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -1656,7 +2277,16 @@ namespace Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("DeletedOn")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsCompanyHidden")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFacilityHidden")
                         .HasColumnType("bit");
 
                     b.Property<string>("ModifiedBy")
@@ -1670,6 +2300,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<long>("PriceRequestId")
                         .HasColumnType("bigint");
+
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<long?>("TenantId")
                         .HasColumnType("bigint");
@@ -2125,7 +2758,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("Guards", (string)null);
                 });
 
-            modelBuilder.Entity("Domain.Entities.AdAggregate.AdService", b =>
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdCompanyServiceCost", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
+                        .WithMany("CompanyServicesCost")
+                        .HasForeignKey("AdOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CompanyAggregate.CompanyService", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdOffer");
+
+                    b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdHewarService", b =>
                 {
                     b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
                         .WithMany("Services")
@@ -2144,7 +2796,7 @@ namespace Infrastructure.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("Domain.Entities.AdAggregate.AdServicePrice", b =>
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.AdHewarServiceCost", b =>
                 {
                     b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
                         .WithMany("ServicesCost")
@@ -2161,6 +2813,28 @@ namespace Infrastructure.Migrations
                     b.Navigation("AdOffer");
 
                     b.Navigation("Service");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.OtherAdService", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
+                        .WithMany("OtherServices")
+                        .HasForeignKey("AdId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ad");
+                });
+
+            modelBuilder.Entity("Domain.Entities.AdAggregate.Services.OtherAdServiceCost", b =>
+                {
+                    b.HasOne("Domain.Entities.InsuranceAdAggregate.AdOffer", "AdOffer")
+                        .WithMany("OtherServicesCost")
+                        .HasForeignKey("AdOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdOffer");
                 });
 
             modelBuilder.Entity("Domain.Entities.Attendance", b =>
@@ -2246,15 +2920,66 @@ namespace Infrastructure.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ContractTemplate", b =>
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Contract", b =>
                 {
+                    b.HasOne("Domain.Entities.CompanyAggregate.Company", "Company")
+                        .WithMany()
+                        .HasForeignKey("CompanyId");
+
+                    b.HasOne("Domain.Entities.FacilityAggregate.Facility", "Facility")
+                        .WithMany()
+                        .HasForeignKey("FacilityId");
+
                     b.HasOne("Domain.Entities.PriceRequestAggregates.PriceOffer", "Offer")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.ContractTemplate", "OfferId")
+                        .WithMany()
+                        .HasForeignKey("OfferId");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("Facility");
+
+                    b.Navigation("Offer");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.ContractKey", b =>
+                {
+                    b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Contract", "Contract")
+                        .WithMany("ContractKeys")
+                        .HasForeignKey("ContractId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Offer");
+                    b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Key", "Key")
+                        .WithMany()
+                        .HasForeignKey("KeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+
+                    b.Navigation("Key");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.CustomClause", b =>
+                {
+                    b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Contract", "Contract")
+                        .WithMany("CustomClauses")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
+                });
+
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.ScheduleEntry", b =>
+                {
+                    b.HasOne("Domain.Entities.ContractAggregate.Dynamic.Contract", "Contract")
+                        .WithMany("ScheduleEntries")
+                        .HasForeignKey("ContractId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contract");
                 });
 
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
@@ -2394,8 +3119,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.InsuranceAdAggregate.Ad", "Ad")
                         .WithMany("AdOffers")
                         .HasForeignKey("AdId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Entities.ChatAggregate.Chat", "Chat")
                         .WithMany()
@@ -2723,6 +3447,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tickets");
                 });
 
+            modelBuilder.Entity("Domain.Entities.ContractAggregate.Dynamic.Contract", b =>
+                {
+                    b.Navigation("ContractKeys");
+
+                    b.Navigation("CustomClauses");
+
+                    b.Navigation("ScheduleEntries");
+                });
+
             modelBuilder.Entity("Domain.Entities.FacilityAggregate.Facility", b =>
                 {
                     b.Navigation("Ads");
@@ -2758,11 +3491,17 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("AdOffers");
 
+                    b.Navigation("OtherServices");
+
                     b.Navigation("Services");
                 });
 
             modelBuilder.Entity("Domain.Entities.InsuranceAdAggregate.AdOffer", b =>
                 {
+                    b.Navigation("CompanyServicesCost");
+
+                    b.Navigation("OtherServicesCost");
+
                     b.Navigation("ServicesCost");
                 });
 
