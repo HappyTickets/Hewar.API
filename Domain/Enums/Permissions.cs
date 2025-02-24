@@ -45,7 +45,7 @@
         CreatePriceRequestChat = 350,
         CreatePriceOfferChat = 351,
         CreateAdOfferChat = 352,
-        SendPriceRequestMessage = 3543,
+        SendPriceRequestMessage = 353,
         SendPriceOfferMessage = 354,
         SendAdOfferMessage = 355,
         ViewChatMessages = 356,
@@ -76,6 +76,9 @@
         UpdateScheduleEntry = 601,
         DeleteScheduleEntry = 602,
         ViewScheduleEntries = 603,
+
+        ViewHewarServices = 703
+
     }
     public enum FacilityPermissions
     {
@@ -113,7 +116,7 @@
         CreatePriceRequestChat = 350,
         CreatePriceOfferChat = 351,
         CreateAdOfferChat = 352,
-        SendPriceRequestMessage = 3543,
+        SendPriceRequestMessage = 353,
         SendPriceOfferMessage = 354,
         SendAdOfferMessage = 355,
         ViewChatMessages = 356,
@@ -154,6 +157,9 @@
         UpdateSecurityCertificate = 651,
         DeleteSecurityCertificate = 652,
         ViewSecurityCertificate = 653,
+
+        ViewHewarServices = 703
+
     }
 
     public enum Permissions
@@ -215,7 +221,7 @@
         CreatePriceRequestChat = 350,
         CreatePriceOfferChat = 351,
         CreateAdOfferChat = 352,
-        SendPriceRequestMessage = 3543,
+        SendPriceRequestMessage = 353,
         SendPriceOfferMessage = 354,
         SendAdOfferMessage = 355,
         ViewChatMessages = 356,
